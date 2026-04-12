@@ -1,194 +1,395 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>KIW — UX/UI Portfolio</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>KIW — UX/UI Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Prompt:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{font-family:'Prompt',sans-serif;background:#f5f9ff;color:#0a1628;overflow-x:hidden;min-height:100vh}
-  a{text-decoration:none;color:inherit}
+:root{
+  --sky:#0ea5e9;
+  --blue:#1d4ed8;
+  --navy:#0a1628;
+  --ice:#f0f8ff;
+  --frost:#e0f2fe;
+  --mist:#bae6fd;
+  --glass:rgba(255,255,255,0.7);
+  --border:rgba(14,165,233,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Prompt',sans-serif;
+  background:var(--ice);
+  color:var(--navy);
+  overflow-x:hidden;
+}
 
-  /* ── NAV ── */
-  .nav{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:1.4rem 2.5rem;
-    border-bottom:1px solid #ddeeff;
-    background:rgba(245,249,255,.9);
-    backdrop-filter:blur(12px);
-    position:sticky;top:0;z-index:100;
-  }
-  .nav-logo{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;color:#0d47a1}
-  .nav-links{display:flex;gap:2rem}
-  .nav-links a{font-size:.85rem;font-weight:500;color:#4a6080;letter-spacing:.04em;text-transform:uppercase;transition:color .2s}
-  .nav-links a:hover{color:#1565c0}
-  .nav-back{font-size:.82rem;color:#90a4ae}
+/* ── BACKGROUND SHAPES ── */
+.bg-blob{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.bg-blob-1{width:600px;height:600px;background:radial-gradient(circle,rgba(14,165,233,.12),transparent 70%);top:-150px;right:-100px}
+.bg-blob-2{width:500px;height:500px;background:radial-gradient(circle,rgba(29,78,216,.09),transparent 70%);bottom:200px;left:-150px}
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(14,165,233,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(14,165,233,.05) 1px,transparent 1px);
+  background-size:50px 50px;
+}
 
-  /* ── HERO ── */
-  .hero{
-    max-width:1000px;margin:0 auto;
-    padding:5rem 2.5rem 4rem;
-    display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:center;
-  }
-  .hero-eyebrow{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:5px 16px;
-    background:#e3f0ff;border:1px solid #90caf9;border-radius:999px;
-    font-size:.78rem;font-weight:600;color:#1565c0;
-    letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.5rem;
-  }
-  .dot{
-    width:6px;height:6px;border-radius:50%;background:#1e88e5;
-    animation:pulse 2s infinite;
-  }
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-  h1{font-size:clamp(2.4rem,5vw,3.8rem);font-weight:800;line-height:1.05;letter-spacing:-.03em;color:#0a1628}
-  .h1-blue{color:#1565c0}
-  .h1-thin{
-    font-weight:300;font-style:italic;color:#4a7ab5;
-    display:block;font-size:.68em;letter-spacing:-.01em;margin-top:.25rem;
-  }
-  p.desc{margin-top:1.4rem;font-size:1rem;line-height:1.8;color:#4a6080;max-width:430px}
-  .btns{display:flex;gap:12px;margin-top:2rem;flex-wrap:wrap}
-  .btn-p{
-    padding:13px 30px;border-radius:14px;
-    background:#1565c0;color:#fff;
-    font-weight:600;font-size:.9rem;border:none;cursor:pointer;
-    transition:background .2s,transform .2s;font-family:'Prompt',sans-serif;
-  }
-  .btn-p:hover{background:#0d47a1;transform:translateY(-2px)}
-  .btn-s{
-    padding:13px 30px;border-radius:14px;
-    background:#fff;color:#1565c0;
-    font-weight:600;font-size:.9rem;
-    border:1.5px solid #90caf9;cursor:pointer;
-    transition:transform .2s,box-shadow .2s;font-family:'Prompt',sans-serif;
-  }
-  .btn-s:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(21,101,192,.12)}
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.1rem 3rem;
+  background:rgba(240,248,255,.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Syne',sans-serif;
+  font-size:1.6rem;font-weight:800;
+  background:linear-gradient(135deg,var(--blue),var(--sky));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  letter-spacing:-.02em;
+}
+.nav-links{display:flex;gap:2.5rem}
+.nav-links a{
+  font-size:.82rem;font-weight:500;color:#475569;
+  letter-spacing:.08em;text-transform:uppercase;
+  text-decoration:none;transition:color .2s;
+  position:relative;padding-bottom:2px;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:0;width:0;height:1.5px;
+  background:var(--sky);transition:width .25s;
+}
+.nav-links a:hover{color:var(--blue)}.nav-links a:hover::after{width:100%}
+.nav-back{
+  font-size:.8rem;color:#94a3b8;text-decoration:none;
+  display:flex;align-items:center;gap:5px;transition:color .2s;
+}
+.nav-back:hover{color:var(--sky)}
 
-  /* ── STATS ── */
-  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:2.5rem}
-  .stat-box{
-    background:#fff;border:1px solid #ddeeff;border-radius:18px;
-    padding:1rem;text-align:center;position:relative;overflow:hidden;
-  }
-  .stat-box::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:3px;
-    background:linear-gradient(90deg,#1e88e5,#0288d1);
-  }
-  .stat-n{font-size:1.8rem;font-weight:800;color:#1565c0;line-height:1}
-  .stat-l{font-size:.72rem;color:#90a4ae;margin-top:4px;font-weight:500;letter-spacing:.03em}
+/* ── HERO ── */
+.hero{
+  position:relative;z-index:1;
+  max-width:1100px;margin:0 auto;
+  padding:6rem 3rem 5rem;
+  display:grid;grid-template-columns:1.15fr 1fr;gap:4rem;align-items:center;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:6px 18px;margin-bottom:1.8rem;
+  border-radius:999px;
+  background:rgba(14,165,233,.1);
+  border:1px solid rgba(14,165,233,.3);
+  font-size:.75rem;font-weight:600;color:var(--sky);
+  letter-spacing:.1em;text-transform:uppercase;
+}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--sky);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
 
-  /* ── PROCESS CARD ── */
-  .card-wrap{
-    background:#fff;border:1px solid #ddeeff;border-radius:28px;
-    padding:1.5rem;box-shadow:0 8px 40px rgba(21,101,192,.07);
-  }
-  .card-inner-border{
-    border-radius:22px;padding:3px;
-    background:linear-gradient(135deg,#42a5f5,#0288d1,#0097a7);
-  }
-  .card-inner{background:#fff;border-radius:20px;padding:1.4rem}
-  .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem}
-  .card-title{font-size:.95rem;font-weight:700;color:#0a1628}
-  .live-pill{display:inline-flex;align-items:center;gap:5px;font-size:.75rem;color:#1565c0;font-weight:500}
-  .live-dot{width:6px;height:6px;border-radius:50%;background:#1e88e5;animation:pulse 1.5s infinite}
-  .step-item{
-    border-radius:14px;padding:12px 14px;margin-bottom:8px;
-    display:flex;align-items:flex-start;gap:10px;
-  }
-  .step-item:last-child{margin-bottom:0}
-  .step-num{
-    width:24px;height:24px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:1px;
-  }
-  .step-text b{display:block;font-size:.85rem;font-weight:700;margin-bottom:2px}
-  .step-text p{font-size:.78rem;line-height:1.5}
-  .s1{background:#e3f2fd}.s1 .step-num{background:#1e88e5;color:#fff}.s1 b{color:#0d47a1}.s1 p{color:#4a6080}
-  .s2{background:#e8eaf6}.s2 .step-num{background:#3f51b5;color:#fff}.s2 b{color:#283593}.s2 p{color:#4a6080}
-  .s3{background:#e0f7fa}.s3 .step-num{background:#0097a7;color:#fff}.s3 b{color:#006064}.s3 p{color:#4a6080}
+.hero h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(3rem,5.5vw,4.8rem);
+  font-weight:800;line-height:1;
+  letter-spacing:-.04em;color:var(--navy);
+}
+.h1-accent{
+  display:block;
+  background:linear-gradient(135deg,var(--sky) 0%,var(--blue) 60%,#06b6d4 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.h1-italic{
+  display:block;
+  font-family:'Prompt',sans-serif;
+  font-weight:300;font-style:italic;
+  font-size:.48em;color:#64748b;
+  letter-spacing:.02em;margin-top:.3rem;
+}
+.hero-desc{
+  margin-top:1.6rem;font-size:1rem;line-height:1.85;
+  color:#4a6080;max-width:440px;font-weight:400;
+}
 
-  /* ── SECTION LABEL ── */
-  .sec-wrap{text-align:center;padding:3.5rem 2.5rem 0}
-  .sec-eyebrow{
-    display:inline-block;font-size:.72rem;font-weight:700;
-    letter-spacing:.12em;text-transform:uppercase;color:#1e88e5;margin-bottom:.6rem;
-  }
-  .sec-title{font-size:2rem;font-weight:800;color:#0a1628;letter-spacing:-.02em}
-  .sec-sub{font-size:.9rem;color:#6b89a8;margin-top:.5rem}
+/* ── BUTTONS ── */
+.btns{display:flex;gap:14px;margin-top:2.2rem;flex-wrap:wrap}
+.btn-main{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 32px;border-radius:16px;
+  background:linear-gradient(135deg,var(--blue),var(--sky));
+  color:#fff;font-family:'Prompt',sans-serif;font-weight:600;font-size:.9rem;
+  border:none;cursor:pointer;text-decoration:none;
+  box-shadow:0 4px 20px rgba(14,165,233,.35);
+  transition:transform .2s,box-shadow .2s;
+}
+.btn-main:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(14,165,233,.45)}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 32px;border-radius:16px;
+  background:var(--glass);
+  backdrop-filter:blur(12px);
+  color:var(--blue);font-family:'Prompt',sans-serif;font-weight:600;font-size:.9rem;
+  border:1.5px solid rgba(14,165,233,.35);cursor:pointer;text-decoration:none;
+  transition:transform .2s,background .2s,border-color .2s;
+}
+.btn-ghost:hover{transform:translateY(-3px);background:rgba(14,165,233,.08);border-color:var(--sky)}
 
-  /* ── SKILLS ── */
-  .skills-grid{
-    max-width:1000px;margin:2rem auto 0;padding:0 2.5rem;
-    display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
-  }
-  .sk{
-    background:#fff;border:1px solid #ddeeff;border-radius:22px;
-    padding:1.4rem;transition:transform .2s,box-shadow .2s;
-    position:relative;overflow:hidden;
-  }
-  .sk:hover{transform:translateY(-5px);box-shadow:0 12px 32px rgba(21,101,192,.1)}
-  .sk-icon{
-    width:44px;height:44px;border-radius:14px;
-    background:#e3f0ff;
-    display:flex;align-items:center;justify-content:center;
-    font-size:1.3rem;margin-bottom:1rem;
-  }
-  .sk h3{font-size:.92rem;font-weight:700;color:#0a1628;margin-bottom:.4rem}
-  .sk p{font-size:.8rem;color:#6b89a8;line-height:1.6}
-  .sk-accent{
-    position:absolute;bottom:0;left:0;right:0;height:3px;
-    background:linear-gradient(90deg,#1e88e5,#0097a7);
-    transform:scaleX(0);transform-origin:left;transition:transform .25s;
-  }
-  .sk:hover .sk-accent{transform:scaleX(1)}
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:2.8rem}
+.stat{
+  background:var(--glass);backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:20px;
+  padding:1.1rem 1rem;text-align:center;
+  position:relative;overflow:hidden;
+  transition:transform .2s;
+}
+.stat:hover{transform:translateY(-3px)}
+.stat-bar{
+  position:absolute;top:0;left:0;right:0;height:2.5px;
+  background:linear-gradient(90deg,var(--sky),var(--blue));
+}
+.stat-n{
+  font-family:'Syne',sans-serif;
+  font-size:2rem;font-weight:800;line-height:1;
+  background:linear-gradient(135deg,var(--blue),var(--sky));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.stat-l{font-size:.72rem;color:#94a3b8;margin-top:5px;font-weight:500;letter-spacing:.04em}
 
-  /* ── TOOLS ── */
-  .tools-outer{max-width:1000px;margin:2.5rem auto 0;padding:0 2.5rem 5rem}
-  .tools-inner{
-    background:#fff;border:1px solid #ddeeff;border-radius:24px;
-    padding:2rem;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
-  }
-  .tool-chip{
-    display:flex;align-items:center;gap:8px;
-    padding:10px 22px;border-radius:999px;
-    background:#f0f7ff;border:1.5px solid #bbdefb;
-    font-size:.85rem;font-weight:600;color:#1565c0;
-    transition:background .2s,transform .15s;cursor:default;
-  }
-  .tool-chip:hover{background:#ddeeff;transform:translateY(-2px)}
-  .tool-dot{width:7px;height:7px;border-radius:50%;background:#1e88e5}
+/* ── PROCESS CARD (right side) ── */
+.process-outer{
+  background:var(--glass);backdrop-filter:blur(16px);
+  border:1px solid var(--border);border-radius:30px;
+  padding:1.8rem;
+  box-shadow:0 20px 60px rgba(14,165,233,.1),0 2px 8px rgba(0,0,0,.04);
+}
+.process-gradient-ring{
+  border-radius:24px;padding:2px;
+  background:linear-gradient(135deg,var(--sky),var(--blue),#06b6d4);
+}
+.process-inner{
+  background:#fff;border-radius:23px;padding:1.6rem;
+}
+.p-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem}
+.p-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--navy)}
+.live-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:999px;
+  background:rgba(14,165,233,.1);
+  font-size:.72rem;font-weight:600;color:var(--sky);letter-spacing:.04em;
+}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--sky);animation:blink 1.5s infinite}
 
-  /* ── FOOTER ── */
-  footer{
-    text-align:center;padding:2.5rem;
-    border-top:1px solid #ddeeff;
-    font-size:.8rem;color:#90a4ae;letter-spacing:.04em;
-  }
+.pstep{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 15px;border-radius:16px;margin-bottom:10px;
+  transition:transform .18s;cursor:default;
+}
+.pstep:last-child{margin-bottom:0}
+.pstep:hover{transform:translateX(4px)}
+.pstep-num{
+  width:32px;height:32px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:.8rem;font-weight:800;
+}
+.pstep-icon{font-size:1.1rem;flex-shrink:0}
+.pstep-body b{display:block;font-size:.86rem;font-weight:600;margin-bottom:1px}
+.pstep-body p{font-size:.75rem;line-height:1.45;opacity:.75}
 
-  /* ── RESPONSIVE ── */
-  @media(max-width:700px){
-    .hero{grid-template-columns:1fr;padding:3rem 1.5rem 2.5rem}
-    .card-wrap{display:none}
-    .skills-grid{grid-template-columns:1fr 1fr;padding:0 1.5rem}
-    .tools-outer{padding:0 1.5rem 4rem}
-    .nav{padding:1rem 1.5rem}
-    .nav-links{display:none}
-  }
-  @media(max-width:480px){
-    .skills-grid{grid-template-columns:1fr}
-  }
+.ps1{background:#eff6ff}.ps1 .pstep-num{background:#dbeafe;color:#1d4ed8}.ps1 b{color:#1e3a8a}
+.ps2{background:#f0fdf4}.ps2 .pstep-num{background:#dcfce7;color:#16a34a}.ps2 b{color:#14532d}
+.ps3{background:#fff7ed}.ps3 .pstep-num{background:#fed7aa;color:#ea580c}.ps3 b{color:#7c2d12}
+.ps4{background:#fdf4ff}.ps4 .pstep-num{background:#f3e8ff;color:#9333ea}.ps4 b{color:#581c87}
+
+/* ── SECTION HEADER ── */
+.sec-head{text-align:center;position:relative;z-index:1;padding:5rem 2rem 0}
+.sec-tag{
+  display:inline-block;
+  font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--sky);margin-bottom:.7rem;
+}
+.sec-title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;
+  color:var(--navy);letter-spacing:-.03em;
+}
+.sec-sub{font-size:.9rem;color:#64748b;margin-top:.5rem;line-height:1.6}
+
+/* ── SKILLS ── */
+.skills-grid{
+  position:relative;z-index:1;
+  max-width:1100px;margin:2.5rem auto 0;padding:0 3rem;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.skill-card{
+  background:var(--glass);backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:24px;
+  padding:1.6rem;
+  position:relative;overflow:hidden;
+  transition:transform .25s,box-shadow .25s;
+  cursor:default;
+}
+.skill-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 16px 40px rgba(14,165,233,.14);
+}
+.skill-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--sky),var(--blue));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .3s;
+}
+.skill-card:hover::before{transform:scaleX(1)}
+
+.skill-icon-wrap{
+  width:52px;height:52px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.1rem;
+  font-size:1.5rem;
+  position:relative;
+}
+.skill-card h3{
+  font-family:'Syne',sans-serif;
+  font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:.45rem;
+}
+.skill-card p{font-size:.8rem;color:#64748b;line-height:1.65}
+.skill-tag{
+  display:inline-block;margin-top:.8rem;
+  font-size:.68rem;font-weight:600;letter-spacing:.05em;
+  padding:3px 10px;border-radius:999px;
+  background:rgba(14,165,233,.1);color:var(--sky);
+}
+
+/* icon themes */
+.ic-blue{background:#eff6ff}.ic-blue svg{color:#1d4ed8}
+.ic-cyan{background:#ecfeff}.ic-cyan svg{color:#0891b2}
+.ic-violet{background:#f5f3ff}.ic-violet svg{color:#7c3aed}
+.ic-rose{background:#fff1f2}.ic-rose svg{color:#e11d48}
+.ic-amber{background:#fffbeb}.ic-amber svg{color:#d97706}
+.ic-emerald{background:#ecfdf5}.ic-emerald svg{color:#059669}
+
+/* ── TOOLS ── */
+.tools-section{
+  position:relative;z-index:1;
+  max-width:1100px;margin:3rem auto 0;padding:0 3rem 6rem;
+}
+.tools-card{
+  background:var(--glass);backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:28px;
+  padding:2.5rem;
+}
+.tools-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:1.5rem}
+.tool-item{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:1.4rem 1rem;border-radius:20px;
+  background:#fff;border:1.5px solid rgba(14,165,233,.15);
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  cursor:default;
+}
+.tool-item:hover{
+  transform:translateY(-5px);
+  box-shadow:0 10px 30px rgba(14,165,233,.12);
+  border-color:rgba(14,165,233,.4);
+}
+.tool-logo{
+  width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:1.6rem;
+}
+.tool-name{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;color:var(--navy)}
+.tool-type{font-size:.7rem;color:#94a3b8;font-weight:400}
+
+/* ── ABOUT / FOOTER ── */
+.about-section{
+  position:relative;z-index:1;
+  max-width:1100px;margin:0 auto;padding:0 3rem 5rem;
+}
+.about-card{
+  background:linear-gradient(135deg,var(--blue) 0%,var(--sky) 100%);
+  border-radius:30px;padding:3.5rem;
+  display:grid;grid-template-columns:1fr auto;align-items:center;gap:3rem;
+  position:relative;overflow:hidden;
+}
+.about-card::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:220px;height:220px;border-radius:50%;
+  background:rgba(255,255,255,.08);
+}
+.about-card::after{
+  content:'';position:absolute;bottom:-40px;left:40%;
+  width:160px;height:160px;border-radius:50%;
+  background:rgba(255,255,255,.06);
+}
+.about-tag{
+  display:inline-block;
+  font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.7);margin-bottom:.8rem;
+}
+.about-card h2{
+  font-family:'Syne',sans-serif;
+  font-size:2rem;font-weight:800;color:#fff;
+  letter-spacing:-.03em;margin-bottom:.8rem;
+}
+.about-card p{color:rgba(255,255,255,.8);font-size:.92rem;line-height:1.75;max-width:460px}
+.about-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 28px;border-radius:16px;
+  background:#fff;color:var(--blue);
+  font-family:'Prompt',sans-serif;font-weight:700;font-size:.9rem;
+  border:none;cursor:pointer;text-decoration:none;white-space:nowrap;
+  box-shadow:0 4px 20px rgba(0,0,0,.15);
+  transition:transform .2s,box-shadow .2s;
+  position:relative;z-index:1;
+}
+.about-btn:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.2)}
+
+footer{
+  position:relative;z-index:1;
+  text-align:center;padding:2rem;
+  border-top:1px solid var(--border);
+  font-size:.78rem;color:#94a3b8;letter-spacing:.04em;
+}
+footer span{color:var(--sky)}
+
+/* ── FADE IN ── */
+.fade{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.fade.show{opacity:1;transform:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding:4rem 2rem 3rem}
+  .process-outer{display:none}
+  .skills-grid{grid-template-columns:1fr 1fr;padding:0 2rem}
+  .tools-grid{grid-template-columns:repeat(3,1fr)}
+  .about-card{grid-template-columns:1fr}
+  .tools-section,.about-section{padding-left:2rem;padding-right:2rem}
+  nav{padding:1rem 2rem}
+}
+@media(max-width:540px){
+  .skills-grid{grid-template-columns:1fr;padding:0 1.5rem}
+  .tools-grid{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  nav{padding:1rem 1.5rem}.nav-links{display:none}
+}
 </style>
 </head>
 <body>
 
+<div class="bg-blob bg-blob-1"></div>
+<div class="bg-blob bg-blob-2"></div>
+<div class="bg-grid"></div>
+
 <!-- NAV -->
-<nav class="nav">
-  <a href="index.html" class="nav-back">← ย้อนกลับ</a>
+<nav>
+  <a href="index.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    ย้อนกลับ
+  </a>
   <div class="nav-logo">KIW.</div>
   <div class="nav-links">
     <a href="#skills">Skills</a>
@@ -198,114 +399,193 @@
 </nav>
 
 <!-- HERO -->
-<div class="hero">
-  <div>
-    <div class="hero-eyebrow"><span class="dot"></span>Premium UX/UI Portfolio</div>
+<section class="hero">
+  <div class="fade">
+    <div class="hero-tag"><span class="pulse"></span>Premium UX/UI Portfolio</div>
     <h1>
-      <span class="h1-blue">Figma</span> &amp; UX/UI
-      <span class="h1-thin">Designer Skills</span>
+      <span class="h1-accent">Figma &amp; UX/UI</span>
+      Designer
+      <span class="h1-italic">crafting digital experiences</span>
     </h1>
-    <p class="desc">เชี่ยวชาญด้านการออกแบบ UX/UI ด้วย Figma สร้างประสบการณ์ผู้ใช้ที่สวยงาม ใช้งานง่าย และพร้อมต่อยอดสู่การพัฒนาจริงอย่างมืออาชีพ</p>
+    <p class="hero-desc">เชี่ยวชาญด้านการออกแบบ UX/UI ด้วย Figma สร้างประสบการณ์ผู้ใช้ที่สวยงาม ใช้งานง่าย และพร้อมต่อยอดสู่การพัฒนาจริงอย่างมืออาชีพ</p>
     <div class="btns">
-      <a href="#skills" class="btn-p">ดูทักษะ</a>
-      <a href="#about" class="btn-s">เกี่ยวกับฉัน</a>
+      <a href="#skills" class="btn-main">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        ดูทักษะทั้งหมด
+      </a>
+      <a href="#about" class="btn-ghost">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+        เกี่ยวกับฉัน
+      </a>
     </div>
     <div class="stats">
-      <div class="stat-box"><div class="stat-n">3+</div><div class="stat-l">Years Passion</div></div>
-      <div class="stat-box"><div class="stat-n">20+</div><div class="stat-l">UI Concepts</div></div>
-      <div class="stat-box"><div class="stat-n">100%</div><div class="stat-l">Creative</div></div>
+      <div class="stat"><div class="stat-bar"></div><div class="stat-n">3+</div><div class="stat-l">Years Passion</div></div>
+      <div class="stat"><div class="stat-bar"></div><div class="stat-n">20+</div><div class="stat-l">UI Concepts</div></div>
+      <div class="stat"><div class="stat-bar"></div><div class="stat-n">100%</div><div class="stat-l">Creative</div></div>
     </div>
   </div>
 
-  <div class="card-wrap">
-    <div class="card-inner-border">
-      <div class="card-inner">
-        <div class="card-head">
-          <span class="card-title">Design Process</span>
-          <span class="live-pill"><span class="live-dot"></span>Live</span>
+  <div class="process-outer fade">
+    <div class="process-gradient-ring">
+      <div class="process-inner">
+        <div class="p-head">
+          <span class="p-title">Design Process</span>
+          <span class="live-badge"><span class="live-dot"></span>LIVE</span>
         </div>
-        <div class="step-item s1">
-          <div class="step-num">1</div>
-          <div class="step-text"><b>Research</b><p>ค้นหาปัญหาและความต้องการของผู้ใช้</p></div>
+        <div class="pstep ps1">
+          <div class="pstep-num">01</div>
+          <span class="pstep-icon">🔍</span>
+          <div class="pstep-body"><b>Research</b><p>ค้นหาปัญหาและความต้องการของผู้ใช้</p></div>
         </div>
-        <div class="step-item s2">
-          <div class="step-num">2</div>
-          <div class="step-text"><b>Wireframe</b><p>วางโครงสร้างและลำดับข้อมูล</p></div>
+        <div class="pstep ps2">
+          <div class="pstep-num">02</div>
+          <span class="pstep-icon">📐</span>
+          <div class="pstep-body"><b>Wireframe</b><p>วางโครงสร้างและลำดับข้อมูล</p></div>
         </div>
-        <div class="step-item s3">
-          <div class="step-num">3</div>
-          <div class="step-text"><b>Prototype</b><p>สร้างต้นแบบและทดสอบการใช้งาน</p></div>
+        <div class="pstep ps3">
+          <div class="pstep-num">03</div>
+          <span class="pstep-icon">✦</span>
+          <div class="pstep-body"><b>UI Design</b><p>ออกแบบ Interface ที่สวยและ Consistent</p></div>
         </div>
+        <div class="pstep ps4">
+          <div class="pstep-num">04</div>
+          <span class="pstep-icon">⚡</span>
+          <div class="pstep-body"><b>Prototype &amp; Test</b><p>สร้างต้นแบบและทดสอบกับผู้ใช้จริง</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<div id="skills" class="sec-head fade">
+  <div class="sec-tag">✦ What I Do</div>
+  <div class="sec-title">Core Skills</div>
+  <div class="sec-sub">ทักษะหลักที่ใช้สร้างผลงานออกแบบระดับมืออาชีพ</div>
+</div>
+
+<div class="skills-grid">
+  <div class="skill-card fade">
+    <div class="skill-icon-wrap ic-blue">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>
+    </div>
+    <h3>Figma Design</h3>
+    <p>Auto Layout, Components, Variants และ Design System ครบครัน</p>
+    <span class="skill-tag">Design Tool</span>
+  </div>
+  <div class="skill-card fade">
+    <div class="skill-icon-wrap ic-cyan">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0891b2" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+    </div>
+    <h3>UX Research</h3>
+    <p>วิเคราะห์ Pain Point พฤติกรรมผู้ใช้ และ User Interview</p>
+    <span class="skill-tag">Research</span>
+  </div>
+  <div class="skill-card fade">
+    <div class="skill-icon-wrap ic-violet">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="1.8"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/><path d="M10 6.5h4M6.5 10v4M17.5 10v4M10 17.5h4"/></svg>
+    </div>
+    <h3>User Flow</h3>
+    <p>ออกแบบเส้นทางใช้งานที่ลื่นไหล ชัดเจน และสมเหตุสมผล</p>
+    <span class="skill-tag">Architecture</span>
+  </div>
+  <div class="skill-card fade">
+    <div class="skill-icon-wrap ic-rose">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+    </div>
+    <h3>Wireframe</h3>
+    <p>จัดวาง Layout อย่างมีหลักการก่อนพัฒนา UI จริง</p>
+    <span class="skill-tag">Layout</span>
+  </div>
+  <div class="skill-card fade">
+    <div class="skill-icon-wrap ic-amber">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    </div>
+    <h3>Prototype</h3>
+    <p>จำลองการใช้งาน Interactive เพื่อนำเสนอและทดสอบ</p>
+    <span class="skill-tag">Interaction</span>
+  </div>
+  <div class="skill-card fade">
+    <div class="skill-icon-wrap ic-emerald">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    </div>
+    <h3>Frontend Friendly</h3>
+    <p>เข้าใจ HTML CSS JavaScript React และ Tailwind เชิงลึก</p>
+    <span class="skill-tag">Development</span>
+  </div>
+</div>
+
+<!-- TOOLS -->
+<div id="tools" class="sec-head fade" style="padding-top:4rem">
+  <div class="sec-tag">✦ My Stack</div>
+  <div class="sec-title">Tools &amp; Software</div>
+  <div class="sec-sub">เครื่องมือที่ใช้ในกระบวนการออกแบบทุกขั้นตอน</div>
+</div>
+
+<div class="tools-section fade">
+  <div class="tools-card">
+    <div class="tools-grid">
+      <div class="tool-item">
+        <div class="tool-logo" style="background:#1abcfe22;">
+          <svg width="30" height="30" viewBox="0 0 38 57" fill="none"><path d="M19 28.5A9.5 9.5 0 1 1 9.5 19 9.5 9.5 0 0 1 19 28.5z" fill="#1ABCFE"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5A9.5 9.5 0 0 1 0 47.5z" fill="#0ACF83"/><path d="M19 0v19h9.5A9.5 9.5 0 0 0 19 0z" fill="#FF7262"/><path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z" fill="#F24E1E"/><path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z" fill="#FF7262"/><path d="M28.5 19H19v19h9.5A9.5 9.5 0 0 0 28.5 19z" fill="#A259FF"/></svg>
+        </div>
+        <div class="tool-name">Figma</div>
+        <div class="tool-type">UI Design</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-logo" style="background:#f5f5f522;">
+          <svg width="30" height="30" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#fff"/><path d="M20 30h60v8H20zm0 16h40v8H20zm0 16h50v8H20z" fill="#888"/><rect x="68" y="55" width="14" height="14" rx="3" fill="#0ea5e9"/></svg>
+        </div>
+        <div class="tool-name">FigJam</div>
+        <div class="tool-type">Whiteboard</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-logo" style="background:#001e3622;">
+          <svg width="30" height="30" viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="#001e36"/><text x="50" y="68" text-anchor="middle" font-size="52" font-family="Arial Black" fill="#31a8ff">Ps</text></svg>
+        </div>
+        <div class="tool-name">Photoshop</div>
+        <div class="tool-type">Image Edit</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-logo" style="background:#31000122;">
+          <svg width="30" height="30" viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="#310001"/><text x="50" y="68" text-anchor="middle" font-size="52" font-family="Arial Black" fill="#ff9a00">Ai</text></svg>
+        </div>
+        <div class="tool-name">Illustrator</div>
+        <div class="tool-type">Vector</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-logo" style="background:#1e1e2e22;">
+          <svg width="30" height="30" viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="#1e1e2e"/><path d="M20 25h60v8H20zm0 14h35v7H20zm0 13h50v7H20zm0 13h28v7H20z" fill="#0ea5e9" opacity=".9"/></svg>
+        </div>
+        <div class="tool-name">VS Code</div>
+        <div class="tool-type">Code Editor</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SKILLS -->
-<div id="skills" class="sec-wrap">
-  <div class="sec-eyebrow">What I do</div>
-  <div class="sec-title">Core Skills</div>
-  <div class="sec-sub">ทักษะหลักที่ใช้ในการออกแบบ UX/UI อย่างมืออาชีพ</div>
-</div>
-
-<div class="skills-grid">
-  <div class="sk">
-    <div class="sk-icon">🎨</div>
-    <h3>Figma Design</h3>
-    <p>Auto Layout, Components, Variants และ Design System</p>
-    <div class="sk-accent"></div>
-  </div>
-  <div class="sk">
-    <div class="sk-icon">🔍</div>
-    <h3>UX Research</h3>
-    <p>วิเคราะห์ Pain Point และพฤติกรรมผู้ใช้อย่างลึกซึ้ง</p>
-    <div class="sk-accent"></div>
-  </div>
-  <div class="sk">
-    <div class="sk-icon">🧭</div>
-    <h3>User Flow</h3>
-    <p>ออกแบบเส้นทางใช้งานที่ลื่นไหลและชัดเจน</p>
-    <div class="sk-accent"></div>
-  </div>
-  <div class="sk">
-    <div class="sk-icon">📐</div>
-    <h3>Wireframe</h3>
-    <p>จัดวาง Layout ก่อนพัฒนา UI จริงเพื่อประหยัดเวลา</p>
-    <div class="sk-accent"></div>
-  </div>
-  <div class="sk">
-    <div class="sk-icon">⚡</div>
-    <h3>Prototype</h3>
-    <p>จำลองการใช้งานเพื่อนำเสนอและทดสอบกับผู้ใช้จริง</p>
-    <div class="sk-accent"></div>
-  </div>
-  <div class="sk">
-    <div class="sk-icon">💻</div>
-    <h3>Frontend Friendly</h3>
-    <p>เข้าใจ HTML CSS JavaScript React และ Tailwind</p>
-    <div class="sk-accent"></div>
+<!-- ABOUT CTA -->
+<div id="about" class="about-section fade">
+  <div class="about-card">
+    <div>
+      <div class="about-tag">✦ About Me</div>
+      <h2>ยินดีที่ได้รู้จักครับ 👋</h2>
+      <p>นักออกแบบ UX/UI ที่มีความหลงใหลในการสร้างประสบการณ์ดิจิทัลที่สวยงามและใช้งานได้จริง เชื่อว่า Design ที่ดีคือสิ่งที่ผู้ใช้ไม่รู้สึกถึงมัน — แต่รู้สึกดีกับมัน</p>
+    </div>
+    <a href="#" class="about-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      ดาวน์โหลด Resume
+    </a>
   </div>
 </div>
 
-<!-- TOOLS -->
-<div id="tools" class="sec-wrap" style="padding-top:3rem">
-  <div class="sec-eyebrow">My Stack</div>
-  <div class="sec-title">Tools</div>
-  <div class="sec-sub">เครื่องมือที่ใช้งานประจำในกระบวนการออกแบบ</div>
-</div>
+<footer>© 2026 Crafted with <span>♥</span> by <strong>KIW</strong> &nbsp;·&nbsp; UX/UI Designer &nbsp;·&nbsp; Bangkok, TH</footer>
 
-<div class="tools-outer">
-  <div class="tools-inner">
-    <div class="tool-chip"><span class="tool-dot"></span>Figma</div>
-    <div class="tool-chip"><span class="tool-dot"></span>FigJam</div>
-    <div class="tool-chip"><span class="tool-dot"></span>Photoshop</div>
-    <div class="tool-chip"><span class="tool-dot"></span>Illustrator</div>
-    <div class="tool-chip"><span class="tool-dot"></span>VS Code</div>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer id="about">© 2026 Crafted with care by <strong>KIW</strong> &nbsp;·&nbsp; UX/UI Designer</footer>
-
+<script>
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')})
+},{threshold:.12});
+document.querySelectorAll('.fade').forEach(el=>obs.observe(el));
+</script>
 </body>
 </html>
