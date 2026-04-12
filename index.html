@@ -5,51 +5,485 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PATIWAT Portfolio</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700;800&family=IBM+Plex+Sans+Thai:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  * { font-family: 'Prompt', 'IBM Plex Sans Thai', sans-serif; }
+  body { background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 40%, #ecfeff 100%); }
+
+  /* Floating background blobs */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Fade in animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes floatY {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes pulseRing {
+    0% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.35); }
+    70% { box-shadow: 0 0 0 16px rgba(14, 165, 233, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  .fade-up { animation: fadeUp 0.7s ease both; }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.22s; }
+  .delay-3 { animation-delay: 0.34s; }
+  .delay-4 { animation-delay: 0.46s; }
+  .float-anim { animation: floatY 4s ease-in-out infinite; }
+
+  /* Nav link underline hover */
+  .nav-link {
+    position: relative;
+    padding-bottom: 3px;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: #0ea5e9;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
+
+  /* Card hover */
+  .work-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .work-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 16px 48px rgba(14, 165, 233, 0.18);
+  }
+
+  /* Icon circle */
+  .icon-circle {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Skill badge */
+  .skill-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 100px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #0369a1;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .skill-badge:hover {
+    background: #e0f2fe;
+    border-color: #7dd3fc;
+  }
+
+  /* Shimmer button */
+  .btn-shimmer {
+    background: linear-gradient(90deg, #0ea5e9, #38bdf8, #0ea5e9);
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-shimmer:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 24px rgba(14, 165, 233, 0.45);
+  }
+
+  /* Avatar ring pulse */
+  .avatar-wrap {
+    animation: pulseRing 2.5s ease-out infinite;
+  }
+
+  /* Section title accent */
+  .section-title {
+    position: relative; display: inline-block;
+  }
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -6px; left: 0;
+    width: 60%; height: 4px;
+    background: linear-gradient(90deg, #0ea5e9, #7dd3fc);
+    border-radius: 2px;
+  }
+
+  /* Progress bar */
+  .prog-bar {
+    height: 6px; border-radius: 100px;
+    background: #e0f2fe;
+    overflow: hidden;
+  }
+  .prog-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+    transition: width 1s ease;
+  }
+
+  /* Contact icon btn */
+  .contact-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 12px 22px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 14px;
+    font-weight: 600; color: #fff;
+    backdrop-filter: blur(6px);
+    transition: background 0.2s, transform 0.2s;
+    text-decoration: none;
+  }
+  .contact-btn:hover {
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+  }
+</style>
 </head>
-<body class="bg-gradient-to-br from-sky-100 via-white to-cyan-100 text-black min-h-screen">
-<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-sky-200 shadow-sm">
+<body class="text-black min-h-screen relative overflow-x-hidden">
+
+<!-- Background blobs -->
+<div class="blob" style="width:420px;height:420px;background:#38bdf8;top:-120px;left:-120px;"></div>
+<div class="blob" style="width:320px;height:320px;background:#7dd3fc;bottom:200px;right:-80px;"></div>
+<div class="blob" style="width:240px;height:240px;background:#bae6fd;top:50%;left:40%;"></div>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-50 bg-white/75 backdrop-blur-xl border-b border-sky-100 shadow-sm">
   <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-    <h1 class="text-2xl md:text-3xl font-bold text-sky-700">PATIWAT noingern</h1>
-    <nav class="hidden md:flex gap-6 font-semibold">
-      <a href="#home" class="hover:text-sky-600">หน้าแรก</a>
-      <a href="#about" class="hover:text-sky-600">เกี่ยวกับ</a>
-      <a href="#works" class="hover:text-sky-600">ผลงาน</a>
-      <a href="#contact" class="hover:text-sky-600">ติดต่อ</a>
+    <div class="flex items-center gap-3">
+      <!-- Logo icon -->
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-cyan-400 flex items-center justify-center shadow-md">
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><path d="M2 17l10 5 10-5" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><path d="M2 12l10 5 10-5" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
+      </div>
+      <h1 class="text-xl md:text-2xl font-bold text-sky-700 tracking-tight">PATIWAT <span class="font-light text-sky-400">noingern</span></h1>
+    </div>
+    <nav class="hidden md:flex gap-7 font-semibold text-sm text-slate-700">
+      <a href="#home" class="nav-link hover:text-sky-600">หน้าแรก</a>
+      <a href="#about" class="nav-link hover:text-sky-600">เกี่ยวกับ</a>
+      <a href="#skills" class="nav-link hover:text-sky-600">ทักษะ</a>
+      <a href="#works" class="nav-link hover:text-sky-600">ผลงาน</a>
+      <a href="#contact" class="nav-link hover:text-sky-600">ติดต่อ</a>
     </nav>
+    <!-- Mobile menu icon -->
+    <button class="md:hidden w-9 h-9 flex items-center justify-center rounded-lg border border-sky-200 bg-white/80">
+      <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke="#0ea5e9" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </button>
   </div>
 </header>
-<section id="home" class="max-w-6xl mx-auto px-6 py-24 text-center">
-  <p class="text-sky-700 font-semibold mb-3">PORTFOLIO WEBSITE</p>
-  <h2 class="text-5xl md:text-6xl font-bold leading-tight mb-6">Creative Designer &<br>Frontend Developer</h2>
-  <p class="text-lg text-slate-700 max-w-2xl mx-auto mb-8">เว็บไซต์แสดงผลงานส่วนตัว โทนฟ้า-ขาว เรียบหรู ทันสมัย พร้อมนำเสนอความสามารถด้านการออกแบบและพัฒนาเว็บไซต์</p>
-  <div class="flex justify-center gap-4">
-    <a href="#works" class="px-6 py-3 bg-sky-600 text-white rounded-xl font-bold hover:scale-105 transition">ดูผลงาน</a>
-    <a href="#contact" class="px-6 py-3 border border-sky-400 rounded-xl font-bold hover:bg-sky-100 transition">ติดต่อฉัน</a>
+
+<!-- HERO -->
+<section id="home" class="relative z-10 max-w-6xl mx-auto px-6 pt-24 pb-20 text-center">
+  <!-- Avatar -->
+  <div class="flex justify-center mb-8 float-anim fade-up">
+    <div class="avatar-wrap w-24 h-24 rounded-full bg-gradient-to-br from-sky-400 to-cyan-300 flex items-center justify-center text-white text-4xl font-bold shadow-lg">
+      P
+    </div>
+  </div>
+
+  <p class="fade-up text-sky-500 font-semibold tracking-widest text-sm mb-3 uppercase flex items-center justify-center gap-2">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#0ea5e9" stroke-width="2"/><path d="M12 8v4l3 3" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/></svg>
+    Portfolio Website · 2026
+  </p>
+
+  <h2 class="fade-up delay-1 text-5xl md:text-6xl font-extrabold leading-tight mb-5 text-slate-800">
+    Creative Designer &<br>
+    <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-cyan-400">Frontend Developer</span>
+  </h2>
+
+  <p class="fade-up delay-2 text-base text-slate-600 max-w-xl mx-auto mb-10 leading-7">
+    เว็บไซต์แสดงผลงานส่วนตัว โทนฟ้า-ขาว เรียบหรู ทันสมัย<br>พร้อมนำเสนอความสามารถด้านการออกแบบและพัฒนาเว็บไซต์
+  </p>
+
+  <div class="fade-up delay-3 flex justify-center gap-4 flex-wrap">
+    <a href="#works" class="btn-shimmer px-7 py-3 text-white rounded-2xl font-bold text-sm shadow-md">
+      ดูผลงาน →
+    </a>
+    <a href="#contact" class="px-7 py-3 border-2 border-sky-300 rounded-2xl font-bold text-sm text-sky-700 hover:bg-sky-50 transition">
+      ติดต่อฉัน
+    </a>
+  </div>
+
+  <!-- Stats row -->
+  <div class="fade-up delay-4 mt-16 grid grid-cols-3 gap-4 max-w-lg mx-auto">
+    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-4 border border-sky-100 shadow-sm">
+      <p class="text-2xl font-extrabold text-sky-600">5+</p>
+      <p class="text-xs text-slate-500 mt-1">ผลงาน</p>
+    </div>
+    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-4 border border-sky-100 shadow-sm">
+      <p class="text-2xl font-extrabold text-sky-600">3+</p>
+      <p class="text-xs text-slate-500 mt-1">ปีประสบการณ์</p>
+    </div>
+    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-4 border border-sky-100 shadow-sm">
+      <p class="text-2xl font-extrabold text-sky-600">∞</p>
+      <p class="text-xs text-slate-500 mt-1">ความคิดสร้างสรรค์</p>
+    </div>
   </div>
 </section>
-<section id="about" class="max-w-5xl mx-auto px-6 py-16">
-  <div class="bg-white rounded-3xl shadow-lg p-8 border border-sky-100">
-    <h3 class="text-3xl font-bold text-sky-700 mb-4">เกี่ยวกับฉัน</h3>
-    <p class="text-slate-700 leading-8">มีความเชี่ยวชาญด้าน UX/UI Design, Frontend Development และการออกแบบประสบการณ์ผู้ใช้งาน พร้อมสร้างเว็บไซต์ แอปพลิเคชัน และระบบที่ใช้งานง่าย สวยงาม และตอบโจทย์ธุรกิจ</p>
+
+<!-- ABOUT -->
+<section id="about" class="relative z-10 max-w-5xl mx-auto px-6 py-16">
+  <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg p-8 md:p-10 border border-sky-100 flex flex-col md:flex-row gap-8 items-start">
+    <div class="icon-circle bg-gradient-to-br from-sky-100 to-cyan-100 border border-sky-200 flex-shrink-0">
+      <svg width="26" height="26" fill="none" viewBox="0 0 24 24">
+        <circle cx="12" cy="8" r="4" stroke="#0ea5e9" stroke-width="2"/>
+        <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <h3 class="section-title text-3xl font-extrabold text-slate-800 mb-6">เกี่ยวกับฉัน</h3>
+      <p class="text-slate-600 leading-8 mt-2">
+        มีความเชี่ยวชาญด้าน <strong class="text-sky-600">UX/UI Design</strong>, <strong class="text-sky-600">Frontend Development</strong> และการออกแบบประสบการณ์ผู้ใช้งาน พร้อมสร้างเว็บไซต์ แอปพลิเคชัน และระบบที่ใช้งานง่าย สวยงาม และตอบโจทย์ธุรกิจ
+      </p>
+      <div class="mt-6 flex flex-wrap gap-2">
+        <span class="skill-badge">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#0ea5e9" stroke-width="2" stroke-linejoin="round"/></svg>
+          UX/UI Design
+        </span>
+        <span class="skill-badge">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="8 6 2 12 8 18" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Frontend Dev
+        </span>
+        <span class="skill-badge">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#0ea5e9" stroke-width="2"/><path d="M9 9h6M9 12h6M9 15h4" stroke="#0ea5e9" stroke-width="1.8" stroke-linecap="round"/></svg>
+          System Design
+        </span>
+        <span class="skill-badge">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke="#0ea5e9" stroke-width="2"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="#0ea5e9" stroke-width="2"/></svg>
+          Web Responsive
+        </span>
+      </div>
+    </div>
   </div>
 </section>
-<section id="works" class="max-w-6xl mx-auto px-6 py-16">
-  <h3 class="text-4xl font-bold text-center text-sky-700 mb-10">ผลงาน</h3>
-  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div class="bg-white p-6 rounded-3xl shadow-md border border-sky-100"><h4 class="text-xl font-bold mb-2">POS System</h4><p>ระบบร้านอาหาร พร้อมจัดการออเดอร์และรายงานยอดขาย</p></div>
-    <div class="bg-white p-6 rounded-3xl shadow-md border border-sky-100"><h4 class="text-xl font-bold mb-2">Portfolio UI</h4><p>ออกแบบเว็บไซต์ส่วนตัวสไตล์โมเดิร์น และใช้งานง่าย</p></div>
-    <div class="bg-white p-6 rounded-3xl shadow-md border border-sky-100"><h4 class="text-xl font-bold mb-2">Learning Planner</h4><p>ระบบวางแผนการเรียนสำหรับนักศึกษา</p></div>
-    <div class="bg-white p-6 rounded-3xl shadow-md border border-sky-100"><h4 class="text-xl font-bold mb-2">Mobile App</h4><p>ออกแบบ UI แอปมือถือที่ใช้งานง่ายและสวยงาม</p></div>
-    <div class="bg-white p-6 rounded-3xl shadow-md border border-sky-100"><h4 class="text-xl font-bold mb-2">Inventory Management</h4><p>ประสบการณ์ทำงานด้าน Inventory ตรวจรับสินค้า จัดการสต๊อกอะไหล่ และควบคุมข้อมูลสินค้าอย่างเป็นระบบ</p></div>
+
+<!-- SKILLS -->
+<section id="skills" class="relative z-10 max-w-5xl mx-auto px-6 py-12">
+  <h3 class="section-title text-3xl font-extrabold text-slate-800 mb-10">ทักษะ</h3>
+  <div class="grid md:grid-cols-2 gap-5">
+    <!-- Skill items -->
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-sky-100 shadow-sm">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-9 h-9 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#0ea5e9" stroke-width="2" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="flex-1 flex justify-between items-center">
+          <span class="font-bold text-slate-700">Figma / UI Design</span>
+          <span class="text-xs text-sky-500 font-semibold">90%</span>
+        </div>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:90%"></div></div>
+    </div>
+
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-sky-100 shadow-sm">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-9 h-9 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="8 6 2 12 8 18" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="flex-1 flex justify-between items-center">
+          <span class="font-bold text-slate-700">HTML / CSS / JS</span>
+          <span class="text-xs text-sky-500 font-semibold">85%</span>
+        </div>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:85%"></div></div>
+    </div>
+
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-sky-100 shadow-sm">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-9 h-9 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#0ea5e9" stroke-width="2"/><path d="M8 21h8M12 17v4" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="flex-1 flex justify-between items-center">
+          <span class="font-bold text-slate-700">React / Tailwind</span>
+          <span class="text-xs text-sky-500 font-semibold">78%</span>
+        </div>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:78%"></div></div>
+    </div>
+
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-sky-100 shadow-sm">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-9 h-9 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="#0ea5e9" stroke-width="2"/><path d="M3 5v14c0 1.657 4.03 3 9 3s9-1.343 9-3V5" stroke="#0ea5e9" stroke-width="2"/><path d="M3 12c0 1.657 4.03 3 9 3s9-1.343 9-3" stroke="#0ea5e9" stroke-width="2"/></svg>
+        </div>
+        <div class="flex-1 flex justify-between items-center">
+          <span class="font-bold text-slate-700">Database / SQL</span>
+          <span class="text-xs text-sky-500 font-semibold">70%</span>
+        </div>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:70%"></div></div>
+    </div>
   </div>
 </section>
-<section id="contact" class="max-w-5xl mx-auto px-6 py-16">
-  <div class="bg-sky-600 text-white rounded-3xl p-10 text-center shadow-lg">
-    <h3 class="text-3xl font-bold mb-4">ติดต่อฉัน</h3>
-    <p>Email: yourname@email.com</p>
-    <p>Tel: 08x-xxx-xxxx</p>
+
+<!-- WORKS -->
+<section id="works" class="relative z-10 max-w-6xl mx-auto px-6 py-16">
+  <h3 class="section-title text-3xl font-extrabold text-slate-800 mb-10">ผลงาน</h3>
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+
+    <!-- Card 1 -->
+    <div class="work-card bg-white/85 backdrop-blur-sm p-6 rounded-3xl shadow-md border border-sky-100">
+      <div class="icon-circle bg-gradient-to-br from-sky-100 to-blue-100 border border-sky-200 mb-4">
+        <svg width="26" height="26" fill="none" viewBox="0 0 24 24">
+          <rect x="2" y="3" width="20" height="14" rx="2" stroke="#0ea5e9" stroke-width="2"/>
+          <path d="M8 21h8M12 17v4" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/>
+          <path d="M7 8h10M7 11h6" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h4 class="text-lg font-bold text-slate-800 mb-1">POS System</h4>
+      <p class="text-sm text-slate-500 leading-6">ระบบร้านอาหาร พร้อมจัดการออเดอร์และรายงานยอดขาย</p>
+      <div class="mt-3 flex gap-2">
+        <span class="text-xs bg-sky-50 text-sky-600 border border-sky-200 px-2 py-1 rounded-lg font-medium">React</span>
+        <span class="text-xs bg-sky-50 text-sky-600 border border-sky-200 px-2 py-1 rounded-lg font-medium">SQL</span>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="work-card bg-white/85 backdrop-blur-sm p-6 rounded-3xl shadow-md border border-sky-100">
+      <div class="icon-circle bg-gradient-to-br from-cyan-100 to-sky-100 border border-sky-200 mb-4">
+        <svg width="26" height="26" fill="none" viewBox="0 0 24 24">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#0ea5e9" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h4 class="text-lg font-bold text-slate-800 mb-1">Portfolio UI</h4>
+      <p class="text-sm text-slate-500 leading-6">ออกแบบเว็บไซต์ส่วนตัวสไตล์โมเดิร์น และใช้งานง่าย</p>
+      <div class="mt-3 flex gap-2">
+        <span class="text-xs bg-sky-50 text-sky-600 border border-sky-200 px-2 py-1 rounded-lg font-medium">Figma</span>
+        <span class="text-xs bg-sky-50 text-sky-600 border border-sky-200 px-2 py-1 rounded-lg font-medium">HTML/CSS</span>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="work-card bg-white/85 backdrop-blur-sm p-6 rounded-3xl shadow-md border border-sky-100">
+      <div class="icon-circle bg-gradient-to-br from-sky-100 to-indigo-100 border border-sky-200 mb-4">
+        <svg width="26" height="26" fill="none" viewBox="0 0 24 24">
+          <rect x="3" y="4" width="18" height="18" rx="2" stroke="#0ea5e9" stroke-width="2"/>
+          <path d="M16 2v4M8 2v4M3 10h18" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/>
+          <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h4 class="text-lg font-bold text-slate-800 mb-1">Learning Planner</h4>
+      <p class="text-sm text-slate-500 leading-6">ระบบวางแผนการเรียนสำหรับนักศึกษา</p>
+      <div class="mt-3 flex gap-2">
+        <span class="text-xs bg-sky-50 text-sky-600 border border-sky-200 px-2 py-1 rounded-lg font-medium">Vue.js</span>
+        <span class="text-xs bg-sky-50 text-sky-600 border border-sky-200 px-2 py-1 rounded-lg font-medium">UX Design</span>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="work-card bg-white/85 backdrop-blur-sm p-6 rounded-3xl shadow-md border border-sky-100">
+      <div class="icon-circle bg-gradient-to-br from-sky-100 to-cyan-100 border border-sky-200 mb-4">
+        <svg width="26" height="26" fill="none" viewBox="0 0 24 24">
+          <rect x="7" y="2" width="10" height="20" rx="3" stroke="#0ea5e9" stroke-width="2"/>
+          <circle cx="12" cy="18" r="1.2" fill="#38bdf8"/>
+          <path d="M10 6h4" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h4 class="text-lg font-bold text-slate-800 mb-1">Mobile App UI</h4>
+      <p class="text-sm text-slate-500 leading-6">ออกแบบ UI แอปมือถือที่ใช้งานง่ายและสวยงาม</p>
+      <div class="mt-3 flex gap-2">
+        <span class="text-xs bg-sky-50 text-sky-600 border border-sky-200 px-2 py-1 rounded-lg font-medium">Figma</span>
+        <span class="text-xs bg-sky-50 text-sky-600 border border-sky-200 px-2 py-1 rounded-lg font-medium">Prototyping</span>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="work-card bg-white/85 backdrop-blur-sm p-6 rounded-3xl shadow-md border border-sky-100">
+      <div class="icon-circle bg-gradient-to-br from-blue-100 to-sky-100 border border-sky-200 mb-4">
+        <svg width="26" height="26" fill="none" viewBox="0 0 24 24">
+          <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" stroke="#0ea5e9" stroke-width="2"/>
+          <path d="M16 2H8L6 7h12l-2-5z" stroke="#0ea5e9" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M12 12v4M10 14h4" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h4 class="text-lg font-bold text-slate-800 mb-1">Inventory Management</h4>
+      <p class="text-sm text-slate-500 leading-6">ตรวจรับสินค้า จัดการสต๊อกอะไหล่ และควบคุมข้อมูลสินค้าอย่างเป็นระบบ</p>
+      <div class="mt-3 flex gap-2">
+        <span class="text-xs bg-sky-50 text-sky-600 border border-sky-200 px-2 py-1 rounded-lg font-medium">System</span>
+        <span class="text-xs bg-sky-50 text-sky-600 border border-sky-200 px-2 py-1 rounded-lg font-medium">Database</span>
+      </div>
+    </div>
+
+    <!-- Card 6 – placeholder CTA -->
+    <div class="work-card bg-gradient-to-br from-sky-50 to-cyan-50 p-6 rounded-3xl border-2 border-dashed border-sky-300 flex flex-col items-center justify-center text-center min-h-[180px]">
+      <div class="w-12 h-12 rounded-2xl bg-sky-100 border border-sky-200 flex items-center justify-center mb-3">
+        <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="#0ea5e9" stroke-width="2.5" stroke-linecap="round"/></svg>
+      </div>
+      <p class="text-sky-600 font-semibold text-sm">ผลงานถัดไปกำลังมา...</p>
+      <p class="text-slate-400 text-xs mt-1">Stay tuned</p>
+    </div>
+
   </div>
 </section>
-<footer class="text-center py-8 text-slate-600">© 2026 PATIWAT noingern. All rights reserved.</footer>
+
+<!-- CONTACT -->
+<section id="contact" class="relative z-10 max-w-5xl mx-auto px-6 py-16">
+  <div class="bg-gradient-to-br from-sky-500 to-cyan-500 text-white rounded-3xl p-10 md:p-14 shadow-2xl relative overflow-hidden">
+    <!-- Decorative circles -->
+    <div class="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full"></div>
+    <div class="absolute -bottom-10 -left-10 w-36 h-36 bg-white/10 rounded-full"></div>
+
+    <div class="relative z-10 text-center">
+      <div class="w-14 h-14 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center mx-auto mb-5">
+        <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
+          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3 class="text-3xl font-extrabold mb-2">ติดต่อฉัน</h3>
+      <p class="text-sky-100 mb-8 text-sm">พร้อมรับงานฟรีแลนซ์ และโปรเจกต์ใหม่ๆ เสมอ</p>
+
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="mailto:yourname@email.com" class="contact-btn">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
+            <rect x="2" y="4" width="20" height="16" rx="2" stroke="white" stroke-width="2"/>
+            <path d="M2 7l10 7 10-7" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          yourname@email.com
+        </a>
+        <a href="tel:08x-xxx-xxxx" class="contact-btn">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.02 4.18 2 2 0 012 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+          08x-xxx-xxxx
+        </a>
+        <a href="#" class="contact-btn">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
+            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="4" cy="4" r="2" stroke="white" stroke-width="2"/>
+          </svg>
+          LinkedIn
+        </a>
+        <a href="#" class="contact-btn">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="relative z-10 text-center py-8 text-slate-500 text-sm flex items-center justify-center gap-2">
+  <svg width="15" height="15" fill="none" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round"/></svg>
+  © 2026 PATIWAT noingern. All rights reserved.
+</footer>
+
 </body>
 </html>
