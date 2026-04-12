@@ -3,93 +3,159 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Luxury UX/UI Blue Portfolio</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<title>KIW — UX/UI Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  html{
-  scroll-behavior:smooth;
-}
-body{font-family:'Prompt',sans-serif}
-.glow{box-shadow:0 20px 60px rgba(14,165,233,.18)}
-.gridline{background-image:linear-gradient(rgba(14,165,233,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,.06) 1px,transparent 1px);background-size:40px 40px}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Prompt',sans-serif;background:#f0f7ff;color:#111;min-height:100vh;overflow-x:hidden}
+  a{text-decoration:none;color:inherit}
+
+  /* layout */
+  .wrap{max-width:900px;margin:0 auto;padding:0 1.5rem}
+
+  /* header */
+  header{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.5rem;max-width:900px;margin:0 auto}
+  .logo{font-size:1.4rem;font-weight:900;color:#1565c0}
+  nav{display:flex;gap:1.5rem}
+  nav a{font-size:14px;font-weight:500;color:#374151;transition:color .15s}
+  nav a:hover{color:#1565c0}
+  .back{font-size:13px;color:#64748b}
+
+  /* hero */
+  .hero{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;padding:2.5rem 0 3rem}
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:999px;background:#e0f0ff;border:1px solid #bde0ff;font-size:13px;font-weight:500;color:#1565c0}
+  h1{font-size:clamp(2.2rem,6vw,3.8rem);font-weight:800;line-height:1.1;margin:1.2rem 0 1rem}
+  .gradient-text{background:linear-gradient(135deg,#1e88e5,#0288d1,#0097a7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  p.sub{font-size:1rem;line-height:1.75;color:#374151;max-width:520px}
+  .btn-row{display:flex;gap:12px;margin-top:1.5rem;flex-wrap:wrap}
+  .btn-primary{display:inline-block;padding:12px 28px;border-radius:16px;background:linear-gradient(135deg,#1e88e5,#0288d1);color:#fff;font-weight:600;font-size:15px;border:none;cursor:pointer;transition:transform .15s}
+  .btn-primary:hover{transform:translateY(-2px)}
+  .btn-outline{display:inline-block;padding:12px 28px;border-radius:16px;background:#fff;color:#1565c0;font-weight:600;font-size:15px;border:1.5px solid #90caf9;cursor:pointer;transition:transform .15s}
+  .btn-outline:hover{transform:translateY(-2px)}
+
+  /* stats */
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:2rem;max-width:420px}
+  .stat{background:#fff;border:1.5px solid #bbdefb;border-radius:16px;padding:16px 12px;text-align:center}
+  .stat .num{font-size:1.7rem;font-weight:800;color:#1565c0}
+  .stat .lbl{font-size:12px;color:#64748b;margin-top:2px}
+
+  /* process card */
+  .process-card{background:#fff;border:1.5px solid #bbdefb;border-radius:24px;padding:1.5rem}
+  .process-inner{background:linear-gradient(135deg,#1e88e5,#0288d1);border-radius:18px;padding:4px}
+  .process-body{background:#fff;border-radius:16px;padding:1.2rem}
+  .process-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+  .live{color:#0288d1;font-size:14px;font-weight:500}
+  .step{border-radius:14px;padding:12px 14px;margin-bottom:10px}
+  .step:last-child{margin-bottom:0}
+  .step b{display:block;font-size:14px;font-weight:700;color:#1565c0;margin-bottom:2px}
+  .step p{font-size:13px;color:#475569}
+  .step1{background:#e3f2fd}
+  .step2{background:#e8f4fd}
+  .step3{background:#e1f5fe}
+
+  /* skills */
+  section.skills{padding:3rem 0}
+  section.skills h2,section.tools h2{font-size:2rem;font-weight:800;text-align:center;margin-bottom:2rem;color:#1565c0}
+  .skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .skill-card{background:#fff;border:1.5px solid #bbdefb;border-radius:20px;padding:1.2rem 1.4rem;transition:transform .18s}
+  .skill-card:hover{transform:translateY(-4px)}
+  .skill-card .ico{font-size:1.8rem;margin-bottom:8px}
+  .skill-card h3{font-size:1rem;font-weight:700;color:#111;margin-bottom:4px}
+  .skill-card p{font-size:13px;color:#475569;line-height:1.6}
+
+  /* tools */
+  section.tools{padding:0 0 3rem}
+  .tool-list{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .tool{padding:10px 22px;border-radius:999px;background:#fff;border:1.5px solid #90caf9;font-size:14px;font-weight:500;color:#1565c0}
+
+  /* footer */
+  footer{text-align:center;padding:2rem;font-size:13px;color:#94a3b8;border-top:1px solid #dbeafe}
+
+  /* responsive */
+  @media(max-width:680px){
+    .hero{grid-template-columns:1fr}
+    .process-card{display:none}
+    .stat-row{max-width:100%}
+  }
 </style>
 </head>
-<body class="bg-white text-black overflow-x-hidden">
-<div class="fixed inset-0 -z-20 bg-gradient-to-br from-sky-50 via-white to-blue-100"></div>
-<div class="fixed inset-0 -z-10 gridline opacity-70"></div>
-<div class="fixed -top-32 -left-32 w-96 h-96 bg-sky-300/30 blur-3xl rounded-full"></div>
-<div class="fixed -bottom-32 -right-32 w-96 h-96 bg-blue-300/30 blur-3xl rounded-full"></div>
+<body>
 
-<header class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-<a href="index.html">🏠 ย้อนกลับ</a>
-<div class="font-extrabold text-2xl text-sky-700">KIW.</div>
-<nav class="hidden md:flex gap-8 text-sm font-medium text-slate-700">
-<a href="#skills" class="hover:text-sky-600">Skills</a>
-<a href="#tools" class="hover:text-sky-600">Tools</a>
-<a href="#about" class="hover:text-sky-600">About</a>
-</nav>
+<header>
+  <a href="index.html" class="back">← ย้อนกลับ</a>
+  <div class="logo">KIW.</div>
+  <nav>
+    <a href="#skills">Skills</a>
+    <a href="#tools">Tools</a>
+    <a href="#about">About</a>
+  </nav>
 </header>
 
-<section class="min-h-[88vh] flex items-center">
-<div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-10 items-center">
-<div>
-<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-sky-100 glow text-sm font-medium text-sky-700">✨ Premium UX/UI Portfolio</div>
-<h1 class="mt-6 text-5xl md:text-7xl font-extrabold leading-tight">
-<span class="bg-gradient-to-r from-sky-700 via-cyan-500 to-blue-600 text-transparent bg-clip-text">Figma & UX/UI</span><br/>Designer Skills
-</h1>
-<p class="mt-6 text-lg leading-8 text-slate-600 max-w-xl">เชี่ยวชาญด้านการออกแบบ UX/UI ด้วย Figma สร้างประสบการณ์ผู้ใช้ที่สวยงาม ใช้งานง่าย และพร้อมต่อยอดสู่การพัฒนาจริงอย่างมืออาชีพ</p>
-<div class="mt-8 flex flex-wrap gap-4">
-<a href="#skills" class="px-7 py-3 rounded-2xl bg-sky-500 text-white font-semibold hover:-translate-y-1 transition glow">ดูทักษะ</a>
-<a href="#about" class="px-7 py-3 rounded-2xl bg-white border border-sky-100 font-semibold hover:-translate-y-1 transition">เกี่ยวกับฉัน</a>
+<div class="wrap">
+  <div class="hero">
+    <div>
+      <div class="badge">✦ Premium UX/UI Portfolio</div>
+      <h1>
+        <span class="gradient-text">Figma & UX/UI</span><br>Designer Skills
+      </h1>
+      <p class="sub">เชี่ยวชาญด้านการออกแบบ UX/UI ด้วย Figma สร้างประสบการณ์ผู้ใช้ที่สวยงาม ใช้งานง่าย และพร้อมต่อยอดสู่การพัฒนาจริงอย่างมืออาชีพ</p>
+      <div class="btn-row">
+        <a href="#skills" class="btn-primary">ดูทักษะ</a>
+        <a href="#about" class="btn-outline">เกี่ยวกับฉัน</a>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><div class="num">3+</div><div class="lbl">Years Passion</div></div>
+        <div class="stat"><div class="num">20+</div><div class="lbl">UI Concepts</div></div>
+        <div class="stat"><div class="num">100%</div><div class="lbl">Creative</div></div>
+      </div>
+    </div>
+
+    <div class="process-card">
+      <div class="process-inner">
+        <div class="process-body">
+          <div class="process-header">
+            <b style="font-size:1rem">Design Process</b>
+            <span class="live">● Live</span>
+          </div>
+          <div class="step step1"><b>Research</b><p>ค้นหาปัญหาและความต้องการของผู้ใช้</p></div>
+          <div class="step step2"><b>Wireframe</b><p>วางโครงสร้างและลำดับข้อมูล</p></div>
+          <div class="step step3"><b>Prototype</b><p>สร้างต้นแบบและทดสอบการใช้งาน</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="mt-10 grid grid-cols-3 gap-4 max-w-lg">
-<div class="bg-white rounded-2xl p-4 border border-sky-100 glow"><div class="text-2xl font-bold text-sky-700">3+</div><div class="text-sm text-slate-500">Years Passion</div></div>
-<div class="bg-white rounded-2xl p-4 border border-sky-100 glow"><div class="text-2xl font-bold text-sky-700">20+</div><div class="text-sm text-slate-500">UI Concepts</div></div>
-<div class="bg-white rounded-2xl p-4 border border-sky-100 glow"><div class="text-2xl font-bold text-sky-700">100%</div><div class="text-sm text-slate-500">Creative</div></div>
-</div>
-</div>
-<div>
-<div class="bg-white/90 rounded-[32px] p-6 border border-sky-100 glow">
-<div class="rounded-[28px] bg-gradient-to-br from-sky-500 to-blue-600 p-1">
-<div class="bg-white rounded-[26px] p-6">
-<div class="flex items-center justify-between mb-6"><h3 class="font-bold text-xl">Design Process</h3><span class="text-sky-600">● Live</span></div>
-<div class="space-y-4">
-<div class="p-4 rounded-2xl bg-sky-50"><b>Research</b><p class="text-sm text-slate-600">ค้นหาปัญหาและความต้องการของผู้ใช้</p></div>
-<div class="p-4 rounded-2xl bg-blue-50"><b>Wireframe</b><p class="text-sm text-slate-600">วางโครงสร้างและลำดับข้อมูล</p></div>
-<div class="p-4 rounded-2xl bg-cyan-50"><b>Prototype</b><p class="text-sm text-slate-600">สร้างต้นแบบและทดสอบการใช้งาน</p></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+
+<section id="skills" class="skills">
+  <div class="wrap">
+    <h2>Core Skills</h2>
+    <div class="skill-grid">
+      <div class="skill-card"><div class="ico">🎨</div><h3>Figma Design</h3><p>Auto Layout, Components, Variants และ Design System</p></div>
+      <div class="skill-card"><div class="ico">🔍</div><h3>UX Research</h3><p>วิเคราะห์ Pain Point และพฤติกรรมผู้ใช้</p></div>
+      <div class="skill-card"><div class="ico">🧭</div><h3>User Flow</h3><p>ออกแบบเส้นทางใช้งานที่ลื่นไหลและชัดเจน</p></div>
+      <div class="skill-card"><div class="ico">📐</div><h3>Wireframe</h3><p>จัดวาง Layout ก่อนพัฒนา UI จริง</p></div>
+      <div class="skill-card"><div class="ico">⚡</div><h3>Prototype</h3><p>จำลองการใช้งานเพื่อนำเสนอและทดสอบ</p></div>
+      <div class="skill-card"><div class="ico">💻</div><h3>Frontend Friendly</h3><p>เข้าใจ HTML CSS JavaScript React Tailwind</p></div>
+    </div>
+  </div>
 </section>
 
-<section id="skills" class="max-w-7xl mx-auto px-6 py-20">
-<h2 class="text-4xl font-extrabold text-center mb-14 text-sky-700">Core Skills</h2>
-<div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-<div class="bg-white p-6 rounded-3xl border border-sky-100 glow hover:-translate-y-2 transition"><div class="text-4xl">🎨</div><h3 class="mt-4 font-bold text-xl">Figma Design</h3><p class="mt-2 text-slate-600">Auto Layout, Components, Variants และ Design System</p></div>
-<div class="bg-white p-6 rounded-3xl border border-sky-100 glow hover:-translate-y-2 transition"><div class="text-4xl">🔍</div><h3 class="mt-4 font-bold text-xl">UX Research</h3><p class="mt-2 text-slate-600">วิเคราะห์ Pain Point และพฤติกรรมผู้ใช้</p></div>
-<div class="bg-white p-6 rounded-3xl border border-sky-100 glow hover:-translate-y-2 transition"><div class="text-4xl">🧭</div><h3 class="mt-4 font-bold text-xl">User Flow</h3><p class="mt-2 text-slate-600">ออกแบบเส้นทางใช้งานที่ลื่นไหลและชัดเจน</p></div>
-<div class="bg-white p-6 rounded-3xl border border-sky-100 glow hover:-translate-y-2 transition"><div class="text-4xl">📐</div><h3 class="mt-4 font-bold text-xl">Wireframe</h3><p class="mt-2 text-slate-600">จัดวาง Layout ก่อนพัฒนา UI จริง</p></div>
-<div class="bg-white p-6 rounded-3xl border border-sky-100 glow hover:-translate-y-2 transition"><div class="text-4xl">⚡</div><h3 class="mt-4 font-bold text-xl">Prototype</h3><p class="mt-2 text-slate-600">จำลองการใช้งานเพื่อนำเสนอและทดสอบ</p></div>
-<div class="bg-white p-6 rounded-3xl border border-sky-100 glow hover:-translate-y-2 transition"><div class="text-4xl">💻</div><h3 class="mt-4 font-bold text-xl">Frontend Friendly</h3><p class="mt-2 text-slate-600">เข้าใจ HTML CSS JavaScript React Tailwind</p></div>
-</div>
+<section id="tools" class="tools">
+  <div class="wrap">
+    <h2>Tools</h2>
+    <div class="tool-list">
+      <div class="tool">Figma</div>
+      <div class="tool">FigJam</div>
+      <div class="tool">Photoshop</div>
+      <div class="tool">Illustrator</div>
+      <div class="tool">VS Code</div>
+    </div>
+  </div>
 </section>
 
-<section id="tools" class="max-w-5xl mx-auto px-6 pb-24 text-center">
-<h2 class="text-4xl font-extrabold mb-10 text-sky-700">Tools</h2>
-<div class="flex flex-wrap gap-4 justify-center">
-<span class="px-6 py-3 rounded-full bg-white border border-sky-100 glow">Figma</span>
-<span class="px-6 py-3 rounded-full bg-white border border-sky-100 glow">FigJam</span>
-<span class="px-6 py-3 rounded-full bg-white border border-sky-100 glow">Photoshop</span>
-<span class="px-6 py-3 rounded-full bg-white border border-sky-100 glow">Illustrator</span>
-<span class="px-6 py-3 rounded-full bg-white border border-sky-100 glow">VS Code</span>
-</div>
-</section>
+<footer id="about">© 2026 Crafted by KIW • UX/UI Designer</footer>
 
-<footer id="about" class="text-center py-10 text-slate-500">© 2026 Crafted by KIW • UX/UI Designer</footer>
 </body>
 </html>
