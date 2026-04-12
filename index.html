@@ -3,510 +3,948 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PATIWAT Portfolio</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<title>PATIWAT — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700;800&family=IBM+Plex+Sans+Thai:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500;600;700;900&family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-  * { font-family: 'Prompt', 'IBM Plex Sans Thai', sans-serif; }
-  html { scroll-behavior: smooth; }
-  body { background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 40%, #ecfeff 100%); }
+:root {
+  --sky: #0ea5e9;
+  --sky-light: #38bdf8;
+  --sky-pale: #bae6fd;
+  --sky-bg: #f0f9ff;
+  --navy: #0c4a6e;
+  --white: #ffffff;
+  --black: #0f172a;
+  --grey: #64748b;
+  --grey-light: #cbd5e1;
+  --card-bg: rgba(255,255,255,0.75);
+}
 
-  /* Floating background blobs */
-  .blob {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.25;
-    pointer-events: none;
-    z-index: 0;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Sarabun', sans-serif;
+  background: #f0f9ff;
+  color: var(--black);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-  /* Fade in animations */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(28px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes floatY {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-  }
-  @keyframes pulseRing {
-    0% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.35); }
-    70% { box-shadow: 0 0 0 16px rgba(14, 165, 233, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
-  }
-  @keyframes shimmer {
-    0% { background-position: -200% center; }
-    100% { background-position: 200% center; }
-  }
-  .fade-up { animation: fadeUp 0.7s ease both; }
-  .delay-1 { animation-delay: 0.1s; }
-  .delay-2 { animation-delay: 0.22s; }
-  .delay-3 { animation-delay: 0.34s; }
-  .delay-4 { animation-delay: 0.46s; }
-  .float-anim { animation: floatY 4s ease-in-out infinite; }
+/* ─── BG ─── */
+.bg-canvas {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 10% -10%, rgba(14,165,233,0.13) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 110%, rgba(56,189,248,0.09) 0%, transparent 55%),
+    #f0f9ff;
+}
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(14,165,233,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14,165,233,0.04) 1px, transparent 1px);
+  background-size: 52px 52px;
+}
 
-  /* Nav link underline hover */
-  .nav-link {
-    position: relative;
-    padding-bottom: 3px;
-  }
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 0; height: 2px;
-    background: #0ea5e9;
-    border-radius: 2px;
-    transition: width 0.3s ease;
-  }
-  .nav-link:hover::after { width: 100%; }
+/* ─── HEADER ─── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(240,249,255,0.88);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-bottom: 1px solid rgba(14,165,233,0.11);
+}
+.header-inner {
+  max-width: 1120px; margin: 0 auto;
+  padding: 0 36px;
+  height: 70px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-mark {
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, var(--sky), #0284c7);
+  border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(14,165,233,0.32);
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700; font-size: 15px;
+  color: #fff; letter-spacing: 0.5px;
+}
+.logo-text {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600; font-size: 18px;
+  color: var(--black);
+}
+.logo-text span { color: var(--sky); }
 
-  /* Card hover */
-  .work-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .work-card:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 16px 48px rgba(14, 165, 233, 0.18);
-  }
+nav.desktop { display: flex; align-items: center; gap: 2px; }
+.nav-link {
+  font-family: 'Sarabun', sans-serif;
+  font-size: 14px; font-weight: 500;
+  color: var(--grey);
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 10px;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-link:hover { color: var(--sky); background: rgba(14,165,233,0.07); }
+.nav-cta {
+  background: linear-gradient(135deg, var(--sky), #0284c7) !important;
+  color: #fff !important;
+  font-weight: 600;
+  box-shadow: 0 3px 14px rgba(14,165,233,0.3);
+  transition: transform 0.2s, box-shadow 0.2s !important;
+}
+.nav-cta:hover {
+  background: linear-gradient(135deg, var(--sky), #0284c7) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(14,165,233,0.42) !important;
+}
 
-  /* Icon circle */
-  .icon-circle {
-    width: 52px; height: 52px;
-    border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
+.hamburger {
+  display: none;
+  width: 40px; height: 40px;
+  border: 1px solid rgba(14,165,233,0.2);
+  border-radius: 10px; background: #fff;
+  cursor: pointer;
+  align-items: center; justify-content: center;
+  color: var(--sky); font-size: 15px;
+}
+.mobile-nav {
+  display: none; flex-direction: column; gap: 4px;
+  padding: 12px 20px 16px;
+  border-top: 1px solid rgba(14,165,233,0.08);
+  background: rgba(240,249,255,0.97);
+  backdrop-filter: blur(20px);
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav .nav-link { font-size: 15px; }
 
-  /* Skill badge */
-  .skill-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 14px;
-    background: #f0f9ff;
-    border: 1px solid #bae6fd;
-    border-radius: 100px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: #0369a1;
-    transition: background 0.2s, border-color 0.2s;
-  }
-  .skill-badge:hover {
-    background: #e0f2fe;
-    border-color: #7dd3fc;
-  }
+/* ─── HERO ─── */
+#home {
+  position: relative; z-index: 1;
+  max-width: 1120px; margin: 0 auto;
+  padding: 80px 36px 80px;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 64px;
+  align-items: center;
+  min-height: calc(100vh - 70px);
+}
 
-  /* Shimmer button */
-  .btn-shimmer {
-    background: linear-gradient(90deg, #0ea5e9, #38bdf8, #0ea5e9);
-    background-size: 200% auto;
-    animation: shimmer 3s linear infinite;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .btn-shimmer:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 24px rgba(14, 165, 233, 0.45);
-  }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 9px;
+  background: rgba(14,165,233,0.07);
+  border: 1px solid rgba(14,165,233,0.18);
+  color: var(--sky);
+  font-family: 'Kanit', sans-serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  padding: 7px 16px; border-radius: 100px;
+  margin-bottom: 28px;
+}
+.hero-badge::before {
+  content: ''; width: 7px; height: 7px;
+  background: var(--sky); border-radius: 50%;
+  animation: blink 2s infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
 
-  /* Avatar ring pulse */
-  .avatar-wrap {
-    animation: pulseRing 2.5s ease-out infinite;
-  }
+.hero-title {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700;
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 1.1;
+  color: var(--black);
+  margin-bottom: 14px;
+  letter-spacing: -0.5px;
+}
+.hero-title .accent {
+  background: linear-gradient(135deg, var(--sky), #0284c7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-title .thin {
+  font-weight: 300;
+  color: var(--grey-light);
+  -webkit-text-fill-color: var(--grey-light);
+}
 
-  /* Section title accent */
-  .section-title {
-    position: relative; display: inline-block;
-  }
-  .section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -6px; left: 0;
-    width: 60%; height: 4px;
-    background: linear-gradient(90deg, #0ea5e9, #7dd3fc);
-    border-radius: 2px;
-  }
+.hero-sub {
+  font-size: 16px; line-height: 1.85;
+  color: var(--grey);
+  margin-bottom: 36px;
+  max-width: 460px;
+}
 
-  /* Progress bar */
-  .prog-bar {
-    height: 6px; border-radius: 100px;
-    background: #e0f2fe;
-    overflow: hidden;
-  }
-  .prog-fill {
-    height: 100%;
-    border-radius: 100px;
-    background: linear-gradient(90deg, #0ea5e9, #38bdf8);
-    transition: width 1s ease;
-  }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 52px; }
 
-  /* Contact icon btn */
-  .contact-btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 12px 22px;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.35);
-    border-radius: 14px;
-    font-weight: 600; color: #fff;
-    backdrop-filter: blur(6px);
-    transition: background 0.2s, transform 0.2s;
-    text-decoration: none;
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 9px;
+  background: linear-gradient(135deg, var(--sky), #0284c7);
+  color: #fff;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 500; font-size: 15px;
+  padding: 13px 30px; border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 22px rgba(14,165,233,0.38);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(14,165,233,0.5);
+}
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 9px;
+  background: #fff; color: var(--black);
+  font-family: 'Kanit', sans-serif;
+  font-weight: 500; font-size: 15px;
+  padding: 13px 28px; border-radius: 12px;
+  text-decoration: none;
+  border: 1.5px solid rgba(14,165,233,0.22);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.btn-secondary:hover {
+  border-color: var(--sky);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(14,165,233,0.14);
+}
+
+.hero-stats {
+  display: flex; gap: 36px;
+  border-top: 1px solid rgba(14,165,233,0.12);
+  padding-top: 36px;
+}
+.stat-num {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700; font-size: 34px;
+  color: var(--sky); line-height: 1;
+  margin-bottom: 5px;
+}
+.stat-label { font-size: 13px; color: var(--grey); }
+
+/* ── HERO CARD ── */
+.hero-card {
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(14,165,233,0.14);
+  border-radius: 28px;
+  padding: 36px;
+  box-shadow: 0 24px 64px rgba(14,165,233,0.11), 0 4px 20px rgba(0,0,0,0.05);
+  position: relative; overflow: hidden;
+  animation: floatBob 5s ease-in-out infinite;
+}
+.hero-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--sky), var(--sky-light), #7dd3fc);
+}
+@keyframes floatBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.avatar-area { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+.avatar {
+  width: 66px; height: 66px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--sky), #0284c7);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700; font-size: 26px;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(14,165,233,0.32);
+  flex-shrink: 0;
+}
+.avatar-name {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600; font-size: 17px;
+  color: var(--black); margin-bottom: 3px;
+}
+.avatar-role { font-size: 13px; color: var(--sky); font-weight: 500; }
+
+.card-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(14,165,233,0.15), transparent);
+  margin-bottom: 24px;
+}
+
+.card-skill { margin-bottom: 14px; }
+.card-skill:last-of-type { margin-bottom: 0; }
+.card-skill-header {
+  display: flex; justify-content: space-between;
+  margin-bottom: 7px;
+}
+.card-skill-name { font-size: 13px; font-weight: 500; color: var(--black); }
+.card-skill-pct { font-size: 12px; color: var(--sky); font-weight: 600; }
+.prog-track {
+  height: 5px; background: rgba(14,165,233,0.09);
+  border-radius: 100px; overflow: hidden;
+}
+.prog-bar {
+  height: 100%; border-radius: 100px;
+  background: linear-gradient(90deg, var(--sky), var(--sky-light));
+  animation: growBar 1.2s ease both;
+  animation-delay: 0.4s;
+}
+@keyframes growBar { from { width: 0 !important; } }
+
+.card-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.tag {
+  font-size: 11.5px; font-weight: 500;
+  color: var(--sky);
+  background: rgba(14,165,233,0.07);
+  border: 1px solid rgba(14,165,233,0.16);
+  padding: 4px 12px; border-radius: 100px;
+}
+
+/* ─── SECTION ─── */
+.section-wrap {
+  position: relative; z-index: 1;
+  max-width: 1120px; margin: 0 auto;
+  padding: 88px 36px;
+}
+.section-header { margin-bottom: 52px; }
+.section-eyebrow {
+  font-family: 'Kanit', sans-serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 3.5px; text-transform: uppercase;
+  color: var(--sky); margin-bottom: 10px;
+}
+.section-title {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 3.5vw, 44px);
+  color: var(--black); line-height: 1.15;
+}
+
+/* ─── ABOUT ─── */
+.about-card {
+  background: rgba(255,255,255,0.76);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(14,165,233,0.12);
+  border-radius: 24px;
+  padding: 44px 48px;
+  box-shadow: 0 8px 36px rgba(14,165,233,0.07);
+}
+.about-text {
+  font-size: 16px; line-height: 2;
+  color: #334155; margin-bottom: 32px;
+}
+.about-text strong { color: var(--sky); font-weight: 600; }
+.badge-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff;
+  border: 1px solid rgba(14,165,233,0.18);
+  border-radius: 10px;
+  padding: 9px 17px;
+  font-size: 13px; font-weight: 500;
+  color: var(--black);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.badge:hover { border-color: var(--sky); transform: translateY(-1px); }
+.badge i { color: var(--sky); font-size: 13px; }
+
+/* ─── SKILLS ─── */
+#skills { background: rgba(14,165,233,0.025); }
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+.skill-card {
+  background: rgba(255,255,255,0.76);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(14,165,233,0.11);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(14,165,233,0.06);
+  transition: transform 0.26s, box-shadow 0.26s, border-color 0.26s;
+}
+.skill-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(14,165,233,0.28);
+  box-shadow: 0 14px 40px rgba(14,165,233,0.13);
+}
+.skill-top { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.skill-icon {
+  width: 46px; height: 46px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, rgba(14,165,233,0.11), rgba(56,189,248,0.07));
+  border: 1px solid rgba(14,165,233,0.16);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--sky); font-size: 18px; flex-shrink: 0;
+}
+.skill-name {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600; font-size: 15px;
+  color: var(--black); margin-bottom: 3px;
+}
+.skill-pct { font-size: 12px; color: var(--sky); font-weight: 600; }
+
+/* ─── WORKS ─── */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.work-card {
+  background: rgba(255,255,255,0.76);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(14,165,233,0.12);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(14,165,233,0.06);
+  text-decoration: none; color: inherit; display: block;
+  transition: transform 0.28s cubic-bezier(.22,.68,0,1.2), box-shadow 0.28s, border-color 0.28s;
+  position: relative; overflow: hidden;
+}
+.work-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(14,165,233,0.04), transparent 60%);
+  opacity: 0; transition: opacity 0.3s;
+}
+.work-card:hover {
+  transform: translateY(-7px) scale(1.01);
+  border-color: rgba(14,165,233,0.26);
+  box-shadow: 0 22px 56px rgba(14,165,233,0.15);
+}
+.work-card:hover::after { opacity: 1; }
+
+.work-card-coming {
+  background: rgba(240,249,255,0.5);
+  border: 2px dashed rgba(14,165,233,0.22);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; min-height: 200px;
+}
+.work-icon {
+  width: 56px; height: 56px;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; color: #fff;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.11);
+}
+.work-title {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600; font-size: 17px;
+  color: var(--black); margin-bottom: 8px;
+}
+.work-desc {
+  font-size: 13.5px; color: var(--grey);
+  line-height: 1.7; margin-bottom: 18px;
+}
+.work-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.work-tag {
+  font-size: 11px; font-weight: 600;
+  color: var(--sky);
+  background: rgba(14,165,233,0.07);
+  border: 1px solid rgba(14,165,233,0.17);
+  padding: 3px 10px; border-radius: 6px;
+}
+.coming-icon {
+  width: 52px; height: 52px;
+  border-radius: 16px;
+  background: rgba(14,165,233,0.06);
+  border: 1.5px dashed rgba(14,165,233,0.28);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--sky); font-size: 20px; margin-bottom: 14px;
+}
+.coming-text {
+  font-family: 'Kanit', sans-serif;
+  font-size: 14px; font-weight: 500;
+  color: var(--sky); margin-bottom: 5px;
+}
+.coming-sub { font-size: 12px; color: var(--grey-light); }
+
+/* ─── CONTACT ─── */
+.contact-card {
+  background: linear-gradient(135deg, #0369a1 0%, #0ea5e9 55%, #38bdf8 100%);
+  border-radius: 32px;
+  padding: 72px 56px;
+  text-align: center; color: #fff;
+  position: relative; overflow: hidden;
+  box-shadow: 0 28px 88px rgba(14,165,233,0.33);
+}
+.contact-card::before {
+  content: '';
+  position: absolute; top: -90px; right: -90px;
+  width: 300px; height: 300px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 50%;
+}
+.contact-card::after {
+  content: '';
+  position: absolute; bottom: -60px; left: -60px;
+  width: 220px; height: 220px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50%;
+}
+.contact-icon-wrap {
+  width: 66px; height: 66px;
+  background: rgba(255,255,255,0.14);
+  border: 1.5px solid rgba(255,255,255,0.24);
+  border-radius: 20px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  margin: 0 auto 28px;
+  position: relative; z-index: 1;
+}
+.contact-title {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 700; font-size: 38px;
+  margin-bottom: 10px;
+  position: relative; z-index: 1;
+}
+.contact-sub {
+  font-size: 15px; opacity: 0.78;
+  margin-bottom: 44px;
+  position: relative; z-index: 1;
+}
+.contact-btns {
+  display: flex; flex-wrap: wrap; gap: 14px;
+  justify-content: center;
+  position: relative; z-index: 1;
+}
+.contact-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,0.14);
+  border: 1.5px solid rgba(255,255,255,0.28);
+  color: #fff;
+  font-family: 'Sarabun', sans-serif;
+  font-size: 14px; font-weight: 500;
+  padding: 13px 24px; border-radius: 12px;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s, transform 0.2s, border-color 0.2s;
+}
+.contact-btn:hover {
+  background: rgba(255,255,255,0.24);
+  border-color: rgba(255,255,255,0.5);
+  transform: translateY(-2px);
+}
+.contact-btn i { font-size: 15px; }
+
+/* ─── FOOTER ─── */
+footer {
+  position: relative; z-index: 1;
+  text-align: center;
+  padding: 32px;
+  font-size: 13px; color: var(--grey-light);
+  border-top: 1px solid rgba(14,165,233,0.09);
+}
+footer span { color: var(--sky); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.72s ease both; }
+.d1 { animation-delay: 0.05s; }
+.d2 { animation-delay: 0.16s; }
+.d3 { animation-delay: 0.27s; }
+.d4 { animation-delay: 0.38s; }
+.d5 { animation-delay: 0.49s; }
+
+.reveal {
+  opacity: 0; transform: translateY(26px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 940px) {
+  #home {
+    grid-template-columns: 1fr;
+    padding: 52px 24px 64px;
+    text-align: center;
+    min-height: auto;
+    gap: 44px;
   }
-  .contact-btn:hover {
-    background: rgba(255,255,255,0.25);
-    transform: translateY(-2px);
-  }
+  .hero-actions { justify-content: center; }
+  .hero-stats { justify-content: center; }
+  .hero-sub { margin: 0 auto 36px; }
+  .hero-badge { margin: 0 auto 28px; }
+  .hero-card { animation: none; }
+
+  .skills-grid { grid-template-columns: 1fr; }
+  .works-grid { grid-template-columns: 1fr 1fr; }
+
+  .contact-card { padding: 48px 28px; }
+  .hamburger { display: flex; }
+  nav.desktop { display: none; }
+  .section-wrap { padding: 64px 24px; }
+  .about-card { padding: 32px 28px; }
+}
+@media (max-width: 580px) {
+  .works-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 22px; }
+  .header-inner { padding: 0 20px; }
+}
 </style>
 </head>
-<body class="text-black min-h-screen relative overflow-x-hidden">
+<body>
 
-<!-- Background blobs -->
-<div class="blob" style="width:420px;height:420px;background:#38bdf8;top:-120px;left:-120px;"></div>
-<div class="blob" style="width:320px;height:320px;background:#7dd3fc;bottom:200px;right:-80px;"></div>
-<div class="blob" style="width:240px;height:240px;background:#bae6fd;top:50%;left:40%;"></div>
+<div class="bg-canvas"></div>
+<div class="bg-grid"></div>
 
-<!-- HEADER -->
-<header class="sticky top-0 z-50 bg-white/75 backdrop-blur-xl border-b border-sky-100 shadow-sm">
-  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <!-- Logo icon -->
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-cyan-400 flex items-center justify-center shadow-md">
-        <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><path d="M2 17l10 5 10-5" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><path d="M2 12l10 5 10-5" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
-      </div>
-      <h1 class="text-xl md:text-2xl font-bold text-sky-700 tracking-tight">PATIWAT <span class="font-light text-sky-400">noingern</span></h1>
-    </div>
-    <nav class="hidden md:flex gap-7 font-semibold text-sm text-slate-700">
-      <a href="#home" class="nav-link hover:text-sky-600">หน้าแรก</a>
-      <a href="#about" class="nav-link hover:text-sky-600">เกี่ยวกับ</a>
-      <a href="#skills" class="nav-link hover:text-sky-600">ทักษะ</a>
-      <a href="#works" class="nav-link hover:text-sky-600">ผลงาน</a>
-      <a href="#contact" class="nav-link hover:text-sky-600">ติดต่อ</a>
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="header-inner">
+    <a href="#home" class="logo">
+      <div class="logo-mark">PN</div>
+      <span class="logo-text">PATIWAT <span>noingern</span></span>
+    </a>
+
+    <nav class="desktop">
+      <a href="#home"    class="nav-link">หน้าแรก</a>
+      <a href="#about"   class="nav-link">เกี่ยวกับ</a>
+      <a href="#skills"  class="nav-link">ทักษะ</a>
+      <a href="#works"   class="nav-link">ผลงาน</a>
+      <a href="#contact" class="nav-link nav-cta">ติดต่อ</a>
     </nav>
-    <!-- Mobile menu icon -->
-    <button class="md:hidden w-9 h-9 flex items-center justify-center rounded-lg border border-sky-200 bg-white/80">
-      <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" stroke="#0ea5e9" stroke-width="2.2" stroke-linecap="round"/></svg>
+
+    <button class="hamburger" onclick="toggleNav()" aria-label="menu">
+      <i class="fa-solid fa-bars"></i>
     </button>
   </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="#home"    class="nav-link" onclick="closeNav()">หน้าแรก</a>
+    <a href="#about"   class="nav-link" onclick="closeNav()">เกี่ยวกับ</a>
+    <a href="#skills"  class="nav-link" onclick="closeNav()">ทักษะ</a>
+    <a href="#works"   class="nav-link" onclick="closeNav()">ผลงาน</a>
+    <a href="#contact" class="nav-link" onclick="closeNav()">ติดต่อ</a>
+  </nav>
 </header>
 
-<!-- HERO -->
-<section id="home" class="relative z-10 max-w-6xl mx-auto px-6 pt-24 pb-20 text-center">
-  <!-- Avatar -->
-  <div class="flex justify-center mb-8 float-anim fade-up">
-    <div class="avatar-wrap w-24 h-24 rounded-full bg-gradient-to-br from-sky-400 to-cyan-300 flex items-center justify-center text-white text-4xl font-bold shadow-lg">
-      P
+<!-- ══ HERO ══ -->
+<section id="home">
+  <div class="hero-left">
+    <div class="hero-badge fade-up d1">Portfolio · 2026</div>
+
+    <h1 class="hero-title fade-up d2">
+      UX/UI Designer<br>
+      <span class="thin">&amp;</span>
+      <span class="accent"> Frontend<br>Developer</span>
+    </h1>
+
+    <p class="hero-sub fade-up d3">
+      มีความเชี่ยวชาญด้าน UX/UI Design, Frontend Development และการออกแบบประสบการณ์ผู้ใช้งาน พร้อมสร้างผลงานที่สวยงามและใช้งานได้จริง
+    </p>
+
+    <div class="hero-actions fade-up d4">
+      <a href="#works"   class="btn-primary"><i class="fa-solid fa-briefcase"></i>ดูผลงาน</a>
+      <a href="#contact" class="btn-secondary"><i class="fa-regular fa-envelope"></i>ติดต่อฉัน</a>
+    </div>
+
+    <div class="hero-stats fade-up d5">
+      <div class="stat">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">ผลงาน</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3+</div>
+        <div class="stat-label">ปีประสบการณ์</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">ความคิดสร้างสรรค์</div>
+      </div>
     </div>
   </div>
 
-  <p class="fade-up text-sky-500 font-semibold tracking-widest text-sm mb-3 uppercase flex items-center justify-center gap-2">
-    <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#0ea5e9" stroke-width="2"/><path d="M12 8v4l3 3" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/></svg>
-    Portfolio Website · 2026
-  </p>
-
-  <h2 class="fade-up delay-1 text-5xl md:text-6xl font-extrabold leading-tight mb-10 text-slate-800">
-    UX/UI Designer &<br>
-    <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-cyan-400">Frontend Developer</span>
-  </h2>
-
-  <div class="fade-up delay-2 flex justify-center gap-4 flex-wrap">
-    <a href="#works" class="btn-shimmer px-7 py-3 text-white rounded-2xl font-bold text-sm shadow-md">
-      ดูผลงาน →
-    </a>
-    <a href="#contact" class="px-7 py-3 border-2 border-sky-300 rounded-2xl font-bold text-sm text-sky-700 hover:bg-sky-50 transition">
-      ติดต่อฉัน
-    </a>
-  </div>
-
-  <!-- Stats row -->
-  <div class="fade-up delay-3 mt-16 grid grid-cols-3 gap-4 max-w-lg mx-auto">
-    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-4 border border-sky-100 shadow-sm">
-      <p class="text-2xl font-extrabold text-sky-600">5+</p>
-      <p class="text-xs text-slate-500 mt-1">ผลงาน</p>
+  <!-- FLOATING CARD -->
+  <div class="hero-card fade-up d3">
+    <div class="avatar-area">
+      <div class="avatar">P</div>
+      <div>
+        <div class="avatar-name">Patiwat Noingern</div>
+        <div class="avatar-role">UX/UI · Frontend Developer</div>
+      </div>
     </div>
-    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-4 border border-sky-100 shadow-sm">
-      <p class="text-2xl font-extrabold text-sky-600">3+</p>
-      <p class="text-xs text-slate-500 mt-1">ปีประสบการณ์</p>
+
+    <div class="card-divider"></div>
+
+    <div class="card-skill">
+      <div class="card-skill-header">
+        <span class="card-skill-name">Figma / UI Design</span>
+        <span class="card-skill-pct">90%</span>
+      </div>
+      <div class="prog-track"><div class="prog-bar" style="width:90%"></div></div>
     </div>
-    <div class="bg-white/70 backdrop-blur-sm rounded-2xl p-4 border border-sky-100 shadow-sm">
-      <p class="text-2xl font-extrabold text-sky-600">∞</p>
-      <p class="text-xs text-slate-500 mt-1">ความคิดสร้างสรรค์</p>
+    <div class="card-skill">
+      <div class="card-skill-header">
+        <span class="card-skill-name">HTML / CSS / JS</span>
+        <span class="card-skill-pct">85%</span>
+      </div>
+      <div class="prog-track"><div class="prog-bar" style="width:85%"></div></div>
+    </div>
+    <div class="card-skill">
+      <div class="card-skill-header">
+        <span class="card-skill-name">React / Tailwind</span>
+        <span class="card-skill-pct">78%</span>
+      </div>
+      <div class="prog-track"><div class="prog-bar" style="width:78%"></div></div>
+    </div>
+    <div class="card-skill">
+      <div class="card-skill-header">
+        <span class="card-skill-name">Database / SQL</span>
+        <span class="card-skill-pct">70%</span>
+      </div>
+      <div class="prog-track"><div class="prog-bar" style="width:70%"></div></div>
+    </div>
+
+    <div class="card-tags">
+      <span class="tag">Figma</span>
+      <span class="tag">React</span>
+      <span class="tag">Tailwind</span>
+      <span class="tag">SQL</span>
+      <span class="tag">UX Research</span>
     </div>
   </div>
 </section>
 
-<!-- ABOUT -->
-<section id="about" class="relative z-10 max-w-5xl mx-auto px-6 py-16">
-  <div class="bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg p-8 md:p-10 border border-sky-100 flex flex-col md:flex-row gap-8 items-start">
-    <div class="icon-circle bg-gradient-to-br from-sky-100 to-cyan-100 border border-sky-200 flex-shrink-0">
-      <svg width="26" height="26" fill="none" viewBox="0 0 24 24">
-        <circle cx="12" cy="8" r="4" stroke="#0ea5e9" stroke-width="2"/>
-        <path d="M4 20c0-4 3.582-7 8-7s8 3 8 7" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+<!-- ══ ABOUT ══ -->
+<section id="about">
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">About me</div>
+      <div class="section-title">เกี่ยวกับฉัน</div>
     </div>
-    <div>
-      <h3 class="section-title text-3xl font-extrabold text-slate-800 mb-6">เกี่ยวกับฉัน</h3>
-      <p class="text-slate-600 leading-8 mt-2">
-        มีความเชี่ยวชาญด้าน <strong class="text-sky-600">UX/UI Design</strong>, <strong class="text-sky-600">Frontend Development</strong> และการออกแบบประสบการณ์ผู้ใช้งาน พร้อมสร้างเว็บไซต์ แอปพลิเคชัน และระบบที่ใช้งานง่าย สวยงาม และตอบโจทย์ธุรกิจ
+    <div class="about-card reveal">
+      <p class="about-text">
+        มีความเชี่ยวชาญด้าน <strong>UX/UI Design</strong>, <strong>Frontend Development</strong>
+        และการออกแบบประสบการณ์ผู้ใช้งาน พร้อมสร้างเว็บไซต์ แอปพลิเคชัน และระบบที่ใช้งานง่าย
+        สวยงาม และตอบโจทย์ธุรกิจ มีประสบการณ์จริงด้านการทำงานกับ <strong>Inventory Management</strong>
+        การจัดการสต๊อกอะไหล่ และออกแบบ UI สำหรับระบบ POS
       </p>
-      <div class="mt-6 flex flex-wrap gap-2">
-        <span class="skill-badge">
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#0ea5e9" stroke-width="2" stroke-linejoin="round"/></svg>
-          UX/UI Design
-        </span>
-        <span class="skill-badge">
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="8 6 2 12 8 18" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Frontend Dev
-        </span>
-        <span class="skill-badge">
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#0ea5e9" stroke-width="2"/><path d="M9 9h6M9 12h6M9 15h4" stroke="#0ea5e9" stroke-width="1.8" stroke-linecap="round"/></svg>
-          System Design
-        </span>
-        <span class="skill-badge">
-          <svg width="13" height="13" fill="none" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke="#0ea5e9" stroke-width="2"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="#0ea5e9" stroke-width="2"/></svg>
-          Web Responsive
-        </span>
+      <div class="badge-row">
+        <span class="badge"><i class="fa-solid fa-pen-nib"></i>UX/UI Design</span>
+        <span class="badge"><i class="fa-solid fa-code"></i>Frontend Dev</span>
+        <span class="badge"><i class="fa-solid fa-layer-group"></i>System Design</span>
+        <span class="badge"><i class="fa-solid fa-mobile-screen"></i>Responsive Web</span>
+        <span class="badge"><i class="fa-solid fa-boxes-stacked"></i>Inventory System</span>
+        <span class="badge"><i class="fa-solid fa-database"></i>SQL / Database</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SKILLS -->
-<section id="skills" class="relative z-10 max-w-5xl mx-auto px-6 py-12">
-  <h3 class="section-title text-3xl font-extrabold text-slate-800 mb-10">ทักษะ</h3>
-  <div class="grid md:grid-cols-2 gap-5">
-    <!-- Skill items -->
-    <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-sky-100 shadow-sm">
-      <div class="flex items-center gap-3 mb-3">
-        <div class="w-9 h-9 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center">
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#0ea5e9" stroke-width="2" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="flex-1 flex justify-between items-center">
-          <span class="font-bold text-slate-700">Figma / UI Design</span>
-          <span class="text-xs text-sky-500 font-semibold">90%</span>
-        </div>
-      </div>
-      <div class="prog-bar"><div class="prog-fill" style="width:90%"></div></div>
+<!-- ══ SKILLS ══ -->
+<section id="skills">
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Skills</div>
+      <div class="section-title">ทักษะความสามารถ</div>
     </div>
-
-    <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-sky-100 shadow-sm">
-      <div class="flex items-center gap-3 mb-3">
-        <div class="w-9 h-9 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center">
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="8 6 2 12 8 18" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-top">
+          <div class="skill-icon"><i class="fa-solid fa-pen-nib"></i></div>
+          <div>
+            <div class="skill-name">Figma / UI Design</div>
+            <div class="skill-pct">90%</div>
+          </div>
         </div>
-        <div class="flex-1 flex justify-between items-center">
-          <span class="font-bold text-slate-700">HTML / CSS / JS</span>
-          <span class="text-xs text-sky-500 font-semibold">85%</span>
-        </div>
+        <div class="prog-track"><div class="prog-bar" style="width:90%"></div></div>
       </div>
-      <div class="prog-bar"><div class="prog-fill" style="width:85%"></div></div>
-    </div>
 
-    <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-sky-100 shadow-sm">
-      <div class="flex items-center gap-3 mb-3">
-        <div class="w-9 h-9 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center">
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" stroke="#0ea5e9" stroke-width="2"/><path d="M8 21h8M12 17v4" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round"/></svg>
+      <div class="skill-card reveal">
+        <div class="skill-top">
+          <div class="skill-icon"><i class="fa-solid fa-code"></i></div>
+          <div>
+            <div class="skill-name">HTML / CSS / JavaScript</div>
+            <div class="skill-pct">85%</div>
+          </div>
         </div>
-        <div class="flex-1 flex justify-between items-center">
-          <span class="font-bold text-slate-700">React / Tailwind</span>
-          <span class="text-xs text-sky-500 font-semibold">78%</span>
-        </div>
+        <div class="prog-track"><div class="prog-bar" style="width:85%"></div></div>
       </div>
-      <div class="prog-bar"><div class="prog-fill" style="width:78%"></div></div>
-    </div>
 
-    <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-sky-100 shadow-sm">
-      <div class="flex items-center gap-3 mb-3">
-        <div class="w-9 h-9 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center">
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="#0ea5e9" stroke-width="2"/><path d="M3 5v14c0 1.657 4.03 3 9 3s9-1.343 9-3V5" stroke="#0ea5e9" stroke-width="2"/><path d="M3 12c0 1.657 4.03 3 9 3s9-1.343 9-3" stroke="#0ea5e9" stroke-width="2"/></svg>
+      <div class="skill-card reveal">
+        <div class="skill-top">
+          <div class="skill-icon"><i class="fa-brands fa-react"></i></div>
+          <div>
+            <div class="skill-name">React / Tailwind CSS</div>
+            <div class="skill-pct">78%</div>
+          </div>
         </div>
-        <div class="flex-1 flex justify-between items-center">
-          <span class="font-bold text-slate-700">Database / SQL</span>
-          <span class="text-xs text-sky-500 font-semibold">70%</span>
-        </div>
+        <div class="prog-track"><div class="prog-bar" style="width:78%"></div></div>
       </div>
-      <div class="prog-bar"><div class="prog-fill" style="width:70%"></div></div>
+
+      <div class="skill-card reveal">
+        <div class="skill-top">
+          <div class="skill-icon"><i class="fa-solid fa-database"></i></div>
+          <div>
+            <div class="skill-name">Database / SQL</div>
+            <div class="skill-pct">70%</div>
+          </div>
+        </div>
+        <div class="prog-track"><div class="prog-bar" style="width:70%"></div></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- WORKS -->
-<section id="works" class="relative z-10 max-w-6xl mx-auto px-6 py-16">
-  <h3 class="section-title text-3xl font-extrabold text-slate-800 mb-10">ผลงาน</h3>
-  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-
-    <!-- Card 1 -->
-   <!-- Card 1 -->
-<a href="pos.html" class="block">
-  <div class="work-card bg-white/85 backdrop-blur-sm p-6 rounded-3xl shadow-md border border-sky-100 hover:scale-105 transition duration-300 cursor-pointer">
-    <div class="icon-circle bg-gradient-to-br from-sky-100 to-blue-100 border border-sky-200 mb-4">
-      ...
+<!-- ══ WORKS ══ -->
+<section id="works">
+  <div class="section-wrap">
+    <div class="section-header reveal">
+      <div class="section-eyebrow">Works</div>
+      <div class="section-title">ผลงานของฉัน</div>
     </div>
-    <h4 class="text-lg font-bold text-slate-800 mb-1">POS System</h4>
-    <p class="text-sm text-slate-500 leading-6">ระบบร้านอาหาร พร้อมจัดการออเดอร์และรายงานยอดขาย</p>
-  </div>
-</a>
+    <div class="works-grid">
 
-<!-- Card 2 -->
-<a href="portfolio.html" class="block">
-  <div class="work-card bg-white/85 backdrop-blur-sm p-6 rounded-3xl shadow-md border border-sky-100 hover:scale-105 transition duration-300 cursor-pointer">
-    <div class="icon-circle bg-gradient-to-br from-cyan-100 to-sky-100 border border-sky-200 mb-4">
-      ...
+      <a href="pos.html" class="work-card reveal">
+        <div class="work-icon" style="background:linear-gradient(135deg,#0ea5e9,#0284c7);">
+          <i class="fa-solid fa-cash-register"></i>
+        </div>
+        <div class="work-title">POS System</div>
+        <div class="work-desc">ระบบร้านอาหาร พร้อมจัดการออเดอร์และรายงานยอดขายแบบ Real-time</div>
+        <div class="work-tags">
+          <span class="work-tag">React</span>
+          <span class="work-tag">SQL</span>
+          <span class="work-tag">Dashboard</span>
+        </div>
+      </a>
+
+      <a href="portfolio.html" class="work-card reveal">
+        <div class="work-icon" style="background:linear-gradient(135deg,#38bdf8,#0ea5e9);">
+          <i class="fa-solid fa-palette"></i>
+        </div>
+        <div class="work-title">Portfolio UI</div>
+        <div class="work-desc">ออกแบบเว็บไซต์ส่วนตัวสไตล์โมเดิร์น เรียบหรู ใช้งานง่าย</div>
+        <div class="work-tags">
+          <span class="work-tag">Figma</span>
+          <span class="work-tag">HTML/CSS</span>
+          <span class="work-tag">UI Design</span>
+        </div>
+      </a>
+
+      <a href="planner.html" class="work-card reveal">
+        <div class="work-icon" style="background:linear-gradient(135deg,#6366f1,#38bdf8);">
+          <i class="fa-solid fa-calendar-check"></i>
+        </div>
+        <div class="work-title">Learning Planner</div>
+        <div class="work-desc">ระบบวางแผนการเรียนสำหรับนักศึกษา ติดตามความก้าวหน้าได้ง่าย</div>
+        <div class="work-tags">
+          <span class="work-tag">Vue.js</span>
+          <span class="work-tag">UX Design</span>
+          <span class="work-tag">System</span>
+        </div>
+      </a>
+
+      <a href="mobileapp.html" class="work-card reveal">
+        <div class="work-icon" style="background:linear-gradient(135deg,#0284c7,#06b6d4);">
+          <i class="fa-solid fa-mobile-screen-button"></i>
+        </div>
+        <div class="work-title">Mobile App UI</div>
+        <div class="work-desc">ออกแบบ UI แอปมือถือที่ใช้งานง่าย สวยงาม พร้อม Prototype</div>
+        <div class="work-tags">
+          <span class="work-tag">Figma</span>
+          <span class="work-tag">Prototyping</span>
+          <span class="work-tag">Mobile</span>
+        </div>
+      </a>
+
+      <a href="inventory.html" class="work-card reveal">
+        <div class="work-icon" style="background:linear-gradient(135deg,#0369a1,#0ea5e9);">
+          <i class="fa-solid fa-boxes-stacked"></i>
+        </div>
+        <div class="work-title">Inventory Management</div>
+        <div class="work-desc">ประสบการณ์จริงด้านตรวจรับสินค้า จัดการสต๊อกอะไหล่ และควบคุมข้อมูลสินค้าอย่างเป็นระบบ</div>
+        <div class="work-tags">
+          <span class="work-tag">System</span>
+          <span class="work-tag">Database</span>
+          <span class="work-tag">Real Work</span>
+        </div>
+      </a>
+
+      <div class="work-card work-card-coming reveal">
+        <div class="coming-icon"><i class="fa-solid fa-plus"></i></div>
+        <div class="coming-text">ผลงานถัดไปกำลังมา...</div>
+        <div class="coming-sub">Stay tuned</div>
+      </div>
+
     </div>
-    <h4 class="text-lg font-bold text-slate-800 mb-1">Portfolio UI</h4>
-    <p class="text-sm text-slate-500 leading-6">ออกแบบเว็บไซต์ส่วนตัวสไตล์โมเดิร์น และใช้งานง่าย</p>
-  </div>
-</a>
-
-<!-- Card 3 -->
-<!-- โหลดไอคอน -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<!-- Card 1 -->
-<a href="pos.html" class="block">
-  <div class="work-card bg-white/85 backdrop-blur-sm p-6 rounded-3xl shadow-md border border-sky-100 hover:scale-105 hover:shadow-xl transition duration-300 cursor-pointer">
-    
-    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 text-white flex items-center justify-center text-2xl shadow-lg mb-4">
-      <i class="fa-solid fa-cash-register"></i>
-    </div>
-
-    <h4 class="text-lg font-bold text-slate-800 mb-1">POS System</h4>
-    <p class="text-sm text-slate-500 leading-6">ระบบร้านอาหาร พร้อมจัดการออเดอร์และรายงานยอดขาย</p>
-  </div>
-</a>
-
-<!-- Card 2 -->
-<a href="portfolio.html" class="block">
-  <div class="work-card bg-white/85 backdrop-blur-sm p-6 rounded-3xl shadow-md border border-sky-100 hover:scale-105 hover:shadow-xl transition duration-300 cursor-pointer">
-    
-    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-sky-500 text-white flex items-center justify-center text-2xl shadow-lg mb-4">
-      <i class="fa-solid fa-palette"></i>
-    </div>
-
-    <h4 class="text-lg font-bold text-slate-800 mb-1">Portfolio UI</h4>
-    <p class="text-sm text-slate-500 leading-6">ออกแบบเว็บไซต์ส่วนตัวสไตล์โมเดิร์น และใช้งานง่าย</p>
-  </div>
-</a>
-
-<!-- Card 3 -->
-<a href="planner.html" class="block">
-  <div class="work-card bg-white/85 backdrop-blur-sm p-6 rounded-3xl shadow-md border border-sky-100 hover:scale-105 hover:shadow-xl transition duration-300 cursor-pointer">
-    
-    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-sky-500 text-white flex items-center justify-center text-2xl shadow-lg mb-4">
-      <i class="fa-solid fa-calendar-check"></i>
-    </div>
-
-    <h4 class="text-lg font-bold text-slate-800 mb-1">Learning Planner</h4>
-    <p class="text-sm text-slate-500 leading-6">ระบบวางแผนการเรียนสำหรับนักศึกษา</p>
-  </div>
-</a>
-
-<!-- Card 4 -->
-<a href="mobileapp.html" class="block">
-  <div class="work-card bg-white/85 backdrop-blur-sm p-6 rounded-3xl shadow-md border border-sky-100 hover:scale-105 hover:shadow-xl transition duration-300 cursor-pointer">
-    
-    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-500 to-cyan-500 text-white flex items-center justify-center text-2xl shadow-lg mb-4">
-      <i class="fa-solid fa-mobile-screen-button"></i>
-    </div>
-
-    <h4 class="text-lg font-bold text-slate-800 mb-1">Mobile App UI</h4>
-    <p class="text-sm text-slate-500 leading-6">ออกแบบ UI แอปมือถือที่ใช้งานง่ายและสวยงาม</p>
-  </div>
-</a>
-
-<!-- Card 5 -->
-<a href="inventory.html" class="block">
-  <div class="work-card bg-white/85 backdrop-blur-sm p-6 rounded-3xl shadow-md border border-sky-100 hover:scale-105 hover:shadow-xl transition duration-300 cursor-pointer">
-    
-    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-sky-500 text-white flex items-center justify-center text-2xl shadow-lg mb-4">
-      <i class="fa-solid fa-boxes-stacked"></i>
-    </div>
-
-    <h4 class="text-lg font-bold text-slate-800 mb-1">Inventory Management</h4>
-    <p class="text-sm text-slate-500 leading-6">ประสบการณ์จริงด้านการตรวจรับสินค้า จัดการสต๊อกอะไหล่ และควบคุมข้อมูลสินค้า</p>
-  </div>
-</a>
-
-<!-- Card 6 -->
-<a href="comingsoon.html" class="block">
-  <div class="work-card bg-gradient-to-br from-sky-50 to-cyan-50 p-6 rounded-3xl border-2 border-dashed border-sky-300 flex flex-col items-center justify-center text-center min-h-[180px] hover:scale-105 hover:shadow-xl transition duration-300 cursor-pointer">
-    
-    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500 to-cyan-500 text-white flex items-center justify-center text-2xl shadow-lg mb-4">
-      <i class="fa-solid fa-plus"></i>
-    </div>
-
-    <p class="text-sky-600 font-semibold text-sm">ผลงานถัดไปกำลังมา...</p>
-    <p class="text-slate-400 text-xs mt-1">Stay tuned</p>
-  </div>
-</a>
-
   </div>
 </section>
 
-<!-- CONTACT -->
-<section id="contact" class="relative z-10 max-w-5xl mx-auto px-6 py-16">
-  <div class="bg-gradient-to-br from-sky-500 to-cyan-500 text-white rounded-3xl p-10 md:p-14 shadow-2xl relative overflow-hidden">
-    <!-- Decorative circles -->
-    <div class="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full"></div>
-    <div class="absolute -bottom-10 -left-10 w-36 h-36 bg-white/10 rounded-full"></div>
-
-    <div class="relative z-10 text-center">
-      <div class="w-14 h-14 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center mx-auto mb-5">
-        <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
-          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <h3 class="text-3xl font-extrabold mb-2">ติดต่อฉัน</h3>
-      <p class="text-sky-100 mb-8 text-sm">พร้อมรับงานฟรีแลนซ์ และโปรเจกต์ใหม่ๆ เสมอ</p>
-
-      <div class="flex flex-wrap justify-center gap-4">
+<!-- ══ CONTACT ══ -->
+<section id="contact">
+  <div class="section-wrap">
+    <div class="contact-card reveal">
+      <div class="contact-icon-wrap"><i class="fa-regular fa-paper-plane"></i></div>
+      <h2 class="contact-title">ติดต่อฉัน</h2>
+      <p class="contact-sub">พร้อมรับงานฟรีแลนซ์ และโปรเจกต์ใหม่ๆ เสมอ</p>
+      <div class="contact-btns">
         <a href="mailto:yourname@email.com" class="contact-btn">
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-            <rect x="2" y="4" width="20" height="16" rx="2" stroke="white" stroke-width="2"/>
-            <path d="M2 7l10 7 10-7" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          yourname@email.com
+          <i class="fa-regular fa-envelope"></i>yourname@email.com
         </a>
-        <a href="tel:08x-xxx-xxxx" class="contact-btn">
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.02 4.18 2 2 0 012 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
-          </svg>
-          08x-xxx-xxxx
+        <a href="tel:08xxxxxxxx" class="contact-btn">
+          <i class="fa-solid fa-phone"></i>08x-xxx-xxxx
         </a>
         <a href="#" class="contact-btn">
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
-            <circle cx="4" cy="4" r="2" stroke="white" stroke-width="2"/>
-          </svg>
-          LinkedIn
+          <i class="fa-brands fa-linkedin-in"></i>LinkedIn
         </a>
         <a href="#" class="contact-btn">
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
-            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          GitHub
+          <i class="fa-brands fa-github"></i>GitHub
         </a>
       </div>
     </div>
   </div>
 </section>
 
-<footer class="relative z-10 text-center py-8 text-slate-500 text-sm flex items-center justify-center gap-2">
-  <svg width="15" height="15" fill="none" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round"/></svg>
-  © 2026 PATIWAT noingern. All rights reserved.
+<footer>
+  © 2026 <span>PATIWAT noingern</span>. All rights reserved.
 </footer>
+
 <script>
-  // Smooth scroll with offset for sticky header
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', function(e) {
-      const target = document.querySelector(this.getAttribute('href'));
+  /* Smooth scroll + header offset */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      const id = this.getAttribute('href');
+      const target = document.querySelector(id);
       if (!target) return;
       e.preventDefault();
-      const headerH = document.querySelector('header').offsetHeight;
-      const top = target.getBoundingClientRect().top + window.scrollY - headerH - 12;
+      const offset = document.querySelector('header').offsetHeight + 16;
+      const top = target.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top, behavior: 'smooth' });
     });
   });
-</script>
 
+  /* Mobile nav */
+  function toggleNav() {
+    document.getElementById('mobileNav').classList.toggle('open');
+  }
+  function closeNav() {
+    document.getElementById('mobileNav').classList.remove('open');
+  }
+
+  /* Scroll reveal with stagger */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
 </body>
 </html>
