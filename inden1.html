@@ -3,69 +3,444 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Website - โชว์ผลงาน</title>
+<title>Portfolio — โชว์ผลงาน</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          kanit: ['Kanit', 'sans-serif'],
+          sarabun: ['Sarabun', 'sans-serif'],
+        },
+        colors: {
+          navy: {
+            50:  '#eff6ff',
+            100: '#dbeafe',
+            200: '#bfdbfe',
+            300: '#93c5fd',
+            400: '#60a5fa',
+            500: '#3b82f6',
+            600: '#2563eb',
+            700: '#1d4ed8',
+            800: '#1e40af',
+            900: '#1e3a8a',
+            950: '#0f2055',
+          }
+        },
+        keyframes: {
+          'fade-up': {
+            '0%':   { opacity:'0', transform:'translateY(20px)' },
+            '100%': { opacity:'1', transform:'translateY(0)' }
+          },
+          'slide-in': {
+            '0%':   { opacity:'0', transform:'translateX(-20px)' },
+            '100%': { opacity:'1', transform:'translateX(0)' }
+          },
+          shimmer: {
+            '0%':   { backgroundPosition: '-200% 0' },
+            '100%': { backgroundPosition: '200% 0' }
+          }
+        },
+        animation: {
+          'fade-up':   'fade-up 0.5s ease forwards',
+          'slide-in':  'slide-in 0.4s ease forwards',
+          'shimmer':   'shimmer 2.5s linear infinite',
+        }
+      }
+    }
+  }
+</script>
 <style>
-body{
-    margin:0;
-    font-family:'Segoe UI',sans-serif;
-    background:linear-gradient(135deg,#eff6ff,#dbeafe,#eef2ff);
-}
-.sidebar{
-    background:linear-gradient(180deg,#1e3a8a,#2563eb,#7c3aed);
-}
-.card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 20px 40px rgba(0,0,0,0.15);
-}
+  body { font-family: 'Sarabun', sans-serif; }
+  h1,h2,h3,.font-display { font-family: 'Kanit', sans-serif; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #f0f6ff; }
+  ::-webkit-scrollbar-thumb { background: #93c5fd; border-radius: 99px; }
+
+  /* Sidebar shimmer stripe */
+  .sidebar-stripe {
+    background: linear-gradient(180deg, #2563eb 0%, #60a5fa 50%, #2563eb 100%);
+    background-size: 100% 200%;
+    animation: shimmer 3s linear infinite;
+  }
+
+  /* Card hover glow */
+  .project-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 48px -8px rgba(37,99,235,0.18);
+  }
+
+  /* Active nav pill */
+  .nav-active {
+    background: linear-gradient(90deg, rgba(37,99,235,0.12), rgba(96,165,250,0.06));
+    border-left: 3px solid #2563eb;
+  }
+
+  /* Glass badge */
+  .glass-badge {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(6px);
+  }
+
+  /* Stat card shimmer on hover */
+  .stat-card:hover .stat-icon { transform: scale(1.15) rotate(-5deg); }
+  .stat-icon { transition: transform 0.3s ease; }
+
+  /* Thumbnail grid patterns */
+  .thumb-grid {
+    background-image: repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(255,255,255,0.2) 19px,rgba(255,255,255,0.2) 20px),
+                      repeating-linear-gradient(90deg,transparent,transparent 19px,rgba(255,255,255,0.2) 19px,rgba(255,255,255,0.2) 20px);
+  }
+
+  /* Stagger animations */
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.1s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.2s; }
+  .stagger-5 { animation-delay: 0.25s; }
+  .stagger-6 { animation-delay: 0.3s; }
+  .opacity-0-init { opacity: 0; }
 </style>
 </head>
-<body class="flex min-h-screen">
+<body class="bg-slate-50 flex h-screen overflow-hidden">
 
-<!-- Sidebar -->
-<aside class="sidebar w-72 text-white p-6 shadow-2xl">
-    <h1 class="text-3xl font-bold mb-10">My Website</h1>
+<!-- ═══════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════ -->
+<aside class="w-64 bg-white flex flex-col border-r border-navy-100 shadow-sm relative overflow-hidden shrink-0">
 
-    <nav class="space-y-4 text-lg">
-        <a href="#" class="block px-4 py-3 rounded-xl bg-white/20 hover:bg-white/30 transition">🏠 หน้าแรก</a>
-        <a href="#" class="block px-4 py-3 rounded-xl hover:bg-white/20 transition">🎨 โชว์ผลงาน</a>
-        <a href="#" class="block px-4 py-3 rounded-xl hover:bg-white/20 transition">👤 เกี่ยวกับฉัน</a>
-        <a href="#" class="block px-4 py-3 rounded-xl hover:bg-white/20 transition">📩 ติดต่อ</a>
-    </nav>
+  <!-- Top color stripe -->
+  <div class="sidebar-stripe absolute top-0 left-0 w-1 h-full"></div>
 
-    <div class="mt-12 p-4 bg-white/10 rounded-2xl">
-        <p class="text-sm text-blue-100">Portfolio Design 2026</p>
+  <!-- Logo -->
+  <div class="pl-7 pr-5 pt-7 pb-6">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-navy-600 flex items-center justify-center shadow-md shadow-navy-200">
+        <!-- Grid icon -->
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <rect x="2" y="2" width="6" height="6" rx="1.5" fill="white"/>
+          <rect x="10" y="2" width="6" height="6" rx="1.5" fill="white" opacity=".6"/>
+          <rect x="2" y="10" width="6" height="6" rx="1.5" fill="white" opacity=".6"/>
+          <rect x="10" y="10" width="6" height="6" rx="1.5" fill="white" opacity=".3"/>
+        </svg>
+      </div>
+      <div>
+        <p class="font-display font-bold text-navy-900 text-sm leading-tight">My Portfolio</p>
+        <p class="text-[10px] text-navy-300 tracking-wide">2026 EDITION</p>
+      </div>
     </div>
+  </div>
+
+  <!-- Search -->
+  <div class="px-5 mb-5">
+    <div class="flex items-center gap-2 bg-navy-50 border border-navy-100 rounded-xl px-3 py-2 text-xs text-navy-400">
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" class="shrink-0 opacity-60">
+        <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M11.5 11.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      ค้นหา...
+      <span class="ml-auto text-[10px] bg-white border border-navy-200 rounded px-1 py-0.5 text-navy-300">⌘K</span>
+    </div>
+  </div>
+
+  <!-- Nav Label -->
+  <p class="px-5 text-[9px] font-bold tracking-widest text-navy-300 uppercase mb-1">เมนูหลัก</p>
+
+  <!-- Nav Items -->
+  <nav class="px-3 space-y-0.5">
+    <!-- Item -->
+    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-navy-500 hover:bg-navy-50 hover:text-navy-700 transition-all text-sm">
+      <span class="w-7 h-7 rounded-lg bg-navy-50 flex items-center justify-center text-navy-400">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 7L8 2l6 5v7a1 1 0 01-1 1H3a1 1 0 01-1-1V7z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>
+      </span>
+      หน้าแรก
+    </a>
+
+    <!-- Active item -->
+    <a href="#" class="nav-active flex items-center gap-3 px-3 py-2.5 rounded-xl text-navy-700 text-sm font-medium">
+      <span class="w-7 h-7 rounded-lg bg-navy-100 flex items-center justify-center text-navy-600">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/></svg>
+      </span>
+      โชว์ผลงาน
+      <span class="ml-auto text-[10px] bg-navy-100 text-navy-500 px-2 py-0.5 rounded-full font-medium">24</span>
+    </a>
+
+    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-navy-500 hover:bg-navy-50 hover:text-navy-700 transition-all text-sm">
+      <span class="w-7 h-7 rounded-lg bg-navy-50 flex items-center justify-center text-navy-400">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M2 14c0-2.8 2.7-5 6-5s6 2.2 6 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </span>
+      เกี่ยวกับฉัน
+    </a>
+
+    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-navy-500 hover:bg-navy-50 hover:text-navy-700 transition-all text-sm">
+      <span class="w-7 h-7 rounded-lg bg-navy-50 flex items-center justify-center text-navy-400">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M2 6l6 4 6-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </span>
+      ติดต่อ
+    </a>
+  </nav>
+
+  <!-- Divider -->
+  <div class="mx-5 my-5 h-px bg-navy-100"></div>
+
+  <!-- Categories -->
+  <p class="px-5 text-[9px] font-bold tracking-widest text-navy-300 uppercase mb-2">หมวดหมู่</p>
+  <div class="px-4 space-y-1">
+    <button class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg hover:bg-navy-50 transition text-xs text-navy-500">
+      <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-400"></span>UI/UX Design</span>
+      <span class="text-[10px] text-navy-300">8</span>
+    </button>
+    <button class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg hover:bg-navy-50 transition text-xs text-navy-500">
+      <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-violet-400"></span>Web Dev</span>
+      <span class="text-[10px] text-navy-300">12</span>
+    </button>
+    <button class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg hover:bg-navy-50 transition text-xs text-navy-500">
+      <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400"></span>Branding</span>
+      <span class="text-[10px] text-navy-300">4</span>
+    </button>
+  </div>
+
+  <!-- Profile footer -->
+  <div class="mt-auto mx-4 mb-5 p-3 bg-gradient-to-br from-navy-50 to-blue-50 border border-navy-100 rounded-2xl">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-navy-500 to-blue-400 flex items-center justify-center text-white text-sm font-bold font-display shadow-sm">P</div>
+      <div class="flex-1 min-w-0">
+        <p class="text-xs font-semibold text-navy-800 truncate">Portfolio 2026</p>
+        <p class="text-[11px] text-navy-400">Web Designer</p>
+      </div>
+      <div class="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></div>
+    </div>
+  </div>
 </aside>
 
-<!-- Main Content -->
-<main class="flex-1 p-10">
-    <header class="mb-10">
-        <h2 class="text-4xl font-bold text-gray-800">โชว์ผลงาน</h2>
-        <p class="text-gray-500 mt-2">รวมผลงานการออกแบบและพัฒนาเว็บไซต์</p>
-    </header>
+<!-- ═══════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════ -->
+<main class="flex-1 flex flex-col overflow-hidden">
 
-    <!-- Cards -->
-    <section class="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-        <div class="card bg-white rounded-3xl p-6 shadow-lg transition duration-300">
-            <div class="h-40 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-2xl mb-5"></div>
-            <h3 class="text-xl font-bold text-gray-800 mb-2">UI Dashboard</h3>
-            <p class="text-gray-500">ออกแบบระบบแดชบอร์ดสมัยใหม่ ใช้งานง่าย</p>
-        </div>
+  <!-- Top Bar -->
+  <header class="bg-white border-b border-navy-100 px-8 py-4 flex items-center justify-between shrink-0">
+    <div>
+      <h1 class="font-display text-xl font-bold text-navy-900 leading-tight">โชว์ผลงาน</h1>
+      <p class="text-xs text-navy-400 mt-0.5">รวมผลงานการออกแบบและพัฒนาเว็บไซต์</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <!-- Filter pill -->
+      <div class="flex items-center bg-navy-50 border border-navy-100 rounded-xl overflow-hidden text-xs">
+        <button class="px-3 py-2 text-navy-700 bg-white border-r border-navy-100 font-medium">ทั้งหมด</button>
+        <button class="px-3 py-2 text-navy-400 hover:bg-navy-100 transition">UI/UX</button>
+        <button class="px-3 py-2 text-navy-400 hover:bg-navy-100 transition">Dev</button>
+      </div>
+      <!-- Add button -->
+      <button class="flex items-center gap-2 bg-navy-600 hover:bg-navy-700 text-white text-xs font-medium px-4 py-2 rounded-xl transition shadow-sm shadow-navy-200">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        เพิ่มผลงาน
+      </button>
+    </div>
+  </header>
 
-        <div class="card bg-white rounded-3xl p-6 shadow-lg transition duration-300">
-            <div class="h-40 bg-gradient-to-r from-purple-500 to-pink-400 rounded-2xl mb-5"></div>
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Login Page</h3>
-            <p class="text-gray-500">หน้าล็อกอินหรูหรา พร้อม Animation</p>
-        </div>
+  <!-- Scrollable body -->
+  <div class="flex-1 overflow-y-auto px-8 py-6">
 
-        <div class="card bg-white rounded-3xl p-6 shadow-lg transition duration-300">
-            <div class="h-40 bg-gradient-to-r from-green-500 to-emerald-400 rounded-2xl mb-5"></div>
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Portfolio Website</h3>
-            <p class="text-gray-500">เว็บไซต์แนะนำตัวพร้อมโชว์ผลงาน</p>
+    <!-- Stats row -->
+    <div class="grid grid-cols-4 gap-4 mb-8">
+      <!-- Stat 1 -->
+      <div class="stat-card bg-white border border-navy-100 rounded-2xl p-4 flex items-center gap-4 opacity-0-init animate-fade-up stagger-1">
+        <div class="stat-icon w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center text-navy-500">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="5.5" height="5.5" rx="1.5" fill="#2563eb" opacity=".7"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1.5" fill="#2563eb" opacity=".4"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1.5" fill="#2563eb" opacity=".4"/><rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1.5" fill="#2563eb" opacity=".2"/></svg>
         </div>
-    </section>
+        <div>
+          <p class="text-[11px] text-navy-400 font-medium tracking-wide">โปรเจกต์ทั้งหมด</p>
+          <p class="font-display text-2xl font-bold text-navy-900 leading-tight">24</p>
+          <p class="text-[11px] text-emerald-500 font-medium">+3 เดือนนี้</p>
+        </div>
+      </div>
+
+      <!-- Stat 2 -->
+      <div class="stat-card bg-white border border-navy-100 rounded-2xl p-4 flex items-center gap-4 opacity-0-init animate-fade-up stagger-2">
+        <div class="stat-icon w-11 h-11 rounded-xl bg-violet-50 flex items-center justify-center">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="8" r="4" fill="#7c3aed" opacity=".5"/><path d="M3 17c0-3.3 3.1-6 7-6s7 2.7 7 6" stroke="#7c3aed" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+        </div>
+        <div>
+          <p class="text-[11px] text-navy-400 font-medium tracking-wide">ลูกค้า</p>
+          <p class="font-display text-2xl font-bold text-navy-900 leading-tight">18</p>
+          <p class="text-[11px] text-emerald-500 font-medium">+2 ใหม่</p>
+        </div>
+      </div>
+
+      <!-- Stat 3 -->
+      <div class="stat-card bg-white border border-navy-100 rounded-2xl p-4 flex items-center gap-4 opacity-0-init animate-fade-up stagger-3">
+        <div class="stat-icon w-11 h-11 rounded-xl bg-amber-50 flex items-center justify-center">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3l1.9 4.1 4.5.6-3.3 3.2.8 4.5L10 13.2l-4 2.1.8-4.5L3.6 7.7l4.5-.6L10 3z" fill="#f59e0b" opacity=".7"/></svg>
+        </div>
+        <div>
+          <p class="text-[11px] text-navy-400 font-medium tracking-wide">คะแนนรีวิว</p>
+          <p class="font-display text-2xl font-bold text-navy-900 leading-tight">4.9</p>
+          <p class="text-[11px] text-amber-500 font-medium">จาก 5.0</p>
+        </div>
+      </div>
+
+      <!-- Stat 4 -->
+      <div class="stat-card bg-white border border-navy-100 rounded-2xl p-4 flex items-center gap-4 opacity-0-init animate-fade-up stagger-4">
+        <div class="stat-icon w-11 h-11 rounded-xl bg-emerald-50 flex items-center justify-center">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 14l4-4 3 3 5-6" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </div>
+        <div>
+          <p class="text-[11px] text-navy-400 font-medium tracking-wide">ปีประสบการณ์</p>
+          <p class="font-display text-2xl font-bold text-navy-900 leading-tight">5+</p>
+          <p class="text-[11px] text-emerald-500 font-medium">Frontend Dev</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section header -->
+    <div class="flex items-center justify-between mb-5">
+      <h2 class="font-display font-semibold text-navy-800 text-base">ผลงานล่าสุด</h2>
+      <a href="#" class="text-xs text-navy-400 hover:text-navy-600 transition flex items-center gap-1">ดูทั้งหมด <span>→</span></a>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-3 gap-5">
+
+      <!-- Card 1 — Dashboard -->
+      <div class="project-card bg-white border border-navy-100 rounded-2xl overflow-hidden cursor-pointer opacity-0-init animate-fade-up stagger-4">
+        <!-- Thumb -->
+        <div class="relative h-44 bg-gradient-to-br from-blue-500 to-blue-700 thumb-grid overflow-hidden">
+          <!-- Decorative elements -->
+          <div class="absolute top-4 left-4 right-4">
+            <div class="bg-white/90 rounded-xl p-3 flex gap-2">
+              <div class="flex-1 space-y-2">
+                <div class="h-2.5 bg-navy-100 rounded-full w-3/4"></div>
+                <div class="h-2 bg-navy-50 rounded-full w-1/2"></div>
+              </div>
+              <div class="w-8 h-8 rounded-lg bg-navy-100 flex items-center justify-center">
+                <div class="w-3 h-3 rounded bg-navy-400"></div>
+              </div>
+            </div>
+            <div class="flex gap-2 mt-2">
+              <div class="bg-white/70 rounded-lg p-2 flex-1 text-center">
+                <div class="h-2 bg-blue-200 rounded-full mb-1"></div>
+                <div class="h-1.5 bg-blue-100 rounded-full w-2/3 mx-auto"></div>
+              </div>
+              <div class="bg-white/70 rounded-lg p-2 flex-1 text-center">
+                <div class="h-2 bg-purple-200 rounded-full mb-1"></div>
+                <div class="h-1.5 bg-purple-100 rounded-full w-1/2 mx-auto"></div>
+              </div>
+              <div class="bg-white/70 rounded-lg p-2 flex-1 text-center">
+                <div class="h-2 bg-emerald-200 rounded-full mb-1"></div>
+                <div class="h-1.5 bg-emerald-100 rounded-full w-3/4 mx-auto"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Badge -->
+          <span class="glass-badge absolute bottom-3 left-3 text-[10px] font-bold text-navy-700 px-2.5 py-1 rounded-lg">UI/UX</span>
+          <span class="glass-badge absolute bottom-3 right-3 text-[10px] text-navy-400 px-2.5 py-1 rounded-lg">2025</span>
+        </div>
+        <!-- Body -->
+        <div class="p-4">
+          <div class="flex items-start justify-between mb-1">
+            <h3 class="font-display font-semibold text-navy-800 text-sm">UI Dashboard</h3>
+            <span class="w-6 h-6 rounded-lg bg-navy-50 flex items-center justify-center text-navy-400 hover:bg-navy-100 transition">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <p class="text-xs text-navy-400 leading-relaxed">ออกแบบระบบแดชบอร์ดสมัยใหม่ ใช้งานง่ายและครบครัน</p>
+          <div class="mt-3 flex items-center gap-1.5">
+            <span class="text-[10px] bg-blue-50 text-blue-600 font-medium px-2 py-0.5 rounded-md">Figma</span>
+            <span class="text-[10px] bg-blue-50 text-blue-600 font-medium px-2 py-0.5 rounded-md">React</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 — Login Page -->
+      <div class="project-card bg-white border border-navy-100 rounded-2xl overflow-hidden cursor-pointer opacity-0-init animate-fade-up stagger-5">
+        <div class="relative h-44 bg-gradient-to-br from-violet-500 to-purple-700 thumb-grid overflow-hidden">
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="bg-white/90 rounded-2xl p-4 w-32 shadow-xl">
+              <div class="w-8 h-8 rounded-xl bg-violet-100 mx-auto mb-3 flex items-center justify-center">
+                <div class="w-4 h-4 rounded bg-violet-400"></div>
+              </div>
+              <div class="h-2 bg-navy-100 rounded-full mb-2"></div>
+              <div class="h-6 bg-navy-50 rounded-lg mb-2 border border-navy-100"></div>
+              <div class="h-6 bg-navy-50 rounded-lg mb-3 border border-navy-100"></div>
+              <div class="h-6 bg-violet-500 rounded-lg"></div>
+            </div>
+          </div>
+          <span class="glass-badge absolute bottom-3 left-3 text-[10px] font-bold text-navy-700 px-2.5 py-1 rounded-lg">Branding</span>
+          <span class="glass-badge absolute bottom-3 right-3 text-[10px] text-navy-400 px-2.5 py-1 rounded-lg">2025</span>
+        </div>
+        <div class="p-4">
+          <div class="flex items-start justify-between mb-1">
+            <h3 class="font-display font-semibold text-navy-800 text-sm">Login Page</h3>
+            <span class="w-6 h-6 rounded-lg bg-navy-50 flex items-center justify-center text-navy-400 hover:bg-navy-100 transition">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <p class="text-xs text-navy-400 leading-relaxed">หน้าล็อกอินหรูหรา พร้อม animation เรียบหรู</p>
+          <div class="mt-3 flex items-center gap-1.5">
+            <span class="text-[10px] bg-violet-50 text-violet-600 font-medium px-2 py-0.5 rounded-md">CSS</span>
+            <span class="text-[10px] bg-violet-50 text-violet-600 font-medium px-2 py-0.5 rounded-md">JS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 — Portfolio -->
+      <div class="project-card bg-white border border-navy-100 rounded-2xl overflow-hidden cursor-pointer opacity-0-init animate-fade-up stagger-6">
+        <div class="relative h-44 bg-gradient-to-br from-emerald-400 to-teal-600 thumb-grid overflow-hidden">
+          <div class="absolute inset-4 grid grid-cols-2 grid-rows-2 gap-2">
+            <div class="bg-white/80 rounded-xl flex items-center justify-center">
+              <div class="w-8 h-5 bg-emerald-200 rounded"></div>
+            </div>
+            <div class="bg-white/50 rounded-xl flex items-center justify-center">
+              <div class="w-6 h-6 rounded-full bg-white/80"></div>
+            </div>
+            <div class="bg-white/50 rounded-xl"></div>
+            <div class="bg-white/80 rounded-xl flex items-center justify-center">
+              <div class="space-y-1 w-8">
+                <div class="h-1 bg-emerald-300 rounded-full"></div>
+                <div class="h-1 bg-emerald-200 rounded-full w-2/3"></div>
+              </div>
+            </div>
+          </div>
+          <span class="glass-badge absolute bottom-3 left-3 text-[10px] font-bold text-navy-700 px-2.5 py-1 rounded-lg">Web Dev</span>
+          <span class="glass-badge absolute bottom-3 right-3 text-[10px] text-navy-400 px-2.5 py-1 rounded-lg">2026</span>
+        </div>
+        <div class="p-4">
+          <div class="flex items-start justify-between mb-1">
+            <h3 class="font-display font-semibold text-navy-800 text-sm">Portfolio Website</h3>
+            <span class="w-6 h-6 rounded-lg bg-navy-50 flex items-center justify-center text-navy-400 hover:bg-navy-100 transition">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <p class="text-xs text-navy-400 leading-relaxed">เว็บไซต์แนะนำตัวพร้อมโชว์ผลงานอย่างมืออาชีพ</p>
+          <div class="mt-3 flex items-center gap-1.5">
+            <span class="text-[10px] bg-emerald-50 text-emerald-600 font-medium px-2 py-0.5 rounded-md">Tailwind</span>
+            <span class="text-[10px] bg-emerald-50 text-emerald-600 font-medium px-2 py-0.5 rounded-md">HTML</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom spacing -->
+    <div class="h-6"></div>
+  </div>
 </main>
 
+<script>
+  // Trigger entrance animations
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.opacity-0-init').forEach(el => {
+      el.classList.remove('opacity-0-init');
+    });
+  });
+</script>
 </body>
 </html>
