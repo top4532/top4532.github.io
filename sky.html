@@ -4,67 +4,66 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ระบบจำลองรถไฟสิงห์บุรี</title>
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold: #c9a84c;
-    --gold-light: #e8c97a;
-    --gold-dim: #7a5e28;
-    --bg-deep: #0a0c10;
-    --bg-panel: #0f1219;
-    --bg-card: #141820;
-    --bg-card2: #1a2030;
-    --text-primary: #eef0f5;
-    --text-secondary: #8a9ab8;
-    --text-dim: #4a5568;
-    --green: #22c55e;
-    --green-glow: rgba(34,197,94,0.35);
-    --blue: #38bdf8;
-    --blue-glow: rgba(56,189,248,0.3);
-    --red: #f87171;
-    --border: rgba(201,168,76,0.15);
-    --border-bright: rgba(201,168,76,0.4);
+    --navy:   #0B1F3A;
+    --blue:   #1251A3;
+    --mid:    #2B6FD4;
+    --sky:    #5B9EE8;
+    --pale:   #C8DEFF;
+    --ice:    #EAF2FF;
+    --white:  #FFFFFF;
+    --ink:    #0D1B2A;
+    --steel:  #52697E;
+    --mist:   #B8C8D8;
+    --bg:     #F0F5FC;
+    --green:  #0D7A4A;
+    --green-l:#E0F5EC;
+    --amber:  #925800;
+    --amber-l:#FFF3DC;
+    --red:    #B91C1C;
+    --red-l:  #FEE2E2;
+    --font: 'IBM Plex Sans Thai', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *{box-sizing:border-box;margin:0;padding:0}
 
   body {
-    font-family: 'Sarabun', sans-serif;
-    background: var(--bg-deep);
-    color: var(--text-primary);
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--ink);
     min-height: 100vh;
-    overflow-x: hidden;
     position: relative;
+    overflow-x: hidden;
   }
 
-  /* Background grid lines */
+  /* Subtle dot grid */
   body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
-    background-size: 48px 48px;
-    pointer-events: none;
-    z-index: 0;
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image: radial-gradient(circle, rgba(18,81,163,0.10) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events:none;
+    z-index:0;
   }
 
+  /* Top accent stripe */
   body::after {
-    content: '';
-    position: fixed;
-    top: -200px; left: 50%;
-    transform: translateX(-50%);
-    width: 800px; height: 400px;
-    background: radial-gradient(ellipse, rgba(201,168,76,0.06) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
+    content:'';
+    position:fixed;
+    top:0; left:0; right:0;
+    height:3px;
+    background: linear-gradient(90deg, var(--navy), var(--mid), var(--sky), var(--mid), var(--navy));
+    z-index: 100;
   }
 
   .container {
-    max-width: 1100px;
+    max-width: 1080px;
     margin: 0 auto;
-    padding: 32px 24px;
+    padding: 36px 24px 40px;
     position: relative;
     z-index: 1;
   }
@@ -72,267 +71,230 @@
   /* ── HEADER ── */
   .header {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-    gap: 16px;
+    margin-bottom: 28px;
     flex-wrap: wrap;
+    gap: 12px;
   }
 
   .brand {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
   }
 
-  .brand-logo {
-    width: 52px; height: 52px;
-    border: 1.5px solid var(--border-bright);
-    border-radius: 12px;
+  .brand-emblem {
+    width: 54px; height: 54px;
+    background: var(--navy);
+    border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 24px;
-    background: var(--bg-card);
     position: relative;
     overflow: hidden;
+    flex-shrink: 0;
   }
-  .brand-logo::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(201,168,76,0.15) 0%, transparent 60%);
-  }
+  .brand-emblem svg { width: 30px; height: 30px; }
 
-  .brand-text {}
+  .brand-label {}
   .brand-en {
-    font-family: 'Chakra Petch', monospace;
-    font-size: 11px;
+    font-family: var(--mono);
+    font-size: 10px;
     font-weight: 600;
-    letter-spacing: 0.2em;
-    color: var(--gold);
+    letter-spacing: .2em;
+    color: var(--mid);
     text-transform: uppercase;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
   }
   .brand-th {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--navy);
     line-height: 1.1;
+    letter-spacing: -.01em;
   }
   .brand-sub {
-    font-size: 12px;
-    color: var(--text-dim);
+    font-size: 11px;
+    color: var(--steel);
     margin-top: 2px;
   }
 
-  .header-time {
-    text-align: right;
-    font-family: 'Chakra Petch', monospace;
-  }
+  .header-right { text-align: right; }
   .clock {
+    font-family: var(--mono);
     font-size: 28px;
     font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: 0.05em;
-  }
-  .date-str {
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-top: 2px;
-  }
-
-  /* ── STATS ROW ── */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 28px;
-  }
-
-  .stat-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px 18px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s;
-  }
-  .stat-card:hover { border-color: var(--border-bright); }
-  .stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    opacity: 0.5;
-  }
-  .stat-icon {
-    font-size: 18px;
-    margin-bottom: 8px;
-  }
-  .stat-label {
-    font-size: 11px;
-    color: var(--text-dim);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-    font-family: 'Chakra Petch', monospace;
-  }
-  .stat-value {
-    font-family: 'Chakra Petch', monospace;
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--text-primary);
+    color: var(--navy);
+    letter-spacing: .04em;
     line-height: 1;
   }
-  .stat-value.green { color: var(--green); }
-  .stat-value.gold  { color: var(--gold); }
-  .stat-value.blue  { color: var(--blue); }
-  .stat-sub {
+  .date-str {
     font-size: 11px;
-    color: var(--text-dim);
+    color: var(--steel);
     margin-top: 4px;
+    font-family: var(--mono);
   }
 
-  /* ── STATUS BADGE ── */
-  .status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px 12px;
-    border-radius: 100px;
-    font-family: 'Chakra Petch', monospace;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border: 1px solid;
-    transition: all 0.3s;
-  }
-  .status-badge.ready {
-    background: rgba(74,85,104,0.2);
-    color: var(--text-secondary);
-    border-color: rgba(74,85,104,0.4);
-  }
-  .status-badge.running {
-    background: rgba(34,197,94,0.12);
-    color: var(--green);
-    border-color: rgba(34,197,94,0.35);
-  }
-  .status-badge.stopped {
-    background: rgba(248,113,113,0.12);
-    color: var(--red);
-    border-color: rgba(248,113,113,0.3);
-  }
-  .status-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-  }
-  .status-badge.running .status-dot {
-    animation: pulse 1.2s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%,100%{opacity:1;transform:scale(1)}
-    50%{opacity:0.4;transform:scale(0.8)}
-  }
-
-  /* ── TRACK PANEL ── */
-  .track-panel {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 28px 32px 24px;
+  /* ── STATS ── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
     margin-bottom: 20px;
+  }
+
+  .sc {
+    background: var(--white);
+    border: 1px solid rgba(18,81,163,.10);
+    border-radius: 12px;
+    padding: 14px 16px;
     position: relative;
     overflow: hidden;
   }
-  .track-panel::after {
-    content: '';
+  .sc::after {
+    content:'';
     position: absolute;
-    bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 60%; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+    top:0; left:0; right:0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--navy) 0%, var(--sky) 100%);
+    opacity: .35;
+  }
+  .sc-icon { font-size: 14px; margin-bottom: 7px; }
+  .sc-label {
+    font-size: 10px;
+    color: var(--steel);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-family: var(--mono);
+    margin-bottom: 5px;
+  }
+  .sc-val {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .sc-val.blue  { color: var(--blue); }
+  .sc-val.sky   { color: var(--mid); }
+  .sc-val.amber { color: var(--amber); }
+
+  /* Status badge */
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+  .badge.standby { background:#F0F4F8; color:var(--steel);   border-color:#CBD5E0; }
+  .badge.running { background:var(--green-l); color:var(--green); border-color:rgba(13,122,74,.3); }
+  .badge.paused  { background:var(--amber-l); color:var(--amber); border-color:rgba(146,88,0,.3); }
+  .bdot { width:6px; height:6px; border-radius:50%; background:currentColor; flex-shrink:0; }
+  .badge.running .bdot { animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.7)} }
+
+  /* ── TRACK CARD ── */
+  .track-card {
+    background: var(--white);
+    border: 1px solid rgba(18,81,163,.10);
+    border-radius: 16px;
+    padding: 28px 32px 36px;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .track-card::before {
+    content:'';
+    position: absolute;
+    top:0; left:0; right:0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--navy), var(--mid), var(--sky), var(--mid), var(--navy));
   }
 
-  .track-header {
+  .track-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 36px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 8px;
   }
   .track-title {
-    font-family: 'Chakra Petch', monospace;
-    font-size: 12px;
-    letter-spacing: 0.15em;
-    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .15em;
+    color: var(--steel);
     text-transform: uppercase;
   }
-
-  /* The rail line */
-  .rail-wrap {
-    position: relative;
-    height: 90px;
-    margin: 0 20px;
-  }
-
-  /* Sleepers (decorative rail ties) */
-  .sleepers {
-    position: absolute;
-    left: 0; right: 0;
-    top: 50%; transform: translateY(-50%);
-    height: 10px;
-    display: flex;
+  .legend {
+    display: flex; gap: 14px;
+    font-size: 11px; color: var(--steel);
+    font-family: var(--mono);
     align-items: center;
-    gap: 0;
-    overflow: hidden;
   }
-  .sleeper {
-    width: 6px; height: 100%;
-    background: rgba(201,168,76,0.08);
-    flex-shrink: 0;
-    margin-right: 14px;
-    border-radius: 1px;
+  .ldot {
+    width: 8px; height: 8px; border-radius: 50%;
+    display: inline-block; margin-right: 4px;
+    vertical-align: middle;
   }
 
-  .rail-line {
+  /* Rail */
+  .rail-outer {
+    position: relative;
+    height: 110px;
+    margin: 0 16px;
+  }
+
+  /* Two rails (realistic parallel rails) */
+  .rail-top, .rail-bot {
     position: absolute;
     left: 0; right: 0;
-    top: 50%; transform: translateY(-50%);
-    height: 3px;
-    background: var(--bg-card2);
+    height: 4px;
     border-radius: 2px;
-    overflow: visible;
+    background: var(--ice);
   }
-  .rail-progress {
+  .rail-top { top: calc(50% - 8px); }
+  .rail-bot { top: calc(50% + 4px); }
+
+  .rail-fill-top, .rail-fill-bot {
     position: absolute;
-    left: 0; top: 0; bottom: 0;
-    background: linear-gradient(90deg, var(--gold-dim), var(--gold), var(--gold-light));
+    left:0; top:0; bottom:0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--navy) 0%, var(--mid) 60%, var(--sky) 100%);
     border-radius: 2px;
-    transition: width 0.9s cubic-bezier(0.4,0,0.2,1);
+    transition: width .9s cubic-bezier(.4,0,.2,1);
     width: 0%;
   }
-  .rail-glow {
-    position: absolute;
-    right: 0; top: 50%;
-    transform: translateY(-50%);
-    width: 40px; height: 3px;
-    background: var(--gold-light);
-    filter: blur(6px);
-    opacity: 0.8;
-    border-radius: 2px;
-    transition: all 0.9s cubic-bezier(0.4,0,0.2,1);
-  }
 
-  /* Stations on the rail */
-  .stations-row {
+  /* Sleepers (rail ties) */
+  .sleepers-wrap {
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    left:0; right:0;
+    top: calc(50% - 14px);
+    height: 28px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
     pointer-events: none;
   }
+  .sleeper {
+    width: 5px; height: 100%;
+    background: rgba(18,81,163,.07);
+    border-radius: 1px;
+    flex-shrink: 0;
+    margin-right: 18px;
+  }
 
+  /* Station dots */
+  .st-row {
+    position: absolute;
+    top:0; left:0; right:0; bottom:0;
+    pointer-events: none;
+  }
   .st {
     position: absolute;
     top: 50%;
@@ -340,355 +302,227 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0;
     pointer-events: all;
-    cursor: pointer;
+    cursor: default;
   }
-
-  .st-name-top {
+  .st-name {
     position: absolute;
-    bottom: calc(100% + 8px);
     white-space: nowrap;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 600;
-    color: var(--text-dim);
-    transition: color 0.3s;
-    font-family: 'Sarabun', sans-serif;
-    text-align: center;
+    color: var(--mist);
+    transition: color .3s;
   }
-  .st-name-bot {
+  .st-code {
     position: absolute;
-    top: calc(100% + 8px);
-    white-space: nowrap;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-dim);
-    transition: color 0.3s;
-    font-family: 'Sarabun', sans-serif;
-    text-align: center;
-  }
-
-  .st-dot {
-    width: 14px; height: 14px;
-    border-radius: 50%;
-    background: var(--bg-card2);
-    border: 2px solid var(--text-dim);
-    transition: all 0.35s;
-    position: relative;
-    z-index: 2;
-  }
-  .st-num {
-    position: absolute;
-    bottom: -22px;
-    font-family: 'Chakra Petch', monospace;
+    font-family: var(--mono);
     font-size: 9px;
-    color: var(--text-dim);
-    letter-spacing: 0.05em;
-    transition: color 0.3s;
+    color: var(--mist);
+    letter-spacing: .05em;
+    transition: color .3s;
   }
-
-  .st.visited .st-dot {
-    background: var(--gold-dim);
-    border-color: var(--gold);
+  .st-dot {
+    width: 13px; height: 13px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 2.5px solid var(--mist);
+    transition: all .35s;
+    position: relative; z-index: 2;
   }
-  .st.visited .st-name-top,
-  .st.visited .st-name-bot { color: var(--gold-dim); }
-
-  .st.active .st-dot {
-    background: var(--green);
-    border-color: #86efac;
+  .st.visited .st-dot { background: var(--pale); border-color: var(--sky); }
+  .st.visited .st-name { color: var(--sky); }
+  .st.visited .st-code { color: var(--sky); }
+  .st.active  .st-dot {
+    background: var(--mid);
+    border-color: var(--navy);
     width: 18px; height: 18px;
-    box-shadow: 0 0 0 4px var(--green-glow), 0 0 20px var(--green-glow);
+    box-shadow: 0 0 0 5px rgba(43,111,212,.15), 0 0 0 9px rgba(43,111,212,.07);
   }
-  .st.active .st-name-top,
-  .st.active .st-name-bot {
-    color: var(--green);
-    font-weight: 700;
-  }
-  .st.active .st-num { color: var(--green); }
+  .st.active .st-name { color: var(--navy); font-weight: 700; }
+  .st.active .st-code { color: var(--blue); }
 
-  /* Train */
-  .train {
+  /* ── TRAIN SVG ── */
+  .train-el {
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
-    z-index: 10;
-    transition: left 0.9s cubic-bezier(0.4,0,0.2,1);
+    z-index: 20;
+    transition: left .9s cubic-bezier(.4,0,.2,1);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 3px;
+    filter: drop-shadow(0 4px 12px rgba(18,81,163,.25));
   }
-
-  .train-body {
-    width: 48px; height: 26px;
-    background: linear-gradient(135deg, #1e3a5f, #1a5276);
-    border: 1.5px solid var(--blue);
-    border-radius: 8px 8px 5px 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    padding: 0 5px;
-    position: relative;
-    box-shadow: 0 0 14px var(--blue-glow), 0 2px 8px rgba(0,0,0,0.5);
-  }
-  .train-body::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 8px;
-    background: linear-gradient(180deg, rgba(56,189,248,0.3), transparent);
-    border-radius: 6px 6px 0 0;
-  }
-  .tw {
-    width: 7px; height: 7px;
-    background: rgba(56,189,248,0.6);
-    border-radius: 1.5px;
-    box-shadow: 0 0 4px rgba(56,189,248,0.6);
-  }
-
-  .train-id {
-    font-family: 'Chakra Petch', monospace;
+  .train-svg { display: block; }
+  .train-label {
+    font-family: var(--mono);
     font-size: 9px;
-    font-weight: 700;
+    font-weight: 600;
     color: var(--blue);
-    letter-spacing: 0.15em;
+    letter-spacing: .12em;
   }
 
   /* ── BOTTOM GRID ── */
-  .bottom-grid {
+  .bottom {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 20px;
+    gap: 14px;
+    margin-bottom: 16px;
   }
 
   .panel {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px 22px;
+    background: var(--white);
+    border: 1px solid rgba(18,81,163,.10);
+    border-radius: 14px;
+    padding: 18px 20px;
   }
   .panel-title {
-    font-family: 'Chakra Petch', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: .15em;
+    color: var(--steel);
     text-transform: uppercase;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
     gap: 8px;
   }
   .panel-title::before {
-    content: '';
-    width: 3px; height: 12px;
-    background: var(--gold);
+    content:'';
+    width: 3px; height: 11px;
+    background: linear-gradient(180deg, var(--navy), var(--sky));
     border-radius: 2px;
   }
 
   /* Station list */
-  .station-list { display: flex; flex-direction: column; gap: 6px; }
-  .station-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
-    border-radius: 10px;
+  .slist { display: flex; flex-direction: column; gap: 4px; }
+  .srow {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 10px;
+    border-radius: 8px;
     border: 1px solid transparent;
-    transition: all 0.25s;
-    cursor: pointer;
+    transition: all .2s;
   }
-  .station-row:hover { background: var(--bg-card2); border-color: var(--border); }
-  .station-row.active-row {
-    background: rgba(34,197,94,0.07);
-    border-color: rgba(34,197,94,0.25);
-  }
+  .srow.active-row { background: var(--ice); border-color: var(--pale); }
   .srow-num {
-    font-family: 'Chakra Petch', monospace;
+    font-family: var(--mono);
     font-size: 10px;
-    color: var(--text-dim);
-    width: 20px;
+    color: var(--mist);
+    width: 16px;
+    flex-shrink: 0;
   }
-  .srow-name {
-    flex: 1;
-    font-size: 14px;
-    font-weight: 600;
-  }
-  .srow-badge {
-    font-size: 10px;
+  .srow-name { flex:1; font-size: 13px; font-weight: 600; color: var(--ink); }
+  .pill {
+    font-family: var(--mono);
+    font-size: 9px;
     padding: 2px 8px;
-    border-radius: 20px;
-    font-family: 'Chakra Petch', monospace;
-    letter-spacing: 0.05em;
+    border-radius: 100px;
+    border: 1px solid;
+    letter-spacing: .05em;
   }
-  .srow-badge.here {
-    background: rgba(34,197,94,0.15);
-    color: var(--green);
-    border: 1px solid rgba(34,197,94,0.3);
-  }
-  .srow-badge.visited-badge {
-    background: rgba(201,168,76,0.1);
-    color: var(--gold);
-    border: 1px solid rgba(201,168,76,0.25);
-  }
-  .srow-badge.ahead-badge {
-    background: rgba(74,85,104,0.15);
-    color: var(--text-dim);
-    border: 1px solid var(--border);
-  }
+  .pill.here   { background:var(--ice);   color:var(--blue);  border-color:var(--pale); }
+  .pill.done   { background:#F8FAFB;      color:var(--steel); border-color:#E2E8F0; }
+  .pill.ahead  { background:transparent;  color:var(--mist);  border-color:#E8EDF2; }
 
-  /* Controls panel */
-  .controls-panel {}
+  /* Controls */
   .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
   .btn {
-    padding: 12px 10px;
-    border-radius: 10px;
-    font-family: 'Sarabun', sans-serif;
-    font-size: 14px;
+    padding: 11px 10px;
+    border-radius: 9px;
+    font-family: var(--font);
+    font-size: 13px;
     font-weight: 600;
-    border: 1px solid;
+    border: 1.5px solid;
     cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    transition: all .15s;
   }
-  .btn:active { transform: scale(0.97); }
-  .btn:disabled { opacity: 0.35; cursor: default; transform: none; }
-
+  .btn:not(:disabled):hover { filter: brightness(.93); }
+  .btn:active { transform: scale(.97); }
+  .btn:disabled { opacity:.35; cursor:default; transform:none; }
   .btn-start {
-    grid-column: 1 / -1;
-    background: rgba(34,197,94,0.12);
-    color: var(--green);
-    border-color: rgba(34,197,94,0.35);
+    grid-column: 1/-1;
+    background: var(--navy); color: var(--white);
+    border-color: var(--navy);
   }
-  .btn-start:not(:disabled):hover {
-    background: rgba(34,197,94,0.2);
-    box-shadow: 0 0 20px rgba(34,197,94,0.2);
-  }
+  .btn-start:not(:disabled):hover { background: var(--blue); border-color: var(--blue); filter:none; }
   .btn-stop {
-    background: rgba(248,113,113,0.1);
-    color: var(--red);
-    border-color: rgba(248,113,113,0.3);
+    background: var(--red-l); color: var(--red);
+    border-color: rgba(185,28,28,.25);
   }
-  .btn-stop:not(:disabled):hover { background: rgba(248,113,113,0.18); }
   .btn-reset {
-    background: rgba(201,168,76,0.08);
-    color: var(--gold);
-    border-color: rgba(201,168,76,0.25);
-  }
-  .btn-reset:not(:disabled):hover { background: rgba(201,168,76,0.15); }
-
-  .speed-section { margin-top: 4px; }
-  .speed-label-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  .speed-label-txt {
-    font-size: 12px;
-    color: var(--text-dim);
-    font-family: 'Chakra Petch', monospace;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .speed-val {
-    font-family: 'Chakra Petch', monospace;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--gold);
+    background: var(--amber-l); color: var(--amber);
+    border-color: rgba(146,88,0,.25);
   }
 
+  /* Speed slider */
+  .spd-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:7px; font-size:11px; }
+  .spd-lbl { color:var(--steel); font-family:var(--mono); text-transform:uppercase; letter-spacing:.08em; }
+  .spd-num { color:var(--blue); font-family:var(--mono); font-weight:600; font-size:13px; }
   input[type=range] {
-    -webkit-appearance: none;
-    width: 100%; height: 4px;
-    background: var(--bg-card2);
-    border-radius: 2px;
-    outline: none;
-    border: 1px solid var(--border);
+    -webkit-appearance:none;
+    width:100%; height:4px;
+    background: var(--ice);
+    border-radius:2px;
+    outline:none;
+    border: 1px solid var(--pale);
   }
   input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 18px; height: 18px;
-    border-radius: 50%;
-    background: var(--gold);
-    cursor: pointer;
-    box-shadow: 0 0 8px rgba(201,168,76,0.5);
-    border: 2px solid var(--bg-deep);
-    transition: box-shadow 0.2s;
+    -webkit-appearance:none;
+    width:18px; height:18px;
+    border-radius:50%;
+    background: var(--navy);
+    cursor:pointer;
+    border: 3px solid var(--white);
+    box-shadow: 0 0 0 1.5px var(--mid), 0 2px 6px rgba(18,81,163,.3);
+    transition: box-shadow .2s;
   }
   input[type=range]::-webkit-slider-thumb:hover {
-    box-shadow: 0 0 14px rgba(201,168,76,0.7);
+    box-shadow: 0 0 0 2px var(--mid), 0 2px 10px rgba(18,81,163,.4);
   }
+  .spd-hints { display:flex; justify-content:space-between; margin-top:4px; font-size:9px; color:var(--mist); font-family:var(--mono); }
 
-  /* ── LOG PANEL ── */
-  .log-panel {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px 22px;
-    font-family: 'Chakra Petch', monospace;
+  /* ── LOG ── */
+  .log-card {
+    background: var(--white);
+    border: 1px solid rgba(18,81,163,.10);
+    border-radius: 14px;
+    padding: 18px 20px;
   }
-  .log-entries {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    max-height: 120px;
-    overflow-y: auto;
+  .log-list {
+    display: flex; flex-direction: column; gap: 5px;
+    max-height: 112px; overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
+    scrollbar-color: var(--pale) transparent;
   }
   .log-entry {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 12px;
-    color: var(--text-secondary);
-    opacity: 0;
-    animation: fadeIn 0.4s forwards;
+    display: flex; align-items: center; gap: 9px;
+    font-size: 11.5px; color: var(--steel);
+    animation: fin .35s forwards;
   }
-  @keyframes fadeIn { to { opacity: 1; } }
-  .log-time { color: var(--text-dim); min-width: 50px; }
-  .log-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
-  .log-msg { flex: 1; }
-  .log-entry.event-arrive .log-dot { background: var(--green); }
-  .log-entry.event-depart .log-dot { background: var(--blue); }
+  @keyframes fin { from{opacity:0;transform:translateY(-3px)} to{opacity:1;transform:none} }
+  .lt { font-family:var(--mono); min-width:56px; color:var(--mist); font-size:10.5px; }
+  .ld { width:5px; height:5px; border-radius:50%; background:var(--mid); flex-shrink:0; }
+  .ld.arr { background:var(--green); }
+  .ld.dep { background:var(--mid); }
 
   /* ── FOOTER ── */
   .footer {
-    margin-top: 24px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(18,81,163,.08);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 6px;
   }
-  .footer-txt {
-    font-size: 11px;
-    color: var(--text-dim);
-    font-family: 'Chakra Petch', monospace;
-    letter-spacing: 0.05em;
-  }
-  .version-tag {
-    font-family: 'Chakra Petch', monospace;
-    font-size: 10px;
-    color: var(--gold-dim);
-    border: 1px solid rgba(201,168,76,0.2);
-    padding: 2px 8px;
-    border-radius: 4px;
-  }
+  .footer-txt { font-size: 11px; color: var(--mist); font-family:var(--mono); }
+  .ver { font-family:var(--mono); font-size:10px; color:var(--mid); border:1px solid var(--pale); padding:2px 9px; border-radius:4px; }
 
-  /* Responsive */
-  @media (max-width: 700px) {
-    .stats-row { grid-template-columns: repeat(2,1fr); }
-    .bottom-grid { grid-template-columns: 1fr; }
-    .track-panel { padding: 20px 16px 20px; }
-    .rail-wrap { margin: 0 8px; }
+  @media(max-width:680px){
+    .stats{grid-template-columns:1fr 1fr}
+    .bottom{grid-template-columns:1fr}
+    .track-card{padding:20px 14px 28px}
+    .rail-outer{margin:0}
   }
 </style>
 </head>
@@ -696,321 +530,342 @@
 <div class="container">
 
   <!-- HEADER -->
-  <div class="header">
+  <header class="header">
     <div class="brand">
-      <div class="brand-logo">🚆</div>
-      <div class="brand-text">
+      <div class="brand-emblem">
+        <!-- Train icon SVG -->
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="8" width="22" height="13" rx="3" fill="#5B9EE8"/>
+          <rect x="4" y="8" width="22" height="6" rx="3" fill="#C8DEFF"/>
+          <rect x="6" y="10" width="5" height="3" rx="1" fill="white" opacity=".8"/>
+          <rect x="13" y="10" width="5" height="3" rx="1" fill="white" opacity=".8"/>
+          <rect x="20" y="10" width="4" height="3" rx="1" fill="white" opacity=".8"/>
+          <rect x="6" y="9" width="18" height="1" rx=".5" fill="white" opacity=".3"/>
+          <circle cx="9" cy="23" r="2.5" fill="#2B6FD4" stroke="white" stroke-width="1.2"/>
+          <circle cx="21" cy="23" r="2.5" fill="#2B6FD4" stroke="white" stroke-width="1.2"/>
+          <rect x="12" y="21" width="6" height="1.5" rx=".75" fill="#C8DEFF"/>
+          <rect x="2" y="19" width="3" height="2" rx="1" fill="#5B9EE8"/>
+          <rect x="25" y="19" width="3" height="2" rx="1" fill="#5B9EE8"/>
+        </svg>
+      </div>
+      <div class="brand-label">
         <div class="brand-en">Singburi District Rail</div>
         <div class="brand-th">รถไฟจังหวัดสิงห์บุรี</div>
         <div class="brand-sub">ระบบจำลองการเดินรถ · Simulation System</div>
       </div>
     </div>
-    <div class="header-time">
+    <div class="header-right">
       <div class="clock" id="clock">00:00:00</div>
       <div class="date-str" id="datestr">—</div>
     </div>
-  </div>
+  </header>
 
-  <!-- STATS ROW -->
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-icon">📡</div>
-      <div class="stat-label">สถานะระบบ</div>
-      <div id="status-badge-wrap">
-        <span class="status-badge ready" id="status-badge">
-          <span class="status-dot"></span>
-          <span id="status-text">STANDBY</span>
-        </span>
-      </div>
+  <!-- STATS -->
+  <div class="stats">
+    <div class="sc">
+      <div class="sc-icon">📡</div>
+      <div class="sc-label">สถานะระบบ</div>
+      <span class="badge standby" id="badge"><span class="bdot"></span><span id="badge-txt">STANDBY</span></span>
     </div>
-    <div class="stat-card">
-      <div class="stat-icon">📍</div>
-      <div class="stat-label">สถานีปัจจุบัน</div>
-      <div class="stat-value" id="current-station" style="font-size:16px;margin-top:4px">เมืองสิงห์บุรี</div>
+    <div class="sc">
+      <div class="sc-icon">📍</div>
+      <div class="sc-label">สถานีปัจจุบัน</div>
+      <div class="sc-val blue" id="cur-st" style="font-size:14px;margin-top:3px">เมืองสิงห์บุรี</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-icon">➡️</div>
-      <div class="stat-label">สถานีถัดไป</div>
-      <div class="stat-value blue" id="next-station" style="font-size:16px;margin-top:4px">—</div>
+    <div class="sc">
+      <div class="sc-icon">➡️</div>
+      <div class="sc-label">สถานีถัดไป</div>
+      <div class="sc-val sky" id="nxt-st" style="font-size:14px;margin-top:3px;color:var(--mist)">—</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-icon">🔄</div>
-      <div class="stat-label">รอบที่วิ่ง</div>
-      <div class="stat-value gold" id="trip-count" style="margin-top:4px">0</div>
-      <div class="stat-sub">เที่ยว</div>
+    <div class="sc">
+      <div class="sc-icon">🔄</div>
+      <div class="sc-label">รอบที่วิ่ง</div>
+      <div class="sc-val amber" id="trips" style="margin-top:3px">0 <span style="font-size:11px;color:var(--steel)">เที่ยว</span></div>
     </div>
   </div>
 
-  <!-- TRACK PANEL -->
-  <div class="track-panel">
-    <div class="track-header">
-      <div class="track-title">แผนที่เส้นทาง · Route Map</div>
-      <div style="display:flex;gap:16px;font-size:11px;color:var(--text-dim);font-family:'Chakra Petch',monospace;align-items:center">
-        <span style="display:flex;align-items:center;gap:5px">
-          <span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block"></span> ปัจจุบัน
-        </span>
-        <span style="display:flex;align-items:center;gap:5px">
-          <span style="width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block"></span> ผ่านแล้ว
-        </span>
-        <span style="display:flex;align-items:center;gap:5px">
-          <span style="width:8px;height:8px;border-radius:50%;background:var(--text-dim);display:inline-block"></span> รอ
-        </span>
+  <!-- TRACK -->
+  <div class="track-card">
+    <div class="track-top">
+      <span class="track-title">แผนที่เส้นทาง · Route Map</span>
+      <div class="legend">
+        <span><span class="ldot" style="background:var(--mid)"></span>ปัจจุบัน</span>
+        <span><span class="ldot" style="background:var(--sky)"></span>ผ่านแล้ว</span>
+        <span><span class="ldot" style="background:var(--mist)"></span>รอ</span>
       </div>
     </div>
 
-    <div class="rail-wrap">
+    <div class="rail-outer" id="rail-outer">
       <!-- Sleepers -->
-      <div class="sleepers" id="sleepers"></div>
-      <!-- Rail -->
-      <div class="rail-line">
-        <div class="rail-progress" id="rail-progress">
-          <div class="rail-glow" id="rail-glow"></div>
-        </div>
-      </div>
-      <!-- Stations -->
-      <div class="stations-row" id="stations-row"></div>
+      <div class="sleepers-wrap" id="sleepers-wrap"></div>
+      <!-- Rails -->
+      <div class="rail-top"><div class="rail-fill-top" id="rf-top"></div></div>
+      <div class="rail-bot"><div class="rail-fill-bot" id="rf-bot"></div></div>
+      <!-- Station dots -->
+      <div class="st-row" id="st-row"></div>
       <!-- Train -->
-      <div class="train" id="train">
-        <div class="train-body">
-          <div class="tw"></div>
-          <div class="tw"></div>
-          <div class="tw"></div>
-        </div>
-        <div class="train-id">SBR-01</div>
+      <div class="train-el" id="train-el">
+        <!-- Beautiful train SVG -->
+        <svg class="train-svg" width="72" height="36" viewBox="0 0 72 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Shadow -->
+          <ellipse cx="36" cy="34" rx="26" ry="3" fill="rgba(18,81,163,.12)"/>
+          <!-- Undercarriage / bogies -->
+          <rect x="9" y="26" width="14" height="5" rx="2.5" fill="#0B1F3A"/>
+          <rect x="49" y="26" width="14" height="5" rx="2.5" fill="#0B1F3A"/>
+          <!-- Wheels -->
+          <circle cx="14" cy="30" r="4" fill="#0D1B2A" stroke="#2B6FD4" stroke-width="1.5"/>
+          <circle cx="14" cy="30" r="1.5" fill="#5B9EE8"/>
+          <circle cx="22" cy="30" r="4" fill="#0D1B2A" stroke="#2B6FD4" stroke-width="1.5"/>
+          <circle cx="22" cy="30" r="1.5" fill="#5B9EE8"/>
+          <circle cx="50" cy="30" r="4" fill="#0D1B2A" stroke="#2B6FD4" stroke-width="1.5"/>
+          <circle cx="50" cy="30" r="1.5" fill="#5B9EE8"/>
+          <circle cx="58" cy="30" r="4" fill="#0D1B2A" stroke="#2B6FD4" stroke-width="1.5"/>
+          <circle cx="58" cy="30" r="1.5" fill="#5B9EE8"/>
+          <!-- Rail grab bar -->
+          <rect x="8" y="26.5" width="56" height="1.5" rx=".75" fill="#1251A3" opacity=".5"/>
+          <!-- Main body -->
+          <rect x="5" y="10" width="62" height="18" rx="4" fill="#0B1F3A"/>
+          <!-- Body side panel highlight -->
+          <rect x="5" y="10" width="62" height="7" rx="4" fill="#1251A3"/>
+          <rect x="5" y="14" width="62" height="3" fill="#1251A3"/>
+          <!-- Blue stripe accent -->
+          <rect x="5" y="19" width="62" height="2.5" fill="#2B6FD4" opacity=".7"/>
+          <!-- Windows row -->
+          <rect x="8"  y="11" width="8" height="5" rx="1.5" fill="#C8DEFF" opacity=".9"/>
+          <rect x="18" y="11" width="8" height="5" rx="1.5" fill="#C8DEFF" opacity=".9"/>
+          <rect x="28" y="11" width="8" height="5" rx="1.5" fill="#EAF2FF" opacity=".95"/>
+          <rect x="38" y="11" width="8" height="5" rx="1.5" fill="#C8DEFF" opacity=".9"/>
+          <rect x="48" y="11" width="8" height="5" rx="1.5" fill="#C8DEFF" opacity=".9"/>
+          <rect x="58" y="11" width="7" height="5" rx="1.5" fill="#C8DEFF" opacity=".9"/>
+          <!-- Window reflections -->
+          <rect x="8.5"  y="11.5" width="2.5" height="2" rx=".5" fill="white" opacity=".4"/>
+          <rect x="18.5" y="11.5" width="2.5" height="2" rx=".5" fill="white" opacity=".4"/>
+          <rect x="28.5" y="11.5" width="2.5" height="2" rx=".5" fill="white" opacity=".4"/>
+          <rect x="38.5" y="11.5" width="2.5" height="2" rx=".5" fill="white" opacity=".4"/>
+          <rect x="48.5" y="11.5" width="2.5" height="2" rx=".5" fill="white" opacity=".4"/>
+          <rect x="58.5" y="11.5" width="2" height="2" rx=".5" fill="white" opacity=".4"/>
+          <!-- Nose (front face - right side) -->
+          <path d="M67 10 Q71 10 71 14 L71 26 Q71 28 69 28 L67 28 Z" fill="#0D1B2A"/>
+          <rect x="67" y="12" width="3" height="4" rx="1" fill="#EAF2FF" opacity=".85"/>
+          <!-- Headlight glow -->
+          <circle cx="70" cy="14" r="1.5" fill="#fff" opacity=".9"/>
+          <!-- Tail (left side) -->
+          <path d="M5 10 Q1 10 1 14 L1 26 Q1 28 3 28 L5 28 Z" fill="#0D1B2A"/>
+          <!-- Number plate -->
+          <rect x="27" y="22" width="18" height="5" rx="1.5" fill="#1251A3"/>
+          <text x="36" y="26" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="4" font-weight="600" fill="white" letter-spacing="1">SBR-01</text>
+          <!-- Top roof detail -->
+          <rect x="10" y="8.5" width="52" height="2" rx="1" fill="#1251A3"/>
+          <rect x="22" y="6" width="6" height="3" rx="1" fill="#0B1F3A"/>
+          <rect x="44" y="6" width="6" height="3" rx="1" fill="#0B1F3A"/>
+          <!-- Pantograph (current collector) -->
+          <line x1="25" y1="6" x2="27" y2="2" stroke="#5B9EE8" stroke-width="1" stroke-linecap="round"/>
+          <line x1="27" y1="2" x2="29" y2="6" stroke="#5B9EE8" stroke-width="1" stroke-linecap="round"/>
+          <line x1="25" y1="2" x2="29" y2="2" stroke="#5B9EE8" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="47" y1="6" x2="49" y2="2" stroke="#5B9EE8" stroke-width="1" stroke-linecap="round"/>
+          <line x1="49" y1="2" x2="51" y2="6" stroke="#5B9EE8" stroke-width="1" stroke-linecap="round"/>
+          <line x1="47" y1="2" x2="51" y2="2" stroke="#5B9EE8" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
       </div>
     </div>
   </div>
 
-  <!-- BOTTOM GRID -->
-  <div class="bottom-grid">
+  <!-- BOTTOM -->
+  <div class="bottom">
     <!-- Station list -->
     <div class="panel">
       <div class="panel-title">รายชื่อสถานี · Stations</div>
-      <div class="station-list" id="station-list"></div>
+      <div class="slist" id="slist"></div>
     </div>
-
     <!-- Controls -->
-    <div class="panel controls-panel">
+    <div class="panel">
       <div class="panel-title">ควบคุมรถ · Controls</div>
       <div class="btns">
         <button class="btn btn-start" id="btn-start" onclick="startTrain()">▶ เริ่มเดินรถ</button>
-        <button class="btn btn-stop" id="btn-stop" onclick="stopTrain()" disabled>⏸ หยุดชั่วคราว</button>
-        <button class="btn btn-reset" id="btn-reset" onclick="resetTrain()">↺ รีเซ็ต</button>
+        <button class="btn btn-stop"  id="btn-stop"  onclick="stopTrain()" disabled>⏸ หยุดชั่วคราว</button>
+        <button class="btn btn-reset"                onclick="resetTrain()">↺ รีเซ็ต</button>
       </div>
-      <div class="speed-section">
-        <div class="speed-label-row">
-          <span class="speed-label-txt">ความเร็ว · Speed</span>
-          <span class="speed-val" id="speed-val">x3</span>
+      <div>
+        <div class="spd-row">
+          <span class="spd-lbl">ความเร็ว · Speed</span>
+          <span class="spd-num" id="spd-val">x3</span>
         </div>
-        <input type="range" min="1" max="5" value="3" id="speed-slider" oninput="setSpeed(this.value)">
-        <div style="display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:var(--text-dim);font-family:'Chakra Petch',monospace">
-          <span>ช้า</span><span>เร็ว</span>
-        </div>
+        <input type="range" min="1" max="5" value="3" step="1" id="spd-sl" oninput="setSpeed(this.value)">
+        <div class="spd-hints"><span>ช้า</span><span>เร็ว</span></div>
       </div>
     </div>
   </div>
 
-  <!-- LOG PANEL -->
-  <div class="log-panel">
+  <!-- LOG -->
+  <div class="log-card">
     <div class="panel-title">บันทึกเหตุการณ์ · Event Log</div>
-    <div class="log-entries" id="log-entries">
+    <div class="log-list" id="log-list">
       <div class="log-entry">
-        <span class="log-time" id="init-time">--:--:--</span>
-        <span class="log-dot"></span>
-        <span class="log-msg">ระบบพร้อมทำงาน · System initialized</span>
+        <span class="lt" id="init-t">--:--:--</span>
+        <span class="ld"></span>
+        <span>ระบบพร้อมทำงาน · System initialized</span>
       </div>
     </div>
   </div>
 
   <!-- FOOTER -->
-  <div class="footer">
+  <footer class="footer">
     <span class="footer-txt">จังหวัดสิงห์บุรี · Singburi Province Rail Simulator</span>
-    <span class="version-tag">v2.0</span>
-  </div>
-
+    <span class="ver">v3.1</span>
+  </footer>
 </div>
 
 <script>
 const STATIONS = [
-  { name: 'เมืองสิงห์บุรี', code: 'SBR' },
-  { name: 'บางระจัน',       code: 'BRJ' },
-  { name: 'ค่ายบางระจัน',  code: 'KBR' },
-  { name: 'พรหมบุรี',       code: 'PHB' },
-  { name: 'ท่าช้าง',        code: 'TCH' },
-  { name: 'อินทร์บุรี',     code: 'INB' },
+  { name:'เมืองสิงห์บุรี', code:'SBR' },
+  { name:'บางระจัน',        code:'BRJ' },
+  { name:'ค่ายบางระจัน',   code:'KBR' },
+  { name:'พรหมบุรี',        code:'PHB' },
+  { name:'ท่าช้าง',         code:'TCH' },
+  { name:'อินทร์บุรี',      code:'INB' },
 ];
 
-let idx = 0, direction = 1, speed = 3, tripCount = 0;
-let timer = null;
+let idx=0, dir=1, spd=3, trips=0, timer=null;
 
-// DOM refs
-const railProgress  = document.getElementById('rail-progress');
-const trainEl       = document.getElementById('train');
-const stationsRow   = document.getElementById('stations-row');
-const statusBadge   = document.getElementById('status-badge');
-const statusText    = document.getElementById('status-text');
-const currentSt     = document.getElementById('current-station');
-const nextSt        = document.getElementById('next-station');
-const tripCountEl   = document.getElementById('trip-count');
-const stationList   = document.getElementById('station-list');
-const logEntries    = document.getElementById('log-entries');
-const btnStart      = document.getElementById('btn-start');
-const btnStop       = document.getElementById('btn-stop');
-const railWrap      = document.querySelector('.rail-wrap');
+const railOuter  = document.getElementById('rail-outer');
+const trainEl    = document.getElementById('train-el');
+const stRow      = document.getElementById('st-row');
 
 // Build sleepers
-const sleepersEl = document.getElementById('sleepers');
-for (let i=0; i<60; i++) {
-  const s = document.createElement('div');
-  s.className = 'sleeper';
-  sleepersEl.appendChild(s);
+const sw = document.getElementById('sleepers-wrap');
+for(let i=0;i<55;i++){
+  const s=document.createElement('div');
+  s.className='sleeper'; sw.appendChild(s);
 }
 
-// Build station dots on track
-STATIONS.forEach((st, i) => {
-  const pct = i / (STATIONS.length - 1) * 100;
-  const el = document.createElement('div');
-  el.className = 'st';
-  el.id = 'st-' + i;
-  el.style.left = pct + '%';
-  const namePos = i % 2 === 0 ? 'st-name-top' : 'st-name-bot';
-  el.innerHTML = `
-    <span class="${namePos}">${st.name}</span>
+// Build station markers
+STATIONS.forEach((st,i)=>{
+  const pct = i/(STATIONS.length-1)*100;
+  const el  = document.createElement('div');
+  el.className='st'; el.id='st'+i; el.style.left=pct+'%';
+  const top = i%2===0;
+  el.innerHTML=`
+    <span class="st-name" style="${top?'bottom:calc(100% + 9px)':'top:calc(100% + 9px)'}">${st.name}</span>
     <div class="st-dot"></div>
-    <span class="st-num">${st.code}</span>
+    <span class="st-code" style="${top?'top:calc(100% + 7px)':'bottom:calc(100% + 5px)'}">${st.code}</span>
   `;
-  stationsRow.appendChild(el);
+  stRow.appendChild(el);
 });
 
-// Build station list rows
-function buildStationList() {
-  stationList.innerHTML = '';
-  STATIONS.forEach((st, i) => {
-    const row = document.createElement('div');
-    row.className = 'station-row' + (i === idx ? ' active-row' : '');
-    let badge = '';
-    if (i === idx) badge = '<span class="srow-badge here">HERE</span>';
-    else if (i < idx) badge = '<span class="srow-badge visited-badge">ผ่านแล้ว</span>';
-    else badge = '<span class="srow-badge ahead-badge">รอ</span>';
-    row.innerHTML = `
-      <span class="srow-num">0${i+1}</span>
-      <span class="srow-name">${st.name}</span>
-      ${badge}
-    `;
-    stationList.appendChild(row);
+function getTrainPx(){
+  const w=railOuter.offsetWidth, m=24, u=w-2*m;
+  return m + (idx/(STATIONS.length-1))*u;
+}
+
+function render(){
+  const pct=idx/(STATIONS.length-1)*100;
+  document.getElementById('rf-top').style.width=pct+'%';
+  document.getElementById('rf-bot').style.width=pct+'%';
+  trainEl.style.left=getTrainPx()+'px';
+  STATIONS.forEach((_,i)=>{
+    const el=document.getElementById('st'+i);
+    el.classList.toggle('active',i===idx);
+    el.classList.toggle('visited',i<idx);
+  });
+  const curEl=document.getElementById('cur-st');
+  curEl.textContent=STATIONS[idx].name;
+  const ni=idx+dir;
+  const nxtEl=document.getElementById('nxt-st');
+  if(ni>=0&&ni<STATIONS.length){
+    nxtEl.textContent=STATIONS[ni].name;
+    nxtEl.style.color='var(--mid)';
+  } else {
+    nxtEl.textContent='—';
+    nxtEl.style.color='var(--mist)';
+  }
+  document.getElementById('trips').innerHTML=trips+' <span style="font-size:11px;color:var(--steel)">เที่ยว</span>';
+  buildList();
+}
+
+function buildList(){
+  const sl=document.getElementById('slist'); sl.innerHTML='';
+  STATIONS.forEach((st,i)=>{
+    const row=document.createElement('div');
+    row.className='srow'+(i===idx?' active-row':'');
+    let pill='';
+    if(i===idx) pill='<span class="pill here">HERE</span>';
+    else if(i<idx) pill='<span class="pill done">ผ่านแล้ว</span>';
+    else pill='<span class="pill ahead">รอ</span>';
+    row.innerHTML=`<span class="srow-num">0${i+1}</span><span class="srow-name">${st.name}</span>${pill}`;
+    sl.appendChild(row);
   });
 }
 
-function getTrainLeftPx() {
-  const w = railWrap.offsetWidth;
-  const margin = 20;
-  const usable = w - 2 * margin;
-  return margin + (idx / (STATIONS.length - 1)) * usable;
+function addLog(msg,type=''){
+  const now=new Date();
+  const t=now.toTimeString().slice(0,8);
+  const e=document.createElement('div');
+  e.className='log-entry';
+  e.innerHTML=`<span class="lt">${t}</span><span class="ld ${type}"></span><span>${msg}</span>`;
+  const ll=document.getElementById('log-list');
+  ll.prepend(e);
+  if(ll.children.length>14) ll.lastChild.remove();
 }
 
-function render() {
-  // Progress bar
-  const pct = idx / (STATIONS.length - 1) * 100;
-  railProgress.style.width = pct + '%';
-
-  // Train position
-  trainEl.style.left = getTrainLeftPx() + 'px';
-
-  // Station dots
-  STATIONS.forEach((_, i) => {
-    const el = document.getElementById('st-' + i);
-    el.classList.toggle('active', i === idx);
-    el.classList.toggle('visited', i < idx);
-  });
-
-  // Stats
-  currentSt.textContent = STATIONS[idx].name;
-  const ni = idx + direction;
-  nextSt.textContent = (ni >= 0 && ni < STATIONS.length) ? STATIONS[ni].name : '—';
-  tripCountEl.textContent = tripCount;
-
-  buildStationList();
+function setStatus(m){
+  const b=document.getElementById('badge'), t=document.getElementById('badge-txt');
+  b.className='badge '+m;
+  t.textContent={standby:'STANDBY',running:'RUNNING',paused:'PAUSED'}[m]||m;
 }
 
-function addLog(msg, type = '') {
-  const now = new Date();
-  const t = now.toTimeString().slice(0,8);
-  const entry = document.createElement('div');
-  entry.className = 'log-entry' + (type ? ' event-' + type : '');
-  entry.innerHTML = `
-    <span class="log-time">${t}</span>
-    <span class="log-dot"></span>
-    <span class="log-msg">${msg}</span>
-  `;
-  logEntries.prepend(entry);
-  if (logEntries.children.length > 12) logEntries.lastChild.remove();
-}
-
-function setStatus(mode) {
-  statusBadge.className = 'status-badge ' + mode;
-  const labels = { ready:'STANDBY', running:'RUNNING', stopped:'PAUSED' };
-  statusText.textContent = labels[mode] || mode;
-}
-
-function startTrain() {
-  if (timer) return;
+function startTrain(){
+  if(timer)return;
   setStatus('running');
-  btnStart.disabled = true;
-  btnStop.disabled = false;
-  addLog('เริ่มให้บริการ · Service started', 'depart');
-  timer = setInterval(move, Math.round(2600 / speed));
+  document.getElementById('btn-start').disabled=true;
+  document.getElementById('btn-stop').disabled=false;
+  addLog('เริ่มให้บริการ · Service started','dep');
+  timer=setInterval(move,Math.round(2600/spd));
 }
 
-function move() {
-  idx += direction;
-  if (idx >= STATIONS.length - 1) { idx = STATIONS.length - 1; direction = -1; }
-  if (idx <= 0) { idx = 0; direction = 1; tripCount++; }
-  addLog(`จอดที่สถานี ${STATIONS[idx].name} [${STATIONS[idx].code}]`, 'arrive');
+function move(){
+  idx+=dir;
+  if(idx>=STATIONS.length-1){idx=STATIONS.length-1;dir=-1;}
+  if(idx<=0){idx=0;dir=1;trips++;}
+  addLog(`จอดที่สถานี ${STATIONS[idx].name} [${STATIONS[idx].code}]`,'arr');
   render();
 }
 
-function stopTrain() {
-  clearInterval(timer); timer = null;
-  setStatus('stopped');
-  btnStart.disabled = false;
-  btnStop.disabled = true;
+function stopTrain(){
+  clearInterval(timer); timer=null;
+  setStatus('paused');
+  document.getElementById('btn-start').disabled=false;
+  document.getElementById('btn-stop').disabled=true;
   addLog('หยุดให้บริการชั่วคราว · Service paused');
 }
 
-function resetTrain() {
-  clearInterval(timer); timer = null;
-  idx = 0; direction = 1; tripCount = 0;
-  setStatus('ready');
-  btnStart.disabled = false;
-  btnStop.disabled = true;
+function resetTrain(){
+  clearInterval(timer); timer=null;
+  idx=0; dir=1; trips=0;
+  setStatus('standby');
+  document.getElementById('btn-start').disabled=false;
+  document.getElementById('btn-stop').disabled=true;
   addLog('รีเซ็ตระบบ · System reset');
   render();
 }
 
-function setSpeed(v) {
-  speed = parseInt(v);
-  document.getElementById('speed-val').textContent = 'x' + v;
-  if (timer) {
-    clearInterval(timer); timer = null;
-    timer = setInterval(move, Math.round(2600 / speed));
-  }
+function setSpeed(v){
+  spd=parseInt(v);
+  document.getElementById('spd-val').textContent='x'+v;
+  if(timer){ clearInterval(timer); timer=null; timer=setInterval(move,Math.round(2600/spd)); }
 }
 
-// Clock
-function updateClock() {
-  const now = new Date();
-  document.getElementById('clock').textContent = now.toTimeString().slice(0,8);
-  const days = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
-  const d = now.getDate().toString().padStart(2,'0');
-  const m = (now.getMonth()+1).toString().padStart(2,'0');
-  const y = now.getFullYear() + 543;
-  document.getElementById('datestr').textContent = `วัน${days[now.getDay()]}ที่ ${d}/${m}/${y}`;
-  document.getElementById('init-time').textContent = now.toTimeString().slice(0,8);
+function updateClock(){
+  const now=new Date();
+  document.getElementById('clock').textContent=now.toTimeString().slice(0,8);
+  const days=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+  const d=now.getDate().toString().padStart(2,'0');
+  const m=(now.getMonth()+1).toString().padStart(2,'0');
+  const y=now.getFullYear()+543;
+  document.getElementById('datestr').textContent=`วัน${days[now.getDay()]}ที่ ${d}/${m}/${y}`;
+  document.getElementById('init-t').textContent=now.toTimeString().slice(0,8);
 }
-setInterval(updateClock, 1000);
+setInterval(updateClock,1000);
 updateClock();
-
-// Init
 render();
 </script>
 </body>
