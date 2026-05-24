@@ -1,381 +1,1195 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>C# POS Cafe System</title>
-
-  <script src="https://cdn.tailwindcss.com"></script>
-
+  <title>C# POS Cafe — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    body{
-      background: #f4fbff;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-50:  #EFF6FF;
+      --blue-100: #DBEAFE;
+      --blue-200: #BFDBFE;
+      --blue-400: #60A5FA;
+      --blue-500: #3B82F6;
+      --blue-600: #2563EB;
+      --blue-700: #1D4ED8;
+      --blue-900: #1E3A5F;
+      --ink:      #0F1E33;
+      --ink-2:    #3A5070;
+      --ink-3:    #8099B4;
+      --white:    #FFFFFF;
+      --surface:  #F7FBFF;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--ink);
       overflow-x: hidden;
     }
 
-    .glass{
-      background: rgba(255,255,255,0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.4);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
     }
 
-    .card-hover{
-      transition: all .4s ease;
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--blue-100);
     }
 
-    .card-hover:hover{
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 20px 40px rgba(59,130,246,0.2);
+    .nav-logo {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.4rem;
+      color: var(--blue-600);
+      letter-spacing: -0.02em;
     }
 
-    .glow{
-      animation: glow 3s infinite alternate;
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--ink-2);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--blue-600); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 6rem 4rem 4rem;
+      background: var(--white);
+      position: relative;
+      overflow: hidden;
     }
 
-    @keyframes glow{
-      from{
-        box-shadow: 0 0 10px rgba(59,130,246,.2);
-      }
-      to{
-        box-shadow: 0 0 30px rgba(59,130,246,.6);
-      }
-    }
-
-    .floating{
-      animation: floating 5s ease-in-out infinite;
-    }
-
-    @keyframes floating{
-      0%{
-        transform: translateY(0px);
-      }
-      50%{
-        transform: translateY(-15px);
-      }
-      100%{
-        transform: translateY(0px);
-      }
-    }
-
-    .fade-up{
-      opacity: 0;
-      transform: translateY(50px);
-      transition: 1s;
-    }
-
-    .fade-up.active{
-      opacity: 1;
-      transform: translateY(0px);
-    }
-
-    .gradient-text{
-      background: linear-gradient(to right,#2563eb,#38bdf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .bg-circle{
+    .hero-bg-circle {
       position: absolute;
-      border-radius: 9999px;
-      filter: blur(80px);
-      z-index: -1;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+    }
+    .hero-bg-circle.c1 {
+      width: 600px; height: 600px;
+      top: -200px; right: -100px;
+      background: var(--blue-100);
+      opacity: 0.6;
+    }
+    .hero-bg-circle.c2 {
+      width: 400px; height: 400px;
+      bottom: -100px; left: -50px;
+      background: var(--blue-200);
+      opacity: 0.4;
     }
 
-    .scrollbar-hide::-webkit-scrollbar{
-      display: none;
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue-600);
+      background: var(--blue-50);
+      border: 1px solid var(--blue-200);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-500); display: inline-block; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .hero-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--blue-600);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--ink-2);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn-primary {
+      padding: 0.8rem 1.8rem;
+      background: var(--blue-600);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, transform .2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--blue-700); transform: translateY(-2px); }
+
+    .btn-ghost {
+      padding: 0.8rem 1.8rem;
+      background: transparent;
+      color: var(--blue-600);
+      border: 1.5px solid var(--blue-200);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color .2s, background .2s, transform .2s;
+      display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--blue-400); background: var(--blue-50); transform: translateY(-2px); }
+
+    /* HERO VISUAL CARD */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .mockup-card {
+      background: var(--white);
+      border: 1px solid var(--blue-100);
+      border-radius: 18px;
+      padding: 1.4rem 1.6rem;
+      box-shadow: 0 8px 32px rgba(37,99,235,0.08);
+      transition: transform .3s;
+    }
+    .mockup-card:hover { transform: translateY(-4px); }
+
+    .mockup-card.main { }
+    .mockup-card.float-right {
+      margin-left: 3rem;
+      margin-top: -0.5rem;
+    }
+
+    .mc-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 0.8rem;
+    }
+    .mc-big {
+      font-family: 'Instrument Serif', serif;
+      font-size: 2.4rem;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .mc-sub { font-size: 0.85rem; color: var(--ink-3); margin-top: 0.2rem; }
+
+    .mc-bar-row { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.6rem; }
+    .mc-bar-label { font-size: 0.8rem; color: var(--ink-2); width: 80px; }
+    .mc-bar-track { flex: 1; height: 6px; background: var(--blue-50); border-radius: 999px; overflow: hidden; }
+    .mc-bar-fill { height: 100%; border-radius: 999px; background: var(--blue-500); }
+
+    .mc-items { display: flex; flex-direction: column; gap: 0.6rem; }
+    .mc-item { display: flex; justify-content: space-between; align-items: center; }
+    .mc-item-name { font-size: 0.85rem; color: var(--ink-2); }
+    .mc-item-price {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--blue-700);
+      background: var(--blue-50);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+    }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 6rem 4rem; }
+    .section-inner { max-width: 1200px; margin: auto; }
+
+    .section-tag {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 1.2rem;
+    }
+
+    .section-lead {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ink-2);
+      max-width: 560px;
+    }
+
+    /* ── WHY SECTION ── */
+    #why { background: var(--surface); }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .why-card {
+      background: var(--white);
+      border: 1px solid var(--blue-100);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow .3s, transform .3s;
+    }
+    .why-card:hover {
+      box-shadow: 0 12px 40px rgba(37,99,235,0.1);
+      transform: translateY(-4px);
+    }
+    .why-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: var(--blue-500);
+      border-radius: 4px 0 0 4px;
+    }
+
+    .why-num {
+      font-family: 'Instrument Serif', serif;
+      font-size: 3rem;
+      color: var(--blue-100);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .why-title { font-size: 1.05rem; font-weight: 600; color: var(--ink); margin-bottom: 0.6rem; }
+    .why-desc { font-size: 0.9rem; line-height: 1.7; color: var(--ink-2); }
+
+    .why-highlight {
+      grid-column: 1 / -1;
+      background: var(--blue-600);
+      border: none;
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .why-highlight::before { display: none; }
+    .why-highlight .why-title { color: #fff; font-size: 1.2rem; }
+    .why-highlight .why-desc { color: rgba(255,255,255,0.75); }
+    .why-hl-icon {
+      font-size: 3.5rem;
+      flex-shrink: 0;
+    }
+
+    /* ── REQUIREMENTS ── */
+    #requirements { background: var(--white); }
+
+    .req-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .req-card {
+      background: var(--surface);
+      border: 1px solid var(--blue-100);
+      border-radius: 14px;
+      padding: 1.8rem;
+      transition: box-shadow .3s, transform .3s;
+    }
+    .req-card:hover {
+      box-shadow: 0 8px 30px rgba(37,99,235,0.1);
+      transform: translateY(-4px);
+    }
+
+    .req-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: var(--blue-50);
+      border: 1px solid var(--blue-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .req-title { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 0.5rem; }
+    .req-desc { font-size: 0.85rem; line-height: 1.7; color: var(--ink-2); }
+
+    .req-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.8rem; }
+    .req-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--blue-700);
+      background: var(--blue-50);
+      border: 1px solid var(--blue-200);
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+    }
+
+    /* ── FEATURES ── */
+    #features { background: var(--surface); }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .feat-card {
+      background: var(--white);
+      border: 1px solid var(--blue-100);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: box-shadow .3s, transform .3s;
+    }
+    .feat-card:hover {
+      box-shadow: 0 12px 40px rgba(37,99,235,0.12);
+      transform: translateY(-5px);
+    }
+
+    .feat-emoji { font-size: 2.5rem; margin-bottom: 1rem; }
+    .feat-title { font-size: 1rem; font-weight: 600; color: var(--ink); margin-bottom: 0.6rem; }
+    .feat-desc { font-size: 0.88rem; line-height: 1.7; color: var(--ink-2); }
+
+    /* ── TECH ── */
+    #tech { background: var(--white); }
+
+    .tech-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      margin-top: 3rem;
+    }
+
+    .tech-list { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .tech-item {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      padding: 1.2rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--blue-100);
+      border-radius: 12px;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .tech-item:hover {
+      box-shadow: 0 6px 20px rgba(37,99,235,0.1);
+      transform: translateX(6px);
+    }
+
+    .tech-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .tech-name { font-size: 0.95rem; font-weight: 600; color: var(--ink); }
+    .tech-role { font-size: 0.82rem; color: var(--ink-3); margin-top: 0.1rem; }
+
+    .tech-timeline {
+      position: relative;
+      padding-left: 1.5rem;
+    }
+    .tech-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--blue-100);
+    }
+
+    .tl-item {
+      position: relative;
+      padding: 0 0 2rem 1.5rem;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -5px; top: 4px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--blue-500);
+      border: 2px solid var(--white);
+    }
+
+    .tl-phase {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue-500);
+      margin-bottom: 0.3rem;
+    }
+    .tl-title { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 0.3rem; }
+    .tl-desc { font-size: 0.85rem; color: var(--ink-2); line-height: 1.6; }
+
+    /* ── GALLERY ── */
+    #gallery { background: var(--surface); }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .gal-card {
+      background: var(--white);
+      border: 1px solid var(--blue-100);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: box-shadow .3s, transform .3s;
+    }
+    .gal-card:hover {
+      box-shadow: 0 12px 40px rgba(37,99,235,0.12);
+      transform: translateY(-5px);
+    }
+
+    .gal-thumb {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+    .gal-thumb.t1 { background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); }
+    .gal-thumb.t2 { background: linear-gradient(135deg, #F0F9FF 0%, #BAE6FD 100%); }
+    .gal-thumb.t3 { background: linear-gradient(135deg, #EFF6FF 0%, #C7D2FE 100%); }
+    .gal-thumb.t4 { background: linear-gradient(135deg, #F0FDFA 0%, #CCFBF1 100%); }
+    .gal-thumb.t5 { background: linear-gradient(135deg, #FFF7ED 0%, #FED7AA 100%); }
+    .gal-thumb.t6 { background: linear-gradient(135deg, #FFF1F2 0%, #FECDD3 100%); }
+
+    .gal-body { padding: 1.4rem; }
+    .gal-title { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 0.4rem; }
+    .gal-desc { font-size: 0.85rem; color: var(--ink-2); line-height: 1.6; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--blue-600); }
+
+    #contact .section-tag { color: rgba(255,255,255,0.6); }
+    #contact .section-title { color: #fff; }
+    #contact .section-lead { color: rgba(255,255,255,0.75); max-width: 540px; }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .contact-btns { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+
+    .btn-white {
+      padding: 0.8rem 1.8rem;
+      background: #fff;
+      color: var(--blue-700);
+      border: none;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .2s, opacity .2s;
+      display: inline-block;
+    }
+    .btn-white:hover { transform: translateY(-2px); opacity: 0.9; }
+
+    .btn-outline-white {
+      padding: 0.8rem 1.8rem;
+      background: transparent;
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color .2s, background .2s, transform .2s;
+      display: inline-block;
+    }
+    .btn-outline-white:hover { border-color: #fff; background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+
+    .contact-info { display: flex; flex-direction: column; gap: 1.4rem; }
+
+    .ci-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.2rem 1.5rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+    }
+    .ci-icon { font-size: 1.5rem; }
+    .ci-label { font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 0.2rem; }
+    .ci-val { font-size: 0.95rem; font-weight: 500; color: #fff; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 2rem 4rem;
+      font-size: 0.85rem;
+    }
+    footer strong { color: rgba(255,255,255,0.7); }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 2rem; }
+      .nav-links { gap: 1.2rem; }
+      section { padding: 4rem 2rem; }
+      .hero { padding: 5rem 2rem 3rem; }
+      .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .why-grid { grid-template-columns: 1fr; }
+      .req-grid { grid-template-columns: 1fr 1fr; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .tech-inner { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .req-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 
-<body class="font-sans">
+<body>
 
-  <!-- Background -->
-  <div class="bg-circle w-96 h-96 bg-blue-300 top-0 left-0 opacity-30"></div>
-  <div class="bg-circle w-96 h-96 bg-cyan-300 bottom-0 right-0 opacity-30"></div>
-
-  <!-- Navbar -->
-  <nav class="w-full p-5 flex justify-between items-center glass fixed top-0 z-50">
-    <h1 class="text-2xl font-bold gradient-text">
-      C# POS Cafe
-    </h1>
-
-    <div class="flex gap-6 text-gray-700 font-semibold">
-      <a href="#home" class="hover:text-blue-500 transition">Home</a>
-      <a href="#features" class="hover:text-blue-500 transition">Features</a>
-      <a href="#gallery" class="hover:text-blue-500 transition">Gallery</a>
-      <a href="#contact" class="hover:text-blue-500 transition">Contact</a>
-    </div>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">C# POS Cafe</div>
+    <ul class="nav-links">
+      <li><a href="#why">ทำไมถึงสร้าง</a></li>
+      <li><a href="#requirements">ความต้องการ</a></li>
+      <li><a href="#features">ฟีเจอร์</a></li>
+      <li><a href="#gallery">ตัวอย่าง</a></li>
+      <li><a href="#contact">ติดต่อ</a></li>
+    </ul>
   </nav>
 
-  <!-- Hero -->
-  <section id="home" class="min-h-screen flex items-center justify-center px-10">
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg-circle c1"></div>
+    <div class="hero-bg-circle c2"></div>
 
-    <div class="grid md:grid-cols-2 gap-10 items-center">
+    <div class="hero-inner">
 
-      <div class="fade-up">
-        <h1 class="text-6xl font-black leading-tight">
-          ระบบ POS <br>
-          <span class="gradient-text">สำหรับร้านคาเฟ่</span>
+      <div class="reveal">
+        <div class="hero-eyebrow">
+          <span></span>
+          Portfolio Project · C# .NET
+        </div>
+        <h1 class="hero-title">
+          ระบบ POS<br>
+          <em>สำหรับร้านคาเฟ่</em><br>
+          ยุคใหม่
         </h1>
-
-        <p class="mt-6 text-gray-600 text-lg leading-relaxed">
-          ระบบจัดการร้านคาเฟ่ที่พัฒนาด้วย C#
-          รองรับการขายสินค้า จัดการออเดอร์
-          เช็คยอดขาย และบริหารสต๊อกสินค้า
-          พร้อม UI สวยงามทันสมัย
+        <p class="hero-sub">
+          ระบบจัดการร้านคาเฟ่ครบวงจร พัฒนาด้วย C# .NET
+          ตอบโจทย์ปัญหาจริงของผู้ประกอบการ ตั้งแต่การรับออเดอร์
+          จนถึงวิเคราะห์ยอดขายและบริหารสต๊อก
         </p>
-
-        <div class="mt-8 flex gap-4">
-          <button class="px-8 py-4 rounded-2xl bg-blue-600 text-white font-bold hover:scale-105 transition glow">
-            ดูผลงาน
-          </button>
-
-          <button class="px-8 py-4 rounded-2xl border border-blue-500 text-blue-600 font-bold hover:bg-blue-50 transition">
-            ติดต่อ
-          </button>
+        <div class="hero-btns">
+          <a href="#features" class="btn-primary">ดูฟีเจอร์ทั้งหมด</a>
+          <a href="#contact" class="btn-ghost">ติดต่อผู้พัฒนา</a>
         </div>
       </div>
 
-      <div class="fade-up floating">
-        <div class="glass rounded-3xl p-5">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png"
-            class="w-full"
-          />
-        </div>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- Features -->
-  <section id="features" class="py-24 px-10">
-
-    <div class="text-center mb-16 fade-up">
-      <h2 class="text-5xl font-black gradient-text">
-        ระบบที่พัฒนา
-      </h2>
-
-      <p class="text-gray-600 mt-4">
-        ฟังก์ชันหลักของระบบ POS Cafe
-      </p>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-8">
-
-      <div class="glass rounded-3xl p-8 card-hover fade-up">
-        <div class="text-5xl mb-5">☕</div>
-
-        <h3 class="text-2xl font-bold mb-4">
-          ระบบขายสินค้า
-        </h3>
-
-        <p class="text-gray-600 leading-relaxed">
-          รองรับการขายเครื่องดื่ม อาหาร และสินค้าในร้าน
-          พร้อมคำนวณราคาอัตโนมัติ
-        </p>
-      </div>
-
-      <div class="glass rounded-3xl p-8 card-hover fade-up">
-        <div class="text-5xl mb-5">📊</div>
-
-        <h3 class="text-2xl font-bold mb-4">
-          รายงานยอดขาย
-        </h3>
-
-        <p class="text-gray-600 leading-relaxed">
-          ดูสรุปยอดขายรายวัน รายเดือน
-          และวิเคราะห์ข้อมูลการขายได้ง่าย
-        </p>
-      </div>
-
-      <div class="glass rounded-3xl p-8 card-hover fade-up">
-        <div class="text-5xl mb-5">📦</div>
-
-        <h3 class="text-2xl font-bold mb-4">
-          จัดการสต๊อก
-        </h3>
-
-        <p class="text-gray-600 leading-relaxed">
-          ระบบจัดการวัตถุดิบและสินค้า
-          แจ้งเตือนสินค้าใกล้หมดอัตโนมัติ
-        </p>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- Gallery -->
-  <section id="gallery" class="py-24 px-10">
-
-    <div class="text-center mb-16 fade-up">
-      <h2 class="text-5xl font-black gradient-text">
-        ตัวอย่างหน้าระบบ
-      </h2>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-8">
-
-      <div class="glass rounded-3xl overflow-hidden card-hover fade-up">
-        <div class="bg-blue-100 p-10 flex justify-center">
-          <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" class="w-32"/>
-        </div>
-
-        <div class="p-6">
-          <h3 class="text-2xl font-bold">
-            หน้า Dashboard
-          </h3>
-
-          <p class="text-gray-600 mt-3">
-            แสดงยอดขายและข้อมูลสรุปภายในร้าน
-          </p>
-        </div>
-      </div>
-
-      <div class="glass rounded-3xl overflow-hidden card-hover fade-up">
-        <div class="bg-cyan-100 p-10 flex justify-center">
-          <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" class="w-32"/>
-        </div>
-
-        <div class="p-6">
-          <h3 class="text-2xl font-bold">
-            หน้า Order
-          </h3>
-
-          <p class="text-gray-600 mt-3">
-            ระบบรับออเดอร์ใช้งานง่ายและรวดเร็ว
-          </p>
-        </div>
-      </div>
-
-      <div class="glass rounded-3xl overflow-hidden card-hover fade-up">
-        <div class="bg-sky-100 p-10 flex justify-center">
-          <img src="https://cdn-icons-png.flaticon.com/512/2921/2921822.png" class="w-32"/>
-        </div>
-
-        <div class="p-6">
-          <h3 class="text-2xl font-bold">
-            ระบบสมาชิก
-          </h3>
-
-          <p class="text-gray-600 mt-3">
-            สะสมแต้มและจัดการข้อมูลลูกค้า
-          </p>
-        </div>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- About -->
-  <section class="py-24 px-10">
-
-    <div class="glass rounded-[40px] p-10 fade-up">
-
-      <div class="grid md:grid-cols-2 gap-10 items-center">
-
-        <div>
-          <h2 class="text-5xl font-black gradient-text">
-            Technology
-          </h2>
-
-          <div class="mt-8 space-y-4">
-
-            <div class="flex items-center gap-4">
-              <div class="w-4 h-4 bg-blue-500 rounded-full"></div>
-              <p class="text-lg font-semibold">C# .NET</p>
+      <div class="hero-visual reveal">
+        <div class="mockup-card main">
+          <div class="mc-label">ยอดขายวันนี้</div>
+          <div class="mc-big">฿12,480</div>
+          <div class="mc-sub">เพิ่มขึ้น 18% จากเมื่อวาน</div>
+          <div style="margin-top: 1.2rem;">
+            <div class="mc-bar-row">
+              <div class="mc-bar-label">ลาเต้</div>
+              <div class="mc-bar-track"><div class="mc-bar-fill" style="width:82%"></div></div>
             </div>
-
-            <div class="flex items-center gap-4">
-              <div class="w-4 h-4 bg-cyan-500 rounded-full"></div>
-              <p class="text-lg font-semibold">SQL Server</p>
+            <div class="mc-bar-row">
+              <div class="mc-bar-label">อเมริกาโน่</div>
+              <div class="mc-bar-track"><div class="mc-bar-fill" style="width:65%"></div></div>
             </div>
-
-            <div class="flex items-center gap-4">
-              <div class="w-4 h-4 bg-sky-500 rounded-full"></div>
-              <p class="text-lg font-semibold">Modern UI Design</p>
+            <div class="mc-bar-row">
+              <div class="mc-bar-label">มัทฉะ</div>
+              <div class="mc-bar-track"><div class="mc-bar-fill" style="width:50%"></div></div>
             </div>
-
-            <div class="flex items-center gap-4">
-              <div class="w-4 h-4 bg-blue-400 rounded-full"></div>
-              <p class="text-lg font-semibold">Inventory System</p>
-            </div>
-
           </div>
         </div>
 
-        <div class="floating">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-            class="w-full"
-          />
+        <div class="mockup-card float-right">
+          <div class="mc-label">ออเดอร์ล่าสุด</div>
+          <div class="mc-items">
+            <div class="mc-item">
+              <span class="mc-item-name">☕ ลาเต้เย็น</span>
+              <span class="mc-item-price">฿80</span>
+            </div>
+            <div class="mc-item">
+              <span class="mc-item-name">🍰 เค้กช็อกโกแลต</span>
+              <span class="mc-item-price">฿120</span>
+            </div>
+            <div class="mc-item">
+              <span class="mc-item-name">🍵 มัทฉะลาเต้</span>
+              <span class="mc-item-price">฿90</span>
+            </div>
+          </div>
+          <div style="margin-top:0.8rem; padding-top:0.8rem; border-top: 1px solid var(--blue-100); display:flex; justify-content:space-between;">
+            <span style="font-size:0.85rem; color:var(--ink-2);">รวม</span>
+            <span style="font-size:0.95rem; font-weight:600; color:var(--blue-700);">฿290</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section id="why">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-tag">ที่มาของโปรเจกต์</div>
+        <h2 class="section-title">ทำไมถึงพัฒนาระบบนี้ขึ้นมา?</h2>
+        <p class="section-lead">
+          จากการสังเกตพฤติกรรมผู้ประกอบการร้านคาเฟ่ขนาดเล็ก-กลาง
+          พบปัญหาสำคัญหลายข้อที่ส่งผลต่อประสิทธิภาพและรายได้โดยตรง
+        </p>
+      </div>
+
+      <div class="why-grid">
+
+        <div class="why-card reveal">
+          <div class="why-num">01</div>
+          <div class="why-title">บันทึกออเดอร์ด้วยมือ — ผิดพลาดสูง</div>
+          <div class="why-desc">
+            ร้านส่วนใหญ่ยังจดออเดอร์บนกระดาษ ทำให้เกิดความผิดพลาดบ่อย
+            ออเดอร์ตกหล่น และคิดเงินไม่ถูกต้อง ส่งผลต่อความพึงพอใจของลูกค้า
+          </div>
+        </div>
+
+        <div class="why-card reveal">
+          <div class="why-num">02</div>
+          <div class="why-title">ไม่รู้ว่าสินค้าไหนขายดีที่สุด</div>
+          <div class="why-desc">
+            ขาดข้อมูลวิเคราะห์การขาย ทำให้ไม่รู้ว่าควรเน้นสินค้าไหน
+            หรือควรตัดสินค้าไหนออก ส่งผลให้ต้นทุนสูงกว่าที่ควรจะเป็น
+          </div>
+        </div>
+
+        <div class="why-card reveal">
+          <div class="why-num">03</div>
+          <div class="why-title">จัดการสต๊อกวัตถุดิบไม่ได้</div>
+          <div class="why-desc">
+            วัตถุดิบหมดกลางวัน หรือซื้อมาเกินจนหมดอายุ
+            เพราะไม่มีระบบติดตาม ทำให้เสียทั้งโอกาสและต้นทุนไปพร้อมกัน
+          </div>
+        </div>
+
+        <div class="why-card reveal">
+          <div class="why-num">04</div>
+          <div class="why-title">ซอฟต์แวร์ในตลาดแพงและซับซ้อนเกินไป</div>
+          <div class="why-desc">
+            ระบบ POS ที่มีอยู่ในตลาดมักมีค่าใช้จ่ายสูง ใช้งานยาก
+            หรือต้องสมัครสมาชิกรายเดือนที่ไม่คุ้มค่าสำหรับร้านขนาดเล็ก
+          </div>
+        </div>
+
+        <div class="why-highlight reveal">
+          <div class="why-hl-icon">☕</div>
+          <div>
+            <div class="why-title">เป้าหมายของโปรเจกต์</div>
+            <div class="why-desc">
+              สร้างระบบ POS ที่เข้าใจง่าย ใช้งานได้จริง ต้นทุนต่ำ
+              เหมาะสำหรับร้านคาเฟ่ไทยโดยเฉพาะ พร้อมฟีเจอร์ครบที่จำเป็น
+              ไม่มีส่วนเกินที่ไม่จำเป็นต้องจ่าย
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- REQUIREMENTS -->
+  <section id="requirements">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-tag">ความต้องการของระบบ</div>
+        <h2 class="section-title">Requirement ทั้งหมด</h2>
+        <p class="section-lead">
+          ความต้องการที่รวบรวมจากการสัมภาษณ์เจ้าของร้านจริง
+          แบ่งเป็นความต้องการเชิงฟังก์ชัน (Functional) และ
+          ที่ไม่ใช่ฟังก์ชัน (Non-Functional)
+        </p>
+      </div>
+
+      <div style="margin-top: 2.5rem; margin-bottom: 1rem;">
+        <div class="section-tag" style="font-size:0.75rem;">Functional Requirements</div>
+      </div>
+
+      <div class="req-grid">
+
+        <div class="req-card reveal">
+          <div class="req-icon">🛒</div>
+          <div class="req-title">FR-01 · ระบบรับออเดอร์</div>
+          <div class="req-desc">พนักงานสามารถเพิ่ม ลบ แก้ไขรายการสินค้าในออเดอร์ได้ก่อนยืนยัน รองรับโต๊ะหลายโต๊ะพร้อมกัน</div>
+          <div class="req-tags">
+            <span class="req-tag">ต้องมี</span>
+          </div>
+        </div>
+
+        <div class="req-card reveal">
+          <div class="req-icon">💳</div>
+          <div class="req-title">FR-02 · ชำระเงินหลายช่องทาง</div>
+          <div class="req-desc">รองรับการชำระด้วยเงินสด โอนผ่านแอป และคิดเงินทอนอัตโนมัติ พร้อมปริ้นท์ใบเสร็จ</div>
+          <div class="req-tags">
+            <span class="req-tag">ต้องมี</span>
+          </div>
+        </div>
+
+        <div class="req-card reveal">
+          <div class="req-icon">📊</div>
+          <div class="req-title">FR-03 · รายงานยอดขาย</div>
+          <div class="req-desc">สรุปยอดขายรายวัน รายสัปดาห์ รายเดือน พร้อมกราฟแสดงสินค้าขายดี</div>
+          <div class="req-tags">
+            <span class="req-tag">ต้องมี</span>
+          </div>
+        </div>
+
+        <div class="req-card reveal">
+          <div class="req-icon">📦</div>
+          <div class="req-title">FR-04 · จัดการสต๊อก</div>
+          <div class="req-desc">บันทึกและติดตามวัตถุดิบ แจ้งเตือนเมื่อสินค้าเหลือน้อยกว่าค่าที่กำหนด</div>
+          <div class="req-tags">
+            <span class="req-tag">ต้องมี</span>
+          </div>
+        </div>
+
+        <div class="req-card reveal">
+          <div class="req-icon">👥</div>
+          <div class="req-title">FR-05 · ระบบสมาชิก</div>
+          <div class="req-desc">บันทึกข้อมูลลูกค้า สะสมแต้ม และดูประวัติการซื้อเพื่อใช้ในโปรโมชัน</div>
+          <div class="req-tags">
+            <span class="req-tag">ควรมี</span>
+          </div>
+        </div>
+
+        <div class="req-card reveal">
+          <div class="req-icon">🔐</div>
+          <div class="req-title">FR-06 · จัดการผู้ใช้งาน</div>
+          <div class="req-desc">แบ่งสิทธิ์ระหว่างแคชเชียร์กับผู้จัดการ เจ้าของร้านตรวจสอบการดำเนินการได้</div>
+          <div class="req-tags">
+            <span class="req-tag">ควรมี</span>
+          </div>
+        </div>
+
+        <div class="req-card reveal">
+          <div class="req-icon">🍱</div>
+          <div class="req-title">FR-07 · จัดการเมนูสินค้า</div>
+          <div class="req-desc">เพิ่ม ลบ แก้ไขราคา และจัดหมวดหมู่สินค้าได้ง่าย พร้อมรูปภาพประกอบ</div>
+          <div class="req-tags">
+            <span class="req-tag">ต้องมี</span>
+          </div>
+        </div>
+
+        <div class="req-card reveal">
+          <div class="req-icon">🏷️</div>
+          <div class="req-title">FR-08 · ระบบส่วนลดและโปรโมชัน</div>
+          <div class="req-desc">ตั้งค่าส่วนลดเฉพาะวัน คูปอง และโปรโมชันพิเศษสำหรับลูกค้าสมาชิก</div>
+          <div class="req-tags">
+            <span class="req-tag">ควรมี</span>
+          </div>
+        </div>
+
+        <div class="req-card reveal">
+          <div class="req-icon">🖨️</div>
+          <div class="req-title">FR-09 · พิมพ์ใบเสร็จ</div>
+          <div class="req-desc">รองรับเครื่องปริ้นท์ใบเสร็จความร้อน และส่ง e-Receipt ทางอีเมล</div>
+          <div class="req-tags">
+            <span class="req-tag">ต้องมี</span>
+          </div>
         </div>
 
       </div>
 
-    </div>
-
-  </section>
-
-  <!-- Contact -->
-  <section id="contact" class="py-24 px-10">
-
-    <div class="glass rounded-[40px] p-10 text-center fade-up">
-
-      <h2 class="text-5xl font-black gradient-text">
-        ติดต่อผู้พัฒนา
-      </h2>
-
-      <p class="text-gray-600 mt-6 text-lg">
-        UX/UI Designer & Frontend Developer
-      </p>
-
-      <div class="mt-10 flex justify-center gap-6 flex-wrap">
-
-        <button class="px-8 py-4 rounded-2xl bg-blue-600 text-white font-bold hover:scale-105 transition">
-          Facebook
-        </button>
-
-        <button class="px-8 py-4 rounded-2xl bg-cyan-500 text-white font-bold hover:scale-105 transition">
-          GitHub
-        </button>
-
-        <button class="px-8 py-4 rounded-2xl bg-sky-400 text-white font-bold hover:scale-105 transition">
-          Portfolio
-        </button>
-
+      <div style="margin-top: 3rem; margin-bottom: 1rem;">
+        <div class="section-tag" style="font-size:0.75rem;">Non-Functional Requirements</div>
       </div>
 
-    </div>
+      <div class="req-grid">
 
+        <div class="req-card reveal">
+          <div class="req-icon">⚡</div>
+          <div class="req-title">NFR-01 · ประสิทธิภาพ</div>
+          <div class="req-desc">ระบบต้องตอบสนองภายใน 2 วินาที รองรับการใช้งานพร้อมกันของพนักงานหลายคน</div>
+          <div class="req-tags"><span class="req-tag">Performance</span></div>
+        </div>
+
+        <div class="req-card reveal">
+          <div class="req-icon">🛡️</div>
+          <div class="req-title">NFR-02 · ความปลอดภัย</div>
+          <div class="req-desc">ข้อมูลลูกค้าและการเงินต้องเข้ารหัส มีการ Log ทุก Transaction</div>
+          <div class="req-tags"><span class="req-tag">Security</span></div>
+        </div>
+
+        <div class="req-card reveal">
+          <div class="req-icon">🖥️</div>
+          <div class="req-title">NFR-03 · ใช้งานง่าย</div>
+          <div class="req-desc">พนักงานใหม่สามารถเรียนรู้ระบบได้ภายใน 30 นาที UI เป็นภาษาไทย</div>
+          <div class="req-tags"><span class="req-tag">Usability</span></div>
+        </div>
+
+      </div>
+    </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="text-center py-10 text-gray-500">
-    © 2026 C# Cafe POS System Portfolio
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-tag">ฟีเจอร์ที่พัฒนา</div>
+        <h2 class="section-title">ระบบที่สร้างขึ้น</h2>
+        <p class="section-lead">
+          ฟีเจอร์หลักที่ตอบโจทย์ทุกความต้องการของร้านคาเฟ่
+        </p>
+      </div>
+
+      <div class="features-grid" style="margin-top:3rem;">
+
+        <div class="feat-card reveal">
+          <div class="feat-emoji">☕</div>
+          <div class="feat-title">ระบบรับออเดอร์</div>
+          <div class="feat-desc">รองรับหลายโต๊ะพร้อมกัน เพิ่มลบรายการได้ทันที คำนวณราคาอัตโนมัติ</div>
+        </div>
+
+        <div class="feat-card reveal">
+          <div class="feat-emoji">📊</div>
+          <div class="feat-title">Dashboard ยอดขาย</div>
+          <div class="feat-desc">กราฟสรุปรายวัน-รายเดือน ดูสินค้าขายดี เปรียบเทียบรายได้ย้อนหลัง</div>
+        </div>
+
+        <div class="feat-card reveal">
+          <div class="feat-emoji">📦</div>
+          <div class="feat-title">จัดการสต๊อก</div>
+          <div class="feat-desc">ติดตามวัตถุดิบแบบ real-time แจ้งเตือนอัตโนมัติเมื่อใกล้หมด</div>
+        </div>
+
+        <div class="feat-card reveal">
+          <div class="feat-emoji">👤</div>
+          <div class="feat-title">ระบบสมาชิก</div>
+          <div class="feat-desc">บันทึกข้อมูลลูกค้า สะสมแต้ม ดูประวัติ และส่งโปรโมชันได้</div>
+        </div>
+
+        <div class="feat-card reveal">
+          <div class="feat-emoji">💳</div>
+          <div class="feat-title">ชำระเงินหลายช่องทาง</div>
+          <div class="feat-desc">เงินสด โอนแอป คิดเงินทอนอัตโนมัติ และพิมพ์ใบเสร็จทันที</div>
+        </div>
+
+        <div class="feat-card reveal">
+          <div class="feat-emoji">🔐</div>
+          <div class="feat-title">จัดการสิทธิ์ผู้ใช้</div>
+          <div class="feat-desc">แบ่งระดับสิทธิ์แคชเชียร์/ผู้จัดการ ตรวจสอบ Log ทุก Transaction</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH -->
+  <section id="tech">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-tag">เทคโนโลยี</div>
+        <h2 class="section-title">Tech Stack ที่ใช้</h2>
+      </div>
+
+      <div class="tech-inner">
+
+        <div class="tech-list reveal">
+
+          <div class="tech-item">
+            <div class="tech-dot" style="background:#512BD4;"></div>
+            <div>
+              <div class="tech-name">C# .NET 8</div>
+              <div class="tech-role">Backend Logic & Business Layer</div>
+            </div>
+          </div>
+
+          <div class="tech-item">
+            <div class="tech-dot" style="background:#CC2927;"></div>
+            <div>
+              <div class="tech-name">SQL Server</div>
+              <div class="tech-role">ฐานข้อมูลหลัก — เก็บ Transaction, สมาชิก, สต๊อก</div>
+            </div>
+          </div>
+
+          <div class="tech-item">
+            <div class="tech-dot" style="background:#0078D4;"></div>
+            <div>
+              <div class="tech-name">Windows Forms / WPF</div>
+              <div class="tech-role">UI Framework สำหรับ Desktop Application</div>
+            </div>
+          </div>
+
+          <div class="tech-item">
+            <div class="tech-dot" style="background:#2563EB;"></div>
+            <div>
+              <div class="tech-name">Entity Framework Core</div>
+              <div class="tech-role">ORM — จัดการ Database Query</div>
+            </div>
+          </div>
+
+          <div class="tech-item">
+            <div class="tech-dot" style="background:#38BDF8;"></div>
+            <div>
+              <div class="tech-name">Crystal Reports</div>
+              <div class="tech-role">ออกรายงานและใบเสร็จ PDF</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="tech-timeline reveal">
+
+          <div class="tl-item">
+            <div class="tl-phase">Phase 1</div>
+            <div class="tl-title">วิเคราะห์ความต้องการ</div>
+            <div class="tl-desc">สัมภาษณ์เจ้าของร้าน 5 แห่ง รวบรวม Requirement จัดทำ Use Case Diagram</div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-phase">Phase 2</div>
+            <div class="tl-title">ออกแบบระบบ</div>
+            <div class="tl-desc">ออกแบบฐานข้อมูล ER Diagram และ Wireframe ของทุกหน้าจอ</div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-phase">Phase 3</div>
+            <div class="tl-title">พัฒนาและทดสอบ</div>
+            <div class="tl-desc">เขียนโค้ด C# ทดสอบทุกฟีเจอร์ แก้ Bug ตาม Feedback จากผู้ใช้จริง</div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-phase">Phase 4</div>
+            <div class="tl-title">Deploy และ Maintenance</div>
+            <div class="tl-desc">ติดตั้งระบบที่ร้านจริง อบรมพนักงาน และให้ Support ต่อเนื่อง</div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-tag">ตัวอย่างหน้าระบบ</div>
+        <h2 class="section-title">หน้าต่างๆ ในระบบ</h2>
+      </div>
+
+      <div class="gallery-grid">
+
+        <div class="gal-card reveal">
+          <div class="gal-thumb t1">📊</div>
+          <div class="gal-body">
+            <div class="gal-title">หน้า Dashboard</div>
+            <div class="gal-desc">แสดงยอดขายรวม กราฟสินค้าขายดี และสรุปรายวันแบบ real-time</div>
+          </div>
+        </div>
+
+        <div class="gal-card reveal">
+          <div class="gal-thumb t2">🛒</div>
+          <div class="gal-body">
+            <div class="gal-title">หน้ารับออเดอร์</div>
+            <div class="gal-desc">เลือกสินค้าจากเมนู เพิ่มรายการ และยืนยันออเดอร์ได้รวดเร็ว</div>
+          </div>
+        </div>
+
+        <div class="gal-card reveal">
+          <div class="gal-thumb t3">💳</div>
+          <div class="gal-body">
+            <div class="gal-title">หน้าชำระเงิน</div>
+            <div class="gal-desc">เลือกช่องทางชำระ คิดเงินทอน และปริ้นท์ใบเสร็จอัตโนมัติ</div>
+          </div>
+        </div>
+
+        <div class="gal-card reveal">
+          <div class="gal-thumb t4">📦</div>
+          <div class="gal-body">
+            <div class="gal-title">หน้าสต๊อกวัตถุดิบ</div>
+            <div class="gal-desc">ดูปริมาณคงเหลือ เพิ่มสต๊อก และดูการแจ้งเตือนสินค้าใกล้หมด</div>
+          </div>
+        </div>
+
+        <div class="gal-card reveal">
+          <div class="gal-thumb t5">👤</div>
+          <div class="gal-body">
+            <div class="gal-title">หน้าสมาชิก</div>
+            <div class="gal-desc">ค้นหาลูกค้า ดูแต้มสะสม ประวัติการซื้อ และจัดการโปรโมชัน</div>
+          </div>
+        </div>
+
+        <div class="gal-card reveal">
+          <div class="gal-thumb t6">📋</div>
+          <div class="gal-body">
+            <div class="gal-title">หน้ารายงาน</div>
+            <div class="gal-desc">Export รายงานเป็น PDF หรือ Excel เพื่อนำไปวิเคราะห์เพิ่มเติม</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-inner">
+      <div class="contact-inner">
+
+        <div class="reveal">
+          <div class="section-tag">ติดต่อผู้พัฒนา</div>
+          <h2 class="section-title">สนใจโปรเจกต์นี้?</h2>
+          <p class="section-lead">
+            หากสนใจดูซอร์สโค้ด ต้องการร่วมพัฒนา
+            หรืออยากพูดคุยเกี่ยวกับโปรเจกต์นี้ ติดต่อได้เลย
+          </p>
+          <div class="contact-btns">
+            <a href="#" class="btn-white">GitHub Repository</a>
+            <a href="#" class="btn-outline-white">Facebook</a>
+            <a href="#" class="btn-outline-white">Portfolio</a>
+          </div>
+        </div>
+
+        <div class="contact-info reveal">
+          <div class="ci-item">
+            <div class="ci-icon">🎓</div>
+            <div>
+              <div class="ci-label">บทบาท</div>
+              <div class="ci-val">นักพัฒนา C# & UX/UI Designer</div>
+            </div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon">🛠️</div>
+            <div>
+              <div class="ci-label">เทคโนโลยีหลัก</div>
+              <div class="ci-val">C# .NET · SQL Server · WPF</div>
+            </div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon">📅</div>
+            <div>
+              <div class="ci-label">ปีที่พัฒนา</div>
+              <div class="ci-val">2025 – 2026</div>
+            </div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon">📍</div>
+            <div>
+              <div class="ci-label">ที่ตั้ง</div>
+              <div class="ci-val">ประเทศไทย 🇹🇭</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2026 <strong>C# Cafe POS System</strong> — Portfolio Project · พัฒนาด้วย ❤️ และ C#
   </footer>
 
   <script>
-
-    const fadeElements = document.querySelectorAll('.fade-up');
-
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
-          entry.target.classList.add('active');
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
         }
       });
-    });
-
-    fadeElements.forEach(el=>{
-      observer.observe(el);
-    });
-
+    }, { threshold: 0.1 });
+    reveals.forEach(el => io.observe(el));
   </script>
 
 </body>
