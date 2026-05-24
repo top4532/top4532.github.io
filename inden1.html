@@ -22,6 +22,7 @@ html{
 body{
     font-family:'Kanit',sans-serif;
     overflow-x:hidden;
+    background:#f8fbff;
 }
 
 /* Glow */
@@ -30,55 +31,14 @@ body{
     box-shadow:0 0 35px rgba(56,189,248,0.35);
 }
 
-/* Card Hover */
+/* Hover */
 
 .card-hover{
     transition:all .35s ease;
 }
 
 .card-hover:hover{
-    transform:translateY(-12px) scale(1.02);
-}
-
-/* Grid Background */
-
-.bg-grid{
-    background-image:
-    linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
-
-    background-size:40px 40px;
-}
-
-/* Floating */
-
-@keyframes floating{
-
-    0%{
-        transform:translateY(0px);
-    }
-
-    50%{
-        transform:translateY(-15px);
-    }
-
-    100%{
-        transform:translateY(0px);
-    }
-
-}
-
-.float{
-    animation:floating 4s ease-in-out infinite;
-}
-
-/* Blur Circle */
-
-.blur-circle{
-    position:absolute;
-    border-radius:9999px;
-    filter:blur(100px);
-    opacity:.25;
+    transform:translateY(-12px) scale(1.03);
 }
 
 /* Shine */
@@ -111,6 +71,38 @@ body{
     left:100%;
 }
 
+/* Background Grid */
+
+.bg-grid{
+    background-image:
+    linear-gradient(rgba(56,189,248,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,189,248,.05) 1px, transparent 1px);
+
+    background-size:40px 40px;
+}
+
+/* Floating */
+
+@keyframes floating{
+
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-15px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
+
+}
+
+.float{
+    animation:floating 4s ease-in-out infinite;
+}
+
 /* Scrollbar */
 
 ::-webkit-scrollbar{
@@ -130,11 +122,11 @@ body{
 
 </head>
 
-<body class="bg-slate-50 text-slate-800">
+<body class="text-slate-800">
 
 <!-- ================= NAVBAR ================= -->
 
-<nav class="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-white/70 border-b border-sky-100">
+<nav class="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-white/80 border-b border-sky-100">
 
     <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
 
@@ -172,19 +164,11 @@ body{
 
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-grid">
 
-    <!-- Blur -->
+    <!-- Floating Background -->
 
-    <div class="blur-circle w-[400px] h-[400px] bg-sky-400 top-[-100px] left-[-100px]"></div>
+    <div class="absolute top-24 left-10 w-32 h-32 bg-sky-200 rounded-full blur-3xl opacity-40"></div>
 
-    <div class="blur-circle w-[350px] h-[350px] bg-cyan-300 bottom-[-100px] right-[-100px]"></div>
-
-    <!-- Floating -->
-
-    <div class="absolute top-32 left-20 w-20 h-20 bg-sky-200 rounded-3xl rotate-12 float"></div>
-
-    <div class="absolute bottom-40 right-20 w-16 h-16 bg-cyan-200 rounded-full float"></div>
-
-    <!-- Hero Content -->
+    <div class="absolute bottom-20 right-10 w-40 h-40 bg-cyan-200 rounded-full blur-3xl opacity-40"></div>
 
     <div class="relative z-10 text-center px-6">
 
@@ -206,19 +190,27 @@ body{
 
         <p class="mt-8 max-w-3xl mx-auto text-lg md:text-xl text-slate-600 leading-9">
 
-            พัฒนาเว็บไซต์และระบบด้วยเทคโนโลยีสมัยใหม่
-            พร้อมออกแบบ UX/UI ระดับมืออาชีพ
-            รองรับทั้ง Web Application และ Interactive Experience
+            รวมผลงานการพัฒนาเว็บไซต์ แอปพลิเคชัน
+            ระบบ POS ระบบ Backend และ UX/UI Design
+            ด้วยเทคโนโลยีสมัยใหม่
 
         </p>
 
-        <!-- Buttons -->
-
         <div class="mt-12 flex flex-wrap justify-center gap-5">
+
+            <a href="#skills">
+
+                <button class="px-8 py-4 rounded-2xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-lg transition glow">
+
+                    ดูทักษะ
+
+                </button>
+
+            </a>
 
             <a href="#portfolio">
 
-                <button class="px-8 py-4 rounded-2xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-lg transition glow animate-bounce">
+                <button class="px-8 py-4 rounded-2xl bg-white border border-sky-200 hover:border-sky-400 shadow-lg text-slate-700 font-bold text-lg transition">
 
                     ดูผลงาน
 
@@ -226,48 +218,7 @@ body{
 
             </a>
 
-            <a href="#contact">
-
-                <button class="px-8 py-4 rounded-2xl bg-white border border-sky-200 hover:border-sky-400 shadow-lg text-slate-700 font-bold text-lg transition">
-
-                    ติดต่อเรา
-
-                </button>
-
-            </a>
-
         </div>
-
-    </div>
-
-    <!-- Scroll Down -->
-
-    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-
-        <a href="#skills">
-
-            <div class="w-16 h-16 rounded-2xl 
-            bg-gradient-to-br from-sky-400 to-cyan-500
-            flex items-center justify-center
-            shadow-[0_10px_30px_rgba(56,189,248,0.4)]
-            glow">
-
-                <svg xmlns="http://www.w3.org/2000/svg"
-                class="w-9 h-9 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-
-                    <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="4"
-                    d="M19 9l-7 7-7-7"/>
-
-                </svg>
-
-            </div>
-
-        </a>
 
     </div>
 
@@ -289,13 +240,13 @@ body{
 
             <p class="mt-5 text-slate-500 text-lg">
 
-                ภาษาและเทคโนโลยีที่สามารถพัฒนาได้
+                ภาษาและ Framework ที่สามารถพัฒนาได้
 
             </p>
 
         </div>
 
-        <!-- Grid -->
+        <!-- GRID -->
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
@@ -303,22 +254,17 @@ body{
 
             <a href="html.html">
 
-                <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl cursor-pointer">
+                <div class="card-hover shine bg-white rounded-[30px] p-8 shadow-xl border border-sky-100">
 
                     <div class="flex justify-between items-start">
 
-                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-3xl font-extrabold glow">
 
                             HTML
 
                         </div>
 
-                        <!-- ICON -->
-
-                        <div class="w-14 h-14 rounded-2xl 
-                        bg-gradient-to-br from-sky-400 to-cyan-500
-                        flex items-center justify-center
-                        shadow-lg glow">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center glow">
 
                             <svg xmlns="http://www.w3.org/2000/svg"
                             class="w-8 h-8 text-white"
@@ -337,14 +283,14 @@ body{
 
                     </div>
 
-                    <h3 class="text-3xl font-bold mb-4">
+                    <h3 class="text-3xl font-bold mt-8 mb-4">
                         HTML5
                     </h3>
 
                     <p class="text-slate-500 leading-8">
 
-                        พัฒนาโครงสร้างเว็บไซต์ Landing Page
-                        และ Responsive Website
+                        พัฒนาโครงสร้างเว็บไซต์
+                        Landing Page และ Responsive Website
 
                     </p>
 
@@ -356,20 +302,17 @@ body{
 
             <a href="css.html">
 
-                <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl cursor-pointer">
+                <div class="card-hover shine bg-white rounded-[30px] p-8 shadow-xl border border-sky-100">
 
                     <div class="flex justify-between items-start">
 
-                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-3xl font-extrabold glow">
 
                             CSS
 
                         </div>
 
-                        <div class="w-14 h-14 rounded-2xl 
-                        bg-gradient-to-br from-sky-400 to-cyan-500
-                        flex items-center justify-center
-                        shadow-lg glow">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center glow">
 
                             <svg xmlns="http://www.w3.org/2000/svg"
                             class="w-8 h-8 text-white"
@@ -388,14 +331,14 @@ body{
 
                     </div>
 
-                    <h3 class="text-3xl font-bold mb-4">
+                    <h3 class="text-3xl font-bold mt-8 mb-4">
                         CSS3
                     </h3>
 
                     <p class="text-slate-500 leading-8">
 
-                        ออกแบบ Modern UI พร้อม Animation
-                        และ Responsive Layout
+                        ออกแบบ Modern UI
+                        พร้อม Animation และ Responsive Layout
 
                     </p>
 
@@ -403,24 +346,21 @@ body{
 
             </a>
 
-            <!-- JavaScript -->
+            <!-- JAVA -->
 
-            <a href="javascript.html">
+            <a href="java.html">
 
-                <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl cursor-pointer">
+                <div class="card-hover shine bg-white rounded-[30px] p-8 shadow-xl border border-sky-100">
 
                     <div class="flex justify-between items-start">
 
-                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-yellow-300 to-yellow-500 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white text-3xl font-extrabold glow">
 
-                            JS
+                            JAVA
 
                         </div>
 
-                        <div class="w-14 h-14 rounded-2xl 
-                        bg-gradient-to-br from-sky-400 to-cyan-500
-                        flex items-center justify-center
-                        shadow-lg glow">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center glow">
 
                             <svg xmlns="http://www.w3.org/2000/svg"
                             class="w-8 h-8 text-white"
@@ -439,14 +379,14 @@ body{
 
                     </div>
 
-                    <h3 class="text-3xl font-bold mb-4">
-                        JavaScript
+                    <h3 class="text-3xl font-bold mt-8 mb-4">
+                        Java
                     </h3>
 
                     <p class="text-slate-500 leading-8">
 
-                        พัฒนาเว็บไซต์แบบ Interactive
-                        และ Dynamic Web Application
+                        พัฒนา Application
+                        และระบบ Backend
 
                     </p>
 
@@ -454,149 +394,341 @@ body{
 
             </a>
 
-        </div>
+            <!-- C# -->
 
-    </div>
+            <a href="csharp.html">
 
-</section>
+                <div class="card-hover shine bg-white rounded-[30px] p-8 shadow-xl border border-sky-100">
 
-<!-- ================= PORTFOLIO ================= -->
+                    <div class="flex justify-between items-start">
 
-<section id="portfolio" class="py-28 px-6 bg-gradient-to-b from-sky-50 to-white">
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-purple-500 to-fuchsia-500 flex items-center justify-center text-white text-3xl font-extrabold glow">
 
-    <div class="max-w-7xl mx-auto">
+                            C#
 
-        <div class="text-center mb-20">
+                        </div>
 
-            <h2 class="text-5xl font-extrabold">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center glow">
 
-                Latest Projects
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-8 h-8 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
 
-            </h2>
+                                <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="4"
+                                d="M9 5l7 7-7 7"/>
 
-            <p class="mt-5 text-slate-500 text-lg">
+                            </svg>
 
-                ผลงานและโปรเจกต์ล่าสุด
+                        </div>
 
-            </p>
+                    </div>
 
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-            <!-- Project -->
-
-            <div class="card-hover bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100">
-
-                <img
-                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop"
-                class="w-full h-[250px] object-cover">
-
-                <div class="p-8">
-
-                    <h3 class="text-2xl font-bold mb-4">
-                        Student Planner System
+                    <h3 class="text-3xl font-bold mt-8 mb-4">
+                        C#
                     </h3>
 
                     <p class="text-slate-500 leading-8">
 
-                        ระบบวางแผนการเรียนสำหรับนักศึกษา
-                        พร้อมระบบคำนวณหน่วยกิตอัตโนมัติ
+                        พัฒนา Desktop Application
+                        และระบบธุรกิจ
 
                     </p>
 
                 </div>
 
-            </div>
+            </a>
 
-            <!-- Project -->
+            <!-- VB.NET -->
 
-            <div class="card-hover bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100">
+            <a href="vbnet.html">
 
-                <img
-                src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1200&auto=format&fit=crop"
-                class="w-full h-[250px] object-cover">
+                <div class="card-hover shine bg-white rounded-[30px] p-8 shadow-xl border border-sky-100">
 
-                <div class="p-8">
+                    <div class="flex justify-between items-start">
 
-                    <h3 class="text-2xl font-bold mb-4">
-                        POS Dashboard UI
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center text-white text-3xl font-extrabold glow">
+
+                            VB
+
+                        </div>
+
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center glow">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-8 h-8 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+
+                                <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="4"
+                                d="M9 5l7 7-7 7"/>
+
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mt-8 mb-4">
+                        VB.NET
                     </h3>
 
                     <p class="text-slate-500 leading-8">
 
-                        Dashboard UI Modern Design
-                        สำหรับระบบร้านอาหาร
+                        พัฒนา Windows Forms
+                        และระบบภายในองค์กร
 
                     </p>
 
                 </div>
 
-            </div>
+            </a>
 
-            <!-- Project -->
+            <!-- React -->
 
-            <div class="card-hover bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100">
+            <a href="react.html">
 
-                <img
-                src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop"
-                class="w-full h-[250px] object-cover">
+                <div class="card-hover shine bg-white rounded-[30px] p-8 shadow-xl border border-sky-100">
 
-                <div class="p-8">
+                    <div class="flex justify-between items-start">
 
-                    <h3 class="text-2xl font-bold mb-4">
-                        ESP32 IoT Project
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-cyan-400 to-sky-500 flex items-center justify-center text-white text-2xl font-extrabold glow">
+
+                            React
+
+                        </div>
+
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center glow">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-8 h-8 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+
+                                <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="4"
+                                d="M9 5l7 7-7 7"/>
+
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mt-8 mb-4">
+                        React.js
                     </h3>
 
                     <p class="text-slate-500 leading-8">
 
-                        ระบบควบคุม LED ผ่านเว็บไซต์
-                        แบบ Real-time
+                        พัฒนา Frontend Application
+                        แบบ Modern UI
 
                     </p>
 
                 </div>
 
-            </div>
+            </a>
 
-        </div>
+            <!-- NodeJS -->
 
-    </div>
+            <a href="nodejs.html">
 
-</section>
+                <div class="card-hover shine bg-white rounded-[30px] p-8 shadow-xl border border-sky-100">
 
-<!-- ================= CONTACT ================= -->
+                    <div class="flex justify-between items-start">
 
-<section id="contact" class="py-28 px-6">
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-2xl font-extrabold glow">
 
-    <div class="max-w-4xl mx-auto text-center">
+                            NODE
 
-        <h2 class="text-5xl font-extrabold">
+                        </div>
 
-            Contact Me
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center glow">
 
-        </h2>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-8 h-8 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
 
-        <p class="mt-6 text-slate-500 text-lg leading-8">
+                                <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="4"
+                                d="M9 5l7 7-7 7"/>
 
-            สามารถติดต่อเพื่อร่วมงาน
-            หรือสอบถามเกี่ยวกับโปรเจกต์ต่าง ๆ ได้
+                            </svg>
 
-        </p>
+                        </div>
 
-        <div class="mt-10 flex flex-wrap justify-center gap-5">
+                    </div>
 
-            <button class="px-8 py-4 rounded-2xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-lg transition glow">
+                    <h3 class="text-3xl font-bold mt-8 mb-4">
+                        Node.js
+                    </h3>
 
-                Email
+                    <p class="text-slate-500 leading-8">
 
-            </button>
+                        สร้าง API
+                        และระบบ Backend Server
 
-            <button class="px-8 py-4 rounded-2xl bg-white border border-sky-200 hover:border-sky-400 shadow-lg text-slate-700 font-bold text-lg transition">
+                    </p>
 
-                Facebook
+                </div>
 
-            </button>
+            </a>
+
+            <!-- Tailwind -->
+
+            <a href="tailwind.html">
+
+                <div class="card-hover shine bg-white rounded-[30px] p-8 shadow-xl border border-sky-100">
+
+                    <div class="flex justify-between items-start">
+
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-sky-400 to-cyan-400 flex items-center justify-center text-white text-xl font-extrabold glow">
+
+                            TW
+
+                        </div>
+
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center glow">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-8 h-8 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+
+                                <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="4"
+                                d="M9 5l7 7-7 7"/>
+
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mt-8 mb-4">
+                        Tailwind CSS
+                    </h3>
+
+                    <p class="text-slate-500 leading-8">
+
+                        ออกแบบ UI
+                        แบบ Modern และรวดเร็ว
+
+                    </p>
+
+                </div>
+
+            </a>
+
+            <!-- PHP -->
+
+            <a href="php.html">
+
+                <div class="card-hover shine bg-white rounded-[30px] p-8 shadow-xl border border-sky-100">
+
+                    <div class="flex justify-between items-start">
+
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-3xl font-extrabold glow">
+
+                            PHP
+
+                        </div>
+
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center glow">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-8 h-8 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+
+                                <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="4"
+                                d="M9 5l7 7-7 7"/>
+
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mt-8 mb-4">
+                        PHP
+                    </h3>
+
+                    <p class="text-slate-500 leading-8">
+
+                        พัฒนา Full Stack Website
+                        และระบบฐานข้อมูล
+
+                    </p>
+
+                </div>
+
+            </a>
+
+            <!-- Python -->
+
+            <a href="python.html">
+
+                <div class="card-hover shine bg-white rounded-[30px] p-8 shadow-xl border border-sky-100">
+
+                    <div class="flex justify-between items-start">
+
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-500 to-yellow-400 flex items-center justify-center text-white text-2xl font-extrabold glow">
+
+                            Python
+
+                        </div>
+
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-400 to-cyan-500 flex items-center justify-center glow">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-8 h-8 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+
+                                <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="4"
+                                d="M9 5l7 7-7 7"/>
+
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mt-8 mb-4">
+                        Python
+                    </h3>
+
+                    <p class="text-slate-500 leading-8">
+
+                        พัฒนา AI Automation
+                        IoT และ Data Processing
+
+                    </p>
+
+                </div>
+
+            </a>
 
         </div>
 
