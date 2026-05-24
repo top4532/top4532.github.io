@@ -6,14 +6,11 @@
 
 <title>Kiw Portfolio</title>
 
-<!-- Tailwind -->
-
+<!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- Font -->
-
+<!-- Google Font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
 <style>
@@ -27,13 +24,13 @@ body{
     overflow-x:hidden;
 }
 
-/* Glow */
+/* Glow Effect */
 
 .glow{
     box-shadow:0 0 35px rgba(56,189,248,0.35);
 }
 
-/* Hover */
+/* Card Hover */
 
 .card-hover{
     transition:all .35s ease;
@@ -84,7 +81,7 @@ body{
     opacity:.25;
 }
 
-/* Shine */
+/* Shine Effect */
 
 .shine{
     position:relative;
@@ -114,13 +111,30 @@ body{
     left:100%;
 }
 
+/* Scroll Bar */
+
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#38bdf8;
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-track{
+    background:#e0f2fe;
+}
+
 </style>
 
 </head>
 
 <body class="bg-slate-50 text-slate-800">
 
+<!-- ========================= -->
 <!-- NAVBAR -->
+<!-- ========================= -->
 
 <nav class="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-white/70 border-b border-sky-100">
 
@@ -156,11 +170,13 @@ body{
 
 </nav>
 
+<!-- ========================= -->
 <!-- HERO -->
+<!-- ========================= -->
 
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-grid">
 
-    <!-- Background Effects -->
+    <!-- Blur Effects -->
 
     <div class="blur-circle w-[400px] h-[400px] bg-sky-400 top-[-100px] left-[-100px]"></div>
 
@@ -172,17 +188,15 @@ body{
 
     <div class="absolute bottom-40 right-20 w-16 h-16 bg-cyan-200 rounded-full float"></div>
 
-    <div class="relative z-10 text-center px-6">
+    <!-- Hero Content -->
 
-        <!-- Badge -->
+    <div class="relative z-10 text-center px-6">
 
         <div class="inline-block px-6 py-3 rounded-full bg-sky-100 text-sky-600 font-semibold mb-8 shadow-md">
 
             Frontend Developer • UX/UI Designer
 
         </div>
-
-        <!-- Title -->
 
         <h1 class="text-5xl md:text-8xl font-extrabold leading-tight">
 
@@ -193,8 +207,6 @@ body{
             </span>
 
         </h1>
-
-        <!-- Description -->
 
         <p class="mt-8 max-w-3xl mx-auto text-lg md:text-xl text-slate-600 leading-9">
 
@@ -218,11 +230,15 @@ body{
 
             </a>
 
-            <button class="px-8 py-4 rounded-2xl bg-white border border-sky-200 hover:border-sky-400 shadow-lg text-slate-700 font-bold text-lg transition">
+            <a href="#contact">
 
-                ติดต่อเรา
+                <button class="px-8 py-4 rounded-2xl bg-white border border-sky-200 hover:border-sky-400 shadow-lg text-slate-700 font-bold text-lg transition">
 
-            </button>
+                    ติดต่อเรา
+
+                </button>
+
+            </a>
 
         </div>
 
@@ -232,7 +248,7 @@ body{
 
     <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
 
-        <a href="#portfolio">
+        <a href="#skills">
 
             <div class="w-14 h-14 rounded-full bg-white shadow-xl flex items-center justify-center">
 
@@ -257,7 +273,9 @@ body{
 
 </section>
 
+<!-- ========================= -->
 <!-- SKILLS -->
+<!-- ========================= -->
 
 <section id="skills" class="py-28 px-6">
 
@@ -281,198 +299,324 @@ body{
 
         </div>
 
-        <!-- Cards -->
+        <!-- Skills Grid -->
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
             <!-- HTML -->
 
-            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <a href="html.html">
 
-                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+                <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl cursor-pointer">
 
-                    HTML
+                    <div class="flex justify-between items-start">
+
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+
+                            HTML
+
+                        </div>
+
+                        <div class="text-sky-400 text-3xl">
+                            →
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mb-4">
+                        HTML5
+                    </h3>
+
+                    <p class="text-slate-500 leading-8">
+
+                        พัฒนาโครงสร้างเว็บไซต์ Landing Page
+                        และ Responsive Website
+
+                    </p>
 
                 </div>
 
-                <h3 class="text-3xl font-bold mb-4">
-                    HTML5
-                </h3>
-
-                <p class="text-slate-500 leading-8">
-                    พัฒนาโครงสร้างเว็บไซต์ Landing Page
-                    และ Responsive Website
-                </p>
-
-            </div>
+            </a>
 
             <!-- CSS -->
 
-            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <a href="css.html">
 
-                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+                <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl cursor-pointer">
 
-                    CSS
+                    <div class="flex justify-between items-start">
+
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+
+                            CSS
+
+                        </div>
+
+                        <div class="text-sky-400 text-3xl">
+                            →
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mb-4">
+                        CSS3
+                    </h3>
+
+                    <p class="text-slate-500 leading-8">
+
+                        ออกแบบ Modern UI พร้อม Animation
+                        และ Responsive Layout
+
+                    </p>
 
                 </div>
 
-                <h3 class="text-3xl font-bold mb-4">
-                    CSS3
-                </h3>
+            </a>
 
-                <p class="text-slate-500 leading-8">
-                    ออกแบบ Modern UI พร้อม Animation
-                    และ Responsive Layout
-                </p>
+            <!-- JavaScript -->
 
-            </div>
+            <a href="javascript.html">
 
-            <!-- JS -->
+                <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl cursor-pointer">
 
-            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+                    <div class="flex justify-between items-start">
 
-                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-yellow-300 to-yellow-500 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-yellow-300 to-yellow-500 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
 
-                    JS
+                            JS
+
+                        </div>
+
+                        <div class="text-sky-400 text-3xl">
+                            →
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mb-4">
+                        JavaScript
+                    </h3>
+
+                    <p class="text-slate-500 leading-8">
+
+                        พัฒนาเว็บไซต์แบบ Interactive
+                        และ Dynamic Web Application
+
+                    </p>
 
                 </div>
 
-                <h3 class="text-3xl font-bold mb-4">
-                    JavaScript
-                </h3>
-
-                <p class="text-slate-500 leading-8">
-                    พัฒนาเว็บไซต์แบบ Interactive
-                    และ Dynamic Web Application
-                </p>
-
-            </div>
+            </a>
 
             <!-- React -->
 
-            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <a href="react.html">
 
-                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-cyan-400 to-sky-500 flex items-center justify-center text-white text-2xl font-extrabold mb-8 glow">
+                <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl cursor-pointer">
 
-                    React
+                    <div class="flex justify-between items-start">
+
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-cyan-400 to-sky-500 flex items-center justify-center text-white text-2xl font-extrabold mb-8 glow">
+
+                            React
+
+                        </div>
+
+                        <div class="text-sky-400 text-3xl">
+                            →
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mb-4">
+                        React.js
+                    </h3>
+
+                    <p class="text-slate-500 leading-8">
+
+                        พัฒนา Frontend Application
+                        ด้วย Modern Component
+
+                    </p>
 
                 </div>
 
-                <h3 class="text-3xl font-bold mb-4">
-                    React.js
-                </h3>
-
-                <p class="text-slate-500 leading-8">
-                    พัฒนา Frontend Application
-                    ด้วย Modern Component
-                </p>
-
-            </div>
+            </a>
 
             <!-- Node -->
 
-            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <a href="nodejs.html">
 
-                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-2xl font-extrabold mb-8 glow">
+                <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl cursor-pointer">
 
-                    Node
+                    <div class="flex justify-between items-start">
+
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-2xl font-extrabold mb-8 glow">
+
+                            Node
+
+                        </div>
+
+                        <div class="text-sky-400 text-3xl">
+                            →
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mb-4">
+                        Node.js
+                    </h3>
+
+                    <p class="text-slate-500 leading-8">
+
+                        สร้าง Backend API
+                        และระบบ Server-side
+
+                    </p>
 
                 </div>
 
-                <h3 class="text-3xl font-bold mb-4">
-                    Node.js
-                </h3>
-
-                <p class="text-slate-500 leading-8">
-                    สร้าง Backend API
-                    และระบบ Server-side
-                </p>
-
-            </div>
+            </a>
 
             <!-- PHP -->
 
-            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <a href="php.html">
 
-                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+                <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl cursor-pointer">
 
-                    PHP
+                    <div class="flex justify-between items-start">
+
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+
+                            PHP
+
+                        </div>
+
+                        <div class="text-sky-400 text-3xl">
+                            →
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mb-4">
+                        PHP
+                    </h3>
+
+                    <p class="text-slate-500 leading-8">
+
+                        พัฒนาระบบฐานข้อมูล
+                        และ Full Stack Website
+
+                    </p>
 
                 </div>
 
-                <h3 class="text-3xl font-bold mb-4">
-                    PHP
-                </h3>
-
-                <p class="text-slate-500 leading-8">
-                    พัฒนาระบบฐานข้อมูล
-                    และ Full Stack Website
-                </p>
-
-            </div>
+            </a>
 
             <!-- Python -->
 
-            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <a href="python.html">
 
-                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-500 to-yellow-400 flex items-center justify-center text-white text-2xl font-extrabold mb-8 glow">
+                <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl cursor-pointer">
 
-                    Python
+                    <div class="flex justify-between items-start">
+
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-500 to-yellow-400 flex items-center justify-center text-white text-2xl font-extrabold mb-8 glow">
+
+                            Python
+
+                        </div>
+
+                        <div class="text-sky-400 text-3xl">
+                            →
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mb-4">
+                        Python
+                    </h3>
+
+                    <p class="text-slate-500 leading-8">
+
+                        พัฒนา AI, Automation,
+                        Data Processing และ IoT
+
+                    </p>
 
                 </div>
 
-                <h3 class="text-3xl font-bold mb-4">
-                    Python
-                </h3>
-
-                <p class="text-slate-500 leading-8">
-                    พัฒนา AI, Automation,
-                    Data Processing และ IoT
-                </p>
-
-            </div>
+            </a>
 
             <!-- C# -->
 
-            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <a href="csharp.html">
 
-                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-purple-500 to-fuchsia-500 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+                <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl cursor-pointer">
 
-                    C#
+                    <div class="flex justify-between items-start">
+
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-purple-500 to-fuchsia-500 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+
+                            C#
+
+                        </div>
+
+                        <div class="text-sky-400 text-3xl">
+                            →
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mb-4">
+                        C#
+                    </h3>
+
+                    <p class="text-slate-500 leading-8">
+
+                        พัฒนา Desktop Application
+                        และระบบธุรกิจ
+
+                    </p>
 
                 </div>
 
-                <h3 class="text-3xl font-bold mb-4">
-                    C#
-                </h3>
+            </a>
 
-                <p class="text-slate-500 leading-8">
-                    พัฒนา Desktop Application
-                    และระบบธุรกิจ
-                </p>
+            <!-- VB.NET -->
 
-            </div>
+            <a href="vbnet.html">
 
-            <!-- VB -->
+                <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl cursor-pointer">
 
-            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+                    <div class="flex justify-between items-start">
 
-                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+                        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
 
-                    VB
+                            VB
+
+                        </div>
+
+                        <div class="text-sky-400 text-3xl">
+                            →
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-3xl font-bold mb-4">
+                        VB.NET
+                    </h3>
+
+                    <p class="text-slate-500 leading-8">
+
+                        พัฒนา Windows Forms
+                        และระบบภายในองค์กร
+
+                    </p>
 
                 </div>
 
-                <h3 class="text-3xl font-bold mb-4">
-                    VB.NET
-                </h3>
-
-                <p class="text-slate-500 leading-8">
-                    พัฒนา Windows Forms
-                    และระบบภายในองค์กร
-                </p>
-
-            </div>
+            </a>
 
         </div>
 
@@ -480,13 +624,13 @@ body{
 
 </section>
 
+<!-- ========================= -->
 <!-- PORTFOLIO -->
+<!-- ========================= -->
 
 <section id="portfolio" class="py-28 px-6 bg-gradient-to-b from-sky-50 to-white">
 
     <div class="max-w-7xl mx-auto">
-
-        <!-- Title -->
 
         <div class="text-center mb-20">
 
@@ -504,11 +648,9 @@ body{
 
         </div>
 
-        <!-- Grid -->
-
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-            <!-- Project -->
+            <!-- Project 1 -->
 
             <div class="card-hover bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100">
 
@@ -533,7 +675,7 @@ body{
 
             </div>
 
-            <!-- Project -->
+            <!-- Project 2 -->
 
             <div class="card-hover bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100">
 
@@ -558,7 +700,7 @@ body{
 
             </div>
 
-            <!-- Project -->
+            <!-- Project 3 -->
 
             <div class="card-hover bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100">
 
@@ -589,7 +731,9 @@ body{
 
 </section>
 
+<!-- ========================= -->
 <!-- CONTACT -->
+<!-- ========================= -->
 
 <section id="contact" class="py-28 px-6">
 
@@ -628,7 +772,9 @@ body{
 
 </section>
 
+<!-- ========================= -->
 <!-- FOOTER -->
+<!-- ========================= -->
 
 <footer class="py-10 text-center bg-white border-t border-sky-100">
 
