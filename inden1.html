@@ -1,425 +1,342 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 <title>Kiw Portfolio</title>
 
+<script src="https://cdn.tailwindcss.com"></script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
 <style>
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
 body{
-    font-family:'Kanit',sans-serif;
-    background:#f8fbff;
-    color:#1e293b;
+    font-family: 'Kanit', sans-serif;
 }
 
-/* NAVBAR */
-
-nav{
-    width:100%;
-    padding:20px 8%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:white;
-    box-shadow:0 2px 20px rgba(0,0,0,0.05);
-    position:sticky;
-    top:0;
-    z-index:999;
+.glow{
+    box-shadow: 0 0 30px rgba(56,189,248,0.35);
 }
 
-.logo{
-    font-size:32px;
-    font-weight:700;
-    color:#0ea5e9;
+.card-hover{
+    transition: all .35s ease;
 }
 
-.menu{
-    display:flex;
-    gap:30px;
+.card-hover:hover{
+    transform: translateY(-10px) scale(1.02);
 }
 
-.menu a{
-    text-decoration:none;
-    color:#334155;
-    font-size:17px;
-    transition:0.3s;
-}
+.bg-grid{
+    background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
 
-.menu a:hover{
-    color:#0ea5e9;
-}
-
-/* HERO */
-
-.hero{
-    width:100%;
-    min-height:80vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    text-align:center;
-    padding:60px 20px;
-    background:
-    linear-gradient(135deg,#e0f2fe,#ffffff);
-}
-
-.hero h1{
-    font-size:75px;
-    color:#0284c7;
-    margin-bottom:20px;
-}
-
-.hero p{
-    max-width:750px;
-    font-size:20px;
-    line-height:1.8;
-    color:#475569;
-}
-
-.hero button{
-    margin-top:35px;
-    padding:15px 40px;
-    border:none;
-    border-radius:15px;
-    background:#0ea5e9;
-    color:white;
-    font-size:18px;
-    cursor:pointer;
-    transition:0.3s;
-}
-
-.hero button:hover{
-    transform:translateY(-5px);
-    background:#0284c7;
-}
-
-/* SECTION */
-
-section{
-    padding:90px 8%;
-}
-
-.section-title{
-    text-align:center;
-    font-size:45px;
-    color:#0284c7;
-    margin-bottom:50px;
-}
-
-/* SKILLS */
-
-.categories{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:30px;
-}
-
-.card{
-    background:white;
-    border-radius:25px;
-    padding:40px 30px;
-    text-align:center;
-    transition:0.4s;
-    border:1px solid #dbeafe;
-    box-shadow:0 10px 25px rgba(14,165,233,0.08);
-}
-
-.card:hover{
-    transform:translateY(-10px);
-    box-shadow:0 20px 40px rgba(14,165,233,0.18);
-}
-
-/* ICON */
-
-.language-icon{
-    width:110px;
-    height:110px;
-    margin:auto;
-    margin-bottom:25px;
-    border-radius:25px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:38px;
-    font-weight:700;
-    color:white;
-}
-
-/* Colors */
-
-.html{
-    background:linear-gradient(135deg,#ff6b35,#ff8c42);
-}
-
-.css{
-    background:linear-gradient(135deg,#2563eb,#38bdf8);
-}
-
-.js{
-    background:linear-gradient(135deg,#facc15,#f59e0b);
-}
-
-.react{
-    background:linear-gradient(135deg,#06b6d4,#38bdf8);
-}
-
-.node{
-    background:linear-gradient(135deg,#16a34a,#22c55e);
-}
-
-.php{
-    background:linear-gradient(135deg,#6366f1,#818cf8);
-}
-
-.python{
-    background:linear-gradient(135deg,#2563eb,#facc15);
-}
-
-.csharp{
-    background:linear-gradient(135deg,#7e22ce,#a855f7);
-}
-
-.vb{
-    background:linear-gradient(135deg,#0f766e,#14b8a6);
-}
-
-.card h3{
-    font-size:30px;
-    margin-bottom:15px;
-}
-
-.card p{
-    color:#64748b;
-    line-height:1.8;
-    font-size:15px;
-}
-
-/* PORTFOLIO */
-
-.portfolio-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:30px;
-}
-
-.portfolio-item{
-    background:white;
-    border-radius:25px;
-    overflow:hidden;
-    box-shadow:0 10px 25px rgba(0,0,0,0.05);
-    transition:0.4s;
-}
-
-.portfolio-item:hover{
-    transform:translateY(-10px);
-}
-
-.portfolio-item img{
-    width:100%;
-    height:240px;
-    object-fit:cover;
-}
-
-.portfolio-info{
-    padding:25px;
-}
-
-.portfolio-info h4{
-    font-size:24px;
-    margin-bottom:15px;
-    color:#0284c7;
-}
-
-.portfolio-info p{
-    color:#64748b;
-    line-height:1.8;
-}
-
-/* FOOTER */
-
-footer{
-    padding:40px;
-    text-align:center;
-    background:#e0f2fe;
-    color:#0369a1;
-    margin-top:50px;
-}
-
-/* MOBILE */
-
-@media(max-width:768px){
-
-    .hero h1{
-        font-size:45px;
-    }
-
-    .hero p{
-        font-size:16px;
-    }
-
-    .menu{
-        display:none;
-    }
-
+    background-size: 35px 35px;
 }
 
 </style>
+
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 overflow-x-hidden">
 
 <!-- NAVBAR -->
 
-<nav>
+<nav class="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-white/70 border-b border-sky-100">
 
-    <div class="logo">
-        KIW PORTFOLIO
-    </div>
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-    <div class="menu">
-        <a href="#">หน้าแรก</a>
-        <a href="#">ทักษะ</a>
-        <a href="#">ผลงาน</a>
-        <a href="#">ติดต่อ</a>
+        <h1 class="text-3xl font-extrabold text-sky-500 tracking-wide">
+            KIW PORTFOLIO
+        </h1>
+
+        <div class="hidden md:flex items-center gap-8 text-[17px] font-medium">
+
+            <a href="#" class="hover:text-sky-500 transition">
+                หน้าแรก
+            </a>
+
+            <a href="#" class="hover:text-sky-500 transition">
+                ทักษะ
+            </a>
+
+            <a href="#" class="hover:text-sky-500 transition">
+                ผลงาน
+            </a>
+
+            <a href="#" class="hover:text-sky-500 transition">
+                ติดต่อ
+            </a>
+
+        </div>
+
     </div>
 
 </nav>
 
 <!-- HERO -->
 
-<div class="hero">
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-grid">
 
-    <h1>MY PORTFOLIO</h1>
+    <div class="absolute top-[-120px] left-[-120px] w-[350px] h-[350px] bg-sky-300 rounded-full blur-3xl opacity-30"></div>
 
-    <p>
-        UX/UI Designer และ Full Stack Developer
-        ที่สามารถออกแบบและพัฒนาระบบได้หลากหลายภาษา
-        พร้อมสร้าง Modern UI ระดับมืออาชีพ
-    </p>
+    <div class="absolute bottom-[-120px] right-[-120px] w-[350px] h-[350px] bg-cyan-300 rounded-full blur-3xl opacity-30"></div>
 
-    <button>
-        ดูผลงาน
-    </button>
+    <div class="relative z-10 text-center px-6">
 
-</div>
+        <div class="inline-block px-5 py-2 rounded-full bg-sky-100 text-sky-600 font-medium mb-8">
+            Frontend Developer • UX/UI Designer
+        </div>
+
+        <h1 class="text-5xl md:text-8xl font-extrabold leading-tight text-slate-800">
+
+            MODERN <span class="text-sky-500">PORTFOLIO</span>
+
+        </h1>
+
+        <p class="mt-8 max-w-3xl mx-auto text-lg md:text-xl text-slate-600 leading-9">
+
+            พัฒนาเว็บไซต์และระบบด้วยเทคโนโลยีสมัยใหม่
+            พร้อมออกแบบ UX/UI ระดับมืออาชีพ
+            รองรับทั้ง Web Application และ Interactive Experience
+
+        </p>
+
+        <div class="mt-10 flex flex-wrap justify-center gap-5">
+
+            <button class="px-8 py-4 rounded-2xl bg-sky-500 hover:bg-sky-600 text-white font-semibold text-lg transition glow">
+
+                ดูผลงาน
+
+            </button>
+
+            <button class="px-8 py-4 rounded-2xl border border-sky-200 hover:border-sky-400 bg-white text-slate-700 font-semibold text-lg transition">
+
+                ติดต่อเรา
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
 
 <!-- SKILLS -->
 
-<section>
+<section class="py-24 px-6">
 
-    <h2 class="section-title">
-        หมวดหมู่ภาษาโปรแกรม
-    </h2>
+    <div class="max-w-7xl mx-auto">
 
-    <div class="categories">
+        <div class="text-center mb-20">
 
-        <div class="card">
-            <div class="language-icon html">HTML</div>
+            <h2 class="text-5xl font-extrabold text-slate-800">
 
-            <h3>HTML5</h3>
+                Programming Skills
 
-            <p>
-                พัฒนาโครงสร้างเว็บไซต์ Landing Page
-                และ Responsive Website
+            </h2>
+
+            <p class="mt-5 text-slate-500 text-lg">
+
+                ภาษาและเทคโนโลยีที่สามารถพัฒนาได้
+
             </p>
+
         </div>
 
-        <div class="card">
-            <div class="language-icon css">CSS</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-            <h3>CSS3</h3>
+            <!-- HTML -->
 
-            <p>
-                ออกแบบ UI Modern Design
-                พร้อม Animation และ Responsive Layout
-            </p>
-        </div>
+            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
 
-        <div class="card">
-            <div class="language-icon js">JS</div>
+                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
 
-            <h3>JavaScript</h3>
+                    HTML
 
-            <p>
-                พัฒนา Interactive Website
-                และระบบ Dynamic Web Application
-            </p>
-        </div>
+                </div>
 
-        <div class="card">
-            <div class="language-icon react">React</div>
+                <h3 class="text-3xl font-bold mb-4">
+                    HTML5
+                </h3>
 
-            <h3>React.js</h3>
+                <p class="text-slate-500 leading-8">
+                    พัฒนาโครงสร้างเว็บไซต์ Landing Page
+                    และ Responsive Website ได้อย่างมืออาชีพ
+                </p>
 
-            <p>
-                พัฒนา Frontend Application
-                ด้วย Modern Component Architecture
-            </p>
-        </div>
+            </div>
 
-        <div class="card">
-            <div class="language-icon node">Node</div>
+            <!-- CSS -->
 
-            <h3>Node.js</h3>
+            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
 
-            <p>
-                สร้าง Backend API
-                และ Server-side Application
-            </p>
-        </div>
+                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
 
-        <div class="card">
-            <div class="language-icon php">PHP</div>
+                    CSS
 
-            <h3>PHP</h3>
+                </div>
 
-            <p>
-                พัฒนาระบบฐานข้อมูล
-                และระบบจัดการข้อมูลแบบ Full Stack
-            </p>
-        </div>
+                <h3 class="text-3xl font-bold mb-4">
+                    CSS3
+                </h3>
 
-        <div class="card">
-            <div class="language-icon python">Py</div>
+                <p class="text-slate-500 leading-8">
+                    ออกแบบ UI Modern Design พร้อม Animation,
+                    Glassmorphism และ Responsive Layout
+                </p>
 
-            <h3>Python</h3>
+            </div>
 
-            <p>
-                พัฒนา AI, Automation,
-                Data Processing และ IoT Project
-            </p>
-        </div>
+            <!-- JS -->
 
-        <div class="card">
-            <div class="language-icon csharp">C#</div>
+            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
 
-            <h3>C#</h3>
+                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-yellow-300 to-yellow-500 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
 
-            <p>
-                พัฒนา Desktop Application
-                และระบบธุรกิจ
-            </p>
-        </div>
+                    JS
 
-        <div class="card">
-            <div class="language-icon vb">VB</div>
+                </div>
 
-            <h3>VB.NET</h3>
+                <h3 class="text-3xl font-bold mb-4">
+                    JavaScript
+                </h3>
 
-            <p>
-                พัฒนา Windows Forms
-                และระบบจัดการข้อมูลภายในองค์กร
-            </p>
+                <p class="text-slate-500 leading-8">
+                    พัฒนา Interactive Website
+                    และระบบ Dynamic Web Application
+                </p>
+
+            </div>
+
+            <!-- REACT -->
+
+            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+
+                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-cyan-400 to-sky-500 flex items-center justify-center text-white text-2xl font-extrabold mb-8 glow">
+
+                    React
+
+                </div>
+
+                <h3 class="text-3xl font-bold mb-4">
+                    React.js
+                </h3>
+
+                <p class="text-slate-500 leading-8">
+                    พัฒนา Frontend Application
+                    ด้วย Modern Component Architecture
+                </p>
+
+            </div>
+
+            <!-- NODE -->
+
+            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+
+                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-2xl font-extrabold mb-8 glow">
+
+                    Node
+
+                </div>
+
+                <h3 class="text-3xl font-bold mb-4">
+                    Node.js
+                </h3>
+
+                <p class="text-slate-500 leading-8">
+                    สร้าง Backend API
+                    และ Server-side Application
+                </p>
+
+            </div>
+
+            <!-- PHP -->
+
+            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+
+                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+
+                    PHP
+
+                </div>
+
+                <h3 class="text-3xl font-bold mb-4">
+                    PHP
+                </h3>
+
+                <p class="text-slate-500 leading-8">
+                    พัฒนาระบบฐานข้อมูล
+                    และ Full Stack Web Application
+                </p>
+
+            </div>
+
+            <!-- PYTHON -->
+
+            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+
+                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-500 to-yellow-400 flex items-center justify-center text-white text-2xl font-extrabold mb-8 glow">
+
+                    Python
+
+                </div>
+
+                <h3 class="text-3xl font-bold mb-4">
+                    Python
+                </h3>
+
+                <p class="text-slate-500 leading-8">
+                    พัฒนา AI, Automation,
+                    Data Processing และ IoT Project
+                </p>
+
+            </div>
+
+            <!-- C# -->
+
+            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+
+                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-purple-500 to-fuchsia-500 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+
+                    C#
+
+                </div>
+
+                <h3 class="text-3xl font-bold mb-4">
+                    C#
+                </h3>
+
+                <p class="text-slate-500 leading-8">
+                    พัฒนา Desktop Application
+                    และระบบธุรกิจ
+                </p>
+
+            </div>
+
+            <!-- VB -->
+
+            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+
+                <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
+
+                    VB
+
+                </div>
+
+                <h3 class="text-3xl font-bold mb-4">
+                    VB.NET
+                </h3>
+
+                <p class="text-slate-500 leading-8">
+                    พัฒนา Windows Forms
+                    และระบบจัดการข้อมูลภายในองค์กร
+                </p>
+
+            </div>
+
         </div>
 
     </div>
@@ -428,60 +345,90 @@ footer{
 
 <!-- PORTFOLIO -->
 
-<section>
+<section class="py-24 px-6 bg-gradient-to-b from-sky-50 to-white">
 
-    <h2 class="section-title">
-        ผลงานล่าสุด
-    </h2>
+    <div class="max-w-7xl mx-auto">
 
-    <div class="portfolio-grid">
+        <div class="text-center mb-20">
 
-        <div class="portfolio-item">
+            <h2 class="text-5xl font-extrabold">
+                Latest Projects
+            </h2>
 
-            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop">
-
-            <div class="portfolio-info">
-
-                <h4>Student Planner System</h4>
-
-                <p>
-                    ระบบวางแผนการเรียนสำหรับนักศึกษา
-                    พร้อมระบบคำนวณหน่วยกิตอัตโนมัติ
-                </p>
-
-            </div>
+            <p class="mt-5 text-slate-500 text-lg">
+                ผลงานและโปรเจกต์ล่าสุด
+            </p>
 
         </div>
 
-        <div class="portfolio-item">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-            <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1200&auto=format&fit=crop">
+            <!-- PROJECT -->
 
-            <div class="portfolio-info">
+            <div class="bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100 card-hover">
 
-                <h4>POS Dashboard UI</h4>
+                <img 
+                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop"
+                class="w-full h-[250px] object-cover">
 
-                <p>
-                    Dashboard UI Modern Design
-                    สำหรับระบบร้านอาหาร
-                </p>
+                <div class="p-8">
+
+                    <h3 class="text-2xl font-bold mb-4">
+                        Student Planner System
+                    </h3>
+
+                    <p class="text-slate-500 leading-8">
+                        ระบบวางแผนการเรียนสำหรับนักศึกษา
+                        พร้อมระบบคำนวณหน่วยกิตอัตโนมัติ
+                    </p>
+
+                </div>
 
             </div>
 
-        </div>
+            <!-- PROJECT -->
 
-        <div class="portfolio-item">
+            <div class="bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100 card-hover">
 
-            <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop">
+                <img 
+                src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1200&auto=format&fit=crop"
+                class="w-full h-[250px] object-cover">
 
-            <div class="portfolio-info">
+                <div class="p-8">
 
-                <h4>ESP32 IoT Project</h4>
+                    <h3 class="text-2xl font-bold mb-4">
+                        POS Dashboard UI
+                    </h3>
 
-                <p>
-                    ระบบควบคุม LED
-                    ผ่านหน้าเว็บแบบ Real-time
-                </p>
+                    <p class="text-slate-500 leading-8">
+                        Dashboard UI Modern Design
+                        สำหรับระบบร้านอาหาร
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- PROJECT -->
+
+            <div class="bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100 card-hover">
+
+                <img 
+                src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop"
+                class="w-full h-[250px] object-cover">
+
+                <div class="p-8">
+
+                    <h3 class="text-2xl font-bold mb-4">
+                        ESP32 IoT Project
+                    </h3>
+
+                    <p class="text-slate-500 leading-8">
+                        ระบบควบคุม LED ผ่านเว็บไซต์
+                        แบบ Real-time
+                    </p>
+
+                </div>
 
             </div>
 
@@ -493,9 +440,15 @@ footer{
 
 <!-- FOOTER -->
 
-<footer>
+<footer class="py-10 text-center bg-white border-t border-sky-100">
 
-    © 2026 Kiw Portfolio Website
+    <h1 class="text-2xl font-bold text-sky-500">
+        KIW PORTFOLIO
+    </h1>
+
+    <p class="mt-3 text-slate-500">
+        © 2026 All Rights Reserved
+    </p>
 
 </footer>
 
