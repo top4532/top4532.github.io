@@ -1,72 +1,152 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Kiw Portfolio</title>
 
+<!-- Tailwind -->
+
 <script src="https://cdn.tailwindcss.com"></script>
 
+<!-- Font -->
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
+
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
 <style>
 
-body{
-    font-family: 'Kanit', sans-serif;
+html{
+    scroll-behavior:smooth;
 }
+
+body{
+    font-family:'Kanit',sans-serif;
+    overflow-x:hidden;
+}
+
+/* Glow */
 
 .glow{
-    box-shadow: 0 0 30px rgba(56,189,248,0.35);
+    box-shadow:0 0 35px rgba(56,189,248,0.35);
 }
 
+/* Hover */
+
 .card-hover{
-    transition: all .35s ease;
+    transition:all .35s ease;
 }
 
 .card-hover:hover{
-    transform: translateY(-10px) scale(1.02);
+    transform:translateY(-12px) scale(1.02);
 }
+
+/* Grid Background */
 
 .bg-grid{
     background-image:
-    linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
 
-    background-size: 35px 35px;
+    background-size:40px 40px;
+}
+
+/* Floating Animation */
+
+@keyframes floating{
+
+    0%{
+        transform:translateY(0px);
+    }
+
+    50%{
+        transform:translateY(-15px);
+    }
+
+    100%{
+        transform:translateY(0px);
+    }
+
+}
+
+.float{
+    animation:floating 4s ease-in-out infinite;
+}
+
+/* Blur Circle */
+
+.blur-circle{
+    position:absolute;
+    border-radius:9999px;
+    filter:blur(100px);
+    opacity:.25;
+}
+
+/* Shine */
+
+.shine{
+    position:relative;
+    overflow:hidden;
+}
+
+.shine::before{
+
+    content:'';
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.4),
+        transparent
+    );
+
+    transition:.8s;
+}
+
+.shine:hover::before{
+    left:100%;
 }
 
 </style>
 
 </head>
-<body class="bg-slate-50 text-slate-800 overflow-x-hidden">
+
+<body class="bg-slate-50 text-slate-800">
 
 <!-- NAVBAR -->
 
 <nav class="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-white/70 border-b border-sky-100">
 
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
 
-        <h1 class="text-3xl font-extrabold text-sky-500 tracking-wide">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-sky-500 tracking-wide">
+
             KIW PORTFOLIO
+
         </h1>
 
-        <div class="hidden md:flex items-center gap-8 text-[17px] font-medium">
+        <div class="hidden md:flex items-center gap-8 text-lg font-medium">
 
             <a href="#" class="hover:text-sky-500 transition">
                 หน้าแรก
             </a>
 
-            <a href="#" class="hover:text-sky-500 transition">
+            <a href="#skills" class="hover:text-sky-500 transition">
                 ทักษะ
             </a>
 
-            <a href="#" class="hover:text-sky-500 transition">
+            <a href="#portfolio" class="hover:text-sky-500 transition">
                 ผลงาน
             </a>
 
-            <a href="#" class="hover:text-sky-500 transition">
+            <a href="#contact" class="hover:text-sky-500 transition">
                 ติดต่อ
             </a>
 
@@ -80,21 +160,41 @@ body{
 
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-grid">
 
-    <div class="absolute top-[-120px] left-[-120px] w-[350px] h-[350px] bg-sky-300 rounded-full blur-3xl opacity-30"></div>
+    <!-- Background Effects -->
 
-    <div class="absolute bottom-[-120px] right-[-120px] w-[350px] h-[350px] bg-cyan-300 rounded-full blur-3xl opacity-30"></div>
+    <div class="blur-circle w-[400px] h-[400px] bg-sky-400 top-[-100px] left-[-100px]"></div>
+
+    <div class="blur-circle w-[350px] h-[350px] bg-cyan-300 bottom-[-100px] right-[-100px]"></div>
+
+    <!-- Floating Shapes -->
+
+    <div class="absolute top-32 left-20 w-20 h-20 bg-sky-200 rounded-3xl rotate-12 float"></div>
+
+    <div class="absolute bottom-40 right-20 w-16 h-16 bg-cyan-200 rounded-full float"></div>
 
     <div class="relative z-10 text-center px-6">
 
-        <div class="inline-block px-5 py-2 rounded-full bg-sky-100 text-sky-600 font-medium mb-8">
+        <!-- Badge -->
+
+        <div class="inline-block px-6 py-3 rounded-full bg-sky-100 text-sky-600 font-semibold mb-8 shadow-md">
+
             Frontend Developer • UX/UI Designer
+
         </div>
 
-        <h1 class="text-5xl md:text-8xl font-extrabold leading-tight text-slate-800">
+        <!-- Title -->
 
-            MODERN <span class="text-sky-500">PORTFOLIO</span>
+        <h1 class="text-5xl md:text-8xl font-extrabold leading-tight">
+
+            MODERN
+
+            <span class="text-sky-500">
+                PORTFOLIO
+            </span>
 
         </h1>
+
+        <!-- Description -->
 
         <p class="mt-8 max-w-3xl mx-auto text-lg md:text-xl text-slate-600 leading-9">
 
@@ -104,15 +204,21 @@ body{
 
         </p>
 
-        <div class="mt-10 flex flex-wrap justify-center gap-5">
+        <!-- Buttons -->
 
-            <button class="px-8 py-4 rounded-2xl bg-sky-500 hover:bg-sky-600 text-white font-semibold text-lg transition glow">
+        <div class="mt-12 flex flex-wrap justify-center gap-5">
 
-                ดูผลงาน
+            <a href="#portfolio">
 
-            </button>
+                <button class="px-8 py-4 rounded-2xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-lg transition glow animate-bounce">
 
-            <button class="px-8 py-4 rounded-2xl border border-sky-200 hover:border-sky-400 bg-white text-slate-700 font-semibold text-lg transition">
+                    ดูผลงาน
+
+                </button>
+
+            </a>
+
+            <button class="px-8 py-4 rounded-2xl bg-white border border-sky-200 hover:border-sky-400 shadow-lg text-slate-700 font-bold text-lg transition">
 
                 ติดต่อเรา
 
@@ -122,17 +228,46 @@ body{
 
     </div>
 
+    <!-- Scroll Down -->
+
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+
+        <a href="#portfolio">
+
+            <div class="w-14 h-14 rounded-full bg-white shadow-xl flex items-center justify-center">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                class="w-7 h-7 text-sky-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+
+                    <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"/>
+
+                </svg>
+
+            </div>
+
+        </a>
+
+    </div>
+
 </section>
 
 <!-- SKILLS -->
 
-<section class="py-24 px-6">
+<section id="skills" class="py-28 px-6">
 
     <div class="max-w-7xl mx-auto">
 
+        <!-- Title -->
+
         <div class="text-center mb-20">
 
-            <h2 class="text-5xl font-extrabold text-slate-800">
+            <h2 class="text-5xl font-extrabold">
 
                 Programming Skills
 
@@ -146,11 +281,13 @@ body{
 
         </div>
 
+        <!-- Cards -->
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
             <!-- HTML -->
 
-            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
 
                 <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
 
@@ -164,14 +301,14 @@ body{
 
                 <p class="text-slate-500 leading-8">
                     พัฒนาโครงสร้างเว็บไซต์ Landing Page
-                    และ Responsive Website ได้อย่างมืออาชีพ
+                    และ Responsive Website
                 </p>
 
             </div>
 
             <!-- CSS -->
 
-            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
 
                 <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
 
@@ -184,15 +321,15 @@ body{
                 </h3>
 
                 <p class="text-slate-500 leading-8">
-                    ออกแบบ UI Modern Design พร้อม Animation,
-                    Glassmorphism และ Responsive Layout
+                    ออกแบบ Modern UI พร้อม Animation
+                    และ Responsive Layout
                 </p>
 
             </div>
 
             <!-- JS -->
 
-            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
 
                 <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-yellow-300 to-yellow-500 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
 
@@ -205,15 +342,15 @@ body{
                 </h3>
 
                 <p class="text-slate-500 leading-8">
-                    พัฒนา Interactive Website
-                    และระบบ Dynamic Web Application
+                    พัฒนาเว็บไซต์แบบ Interactive
+                    และ Dynamic Web Application
                 </p>
 
             </div>
 
-            <!-- REACT -->
+            <!-- React -->
 
-            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
 
                 <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-cyan-400 to-sky-500 flex items-center justify-center text-white text-2xl font-extrabold mb-8 glow">
 
@@ -227,14 +364,14 @@ body{
 
                 <p class="text-slate-500 leading-8">
                     พัฒนา Frontend Application
-                    ด้วย Modern Component Architecture
+                    ด้วย Modern Component
                 </p>
 
             </div>
 
-            <!-- NODE -->
+            <!-- Node -->
 
-            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
 
                 <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-2xl font-extrabold mb-8 glow">
 
@@ -248,14 +385,14 @@ body{
 
                 <p class="text-slate-500 leading-8">
                     สร้าง Backend API
-                    และ Server-side Application
+                    และระบบ Server-side
                 </p>
 
             </div>
 
             <!-- PHP -->
 
-            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
 
                 <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-indigo-400 to-indigo-600 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
 
@@ -269,14 +406,14 @@ body{
 
                 <p class="text-slate-500 leading-8">
                     พัฒนาระบบฐานข้อมูล
-                    และ Full Stack Web Application
+                    และ Full Stack Website
                 </p>
 
             </div>
 
-            <!-- PYTHON -->
+            <!-- Python -->
 
-            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
 
                 <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-500 to-yellow-400 flex items-center justify-center text-white text-2xl font-extrabold mb-8 glow">
 
@@ -290,14 +427,14 @@ body{
 
                 <p class="text-slate-500 leading-8">
                     พัฒนา AI, Automation,
-                    Data Processing และ IoT Project
+                    Data Processing และ IoT
                 </p>
 
             </div>
 
             <!-- C# -->
 
-            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
 
                 <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-purple-500 to-fuchsia-500 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
 
@@ -318,7 +455,7 @@ body{
 
             <!-- VB -->
 
-            <div class="card-hover bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
+            <div class="card-hover shine bg-white rounded-[30px] p-8 border border-sky-100 shadow-xl">
 
                 <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center text-white text-3xl font-extrabold mb-8 glow">
 
@@ -332,7 +469,7 @@ body{
 
                 <p class="text-slate-500 leading-8">
                     พัฒนา Windows Forms
-                    และระบบจัดการข้อมูลภายในองค์กร
+                    และระบบภายในองค์กร
                 </p>
 
             </div>
@@ -345,29 +482,37 @@ body{
 
 <!-- PORTFOLIO -->
 
-<section class="py-24 px-6 bg-gradient-to-b from-sky-50 to-white">
+<section id="portfolio" class="py-28 px-6 bg-gradient-to-b from-sky-50 to-white">
 
     <div class="max-w-7xl mx-auto">
+
+        <!-- Title -->
 
         <div class="text-center mb-20">
 
             <h2 class="text-5xl font-extrabold">
+
                 Latest Projects
+
             </h2>
 
             <p class="mt-5 text-slate-500 text-lg">
+
                 ผลงานและโปรเจกต์ล่าสุด
+
             </p>
 
         </div>
 
+        <!-- Grid -->
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-            <!-- PROJECT -->
+            <!-- Project -->
 
-            <div class="bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100 card-hover">
+            <div class="card-hover bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100">
 
-                <img 
+                <img
                 src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop"
                 class="w-full h-[250px] object-cover">
 
@@ -378,19 +523,21 @@ body{
                     </h3>
 
                     <p class="text-slate-500 leading-8">
+
                         ระบบวางแผนการเรียนสำหรับนักศึกษา
                         พร้อมระบบคำนวณหน่วยกิตอัตโนมัติ
+
                     </p>
 
                 </div>
 
             </div>
 
-            <!-- PROJECT -->
+            <!-- Project -->
 
-            <div class="bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100 card-hover">
+            <div class="card-hover bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100">
 
-                <img 
+                <img
                 src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1200&auto=format&fit=crop"
                 class="w-full h-[250px] object-cover">
 
@@ -401,19 +548,21 @@ body{
                     </h3>
 
                     <p class="text-slate-500 leading-8">
+
                         Dashboard UI Modern Design
                         สำหรับระบบร้านอาหาร
+
                     </p>
 
                 </div>
 
             </div>
 
-            <!-- PROJECT -->
+            <!-- Project -->
 
-            <div class="bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100 card-hover">
+            <div class="card-hover bg-white rounded-[30px] overflow-hidden shadow-xl border border-sky-100">
 
-                <img 
+                <img
                 src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop"
                 class="w-full h-[250px] object-cover">
 
@@ -424,8 +573,10 @@ body{
                     </h3>
 
                     <p class="text-slate-500 leading-8">
+
                         ระบบควบคุม LED ผ่านเว็บไซต์
                         แบบ Real-time
+
                     </p>
 
                 </div>
@@ -438,16 +589,59 @@ body{
 
 </section>
 
+<!-- CONTACT -->
+
+<section id="contact" class="py-28 px-6">
+
+    <div class="max-w-4xl mx-auto text-center">
+
+        <h2 class="text-5xl font-extrabold">
+
+            Contact Me
+
+        </h2>
+
+        <p class="mt-6 text-slate-500 text-lg leading-8">
+
+            สามารถติดต่อเพื่อร่วมงาน
+            หรือสอบถามเกี่ยวกับโปรเจกต์ต่าง ๆ ได้
+
+        </p>
+
+        <div class="mt-10 flex flex-wrap justify-center gap-5">
+
+            <button class="px-8 py-4 rounded-2xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-lg transition glow">
+
+                Email
+
+            </button>
+
+            <button class="px-8 py-4 rounded-2xl bg-white border border-sky-200 hover:border-sky-400 shadow-lg text-slate-700 font-bold text-lg transition">
+
+                Facebook
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
 <!-- FOOTER -->
 
 <footer class="py-10 text-center bg-white border-t border-sky-100">
 
     <h1 class="text-2xl font-bold text-sky-500">
+
         KIW PORTFOLIO
+
     </h1>
 
     <p class="mt-3 text-slate-500">
+
         © 2026 All Rights Reserved
+
     </p>
 
 </footer>
