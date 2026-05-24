@@ -1,15 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Showcase</title>
+    <title>Kiw Portfolio</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <style>
+
         *{
             margin:0;
             padding:0;
@@ -17,41 +17,55 @@
         }
 
         body{
-            font-family: 'Kanit', sans-serif;
+            font-family:'Kanit',sans-serif;
             background:#0f172a;
             color:white;
+            overflow-x:hidden;
+        }
+
+        /* Scrollbar */
+
+        ::-webkit-scrollbar{
+            width:10px;
+        }
+
+        ::-webkit-scrollbar-thumb{
+            background:#38bdf8;
+            border-radius:20px;
         }
 
         /* Navbar */
+
         nav{
             width:100%;
             padding:20px 8%;
             display:flex;
             justify-content:space-between;
             align-items:center;
-            background:rgba(255,255,255,0.03);
-            backdrop-filter: blur(10px);
-            position:sticky;
+            position:fixed;
             top:0;
-            z-index:100;
+            z-index:999;
+            background:rgba(15,23,42,0.7);
+            backdrop-filter:blur(10px);
             border-bottom:1px solid rgba(255,255,255,0.08);
         }
 
         .logo{
-            font-size:28px;
+            font-size:32px;
             font-weight:700;
             color:#38bdf8;
         }
 
         .menu{
             display:flex;
-            gap:25px;
+            gap:30px;
         }
 
         .menu a{
-            color:white;
             text-decoration:none;
+            color:white;
             transition:0.3s;
+            font-size:17px;
         }
 
         .menu a:hover{
@@ -59,37 +73,47 @@
         }
 
         /* Hero */
+
         .hero{
-            min-height:70vh;
+            width:100%;
+            min-height:100vh;
             display:flex;
-            flex-direction:column;
             justify-content:center;
             align-items:center;
             text-align:center;
-            padding:40px;
+            flex-direction:column;
+            padding:50px;
             background:
-            linear-gradient(rgba(15,23,42,0.8), rgba(15,23,42,0.9)),
-            url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1400&auto=format&fit=crop');
+            linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.9)),
+            url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1600&auto=format&fit=crop');
+
             background-size:cover;
             background-position:center;
         }
 
         .hero h1{
-            font-size:65px;
-            margin-bottom:15px;
+            font-size:80px;
+            margin-bottom:20px;
+            animation:fadeDown 1s ease;
+        }
+
+        .hero span{
+            color:#38bdf8;
         }
 
         .hero p{
+            max-width:750px;
             font-size:20px;
             color:#cbd5e1;
-            max-width:700px;
+            line-height:1.8;
+            animation:fadeUp 1s ease;
         }
 
-        .btn{
-            margin-top:30px;
-            padding:14px 35px;
+        .hero-btn{
+            margin-top:40px;
+            padding:15px 40px;
             border:none;
-            border-radius:12px;
+            border-radius:14px;
             background:#38bdf8;
             color:white;
             font-size:18px;
@@ -97,40 +121,44 @@
             transition:0.3s;
         }
 
-        .btn:hover{
-            transform:translateY(-3px);
+        .hero-btn:hover{
             background:#0ea5e9;
+            transform:translateY(-5px);
         }
 
         /* Section */
+
         section{
-            padding:80px 8%;
+            padding:100px 8%;
         }
 
         .section-title{
-            font-size:40px;
-            margin-bottom:40px;
+            font-size:45px;
+            margin-bottom:50px;
             color:#38bdf8;
+            text-align:center;
         }
 
-        /* Categories */
+        /* Skills */
+
         .categories{
             display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-            gap:25px;
+            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+            gap:30px;
         }
 
         .card{
             background:#1e293b;
-            border-radius:20px;
+            border-radius:22px;
             overflow:hidden;
-            transition:0.3s;
+            transition:0.4s;
             border:1px solid rgba(255,255,255,0.05);
+            position:relative;
         }
 
         .card:hover{
-            transform:translateY(-10px);
-            box-shadow:0 15px 35px rgba(0,0,0,0.4);
+            transform:translateY(-12px);
+            box-shadow:0 20px 40px rgba(0,0,0,0.5);
         }
 
         .card img{
@@ -140,32 +168,33 @@
         }
 
         .card-content{
-            padding:20px;
+            padding:25px;
         }
 
         .card-content h3{
-            margin-bottom:10px;
-            font-size:24px;
+            font-size:28px;
+            margin-bottom:15px;
         }
 
         .card-content p{
             color:#cbd5e1;
+            line-height:1.8;
             font-size:15px;
-            line-height:1.7;
         }
 
-        /* Portfolio Grid */
+        /* Portfolio */
+
         .portfolio-grid{
             display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-            gap:25px;
+            grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+            gap:30px;
         }
 
         .portfolio-item{
             background:#1e293b;
-            border-radius:18px;
+            border-radius:20px;
             overflow:hidden;
-            transition:0.3s;
+            transition:0.4s;
         }
 
         .portfolio-item:hover{
@@ -179,25 +208,69 @@
         }
 
         .portfolio-info{
-            padding:20px;
+            padding:25px;
         }
 
         .portfolio-info h4{
-            margin-bottom:10px;
-            font-size:22px;
+            font-size:24px;
+            margin-bottom:15px;
         }
 
+        .portfolio-info p{
+            color:#cbd5e1;
+            line-height:1.7;
+        }
+
+        /* Footer */
+
         footer{
+            padding:40px;
             text-align:center;
-            padding:30px;
             background:#020617;
             color:#94a3b8;
+            margin-top:50px;
         }
+
+        /* Animation */
+
+        @keyframes fadeDown{
+
+            from{
+                opacity:0;
+                transform:translateY(-50px);
+            }
+
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+
+        }
+
+        @keyframes fadeUp{
+
+            from{
+                opacity:0;
+                transform:translateY(50px);
+            }
+
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+
+        }
+
+        /* Responsive */
 
         @media(max-width:768px){
 
             .hero h1{
-                font-size:42px;
+                font-size:45px;
+            }
+
+            .hero p{
+                font-size:16px;
             }
 
             .menu{
@@ -211,120 +284,298 @@
 <body>
 
     <!-- Navbar -->
+
     <nav>
-        <div class="logo">MY PORTFOLIO</div>
+
+        <div class="logo">
+            KIW PORTFOLIO
+        </div>
 
         <div class="menu">
             <a href="#">หน้าแรก</a>
+            <a href="#">ทักษะ</a>
             <a href="#">ผลงาน</a>
-            <a href="#">หมวดหมู่</a>
             <a href="#">ติดต่อ</a>
         </div>
+
     </nav>
 
     <!-- Hero -->
+
     <div class="hero">
-        <h1>PORTFOLIO WEBSITE</h1>
+
+        <h1>
+            Hi, I'm <span>Kiw</span>
+        </h1>
+
         <p>
-            เว็บไซต์รวมผลงาน UX/UI Design, Frontend Development,
-            ระบบ Web Application และโปรเจกต์ต่าง ๆ
+            UX/UI Designer และ Frontend Developer
+            ที่สามารถพัฒนาเว็บไซต์และระบบต่าง ๆ ได้หลากหลายภาษา
+            พร้อมออกแบบ UI Modern และระบบ Interactive ระดับสูง
         </p>
 
-        <button class="btn">ดูผลงาน</button>
+        <button class="hero-btn">
+            ดูผลงาน
+        </button>
+
     </div>
 
-    <!-- Categories -->
+    <!-- Skills -->
+
     <section>
-        <h2 class="section-title">หมวดหมู่ผลงาน</h2>
+
+        <h2 class="section-title">
+            หมวดหมู่ทักษะการเขียนโปรแกรม
+        </h2>
 
         <div class="categories">
 
+            <!-- HTML -->
+
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?q=80&w=1200&auto=format&fit=crop">
+
+                <img src="https://images.unsplash.com/photo-1621839673705-6617adf9e890?q=80&w=1200&auto=format&fit=crop">
 
                 <div class="card-content">
-                    <h3>UX/UI Design</h3>
+
+                    <h3>HTML5</h3>
+
                     <p>
-                        ออกแบบหน้าตาเว็บไซต์ แอปพลิเคชัน Dashboard และ Prototype
-                        ด้วยแนวคิด Modern UI
+                        พัฒนาโครงสร้างเว็บไซต์ Landing Page
+                        และ Responsive Website ได้อย่างมืออาชีพ
                     </p>
+
                 </div>
+
             </div>
 
+            <!-- CSS -->
+
             <div class="card">
+
+                <img src="https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?q=80&w=1200&auto=format&fit=crop">
+
+                <div class="card-content">
+
+                    <h3>CSS3</h3>
+
+                    <p>
+                        ออกแบบ UI Modern Design พร้อม Animation,
+                        Glassmorphism และ Responsive Layout
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- JavaScript -->
+
+            <div class="card">
+
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop">
+
+                <div class="card-content">
+
+                    <h3>JavaScript</h3>
+
+                    <p>
+                        พัฒนาเว็บไซต์แบบ Interactive
+                        และ Dynamic Web Application
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- React -->
+
+            <div class="card">
+
+                <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1200&auto=format&fit=crop">
+
+                <div class="card-content">
+
+                    <h3>React.js</h3>
+
+                    <p>
+                        พัฒนา Frontend Application
+                        ด้วย Modern Component Architecture
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Node.js -->
+
+            <div class="card">
+
+                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1200&auto=format&fit=crop">
+
+                <div class="card-content">
+
+                    <h3>Node.js</h3>
+
+                    <p>
+                        สร้าง Backend API
+                        และระบบ Server-side Application
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- PHP -->
+
+            <div class="card">
+
+                <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop">
+
+                <div class="card-content">
+
+                    <h3>PHP</h3>
+
+                    <p>
+                        พัฒนาระบบฐานข้อมูล ระบบจัดการข้อมูล
+                        และ Web Application แบบ Full Stack
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Python -->
+
+            <div class="card">
+
+                <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=1200&auto=format&fit=crop">
+
+                <div class="card-content">
+
+                    <h3>Python</h3>
+
+                    <p>
+                        พัฒนา AI, Automation,
+                        Data Processing และ IoT Project
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- C# -->
+
+            <div class="card">
+
+                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop">
+
+                <div class="card-content">
+
+                    <h3>C#</h3>
+
+                    <p>
+                        พัฒนา Desktop Application,
+                        Windows Program และระบบธุรกิจ
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- VB.NET -->
+
+            <div class="card">
+
                 <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop">
 
                 <div class="card-content">
-                    <h3>Web Development</h3>
-                    <p>
-                        พัฒนาเว็บไซต์ด้วย HTML CSS JavaScript React PHP
-                        และระบบจัดการฐานข้อมูล
-                    </p>
-                </div>
-            </div>
 
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop">
+                    <h3>VB.NET</h3>
 
-                <div class="card-content">
-                    <h3>IoT & Hardware</h3>
                     <p>
-                        โปรเจกต์ ESP32 ระบบ LED Automation
-                        และการเชื่อมต่ออุปกรณ์อัจฉริยะ
+                        พัฒนา Windows Forms Application
+                        และระบบจัดการข้อมูลภายในองค์กร
                     </p>
+
                 </div>
+
             </div>
 
         </div>
+
     </section>
 
     <!-- Portfolio -->
+
     <section>
-        <h2 class="section-title">ผลงานล่าสุด</h2>
+
+        <h2 class="section-title">
+            ผลงานล่าสุด
+        </h2>
 
         <div class="portfolio-grid">
 
             <div class="portfolio-item">
+
                 <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop">
 
                 <div class="portfolio-info">
-                    <h4>POS System Design</h4>
-                    <p>
-                        ออกแบบระบบ POS สำหรับร้านอาหารสไตล์ญี่ปุ่น
-                        พร้อม Dashboard และ UX Flow
-                    </p>
-                </div>
-            </div>
 
-            <div class="portfolio-item">
-                <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop">
-
-                <div class="portfolio-info">
                     <h4>Student Planner System</h4>
+
                     <p>
                         ระบบวางแผนการเรียนสำหรับนักศึกษา
                         พร้อมระบบคำนวณหน่วยกิตอัตโนมัติ
                     </p>
+
                 </div>
+
             </div>
 
             <div class="portfolio-item">
+
                 <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1200&auto=format&fit=crop">
 
                 <div class="portfolio-info">
-                    <h4>Creative Dashboard</h4>
+
+                    <h4>POS Dashboard Design</h4>
+
                     <p>
-                        Dashboard UI แนว Futuristic
-                        พร้อม Animation และ Interactive Effects
+                        ออกแบบ Dashboard UI สำหรับระบบ POS
+                        สไตล์ Futuristic Modern UI
                     </p>
+
                 </div>
+
+            </div>
+
+            <div class="portfolio-item">
+
+                <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop">
+
+                <div class="portfolio-info">
+
+                    <h4>ESP32 IoT Project</h4>
+
+                    <p>
+                        ระบบควบคุม LED Automation
+                        พร้อมหน้าเว็บควบคุมแบบ Real-time
+                    </p>
+
+                </div>
+
             </div>
 
         </div>
+
     </section>
 
+    <!-- Footer -->
+
     <footer>
-        © 2026 Portfolio Website | Designed By You
+
+        © 2026 Kiw Portfolio Website
+
     </footer>
 
 </body>
