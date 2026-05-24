@@ -1,582 +1,503 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kiw Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiw Portfolio</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-    <style>
+<style>
 
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        body{
-            font-family:'Kanit',sans-serif;
-            background:#0f172a;
-            color:white;
-            overflow-x:hidden;
-        }
+body{
+    font-family:'Kanit',sans-serif;
+    background:#f8fbff;
+    color:#1e293b;
+}
 
-        /* Scrollbar */
+/* NAVBAR */
 
-        ::-webkit-scrollbar{
-            width:10px;
-        }
+nav{
+    width:100%;
+    padding:20px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:white;
+    box-shadow:0 2px 20px rgba(0,0,0,0.05);
+    position:sticky;
+    top:0;
+    z-index:999;
+}
 
-        ::-webkit-scrollbar-thumb{
-            background:#38bdf8;
-            border-radius:20px;
-        }
+.logo{
+    font-size:32px;
+    font-weight:700;
+    color:#0ea5e9;
+}
 
-        /* Navbar */
+.menu{
+    display:flex;
+    gap:30px;
+}
 
-        nav{
-            width:100%;
-            padding:20px 8%;
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            position:fixed;
-            top:0;
-            z-index:999;
-            background:rgba(15,23,42,0.7);
-            backdrop-filter:blur(10px);
-            border-bottom:1px solid rgba(255,255,255,0.08);
-        }
+.menu a{
+    text-decoration:none;
+    color:#334155;
+    font-size:17px;
+    transition:0.3s;
+}
 
-        .logo{
-            font-size:32px;
-            font-weight:700;
-            color:#38bdf8;
-        }
+.menu a:hover{
+    color:#0ea5e9;
+}
 
-        .menu{
-            display:flex;
-            gap:30px;
-        }
+/* HERO */
 
-        .menu a{
-            text-decoration:none;
-            color:white;
-            transition:0.3s;
-            font-size:17px;
-        }
+.hero{
+    width:100%;
+    min-height:80vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+    padding:60px 20px;
+    background:
+    linear-gradient(135deg,#e0f2fe,#ffffff);
+}
 
-        .menu a:hover{
-            color:#38bdf8;
-        }
+.hero h1{
+    font-size:75px;
+    color:#0284c7;
+    margin-bottom:20px;
+}
 
-        /* Hero */
+.hero p{
+    max-width:750px;
+    font-size:20px;
+    line-height:1.8;
+    color:#475569;
+}
 
-        .hero{
-            width:100%;
-            min-height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            text-align:center;
-            flex-direction:column;
-            padding:50px;
-            background:
-            linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.9)),
-            url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1600&auto=format&fit=crop');
+.hero button{
+    margin-top:35px;
+    padding:15px 40px;
+    border:none;
+    border-radius:15px;
+    background:#0ea5e9;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    transition:0.3s;
+}
 
-            background-size:cover;
-            background-position:center;
-        }
+.hero button:hover{
+    transform:translateY(-5px);
+    background:#0284c7;
+}
 
-        .hero h1{
-            font-size:80px;
-            margin-bottom:20px;
-            animation:fadeDown 1s ease;
-        }
+/* SECTION */
 
-        .hero span{
-            color:#38bdf8;
-        }
+section{
+    padding:90px 8%;
+}
 
-        .hero p{
-            max-width:750px;
-            font-size:20px;
-            color:#cbd5e1;
-            line-height:1.8;
-            animation:fadeUp 1s ease;
-        }
+.section-title{
+    text-align:center;
+    font-size:45px;
+    color:#0284c7;
+    margin-bottom:50px;
+}
 
-        .hero-btn{
-            margin-top:40px;
-            padding:15px 40px;
-            border:none;
-            border-radius:14px;
-            background:#38bdf8;
-            color:white;
-            font-size:18px;
-            cursor:pointer;
-            transition:0.3s;
-        }
+/* SKILLS */
 
-        .hero-btn:hover{
-            background:#0ea5e9;
-            transform:translateY(-5px);
-        }
+.categories{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:30px;
+}
 
-        /* Section */
+.card{
+    background:white;
+    border-radius:25px;
+    padding:40px 30px;
+    text-align:center;
+    transition:0.4s;
+    border:1px solid #dbeafe;
+    box-shadow:0 10px 25px rgba(14,165,233,0.08);
+}
 
-        section{
-            padding:100px 8%;
-        }
+.card:hover{
+    transform:translateY(-10px);
+    box-shadow:0 20px 40px rgba(14,165,233,0.18);
+}
 
-        .section-title{
-            font-size:45px;
-            margin-bottom:50px;
-            color:#38bdf8;
-            text-align:center;
-        }
+/* ICON */
 
-        /* Skills */
+.language-icon{
+    width:110px;
+    height:110px;
+    margin:auto;
+    margin-bottom:25px;
+    border-radius:25px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:38px;
+    font-weight:700;
+    color:white;
+}
 
-        .categories{
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-            gap:30px;
-        }
+/* Colors */
 
-        .card{
-            background:#1e293b;
-            border-radius:22px;
-            overflow:hidden;
-            transition:0.4s;
-            border:1px solid rgba(255,255,255,0.05);
-            position:relative;
-        }
+.html{
+    background:linear-gradient(135deg,#ff6b35,#ff8c42);
+}
 
-        .card:hover{
-            transform:translateY(-12px);
-            box-shadow:0 20px 40px rgba(0,0,0,0.5);
-        }
+.css{
+    background:linear-gradient(135deg,#2563eb,#38bdf8);
+}
 
-        .card img{
-            width:100%;
-            height:220px;
-            object-fit:cover;
-        }
+.js{
+    background:linear-gradient(135deg,#facc15,#f59e0b);
+}
 
-        .card-content{
-            padding:25px;
-        }
+.react{
+    background:linear-gradient(135deg,#06b6d4,#38bdf8);
+}
 
-        .card-content h3{
-            font-size:28px;
-            margin-bottom:15px;
-        }
+.node{
+    background:linear-gradient(135deg,#16a34a,#22c55e);
+}
 
-        .card-content p{
-            color:#cbd5e1;
-            line-height:1.8;
-            font-size:15px;
-        }
+.php{
+    background:linear-gradient(135deg,#6366f1,#818cf8);
+}
 
-        /* Portfolio */
+.python{
+    background:linear-gradient(135deg,#2563eb,#facc15);
+}
 
-        .portfolio-grid{
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-            gap:30px;
-        }
+.csharp{
+    background:linear-gradient(135deg,#7e22ce,#a855f7);
+}
 
-        .portfolio-item{
-            background:#1e293b;
-            border-radius:20px;
-            overflow:hidden;
-            transition:0.4s;
-        }
+.vb{
+    background:linear-gradient(135deg,#0f766e,#14b8a6);
+}
 
-        .portfolio-item:hover{
-            transform:scale(1.03);
-        }
+.card h3{
+    font-size:30px;
+    margin-bottom:15px;
+}
 
-        .portfolio-item img{
-            width:100%;
-            height:240px;
-            object-fit:cover;
-        }
+.card p{
+    color:#64748b;
+    line-height:1.8;
+    font-size:15px;
+}
 
-        .portfolio-info{
-            padding:25px;
-        }
+/* PORTFOLIO */
 
-        .portfolio-info h4{
-            font-size:24px;
-            margin-bottom:15px;
-        }
+.portfolio-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:30px;
+}
 
-        .portfolio-info p{
-            color:#cbd5e1;
-            line-height:1.7;
-        }
+.portfolio-item{
+    background:white;
+    border-radius:25px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,0.05);
+    transition:0.4s;
+}
 
-        /* Footer */
+.portfolio-item:hover{
+    transform:translateY(-10px);
+}
 
-        footer{
-            padding:40px;
-            text-align:center;
-            background:#020617;
-            color:#94a3b8;
-            margin-top:50px;
-        }
+.portfolio-item img{
+    width:100%;
+    height:240px;
+    object-fit:cover;
+}
 
-        /* Animation */
+.portfolio-info{
+    padding:25px;
+}
 
-        @keyframes fadeDown{
+.portfolio-info h4{
+    font-size:24px;
+    margin-bottom:15px;
+    color:#0284c7;
+}
 
-            from{
-                opacity:0;
-                transform:translateY(-50px);
-            }
+.portfolio-info p{
+    color:#64748b;
+    line-height:1.8;
+}
 
-            to{
-                opacity:1;
-                transform:translateY(0);
-            }
+/* FOOTER */
 
-        }
+footer{
+    padding:40px;
+    text-align:center;
+    background:#e0f2fe;
+    color:#0369a1;
+    margin-top:50px;
+}
 
-        @keyframes fadeUp{
+/* MOBILE */
 
-            from{
-                opacity:0;
-                transform:translateY(50px);
-            }
+@media(max-width:768px){
 
-            to{
-                opacity:1;
-                transform:translateY(0);
-            }
+    .hero h1{
+        font-size:45px;
+    }
 
-        }
+    .hero p{
+        font-size:16px;
+    }
 
-        /* Responsive */
+    .menu{
+        display:none;
+    }
 
-        @media(max-width:768px){
+}
 
-            .hero h1{
-                font-size:45px;
-            }
-
-            .hero p{
-                font-size:16px;
-            }
-
-            .menu{
-                display:none;
-            }
-
-        }
-
-    </style>
+</style>
 </head>
 <body>
 
-    <!-- Navbar -->
+<!-- NAVBAR -->
 
-    <nav>
+<nav>
 
-        <div class="logo">
-            KIW PORTFOLIO
+    <div class="logo">
+        KIW PORTFOLIO
+    </div>
+
+    <div class="menu">
+        <a href="#">หน้าแรก</a>
+        <a href="#">ทักษะ</a>
+        <a href="#">ผลงาน</a>
+        <a href="#">ติดต่อ</a>
+    </div>
+
+</nav>
+
+<!-- HERO -->
+
+<div class="hero">
+
+    <h1>MY PORTFOLIO</h1>
+
+    <p>
+        UX/UI Designer และ Full Stack Developer
+        ที่สามารถออกแบบและพัฒนาระบบได้หลากหลายภาษา
+        พร้อมสร้าง Modern UI ระดับมืออาชีพ
+    </p>
+
+    <button>
+        ดูผลงาน
+    </button>
+
+</div>
+
+<!-- SKILLS -->
+
+<section>
+
+    <h2 class="section-title">
+        หมวดหมู่ภาษาโปรแกรม
+    </h2>
+
+    <div class="categories">
+
+        <div class="card">
+            <div class="language-icon html">HTML</div>
+
+            <h3>HTML5</h3>
+
+            <p>
+                พัฒนาโครงสร้างเว็บไซต์ Landing Page
+                และ Responsive Website
+            </p>
         </div>
 
-        <div class="menu">
-            <a href="#">หน้าแรก</a>
-            <a href="#">ทักษะ</a>
-            <a href="#">ผลงาน</a>
-            <a href="#">ติดต่อ</a>
+        <div class="card">
+            <div class="language-icon css">CSS</div>
+
+            <h3>CSS3</h3>
+
+            <p>
+                ออกแบบ UI Modern Design
+                พร้อม Animation และ Responsive Layout
+            </p>
         </div>
 
-    </nav>
+        <div class="card">
+            <div class="language-icon js">JS</div>
 
-    <!-- Hero -->
+            <h3>JavaScript</h3>
 
-    <div class="hero">
+            <p>
+                พัฒนา Interactive Website
+                และระบบ Dynamic Web Application
+            </p>
+        </div>
 
-        <h1>
-            Hi, I'm <span>Kiw</span>
-        </h1>
+        <div class="card">
+            <div class="language-icon react">React</div>
 
-        <p>
-            UX/UI Designer และ Frontend Developer
-            ที่สามารถพัฒนาเว็บไซต์และระบบต่าง ๆ ได้หลากหลายภาษา
-            พร้อมออกแบบ UI Modern และระบบ Interactive ระดับสูง
-        </p>
+            <h3>React.js</h3>
 
-        <button class="hero-btn">
-            ดูผลงาน
-        </button>
+            <p>
+                พัฒนา Frontend Application
+                ด้วย Modern Component Architecture
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="language-icon node">Node</div>
+
+            <h3>Node.js</h3>
+
+            <p>
+                สร้าง Backend API
+                และ Server-side Application
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="language-icon php">PHP</div>
+
+            <h3>PHP</h3>
+
+            <p>
+                พัฒนาระบบฐานข้อมูล
+                และระบบจัดการข้อมูลแบบ Full Stack
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="language-icon python">Py</div>
+
+            <h3>Python</h3>
+
+            <p>
+                พัฒนา AI, Automation,
+                Data Processing และ IoT Project
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="language-icon csharp">C#</div>
+
+            <h3>C#</h3>
+
+            <p>
+                พัฒนา Desktop Application
+                และระบบธุรกิจ
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="language-icon vb">VB</div>
+
+            <h3>VB.NET</h3>
+
+            <p>
+                พัฒนา Windows Forms
+                และระบบจัดการข้อมูลภายในองค์กร
+            </p>
+        </div>
 
     </div>
 
-    <!-- Skills -->
+</section>
 
-    <section>
+<!-- PORTFOLIO -->
 
-        <h2 class="section-title">
-            หมวดหมู่ทักษะการเขียนโปรแกรม
-        </h2>
+<section>
 
-        <div class="categories">
+    <h2 class="section-title">
+        ผลงานล่าสุด
+    </h2>
 
-            <!-- HTML -->
+    <div class="portfolio-grid">
 
-            <div class="card">
+        <div class="portfolio-item">
 
-                <img src="https://images.unsplash.com/photo-1621839673705-6617adf9e890?q=80&w=1200&auto=format&fit=crop">
+            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop">
 
-                <div class="card-content">
+            <div class="portfolio-info">
 
-                    <h3>HTML5</h3>
+                <h4>Student Planner System</h4>
 
-                    <p>
-                        พัฒนาโครงสร้างเว็บไซต์ Landing Page
-                        และ Responsive Website ได้อย่างมืออาชีพ
-                    </p>
-
-                </div>
-
-            </div>
-
-            <!-- CSS -->
-
-            <div class="card">
-
-                <img src="https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?q=80&w=1200&auto=format&fit=crop">
-
-                <div class="card-content">
-
-                    <h3>CSS3</h3>
-
-                    <p>
-                        ออกแบบ UI Modern Design พร้อม Animation,
-                        Glassmorphism และ Responsive Layout
-                    </p>
-
-                </div>
-
-            </div>
-
-            <!-- JavaScript -->
-
-            <div class="card">
-
-                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop">
-
-                <div class="card-content">
-
-                    <h3>JavaScript</h3>
-
-                    <p>
-                        พัฒนาเว็บไซต์แบบ Interactive
-                        และ Dynamic Web Application
-                    </p>
-
-                </div>
-
-            </div>
-
-            <!-- React -->
-
-            <div class="card">
-
-                <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=1200&auto=format&fit=crop">
-
-                <div class="card-content">
-
-                    <h3>React.js</h3>
-
-                    <p>
-                        พัฒนา Frontend Application
-                        ด้วย Modern Component Architecture
-                    </p>
-
-                </div>
-
-            </div>
-
-            <!-- Node.js -->
-
-            <div class="card">
-
-                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1200&auto=format&fit=crop">
-
-                <div class="card-content">
-
-                    <h3>Node.js</h3>
-
-                    <p>
-                        สร้าง Backend API
-                        และระบบ Server-side Application
-                    </p>
-
-                </div>
-
-            </div>
-
-            <!-- PHP -->
-
-            <div class="card">
-
-                <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop">
-
-                <div class="card-content">
-
-                    <h3>PHP</h3>
-
-                    <p>
-                        พัฒนาระบบฐานข้อมูล ระบบจัดการข้อมูล
-                        และ Web Application แบบ Full Stack
-                    </p>
-
-                </div>
-
-            </div>
-
-            <!-- Python -->
-
-            <div class="card">
-
-                <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=1200&auto=format&fit=crop">
-
-                <div class="card-content">
-
-                    <h3>Python</h3>
-
-                    <p>
-                        พัฒนา AI, Automation,
-                        Data Processing และ IoT Project
-                    </p>
-
-                </div>
-
-            </div>
-
-            <!-- C# -->
-
-            <div class="card">
-
-                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop">
-
-                <div class="card-content">
-
-                    <h3>C#</h3>
-
-                    <p>
-                        พัฒนา Desktop Application,
-                        Windows Program และระบบธุรกิจ
-                    </p>
-
-                </div>
-
-            </div>
-
-            <!-- VB.NET -->
-
-            <div class="card">
-
-                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop">
-
-                <div class="card-content">
-
-                    <h3>VB.NET</h3>
-
-                    <p>
-                        พัฒนา Windows Forms Application
-                        และระบบจัดการข้อมูลภายในองค์กร
-                    </p>
-
-                </div>
+                <p>
+                    ระบบวางแผนการเรียนสำหรับนักศึกษา
+                    พร้อมระบบคำนวณหน่วยกิตอัตโนมัติ
+                </p>
 
             </div>
 
         </div>
 
-    </section>
+        <div class="portfolio-item">
 
-    <!-- Portfolio -->
+            <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1200&auto=format&fit=crop">
 
-    <section>
+            <div class="portfolio-info">
 
-        <h2 class="section-title">
-            ผลงานล่าสุด
-        </h2>
+                <h4>POS Dashboard UI</h4>
 
-        <div class="portfolio-grid">
-
-            <div class="portfolio-item">
-
-                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop">
-
-                <div class="portfolio-info">
-
-                    <h4>Student Planner System</h4>
-
-                    <p>
-                        ระบบวางแผนการเรียนสำหรับนักศึกษา
-                        พร้อมระบบคำนวณหน่วยกิตอัตโนมัติ
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="portfolio-item">
-
-                <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=1200&auto=format&fit=crop">
-
-                <div class="portfolio-info">
-
-                    <h4>POS Dashboard Design</h4>
-
-                    <p>
-                        ออกแบบ Dashboard UI สำหรับระบบ POS
-                        สไตล์ Futuristic Modern UI
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="portfolio-item">
-
-                <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop">
-
-                <div class="portfolio-info">
-
-                    <h4>ESP32 IoT Project</h4>
-
-                    <p>
-                        ระบบควบคุม LED Automation
-                        พร้อมหน้าเว็บควบคุมแบบ Real-time
-                    </p>
-
-                </div>
+                <p>
+                    Dashboard UI Modern Design
+                    สำหรับระบบร้านอาหาร
+                </p>
 
             </div>
 
         </div>
 
-    </section>
+        <div class="portfolio-item">
 
-    <!-- Footer -->
+            <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop">
 
-    <footer>
+            <div class="portfolio-info">
 
-        © 2026 Kiw Portfolio Website
+                <h4>ESP32 IoT Project</h4>
 
-    </footer>
+                <p>
+                    ระบบควบคุม LED
+                    ผ่านหน้าเว็บแบบ Real-time
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+    © 2026 Kiw Portfolio Website
+
+</footer>
 
 </body>
 </html>
