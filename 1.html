@@ -1,1 +1,102 @@
 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Figma Portfolio</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:sans-serif;
+}
+
+body{
+    background:#0f172a;
+    color:white;
+    padding:40px;
+}
+
+h1{
+    text-align:center;
+    margin-bottom:40px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(500px,1fr));
+    gap:30px;
+    max-width:1400px;
+    margin:auto;
+}
+
+.card{
+    background:#1e293b;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+video{
+    width:100%;
+    display:block;
+}
+
+.content{
+    padding:20px;
+}
+
+.content h2{
+    margin-bottom:10px;
+}
+
+.content p{
+    color:#cbd5e1;
+}
+</style>
+</head>
+<body>
+
+<h1>🎨 Figma Portfolio</h1>
+
+<div class="grid">
+
+    <div class="card">
+        <video controls>
+            <source src="videos/figma-demo.mp4" type="video/mp4">
+        </video>
+
+        <div class="content">
+            <h2>POS Cafe System</h2>
+            <p>ระบบ POS สำหรับร้านคาเฟ่ ออกแบบด้วย Figma</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <video controls>
+            <source src="videos/pos-system.mp4" type="video/mp4">
+        </video>
+
+        <div class="content">
+            <h2>Restaurant POS</h2>
+            <p>ระบบร้านอาหารแบบ Full Service</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <video controls>
+            <source src="videos/mobile-app.mp4" type="video/mp4">
+        </video>
+
+        <div class="content">
+            <h2>Mobile Application</h2>
+            <p>Prototype แอปพลิเคชันมือถือ</p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
