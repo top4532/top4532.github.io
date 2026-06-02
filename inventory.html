@@ -1,1 +1,259 @@
 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบติดตามกำหนดส่งสินค้า</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f4f9ff;
+    padding:20px;
+}
+
+.header{
+    background:linear-gradient(135deg,#2196F3,#42A5F5);
+    color:white;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+.header h1{
+    font-size:28px;
+}
+
+.dashboard{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
+    text-align:center;
+}
+
+.card h2{
+    color:#2196F3;
+}
+
+.form-box{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
+    margin-bottom:20px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:10px;
+}
+
+input{
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+button{
+    background:#2196F3;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+button:hover{
+    background:#1976D2;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
+}
+
+th{
+    background:#2196F3;
+    color:white;
+    padding:12px;
+}
+
+td{
+    padding:10px;
+    border-bottom:1px solid #eee;
+}
+
+.overdue{
+    color:red;
+    font-weight:bold;
+}
+
+.warning{
+    color:orange;
+    font-weight:bold;
+}
+
+.complete{
+    color:green;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>📦 ระบบติดตามกำหนดส่งสินค้า</h1>
+</div>
+
+<div class="dashboard">
+    <div class="card">
+        <h2 id="total">0</h2>
+        <p>รายการทั้งหมด</p>
+    </div>
+
+    <div class="card">
+        <h2 id="pending">0</h2>
+        <p>รอส่ง</p>
+    </div>
+
+    <div class="card">
+        <h2 id="late">0</h2>
+        <p>เกินกำหนด</p>
+    </div>
+
+    <div class="card">
+        <h2 id="done">0</h2>
+        <p>ส่งครบ</p>
+    </div>
+</div>
+
+<div class="form-box">
+
+<div class="form-grid">
+<input type="text" id="po" placeholder="เลขที่ PO">
+<input type="text" id="barcode" placeholder="Barcode">
+<input type="number" id="orderQty" placeholder="จำนวนสั่ง">
+<input type="number" id="receiveQty" placeholder="จำนวนรับเข้า">
+<input type="date" id="dueDate">
+</div>
+
+<button onclick="addData()">บันทึก</button>
+
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>PO</th>
+<th>Barcode</th>
+<th>จำนวนสั่ง</th>
+<th>รับเข้า</th>
+<th>กำหนดส่ง</th>
+<th>สถานะ</th>
+</tr>
+</thead>
+
+<tbody id="tableBody"></tbody>
+
+</table>
+
+<script>
+
+let data = JSON.parse(localStorage.getItem('deliveryData')) || [];
+
+function getStatus(item){
+
+    if(item.receiveQty >= item.orderQty)
+        return ['ส่งครบ','complete'];
+
+    let today = new Date();
+    let due = new Date(item.dueDate);
+
+    if(today > due)
+        return ['เกินกำหนด','overdue'];
+
+    return ['รอส่ง','warning'];
+}
+
+function addData(){
+
+    let item = {
+        po: po.value,
+        barcode: barcode.value,
+        orderQty: Number(orderQty.value),
+        receiveQty: Number(receiveQty.value),
+        dueDate: dueDate.value
+    };
+
+    data.push(item);
+
+    localStorage.setItem(
+        'deliveryData',
+        JSON.stringify(data)
+    );
+
+    render();
+}
+
+function render(){
+
+    tableBody.innerHTML='';
+
+    let pending=0;
+    let late=0;
+    let done=0;
+
+    data.forEach(x=>{
+
+        let status=getStatus(x);
+
+        if(status[0]=='รอส่ง') pending++;
+        if(status[0]=='เกินกำหนด') late++;
+        if(status[0]=='ส่งครบ') done++;
+
+        tableBody.innerHTML += `
+        <tr>
+            <td>${x.po}</td>
+            <td>${x.barcode}</td>
+            <td>${x.orderQty}</td>
+            <td>${x.receiveQty}</td>
+            <td>${x.dueDate}</td>
+            <td class="${status[1]}">${status[0]}</td>
+        </tr>`;
+    });
+
+    total.innerText=data.length;
+    pending.innerText=pending;
+    late.innerText=late;
+    done.innerText=done;
+}
+
+render();
+
+</script>
+
+</body>
+</html>
