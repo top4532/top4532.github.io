@@ -199,7 +199,7 @@ body {
     to { opacity: 1; transform: translateY(0);}
 }
 
-/* ========== การ์ดสินค้า (คลิกเปิดไฟล์) ========== */
+/* ========== การ์ดสินค้า ========== */
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -307,7 +307,7 @@ body {
     background: #FFD0D0;
 }
 
-.btn-set-link {
+.btn-set-html {
     background: #E8F4FD;
     color: #1a2c3e;
     border: none;
@@ -321,7 +321,7 @@ body {
     display: inline-block;
 }
 
-.btn-set-link:hover {
+.btn-set-html:hover {
     background: #C5E6FB;
 }
 
@@ -356,7 +356,7 @@ body {
     background: #C5E6FB;
 }
 
-/* Modal สำหรับใส่ลิงก์ไฟล์ */
+/* Modal */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -380,7 +380,7 @@ body {
 
 .modal-content {
     background: white;
-    width: 450px;
+    width: 480px;
     max-width: 90%;
     padding: 28px;
     border-radius: 28px;
@@ -525,7 +525,7 @@ body {
             </div>
         </div>
 
-        <!-- หน้า สินค้า (โปรดัก) - คลิกการ์ดเปิดไฟล์อื่น -->
+        <!-- หน้า สินค้า (โปรดัก) - คลิกการ์ดเปิดไฟล์ HTML -->
         <div class="page" id="page-product">
             <div class="quick-links">
                 <button class="quick-link-btn" onclick="switchPage('tracking')">🚚 ไปที่ ติดตามกำหนดส่ง</button>
@@ -538,7 +538,7 @@ body {
             </div>
             <div class="product-grid" id="productGrid"></div>
             <div style="margin-top:20px; padding:12px; background:#E8F4FD; border-radius:12px; text-align:center; font-size:12px; color:#2C6B9E;">
-                💡 คลิกที่การ์ดสินค้าเพื่อเปิดไฟล์ที่เชื่อมโยง (PDF, Excel, รูปภาพ หรือเว็บไซต์)
+                💡 คลิกที่การ์ดสินค้าเพื่อเปิดไฟล์ HTML ที่เชื่อมโยง (index2.html, detail.html, ฯลฯ)
             </div>
         </div>
 
@@ -547,14 +547,15 @@ body {
             <div class="placeholder-card">
                 <div class="placeholder-icon">📥</div>
                 <h3>นำเข้าข้อมูลสินค้า</h3>
-                <p style="margin:12px 0;">เลือกไฟล์ CSV (คอลัมน์: ชื่อสินค้า, ลิงก์ไฟล์)</p>
+                <p style="margin:12px 0;">เลือกไฟล์ CSV (คอลัมน์: ชื่อสินค้า, ชื่อไฟล์HTML)</p>
                 <input type="file" id="csvFileInput" accept=".csv" style="margin:12px auto; display:block;">
                 <button class="btn-primary" id="importBtn" style="margin-top:16px;">📂 นำเข้า CSV</button>
                 <div style="margin-top:20px; font-size:12px; color:#4A6F8F; text-align:left;">
-                    💡 ตัวอย่าง CSV:<br>
-                    น็อตล้อ,https://example.com/notlor.pdf<br>
-                    บูชปีกนก,https://example.com/bush.xlsx<br>
-                    ยางกันฝุ่น,https://example.com/image.jpg
+                    💡 ตัวอย่าง CSV (ไฟล์ HTML อื่นๆ):<br>
+                    น็อตล้อ,product_nocket.html<br>
+                    บูชปีกนก,detail_bush.html<br>
+                    ยางกันฝุ่น,./pages/rubber.html<br>
+                    FACTO,https://example.com/facto.html
                 </div>
             </div>
         </div>
@@ -566,8 +567,8 @@ body {
     <div class="modal-content">
         <h3>➕ เพิ่มสินค้าใหม่</h3>
         <input type="text" id="newProductName" placeholder="ชื่อสินค้า">
-        <input type="text" id="newProductLink" placeholder="ลิงก์ไฟล์/เว็บไซต์ (ไม่ใส่ก็ได้)">
-        <div class="hint">เช่น https://example.com/เอกสาร.pdf หรือ /files/data.xlsx</div>
+        <input type="text" id="newProductHtml" placeholder="ไฟล์ HTML ที่ต้องการเปิด (เช่น detail.html)">
+        <div class="hint">📄 ใส่ชื่อไฟล์ .html หรือ URL ก็ได้ (ถ้าไม่ใส่จะเปิดหน้า default)</div>
         <div class="modal-buttons">
             <button id="cancelModalBtn" style="background:#E8F4FD; border:none; padding:8px 16px; border-radius:30px; cursor:pointer;">ยกเลิก</button>
             <button class="btn-primary" id="confirmAddBtn">เพิ่มสินค้า</button>
@@ -575,32 +576,32 @@ body {
     </div>
 </div>
 
-<!-- Modal ใส่ลิงก์ไฟล์ -->
-<div class="modal-overlay" id="linkModal">
+<!-- Modal ตั้งค่าไฟล์ HTML -->
+<div class="modal-overlay" id="htmlModal">
     <div class="modal-content">
-        <h3>🔗 เชื่อมโยงไฟล์/ลิงก์</h3>
-        <input type="text" id="linkInput" placeholder="วางลิงก์ไฟล์หรือเว็บไซต์">
-        <div class="hint">เช่น PDF, Excel, รูปภาพ, หรือเว็บไซต์ใดๆ</div>
+        <h3>📄 ตั้งค่าไฟล์ HTML ที่ต้องการเปิด</h3>
+        <input type="text" id="htmlInput" placeholder="ชื่อไฟล์ .html หรือ URL">
+        <div class="hint">เช่น product_detail.html, ./pages/nocket.html, หรือ https://example.com/page.html</div>
         <div class="modal-buttons">
-            <button id="cancelLinkBtn" style="background:#E8F4FD; border:none; padding:8px 16px; border-radius:30px;">ยกเลิก</button>
-            <button class="btn-primary" id="saveLinkBtn">บันทึก</button>
+            <button id="cancelHtmlBtn" style="background:#E8F4FD; border:none; padding:8px 16px; border-radius:30px;">ยกเลิก</button>
+            <button class="btn-primary" id="saveHtmlBtn">บันทึก</button>
         </div>
     </div>
 </div>
 
 <script>
-    // สินค้าทั้งหมด 7 รายการ (เพิ่มฟิลด์ fileLink)
+    // สินค้าทั้งหมด 7 รายการ (เพิ่มฟิลด์ htmlFile สำหรับเปิดไฟล์อื่น)
     let products = [
-        { id: 1, name: "น็อตล้อ", category: "อะไหล่รถยนต์", emoji: "🔩", stock: 150, price: 45, fileLink: "" },
-        { id: 2, name: "บูชปีกนก", category: "อะไหล่ช่วงล่าง", emoji: "⚙️", stock: 80, price: 120, fileLink: "" },
-        { id: 3, name: "ยางกันฝุ่น", category: "อุปกรณ์ป้องกัน", emoji: "🛡️", stock: 200, price: 25, fileLink: "" },
-        { id: 4, name: "ยางหุ้มเเร็ค", category: "อะไหล่เฉพาะทาง", emoji: "🔧", stock: 45, price: 89, fileLink: "" },
-        { id: 5, name: "สเปย์", category: "สารพ่นพ่น", emoji: "💨", stock: 120, price: 65, fileLink: "" },
-        { id: 6, name: "สลักเกียว", category: "ชิ้นส่วนยึด", emoji: "🔗", stock: 300, price: 15, fileLink: "" },
-        { id: 7, name: "FACTO", category: "อะไหล่รถยนต์", emoji: "⭐", stock: 35, price: 199, fileLink: "" }
+        { id: 1, name: "น็อตล้อ", category: "อะไหล่รถยนต์", emoji: "🔩", stock: 150, price: 45, htmlFile: "" },
+        { id: 2, name: "บูชปีกนก", category: "อะไหล่ช่วงล่าง", emoji: "⚙️", stock: 80, price: 120, htmlFile: "" },
+        { id: 3, name: "ยางกันฝุ่น", category: "อุปกรณ์ป้องกัน", emoji: "🛡️", stock: 200, price: 25, htmlFile: "" },
+        { id: 4, name: "ยางหุ้มเเร็ค", category: "อะไหล่เฉพาะทาง", emoji: "🔧", stock: 45, price: 89, htmlFile: "" },
+        { id: 5, name: "สเปย์", category: "สารพ่นพ่น", emoji: "💨", stock: 120, price: 65, htmlFile: "" },
+        { id: 6, name: "สลักเกียว", category: "ชิ้นส่วนยึด", emoji: "🔗", stock: 300, price: 15, htmlFile: "" },
+        { id: 7, name: "FACTO", category: "อะไหล่รถยนต์", emoji: "⭐", stock: 35, price: 199, htmlFile: "" }
     ];
     let nextId = 8;
-    let currentLinkProductId = null;
+    let currentHtmlProductId = null;
 
     let deliveries = [
         { id: 1, product: "น็อตล้อ", dueDate: "2026-06-18", status: "กำลังจัดส่ง" },
@@ -626,13 +627,13 @@ body {
         if(savedDel) deliveries = JSON.parse(savedDel);
     }
 
-    // เปิดไฟล์/ลิงก์เมื่อคลิกการ์ด
-    function openProductFile(productId) {
+    // เปิดไฟล์ HTML อื่นเมื่อคลิกการ์ด
+    function openProductHtml(productId) {
         const product = products.find(p => p.id === productId);
-        if(product && product.fileLink && product.fileLink.trim() !== "") {
-            window.open(product.fileLink, '_blank');
+        if(product && product.htmlFile && product.htmlFile.trim() !== "") {
+            window.open(product.htmlFile, '_blank');
         } else {
-            alert(`⚠️ สินค้า "${product.name}" ยังไม่มีลิงก์ไฟล์\n\nคลิกปุ่ม "🔗 ตั้งค่าลิงก์" เพื่อเพิ่มลิงก์ไฟล์หรือเว็บไซต์`);
+            alert(`⚠️ สินค้า "${product.name}" ยังไม่ได้ตั้งค่าไฟล์ HTML\n\nคลิกปุ่ม "📄 ตั้งค่า HTML" เพื่อเลือกไฟล์ที่ต้องการเปิด (เช่น detail.html, product1.html)`);
         }
     }
 
@@ -645,13 +646,13 @@ body {
             return;
         }
         grid.innerHTML = products.map(p => `
-            <div class="product-card" onclick="openProductFile(${p.id})">
+            <div class="product-card" onclick="openProductHtml(${p.id})">
                 <h3><span class="product-emoji">${p.emoji || '🔩'}</span> ${escapeHtml(p.name)}</h3>
                 <div class="product-category">📁 ${escapeHtml(p.category)}</div>
                 <div style="margin-top:8px; font-size:12px; color:#5B86A5;">📦 คงเหลือ: ${p.stock} ชิ้น</div>
-                ${p.fileLink ? `<div class="file-link-badge">🔗 มีลิงก์ไฟล์</div>` : `<div class="file-link-badge" style="background:#FFF3E0; color:#E67E22;">⚠️ ยังไม่มีลิงก์</div>`}
+                ${p.htmlFile ? `<div class="file-link-badge">📄 มีไฟล์ HTML: ${escapeHtml(p.htmlFile.split('/').pop())}</div>` : `<div class="file-link-badge" style="background:#FFF3E0; color:#E67E22;">⚠️ ยังไม่มีไฟล์ HTML</div>`}
                 <div style="margin-top:12px;">
-                    <button class="btn-set-link" onclick="event.stopPropagation(); openLinkModal(${p.id})">🔗 ตั้งค่าลิงก์</button>
+                    <button class="btn-set-html" onclick="event.stopPropagation(); openHtmlModal(${p.id})">📄 ตั้งค่า HTML</button>
                     <button class="btn-delete" onclick="event.stopPropagation(); deleteProduct(${p.id})">🗑 ลบสินค้า</button>
                 </div>
             </div>
@@ -668,26 +669,30 @@ body {
         }
     }
 
-    function openLinkModal(productId) {
-        currentLinkProductId = productId;
+    function openHtmlModal(productId) {
+        currentHtmlProductId = productId;
         const product = products.find(p => p.id === productId);
-        document.getElementById('linkInput').value = product.fileLink || '';
-        document.getElementById('linkModal').classList.add('active');
+        document.getElementById('htmlInput').value = product.htmlFile || '';
+        document.getElementById('htmlModal').classList.add('active');
     }
 
-    function saveProductLink() {
-        if(currentLinkProductId) {
-            const product = products.find(p => p.id === currentLinkProductId);
-            const newLink = document.getElementById('linkInput').value.trim();
-            product.fileLink = newLink;
+    function saveProductHtml() {
+        if(currentHtmlProductId) {
+            const product = products.find(p => p.id === currentHtmlProductId);
+            const newHtml = document.getElementById('htmlInput').value.trim();
+            product.htmlFile = newHtml;
             renderProducts();
             saveData();
-            document.getElementById('linkModal').classList.remove('active');
-            alert(`✅ บันทึกลิงก์สำหรับ "${product.name}" เรียบร้อยแล้ว`);
+            document.getElementById('htmlModal').classList.remove('active');
+            if(newHtml) {
+                alert(`✅ บันทึกไฟล์ HTML สำหรับ "${product.name}" เรียบร้อย\nเมื่อคลิกการ์ดจะเปิด: ${newHtml}`);
+            } else {
+                alert(`⚠️ ล้างค่าการตั้งค่าแล้ว (คลิกการ์ดจะไม่เปิดไฟล์)`);
+            }
         }
     }
 
-    function addProduct(name, link) {
+    function addProduct(name, htmlFile) {
         if(!name.trim()) return false;
         if(products.some(p => p.name === name.trim())) {
             alert('สินค้านี้มีอยู่แล้ว');
@@ -700,7 +705,7 @@ body {
             emoji: "📦",
             stock: 0,
             price: 0,
-            fileLink: link || ""
+            htmlFile: htmlFile || ""
         });
         renderProducts();
         renderReport();
@@ -736,15 +741,16 @@ body {
                 <span>📂 ${cat}</span><span>${count} รายการ</span>
             </div>`
         ).join('');
-        const withLink = products.filter(p => p.fileLink && p.fileLink.trim()).length;
+        const withHtml = products.filter(p => p.htmlFile && p.htmlFile.trim()).length;
         container.innerHTML = `
             <div style="background:#F2F9FF; padding:18px; border-radius:20px; margin-bottom:20px;">
                 <h4>📊 สินค้าทั้งหมด</h4>
                 <p style="font-size:32px; font-weight:700;">${total}</p>
             </div>
             <div style="background:white; border-radius:20px; padding:16px; margin-bottom:16px;">
-                <h4>🔗 สินค้าที่มีลิงก์ไฟล์</h4>
-                <p style="font-size:24px; font-weight:700; color:#3A7BD5;">${withLink} / ${total}</p>
+                <h4>📄 สินค้าที่มีไฟล์ HTML</h4>
+                <p style="font-size:24px; font-weight:700; color:#3A7BD5;">${withHtml} / ${total}</p>
+                <p style="font-size:11px; color:#5B86A5;">คลิกที่การ์ดสินค้าเพื่อเปิดไฟล์ HTML อื่น</p>
             </div>
             <div style="background:white; border-radius:20px; padding:16px;">
                 <h4>🏷️ แยกตามหมวดหมู่</h4>
@@ -762,10 +768,10 @@ body {
                 if(!line.trim()) continue;
                 const parts = line.split(',');
                 const name = parts[0]?.trim();
-                const link = parts[1]?.trim() || "";
+                const htmlFile = parts[1]?.trim() || "";
                 if(name && name !== 'ชื่อสินค้า' && name !== 'name') {
                     if(!products.some(p => p.name === name)) {
-                        products.push({ id: nextId++, name: name, category: "นำเข้า", emoji: "📥", stock: 0, price: 0, fileLink: link });
+                        products.push({ id: nextId++, name: name, category: "นำเข้า", emoji: "📥", stock: 0, price: 0, htmlFile: htmlFile });
                         added++;
                     }
                 }
@@ -788,9 +794,13 @@ body {
         const activeNav = document.querySelector(`.nav-item[data-page="${pageId}"]`);
         if(activeNav) activeNav.classList.add('active');
         const titles = { tracking: 'ติดตามกำหนดส่ง', report: 'รายงาน', product: 'โปรดัก / สินค้า', import: 'นำเข้าข้อมูล' };
-        const subs = { tracking: 'ตรวจสอบสถานะการจัดส่ง', report: 'วิเคราะห์สรุปสินค้า', product: 'คลิกที่การ์ดสินค้าเพื่อเปิดไฟล์ที่เชื่อมโยง', import: 'นำเข้าข้อมูล CSV พร้อมลิงก์ไฟล์' };
+        const subs = { tracking: 'ตรวจสอบสถานะการจัดส่ง', report: 'วิเคราะห์สรุปสินค้า', import: 'นำเข้าข้อมูล CSV พร้อมไฟล์ HTML' };
+        if(pageId === 'product') {
+            document.getElementById('topbarSub').innerText = 'คลิกที่การ์ดสินค้าเพื่อเปิดไฟล์ HTML อื่น (index2.html, detail.html, etc.)';
+        } else {
+            document.getElementById('topbarSub').innerText = subs[pageId];
+        }
         document.getElementById('topbarTitle').innerText = titles[pageId];
-        document.getElementById('topbarSub').innerText = subs[pageId];
         if(pageId === 'tracking') renderTracking();
         if(pageId === 'report') renderReport();
         if(pageId === 'product') renderProducts();
@@ -817,24 +827,24 @@ body {
         document.getElementById('cancelModalBtn').onclick = () => { 
             productModal.classList.remove('active'); 
             document.getElementById('newProductName').value = '';
-            document.getElementById('newProductLink').value = '';
+            document.getElementById('newProductHtml').value = '';
         };
         document.getElementById('confirmAddBtn').onclick = () => {
             let name = document.getElementById('newProductName').value.trim();
-            let link = document.getElementById('newProductLink').value.trim();
+            let htmlFile = document.getElementById('newProductHtml').value.trim();
             if(name) { 
-                addProduct(name, link); 
+                addProduct(name, htmlFile); 
                 productModal.classList.remove('active'); 
                 document.getElementById('newProductName').value = '';
-                document.getElementById('newProductLink').value = '';
+                document.getElementById('newProductHtml').value = '';
             } else alert('กรุณากรอกชื่อสินค้า');
         };
         
-        // Modal ลิงก์ไฟล์
-        const linkModal = document.getElementById('linkModal');
-        document.getElementById('cancelLinkBtn').onclick = () => linkModal.classList.remove('active');
-        document.getElementById('saveLinkBtn').onclick = () => saveProductLink();
-        linkModal.onclick = (e) => { if(e.target === linkModal) linkModal.classList.remove('active'); };
+        // Modal ตั้งค่า HTML
+        const htmlModal = document.getElementById('htmlModal');
+        document.getElementById('cancelHtmlBtn').onclick = () => htmlModal.classList.remove('active');
+        document.getElementById('saveHtmlBtn').onclick = () => saveProductHtml();
+        htmlModal.onclick = (e) => { if(e.target === htmlModal) htmlModal.classList.remove('active'); };
         
         // นำเข้า CSV
         document.getElementById('importBtn').onclick = () => {
@@ -846,6 +856,8 @@ body {
         productModal.onclick = (e) => { if(e.target === productModal) productModal.classList.remove('active'); };
     }
     
+    window.openProductHtml = openProductHtml;
+    window.openHtmlModal = openHtmlModal;
     init();
 </script>
 </body>
