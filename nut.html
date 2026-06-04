@@ -1,1 +1,309 @@
 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดการข้อมูลน็อตล้อ</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', sans-serif;
+        }
+        body {
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+            color: #1e3c72;
+            margin-bottom: 30px;
+        }
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: 0.2s;
+        }
+        .card-header {
+            background: #2c3e66;
+            color: white;
+            padding: 16px 20px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .input-group input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 40px;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.2s;
+        }
+        .input-group input:focus {
+            border-color: #2c3e66;
+            box-shadow: 0 0 0 2px rgba(44,62,102,0.2);
+        }
+        button {
+            background: #2c3e66;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #1e2b46;
+            transform: scale(0.97);
+        }
+        .delete-btn {
+            background: #b91c1c;
+            margin-left: 8px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+        .delete-btn:hover {
+            background: #7f1a1a;
+        }
+        .data-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+        .data-list li {
+            background: #f8f9fc;
+            margin: 8px 0;
+            padding: 10px 12px;
+            border-radius: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e2e8f0;
+        }
+        .item-text {
+            font-weight: 500;
+            word-break: break-all;
+        }
+        .empty-msg {
+            text-align: center;
+            color: #888;
+            padding: 20px;
+            font-style: italic;
+        }
+        .clear-all {
+            margin-top: 12px;
+            text-align: right;
+        }
+        .clear-all button {
+            background: #6c757d;
+            font-size: 0.8rem;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #4b5563;
+            font-size: 0.85rem;
+        }
+        @media (max-width: 700px) {
+            .categories {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🔩 ระบบบันทึกข้อมูลน็อตล้อ</h1>
+    <div class="categories" id="app"></div>
+    <div class="footer">
+        ข้อมูลถูกบันทึกไว้ในเบราว์เซอร์ของคุณ (localStorage) • ไม่สูญหายเมื่อปิดหน้า
+    </div>
+</div>
+
+<script>
+    // หมวดหมู่ที่ต้องการ
+    const categories = ["3RHB", "3FHB", "3RHN", "3FHN"];
+
+    // ฟังก์ชันโหลดข้อมูลจาก localStorage
+    function loadData(category) {
+        const key = `nutbolt_${category}`;
+        const stored = localStorage.getItem(key);
+        if (stored) {
+            try {
+                return JSON.parse(stored);
+            } catch(e) { return []; }
+        }
+        return [];
+    }
+
+    // บันทึกข้อมูลลง localStorage
+    function saveData(category, items) {
+        const key = `nutbolt_${category}`;
+        localStorage.setItem(key, JSON.stringify(items));
+    }
+
+    // เพิ่มข้อมูลใหม่
+    function addItem(category, value) {
+        if (!value || value.trim() === "") return false;
+        const items = loadData(category);
+        const newItem = value.trim();
+        if (items.includes(newItem)) return false; // ป้องกันซ้ำ
+        items.push(newItem);
+        saveData(category, items);
+        return true;
+    }
+
+    // ลบรายการ
+    function deleteItem(category, index) {
+        const items = loadData(category);
+        items.splice(index, 1);
+        saveData(category, items);
+    }
+
+    // ลบทั้งหมดในหมวด
+    function clearAll(category) {
+        saveData(category, []);
+    }
+
+    // เรนเดอร์ UI แต่ละหมวด
+    function renderCategory(category) {
+        const items = loadData(category);
+        const listContainer = document.getElementById(`list-${category}`);
+        const emptyMsg = items.length === 0 ? '<div class="empty-msg">暂无ข้อมูล</div>' : '';
+
+        if (listContainer) {
+            listContainer.innerHTML = emptyMsg + items.map((item, idx) => `
+                <li>
+                    <span class="item-text">🔩 ${escapeHtml(item)}</span>
+                    <button class="delete-btn" data-category="${category}" data-index="${idx}">ลบ</button>
+                </li>
+            `).join('');
+        }
+
+        // ผูก event ลบแต่ละรายการ (ใช้ event delegation จาก parent)
+        const parentCard = document.querySelector(`.card[data-category="${category}"]`);
+        if (parentCard) {
+            // ลบ event เก่าก่อนเพื่อไม่ให้ซ้ำ (ใช้ off/on แบบง่าย)
+            const oldBtn = parentCard.querySelectorAll('.delete-btn');
+            oldBtn.forEach(btn => {
+                btn.removeEventListener('click', handleDeleteClick);
+                btn.addEventListener('click', handleDeleteClick);
+            });
+        }
+    }
+
+    function handleDeleteClick(e) {
+        const btn = e.target;
+        const category = btn.getAttribute('data-category');
+        const index = parseInt(btn.getAttribute('data-index'), 10);
+        if (!isNaN(index) && category) {
+            deleteItem(category, index);
+            renderCategory(category);
+            // รีเฟรชทั้งหมดให้ input สอดคล้อง (แค่ rerender หมวดนั้น)
+        }
+    }
+
+    // ป้องกัน XSS ธรรมดา
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // สร้าง UI ทั้งหมด
+    function buildUI() {
+        const app = document.getElementById('app');
+        app.innerHTML = '';
+
+        categories.forEach(cat => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.setAttribute('data-category', cat);
+            card.innerHTML = `
+                <div class="card-header">${cat}</div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" id="input-${cat}" placeholder="เพิ่มข้อมูลน็อตล้อ... เช่น M12x1.5" />
+                        <button class="add-btn" data-category="${cat}">➕ เพิ่ม</button>
+                    </div>
+                    <ul class="data-list" id="list-${cat}">
+                        <div class="empty-msg">กำลังโหลด...</div>
+                    </ul>
+                    <div class="clear-all">
+                        <button class="clear-cat-btn" data-category="${cat}">🗑️ ลบทั้งหมด (${cat})</button>
+                    </div>
+                </div>
+            `;
+            app.appendChild(card);
+            renderCategory(cat);
+        });
+
+        // Event binding สำหรับปุ่มเพิ่ม และลบทั้งหมด
+        document.querySelectorAll('.add-btn').forEach(btn => {
+            btn.removeEventListener('click', handleAdd);
+            btn.addEventListener('click', handleAdd);
+        });
+
+        document.querySelectorAll('.clear-cat-btn').forEach(btn => {
+            btn.removeEventListener('click', handleClearCat);
+            btn.addEventListener('click', handleClearCat);
+        });
+    }
+
+    function handleAdd(e) {
+        const btn = e.target;
+        const category = btn.getAttribute('data-category');
+        const input = document.getElementById(`input-${category}`);
+        if (input && category) {
+            const newValue = input.value;
+            if (addItem(category, newValue)) {
+                input.value = '';
+                renderCategory(category);
+            } else {
+                alert('กรุณากรอกข้อมูลที่ไม่ซ้ำ หรือไม่เว้นว่าง');
+            }
+        }
+    }
+
+    function handleClearCat(e) {
+        const btn = e.target;
+        const category = btn.getAttribute('data-category');
+        if (category && confirm(`คุณแน่ใจที่จะลบข้อมูลทั้งหมดในหมวด ${category} ใช่หรือไม่?`)) {
+            clearAll(category);
+            renderCategory(category);
+        }
+    }
+
+    buildUI();
+</script>
+</body>
+</html>
