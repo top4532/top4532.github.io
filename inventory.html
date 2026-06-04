@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ระบบติดตามกำหนดส่งสินค้า</title>
+<title>Inventory CJL</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
 
@@ -423,9 +423,9 @@ tbody tr:hover{background:#F7FAFF;}
 <!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-logo">
-    <div class="logo-icon">📦</div>
-    <h2>DeliveryTrack</h2>
-    <p>ระบบติดตามสินค้า</p>
+    <div class="logo-icon">🎱</div>
+    <h2>Inventory CJL</h2>
+    <p>โชว์จุ่งลูกหมาก</p>
   </div>
 
   <nav class="sidebar-nav">
@@ -488,7 +488,7 @@ tbody tr:hover{background:#F7FAFF;}
 
       <div class="stat-grid">
         <div class="stat-card total">
-          <span class="stat-icon">📦</span>
+          <span class="stat-icon">🎱</span>
           <div class="stat-label">รายการทั้งหมด</div>
           <div class="stat-num" id="st-total">0</div>
           <div class="stat-sub">ทุกสถานะ</div>
@@ -576,111 +576,28 @@ tbody tr:hover{background:#F7FAFF;}
 
     <!-- PAGE 2: REPORT -->
     <div class="page" id="page-report">
-      <div class="report-grid">
-        <div class="report-card">
-          <h3>📊 สรุปสถานะการส่งสินค้า</h3>
-          <div id="report-bars"></div>
-        </div>
-        <div class="report-card">
-          <h3>📈 อัตราความสำเร็จ</h3>
-          <div id="report-rate" style="text-align:center;padding:20px 0;">
-            <div style="font-size:52px;font-weight:700;color:#185FA5;" id="rate-num">0%</div>
-            <div style="font-size:12px;color:#378ADD;margin-top:4px;">ส่งสำเร็จ / รายการทั้งหมด</div>
-            <div class="progress-wrap" style="margin-top:16px;">
-              <div class="progress-bar" id="rate-bar" style="width:0%"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="table-box">
-        <div class="table-header">
-          <h3>รายการเกินกำหนด</h3>
-        </div>
-        <div style="overflow-x:auto;">
-          <table>
-            <thead>
-              <tr>
-                <th>PO</th><th>ชื่อสินค้า</th><th>กำหนดส่ง</th><th>เกินมา (วัน)</th><th>ขาดอีก</th>
-              </tr>
-            </thead>
-            <tbody id="tbody-report"></tbody>
-          </table>
-          <div id="empty-report" class="empty-state">
-            <div class="big-icon">🎉</div>
-            <p>ไม่มีรายการเกินกำหนด</p>
-          </div>
-        </div>
+      <div class="empty-state" style="padding:80px 20px;">
+        <div class="big-icon">📊</div>
+        <p style="font-size:15px;font-weight:600;color:#0C447C;margin-bottom:6px;">รายงาน</p>
+        <p>ยังไม่ได้ตั้งค่า — เพิ่มเองได้เลยครับ</p>
       </div>
     </div>
 
     <!-- PAGE 3: PRODUCT -->
     <div class="page" id="page-product">
-      <div class="form-box">
-        <h3>🏷️ เพิ่มสินค้า</h3>
-        <div class="form-grid">
-          <div class="field-group">
-            <label>ชื่อสินค้า</label>
-            <input type="text" id="p-name" placeholder="ชื่อสินค้า">
-          </div>
-          <div class="field-group">
-            <label>รหัส SKU / Barcode</label>
-            <input type="text" id="p-sku" placeholder="SKU-001">
-          </div>
-          <div class="field-group">
-            <label>หมวดหมู่</label>
-            <select id="p-cat">
-              <option>อิเล็กทรอนิกส์</option>
-              <option>เสื้อผ้า</option>
-              <option>อาหาร</option>
-              <option>เครื่องใช้ไฟฟ้า</option>
-              <option>อื่นๆ</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label>สต็อกคงเหลือ</label>
-            <input type="number" id="p-stock" placeholder="0" min="0">
-          </div>
-          <div class="field-group">
-            <label>ราคา (บาท)</label>
-            <input type="number" id="p-price" placeholder="0.00">
-          </div>
-        </div>
-        <button class="btn btn-primary" onclick="addProduct()">➕ เพิ่มสินค้า</button>
-      </div>
-      <div class="prod-grid" id="prod-grid"></div>
-      <div id="empty-product" class="empty-state">
+      <div class="empty-state" style="padding:80px 20px;">
         <div class="big-icon">🏷️</div>
-        <p>ยังไม่มีสินค้า กรุณาเพิ่มข้อมูล</p>
+        <p style="font-size:15px;font-weight:600;color:#0C447C;margin-bottom:6px;">โปรดัก / สินค้า</p>
+        <p>ยังไม่ได้ตั้งค่า — เพิ่มเองได้เลยครับ</p>
       </div>
     </div>
 
     <!-- PAGE 4: IMPORT -->
     <div class="page" id="page-import">
-      <div class="import-zone" onclick="document.getElementById('file-input').click()">
-        <div style="font-size:36px;margin-bottom:10px;">📂</div>
-        <h3>คลิกเพื่อเลือกไฟล์ หรือลากวางไฟล์ที่นี่</h3>
-        <p>รองรับไฟล์ CSV, Excel (.xlsx), JSON</p>
-        <input type="file" id="file-input" accept=".csv,.xlsx,.json" style="display:none" onchange="handleImport(this)">
-      </div>
-      <div style="margin-bottom:16px;">
-        <div style="font-size:13px;font-weight:700;color:#0C447C;margin-bottom:10px;">รูปแบบไฟล์ที่รองรับ</div>
-        <div class="import-format-row">
-          <div class="format-pill">📄 CSV</div>
-          <div class="format-pill">📊 Excel (.xlsx)</div>
-          <div class="format-pill">📋 JSON</div>
-        </div>
-      </div>
-      <div class="form-box">
-        <h3>📝 นำเข้าด้วยการวางข้อมูล CSV</h3>
-        <div class="field-group" style="margin-bottom:10px;">
-          <label>วางข้อมูล CSV (PO, Barcode, ชื่อสินค้า, จำนวนสั่ง, จำนวนรับเข้า, กำหนดส่ง)</label>
-          <textarea id="csv-paste" rows="5" style="resize:vertical;font-size:12px;font-family:monospace" placeholder="PO-001,8850001,สินค้า A,100,80,2024-12-31&#10;PO-002,8850002,สินค้า B,50,50,2024-12-25"></textarea>
-        </div>
-        <button class="btn btn-primary" onclick="importCSVText()">📥 นำเข้าข้อมูล</button>
-      </div>
-      <div id="import-log" style="display:none;" class="table-box">
-        <div class="table-header"><h3>ผลการนำเข้า</h3></div>
-        <div id="import-log-body" style="padding:14px 20px;font-size:13px;color:#0C447C;"></div>
+      <div class="empty-state" style="padding:80px 20px;">
+        <div class="big-icon">📥</div>
+        <p style="font-size:15px;font-weight:600;color:#0C447C;margin-bottom:6px;">นำเข้าข้อมูล</p>
+        <p>ยังไม่ได้ตั้งค่า — เพิ่มเองได้เลยครับ</p>
       </div>
     </div>
 
@@ -771,75 +688,8 @@ function renderTracking(){
   });
 }
 
-function renderReport(){
-  let total=items.length, pending=0, overdue=0, done=0;
-  items.forEach(x=>{
-    let s=getStatus(x).key;
-    if(s==='pending') pending++;
-    else if(s==='overdue') overdue++;
-    else done++;
-  });
-  let rate = total>0 ? Math.round((done/total)*100) : 0;
-  document.getElementById('rate-num').textContent = rate+'%';
-  document.getElementById('rate-bar').style.width = rate+'%';
-
-  let bars = [
-    {label:'ส่งครบ',val:done,color:'#1D9E75'},
-    {label:'รอส่ง',val:pending,color:'#EF9F27'},
-    {label:'เกินกำหนด',val:overdue,color:'#E24B4A'},
-  ];
-  document.getElementById('report-bars').innerHTML = bars.map(b=>`
-    <div class="bar-chart-row">
-      <span class="bar-label">${b.label}</span>
-      <div class="bar-wrap"><div class="bar-fill" style="width:${total>0?Math.round((b.val/total)*100):0}%;background:${b.color}"></div></div>
-      <span class="bar-val">${b.val}</span>
-    </div>
-  `).join('');
-
-  let overdueItems = items.filter(x=>getStatus(x).key==='overdue');
-  let tr2 = document.getElementById('tbody-report');
-  tr2.innerHTML = '';
-  document.getElementById('empty-report').style.display = overdueItems.length?'none':'block';
-  overdueItems.forEach(x=>{
-    let days = getDaysOverdue(x.due);
-    let need = +x.order - +x.receive;
-    let row = document.createElement('tr');
-    row.innerHTML = `
-      <td style="font-weight:600">${x.po}</td>
-      <td>${x.name||x.barcode}</td>
-      <td>${fmtDate(x.due)}</td>
-      <td style="color:#A32D2D;font-weight:700">+${days} วัน</td>
-      <td style="color:#854F0B;font-weight:600">${need} ชิ้น</td>
-    `;
-    tr2.appendChild(row);
-  });
-}
-
-function renderProducts(){
-  let grid = document.getElementById('prod-grid');
-  grid.innerHTML = '';
-  document.getElementById('empty-product').style.display = products.length?'none':'block';
-  let icons = {'อิเล็กทรอนิกส์':'💻','เสื้อผ้า':'👕','อาหาร':'🍱','เครื่องใช้ไฟฟ้า':'🔌','อื่นๆ':'📦'};
-  products.forEach((p,i)=>{
-    let div = document.createElement('div');
-    div.className = 'prod-card';
-    div.innerHTML = `
-      <div class="prod-icon">${icons[p.cat]||'📦'}</div>
-      <h4>${p.name}</h4>
-      <div class="prod-sku">${p.sku} · ${p.cat}</div>
-      <div class="prod-stock">
-        <span style="color:#5F7B9C">สต็อก</span>
-        <span style="color:${+p.stock<10?'#A32D2D':'#0F6E56'};font-weight:700">${p.stock} ชิ้น</span>
-      </div>
-      <div class="prod-stock" style="margin-top:4px">
-        <span style="color:#5F7B9C">ราคา</span>
-        <span style="color:#185FA5;font-weight:700">฿${Number(p.price).toLocaleString()}</span>
-      </div>
-      <button class="del-btn" style="margin-top:8px;width:100%;" onclick="delProduct(${i})">✕ ลบ</button>
-    `;
-    grid.appendChild(div);
-  });
-}
+function renderReport(){}
+function renderProducts(){}
 
 function addItem(){
   let po=document.getElementById('f-po').value.trim();
@@ -858,22 +708,6 @@ function delItem(i){
   if(confirm('ลบรายการนี้?')){items.splice(i,1);save();renderTracking();renderReport();}
 }
 
-function addProduct(){
-  let name=document.getElementById('p-name').value.trim();
-  let sku=document.getElementById('p-sku').value.trim();
-  let cat=document.getElementById('p-cat').value;
-  let stock=document.getElementById('p-stock').value;
-  let price=document.getElementById('p-price').value;
-  if(!name||!sku){alert('กรุณากรอกชื่อสินค้าและ SKU');return;}
-  products.push({name,sku,cat,stock:+(stock||0),price:+(price||0)});
-  save(); renderProducts();
-  ['p-name','p-sku','p-stock','p-price'].forEach(id=>document.getElementById(id).value='');
-}
-
-function delProduct(i){
-  if(confirm('ลบสินค้านี้?')){products.splice(i,1);save();renderProducts();}
-}
-
 function filterTable(q){filterQ=q.toLowerCase();renderTracking();}
 
 function exportCSV(){
@@ -884,39 +718,8 @@ function exportCSV(){
   let blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
   let a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'delivery-export.csv';
+  a.download = 'inventory-cjl-export.csv';
   a.click();
-}
-
-function importCSVText(){
-  let raw = document.getElementById('csv-paste').value.trim();
-  if(!raw){alert('กรุณาวางข้อมูล CSV');return;}
-  let lines = raw.split('\n').filter(l=>l.trim());
-  let count=0, errors=0;
-  lines.forEach(line=>{
-    let cols = line.split(',');
-    if(cols.length<6){errors++;return;}
-    items.push({po:cols[0].trim(),barcode:cols[1].trim(),name:(cols[2]||'').trim(),order:+cols[3],receive:+cols[4],due:cols[5].trim()});
-    count++;
-  });
-  save(); renderTracking(); renderReport();
-  let log = document.getElementById('import-log');
-  log.style.display='block';
-  document.getElementById('import-log-body').innerHTML =
-    `<span style="color:#0F6E56;font-weight:600">✅ นำเข้าสำเร็จ ${count} รายการ</span>` +
-    (errors?` <span style="color:#A32D2D">· ข้อผิดพลาด ${errors} แถว</span>`:'');
-  document.getElementById('csv-paste').value='';
-}
-
-function handleImport(inp){
-  let file = inp.files[0];
-  if(!file) return;
-  let reader = new FileReader();
-  reader.onload = e=>{
-    document.getElementById('csv-paste').value = e.target.result;
-    importCSVText();
-  };
-  reader.readAsText(file,'UTF-8');
 }
 
 const pageInfo = {
