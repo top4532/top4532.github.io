@@ -1,309 +1,685 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบจัดการข้อมูลน็อตล้อ</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: system-ui, 'Segoe UI', sans-serif;
-        }
-        body {
-            background: #f0f2f5;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1400px;
-            margin: auto;
-        }
-        h1 {
-            text-align: center;
-            color: #1e3c72;
-            margin-bottom: 30px;
-        }
-        .categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-        }
-        .card {
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: 0.2s;
-        }
-        .card-header {
-            background: #2c3e66;
-            color: white;
-            padding: 16px 20px;
-            font-size: 1.6rem;
-            font-weight: bold;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-        .card-body {
-            padding: 20px;
-        }
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .input-group input {
-            flex: 1;
-            padding: 10px 12px;
-            border: 1px solid #ccc;
-            border-radius: 40px;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.2s;
-        }
-        .input-group input:focus {
-            border-color: #2c3e66;
-            box-shadow: 0 0 0 2px rgba(44,62,102,0.2);
-        }
-        button {
-            background: #2c3e66;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        button:hover {
-            background: #1e2b46;
-            transform: scale(0.97);
-        }
-        .delete-btn {
-            background: #b91c1c;
-            margin-left: 8px;
-            padding: 6px 12px;
-            font-size: 0.8rem;
-        }
-        .delete-btn:hover {
-            background: #7f1a1a;
-        }
-        .data-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            max-height: 320px;
-            overflow-y: auto;
-        }
-        .data-list li {
-            background: #f8f9fc;
-            margin: 8px 0;
-            padding: 10px 12px;
-            border-radius: 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #e2e8f0;
-        }
-        .item-text {
-            font-weight: 500;
-            word-break: break-all;
-        }
-        .empty-msg {
-            text-align: center;
-            color: #888;
-            padding: 20px;
-            font-style: italic;
-        }
-        .clear-all {
-            margin-top: 12px;
-            text-align: right;
-        }
-        .clear-all button {
-            background: #6c757d;
-            font-size: 0.8rem;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            color: #4b5563;
-            font-size: 0.85rem;
-        }
-        @media (max-width: 700px) {
-            .categories {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NUT SYSTEM — ระบบบันทึกน็อตล้อ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f5ff;
+    --bg2: #e6eeff;
+    --surface: #ffffff;
+    --surface2: #f7f9ff;
+    --blue: #2563eb;
+    --blue-mid: #3b82f6;
+    --blue-light: #dbeafe;
+    --blue-xlight: #eff6ff;
+    --blue-dark: #1d4ed8;
+    --blue-deep: #1e3a8a;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --border: rgba(37,99,235,0.1);
+    --border-mid: rgba(37,99,235,0.2);
+    --shadow-sm: 0 1px 3px rgba(37,99,235,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 16px rgba(37,99,235,0.12), 0 2px 4px rgba(0,0,0,0.04);
+    --shadow-lg: 0 12px 40px rgba(37,99,235,0.18), 0 4px 8px rgba(0,0,0,0.04);
+    --red: #ef4444;
+    --red-light: #fee2e2;
+    --green: #10b981;
+    --sans: 'Outfit', sans-serif;
+    --thai: 'IBM Plex Sans Thai', sans-serif;
+    --radius: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--thai);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Subtle dot background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(37,99,235,0.08) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Top gradient wash */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 400px;
+    background: linear-gradient(180deg, rgba(219,234,254,0.6) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 2;
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* ─── HEADER ─── */
+  .header-area {
+    margin-bottom: 48px;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .brand-icon {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, #2563eb, #60a5fa);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.35);
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .brand-text {}
+  .brand-eyebrow {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--blue-mid);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .brand-title {
+    font-family: var(--sans);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .brand-title span { color: var(--blue); }
+  .brand-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .badge-live {
+    display: flex; align-items: center; gap: 6px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: var(--green);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 99px;
+    letter-spacing: 0.05em;
+  }
+  .badge-live::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .btn-export {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface);
+    color: var(--blue);
+    border: 1px solid var(--border-mid);
+    border-radius: 99px;
+    padding: 7px 18px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .btn-export:hover {
+    background: var(--blue-xlight);
+    border-color: var(--blue);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+
+  /* ─── STAT BAR ─── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .stat-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    border-color: var(--border-mid);
+  }
+
+  .stat-icon {
+    width: 38px; height: 38px;
+    background: var(--blue-xlight);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .stat-info {}
+  .stat-cat {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .stat-num {
+    font-family: var(--sans);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--blue);
+    line-height: 1.1;
+  }
+
+  /* ─── CARDS ─── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.25s;
+    position: relative;
+  }
+
+  .card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+    border-color: var(--border-mid);
+  }
+
+  .card-stripe {
+    height: 4px;
+    background: linear-gradient(90deg, #2563eb, #60a5fa, #93c5fd);
+  }
+
+  .card-header {
+    padding: 18px 20px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cat-left {
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .cat-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--blue);
+    box-shadow: 0 0 0 3px var(--blue-light);
+  }
+
+  .cat-name {
+    font-family: var(--sans);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+
+  .cat-pill {
+    background: var(--blue-xlight);
+    color: var(--blue);
+    border: 1px solid var(--blue-light);
+    border-radius: 99px;
+    padding: 3px 10px;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* ─── INPUT ─── */
+  .card-input-wrap {
+    padding: 14px 16px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .input-inner {
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    border: 1.5px solid var(--border-mid);
+    border-radius: 99px;
+    overflow: hidden;
+    padding: 3px 3px 3px 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input-inner:focus-within {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 4px rgba(37,99,235,0.1);
+  }
+
+  .nut-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--text);
+    padding: 5px 0;
+  }
+  .nut-input::placeholder { color: var(--text-dim); }
+
+  .btn-add {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: #fff;
+    border: none;
+    border-radius: 99px;
+    padding: 7px 16px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+    flex-shrink: 0;
+  }
+  .btn-add:hover { opacity: 0.9; box-shadow: 0 4px 12px rgba(37,99,235,0.4); }
+  .btn-add:active { transform: scale(0.97); }
+
+  /* ─── LIST ─── */
+  .nut-list {
+    list-style: none;
+    flex: 1;
+    overflow-y: auto;
+    max-height: 240px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--blue-light) transparent;
+  }
+  .nut-list::-webkit-scrollbar { width: 4px; }
+  .nut-list::-webkit-scrollbar-thumb { background: var(--blue-light); border-radius: 2px; }
+
+  .nut-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 99px;
+    border: 1px solid transparent;
+    background: transparent;
+    transition: all 0.15s;
+    animation: item-in 0.2s ease;
+  }
+  @keyframes item-in {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .nut-item:hover {
+    background: var(--blue-xlight);
+    border-color: var(--blue-light);
+  }
+
+  .item-idx {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-dim);
+    width: 18px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+
+  .item-dot-small {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--blue-mid);
+    flex-shrink: 0;
+    opacity: 0.5;
+  }
+
+  .item-val {
+    flex: 1;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .btn-del {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-dim);
+    font-size: 14px;
+    transition: all 0.15s;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .btn-del:hover {
+    background: var(--red-light);
+    color: var(--red);
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    gap: 8px;
+  }
+  .empty-icon { font-size: 32px; opacity: 0.2; }
+  .empty-txt {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+
+  /* ─── CARD FOOTER ─── */
+  .card-foot {
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface2);
+  }
+
+  .foot-count {
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .foot-count b { color: var(--blue); }
+
+  .btn-clear {
+    background: none;
+    border: none;
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--text-dim);
+    cursor: pointer;
+    padding: 3px 8px;
+    border-radius: 6px;
+    transition: all 0.15s;
+    font-weight: 500;
+  }
+  .btn-clear:hover { color: var(--red); background: var(--red-light); }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed;
+    bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: var(--blue-deep);
+    color: #fff;
+    border-radius: 99px;
+    padding: 10px 22px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 999;
+    box-shadow: 0 8px 28px rgba(30,58,138,0.4);
+    white-space: nowrap;
+  }
+  .toast.error { background: var(--red); box-shadow: 0 8px 28px rgba(239,68,68,0.3); }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ─── BOTTOM ─── */
+  .bottom-bar {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-mid);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .bottom-info {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .bottom-info span { color: var(--blue); font-weight: 500; }
+
+  @media (max-width: 700px) {
+    .header-top { flex-direction: column; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .brand-title { font-size: 21px; }
+  }
+</style>
 </head>
 <body>
-<div class="container">
-    <h1>🔩 ระบบบันทึกข้อมูลน็อตล้อ</h1>
-    <div class="categories" id="app"></div>
-    <div class="footer">
-        ข้อมูลถูกบันทึกไว้ในเบราว์เซอร์ของคุณ (localStorage) • ไม่สูญหายเมื่อปิดหน้า
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header-area">
+    <div class="header-top">
+      <div class="brand">
+        <div class="brand-icon">⚙️</div>
+        <div class="brand-text">
+          <div class="brand-eyebrow">Workshop Management</div>
+          <div class="brand-title">ระบบ<span>น็อตล้อ</span></div>
+          <div class="brand-sub">บันทึกและจัดการข้อมูลน็อตแยกตามหมวดหมู่</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="badge-live">LIVE</div>
+        <button class="btn-export" id="btn-export">⬇ Export JSON</button>
+      </div>
     </div>
+
+    <!-- STAT ROW -->
+    <div class="stat-row" id="stat-row"></div>
+  </div>
+
+  <!-- CARDS -->
+  <div class="cards-grid" id="app"></div>
+
+  <!-- BOTTOM -->
+  <div class="bottom-bar">
+    <div class="bottom-info">บันทึกใน localStorage • <span>ข้อมูลไม่หายเมื่อปิดเบราว์เซอร์</span></div>
+    <div class="bottom-info">รายการทั้งหมด: <span id="grand-total">0</span> รายการ</div>
+  </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
-    // หมวดหมู่ที่ต้องการ
-    const categories = ["3RHB", "3FHB", "3RHN", "3FHN"];
+const CATS = ["3RHB","3FHB","3RHN","3FHN"];
+const ICONS = { "3RHB":"🔩","3FHB":"⚙️","3RHN":"🔧","3FHN":"🛞" };
 
-    // ฟังก์ชันโหลดข้อมูลจาก localStorage
-    function loadData(category) {
-        const key = `nutbolt_${category}`;
-        const stored = localStorage.getItem(key);
-        if (stored) {
-            try {
-                return JSON.parse(stored);
-            } catch(e) { return []; }
-        }
-        return [];
-    }
+function load(c){try{return JSON.parse(localStorage.getItem("ns2_"+c)||"[]")}catch{return[]}}
+function save(c,a){localStorage.setItem("ns2_"+c,JSON.stringify(a))}
 
-    // บันทึกข้อมูลลง localStorage
-    function saveData(category, items) {
-        const key = `nutbolt_${category}`;
-        localStorage.setItem(key, JSON.stringify(items));
-    }
+function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 
-    // เพิ่มข้อมูลใหม่
-    function addItem(category, value) {
-        if (!value || value.trim() === "") return false;
-        const items = loadData(category);
-        const newItem = value.trim();
-        if (items.includes(newItem)) return false; // ป้องกันซ้ำ
-        items.push(newItem);
-        saveData(category, items);
-        return true;
-    }
+function toast(msg,type=""){
+  const t=document.getElementById("toast");
+  t.textContent=msg;
+  t.className="toast"+(type?" "+type:"")+" show";
+  clearTimeout(t._t);
+  t._t=setTimeout(()=>t.classList.remove("show"),2200);
+}
 
-    // ลบรายการ
-    function deleteItem(category, index) {
-        const items = loadData(category);
-        items.splice(index, 1);
-        saveData(category, items);
-    }
+function updateGrand(){
+  document.getElementById("grand-total").textContent=CATS.reduce((s,c)=>s+load(c).length,0);
+}
 
-    // ลบทั้งหมดในหมวด
-    function clearAll(category) {
-        saveData(category, []);
-    }
+function renderStat(c){
+  const el=document.getElementById("sn-"+c);
+  if(el)el.textContent=load(c).length;
+}
 
-    // เรนเดอร์ UI แต่ละหมวด
-    function renderCategory(category) {
-        const items = loadData(category);
-        const listContainer = document.getElementById(`list-${category}`);
-        const emptyMsg = items.length === 0 ? '<div class="empty-msg">暂无ข้อมูล</div>' : '';
+function renderList(c){
+  const items=load(c);
+  const ul=document.getElementById("ul-"+c);
+  const fc=document.getElementById("fc-"+c);
+  const pill=document.getElementById("pill-"+c);
+  if(!ul)return;
+  if(pill)pill.textContent=items.length;
+  if(fc)fc.innerHTML=`<b>${items.length}</b> รายการ`;
+  if(items.length===0){
+    ul.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-txt">ยังไม่มีข้อมูล</div></div>`;
+  } else {
+    ul.innerHTML=items.map((v,i)=>`
+      <li class="nut-item">
+        <span class="item-idx">${String(i+1).padStart(2,"0")}</span>
+        <span class="item-dot-small"></span>
+        <span class="item-val">${esc(v)}</span>
+        <button class="btn-del" data-c="${c}" data-i="${i}" title="ลบ">×</button>
+      </li>
+    `).join("");
+    ul.querySelectorAll(".btn-del").forEach(b=>b.addEventListener("click",()=>{
+      const a=load(b.dataset.c);a.splice(+b.dataset.i,1);save(b.dataset.c,a);renderList(b.dataset.c);renderStat(b.dataset.c);updateGrand();
+    }));
+  }
+  renderStat(c);updateGrand();
+}
 
-        if (listContainer) {
-            listContainer.innerHTML = emptyMsg + items.map((item, idx) => `
-                <li>
-                    <span class="item-text">🔩 ${escapeHtml(item)}</span>
-                    <button class="delete-btn" data-category="${category}" data-index="${idx}">ลบ</button>
-                </li>
-            `).join('');
-        }
+function buildUI(){
+  // stat row
+  document.getElementById("stat-row").innerHTML=CATS.map(c=>`
+    <div class="stat-card">
+      <div class="stat-icon">${ICONS[c]}</div>
+      <div class="stat-info">
+        <div class="stat-cat">${c}</div>
+        <div class="stat-num" id="sn-${c}">0</div>
+      </div>
+    </div>
+  `).join("");
 
-        // ผูก event ลบแต่ละรายการ (ใช้ event delegation จาก parent)
-        const parentCard = document.querySelector(`.card[data-category="${category}"]`);
-        if (parentCard) {
-            // ลบ event เก่าก่อนเพื่อไม่ให้ซ้ำ (ใช้ off/on แบบง่าย)
-            const oldBtn = parentCard.querySelectorAll('.delete-btn');
-            oldBtn.forEach(btn => {
-                btn.removeEventListener('click', handleDeleteClick);
-                btn.addEventListener('click', handleDeleteClick);
-            });
-        }
-    }
+  // cards
+  document.getElementById("app").innerHTML=CATS.map(c=>`
+    <div class="card">
+      <div class="card-stripe"></div>
+      <div class="card-header">
+        <div class="cat-left">
+          <div class="cat-dot"></div>
+          <span class="cat-name">${c}</span>
+        </div>
+        <span class="cat-pill" id="pill-${c}">0</span>
+      </div>
+      <div class="card-input-wrap">
+        <div class="input-inner">
+          <input class="nut-input" id="inp-${c}" type="text" placeholder="เช่น M12x1.5, M14x1.5 ..." autocomplete="off"/>
+          <button class="btn-add" data-c="${c}">+ เพิ่ม</button>
+        </div>
+      </div>
+      <ul class="nut-list" id="ul-${c}"></ul>
+      <div class="card-foot">
+        <span class="foot-count" id="fc-${c}"><b>0</b> รายการ</span>
+        <button class="btn-clear" data-c="${c}">ลบทั้งหมด</button>
+      </div>
+    </div>
+  `).join("");
 
-    function handleDeleteClick(e) {
-        const btn = e.target;
-        const category = btn.getAttribute('data-category');
-        const index = parseInt(btn.getAttribute('data-index'), 10);
-        if (!isNaN(index) && category) {
-            deleteItem(category, index);
-            renderCategory(category);
-            // รีเฟรชทั้งหมดให้ input สอดคล้อง (แค่ rerender หมวดนั้น)
-        }
-    }
+  CATS.forEach(c=>{
+    renderList(c);
+    document.querySelector(`.btn-add[data-c="${c}"]`).addEventListener("click",()=>{
+      const inp=document.getElementById("inp-"+c);
+      const val=inp.value.trim().toUpperCase();
+      if(!val)return toast("กรุณากรอกข้อมูลก่อน","error");
+      const a=load(c);
+      if(a.includes(val))return toast("มีรายการนี้อยู่แล้ว","error");
+      a.push(val);save(c,a);inp.value="";renderList(c);
+      toast("✓ เพิ่ม "+val+" ใน "+c);
+    });
+    document.getElementById("inp-"+c).addEventListener("keydown",e=>{
+      if(e.key==="Enter")document.querySelector(`.btn-add[data-c="${c}"]`).click();
+    });
+    document.querySelector(`.btn-clear[data-c="${c}"]`).addEventListener("click",()=>{
+      if(!load(c).length)return toast("ไม่มีข้อมูลใน "+c,"error");
+      if(confirm("ลบทั้งหมดใน "+c+" ?")){{save(c,[]);renderList(c);toast("ลบทั้งหมดใน "+c+" แล้ว");}}
+    });
+  });
+}
 
-    // ป้องกัน XSS ธรรมดา
-    function escapeHtml(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
+document.getElementById("btn-export").addEventListener("click",()=>{
+  const d={};CATS.forEach(c=>d[c]=load(c));
+  const b=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="nutbolt_export.json";a.click();
+  toast("✓ Export สำเร็จ");
+});
 
-    // สร้าง UI ทั้งหมด
-    function buildUI() {
-        const app = document.getElementById('app');
-        app.innerHTML = '';
-
-        categories.forEach(cat => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.setAttribute('data-category', cat);
-            card.innerHTML = `
-                <div class="card-header">${cat}</div>
-                <div class="card-body">
-                    <div class="input-group">
-                        <input type="text" id="input-${cat}" placeholder="เพิ่มข้อมูลน็อตล้อ... เช่น M12x1.5" />
-                        <button class="add-btn" data-category="${cat}">➕ เพิ่ม</button>
-                    </div>
-                    <ul class="data-list" id="list-${cat}">
-                        <div class="empty-msg">กำลังโหลด...</div>
-                    </ul>
-                    <div class="clear-all">
-                        <button class="clear-cat-btn" data-category="${cat}">🗑️ ลบทั้งหมด (${cat})</button>
-                    </div>
-                </div>
-            `;
-            app.appendChild(card);
-            renderCategory(cat);
-        });
-
-        // Event binding สำหรับปุ่มเพิ่ม และลบทั้งหมด
-        document.querySelectorAll('.add-btn').forEach(btn => {
-            btn.removeEventListener('click', handleAdd);
-            btn.addEventListener('click', handleAdd);
-        });
-
-        document.querySelectorAll('.clear-cat-btn').forEach(btn => {
-            btn.removeEventListener('click', handleClearCat);
-            btn.addEventListener('click', handleClearCat);
-        });
-    }
-
-    function handleAdd(e) {
-        const btn = e.target;
-        const category = btn.getAttribute('data-category');
-        const input = document.getElementById(`input-${category}`);
-        if (input && category) {
-            const newValue = input.value;
-            if (addItem(category, newValue)) {
-                input.value = '';
-                renderCategory(category);
-            } else {
-                alert('กรุณากรอกข้อมูลที่ไม่ซ้ำ หรือไม่เว้นว่าง');
-            }
-        }
-    }
-
-    function handleClearCat(e) {
-        const btn = e.target;
-        const category = btn.getAttribute('data-category');
-        if (category && confirm(`คุณแน่ใจที่จะลบข้อมูลทั้งหมดในหมวด ${category} ใช่หรือไม่?`)) {
-            clearAll(category);
-            renderCategory(category);
-        }
-    }
-
-    buildUI();
+buildUI();
 </script>
 </body>
 </html>
