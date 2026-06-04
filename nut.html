@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NUT SYSTEM — ระบบบันทึกน็อตล้อ</title>
+<title>NUT SYSTEM — ระบบแสดงข้อมูลน็อตล้อ (ไม่สามารถเพิ่มได้)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -46,7 +46,6 @@
     overflow-x: hidden;
   }
 
-  /* Subtle dot background */
   body::before {
     content: '';
     position: fixed;
@@ -57,7 +56,6 @@
     z-index: 0;
   }
 
-  /* Top gradient wash */
   body::after {
     content: '';
     position: fixed;
@@ -76,7 +74,6 @@
     padding: 48px 24px 80px;
   }
 
-  /* ─── HEADER ─── */
   .header-area {
     margin-bottom: 48px;
   }
@@ -180,7 +177,6 @@
     transform: translateY(-1px);
   }
 
-  /* ─── STAT BAR ─── */
   .stat-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -232,7 +228,6 @@
     line-height: 1.1;
   }
 
-  /* ─── CARDS ─── */
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -301,64 +296,12 @@
     font-weight: 600;
   }
 
-  /* ─── INPUT ─── */
-  .card-input-wrap {
-    padding: 14px 16px;
-    background: var(--surface2);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .input-inner {
-    display: flex;
-    align-items: center;
-    background: var(--surface);
-    border: 1.5px solid var(--border-mid);
-    border-radius: 99px;
-    overflow: hidden;
-    padding: 3px 3px 3px 14px;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .input-inner:focus-within {
-    border-color: var(--blue);
-    box-shadow: 0 0 0 4px rgba(37,99,235,0.1);
-  }
-
-  .nut-input {
-    flex: 1;
-    background: none;
-    border: none;
-    outline: none;
-    font-family: var(--sans);
-    font-size: 13px;
-    color: var(--text);
-    padding: 5px 0;
-  }
-  .nut-input::placeholder { color: var(--text-dim); }
-
-  .btn-add {
-    background: linear-gradient(135deg, #2563eb, #3b82f6);
-    color: #fff;
-    border: none;
-    border-radius: 99px;
-    padding: 7px 16px;
-    font-family: var(--sans);
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-    box-shadow: 0 2px 8px rgba(37,99,235,0.3);
-    flex-shrink: 0;
-  }
-  .btn-add:hover { opacity: 0.9; box-shadow: 0 4px 12px rgba(37,99,235,0.4); }
-  .btn-add:active { transform: scale(0.97); }
-
-  /* ─── LIST ─── */
+  /* ไม่มีส่วน input แล้ว */
   .nut-list {
     list-style: none;
     flex: 1;
     overflow-y: auto;
-    max-height: 240px;
+    max-height: 320px;
     padding: 10px 12px;
     display: flex;
     flex-direction: column;
@@ -449,7 +392,6 @@
     font-weight: 500;
   }
 
-  /* ─── CARD FOOTER ─── */
   .card-foot {
     padding: 10px 16px;
     border-top: 1px solid var(--border);
@@ -480,7 +422,6 @@
   }
   .btn-clear:hover { color: var(--red); background: var(--red-light); }
 
-  /* ─── TOAST ─── */
   .toast {
     position: fixed;
     bottom: 28px; left: 50%;
@@ -502,7 +443,6 @@
   .toast.error { background: var(--red); box-shadow: 0 8px 28px rgba(239,68,68,0.3); }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ─── BOTTOM ─── */
   .bottom-bar {
     margin-top: 48px;
     padding-top: 24px;
@@ -529,7 +469,6 @@
 <body>
 <div class="wrapper">
 
-  <!-- HEADER -->
   <div class="header-area">
     <div class="header-top">
       <div class="brand">
@@ -537,7 +476,7 @@
         <div class="brand-text">
           <div class="brand-eyebrow">Workshop Management</div>
           <div class="brand-title">ระบบ<span>น็อตล้อ</span></div>
-          <div class="brand-sub">บันทึกและจัดการข้อมูลน็อตแยกตามหมวดหมู่</div>
+          <div class="brand-sub">แสดงข้อมูลน็อตแยกตามหมวดหมู่ (ไม่สามารถเพิ่มได้)</div>
         </div>
       </div>
       <div class="header-actions">
@@ -546,14 +485,11 @@
       </div>
     </div>
 
-    <!-- STAT ROW -->
     <div class="stat-row" id="stat-row"></div>
   </div>
 
-  <!-- CARDS -->
   <div class="cards-grid" id="app"></div>
 
-  <!-- BOTTOM -->
   <div class="bottom-bar">
     <div class="bottom-info">บันทึกใน localStorage • <span>ข้อมูลไม่หายเมื่อปิดเบราว์เซอร์</span></div>
     <div class="bottom-info">รายการทั้งหมด: <span id="grand-total">0</span> รายการ</div>
@@ -597,7 +533,7 @@ function renderList(c){
   if(pill)pill.textContent=items.length;
   if(fc)fc.innerHTML=`<b>${items.length}</b> รายการ`;
   if(items.length===0){
-    ul.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-txt">ยังไม่มีข้อมูล</div></div>`;
+    ul.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-txt">ไม่มีข้อมูล</div></div>`;
   } else {
     ul.innerHTML=items.map((v,i)=>`
       <li class="nut-item">
@@ -609,13 +545,13 @@ function renderList(c){
     `).join("");
     ul.querySelectorAll(".btn-del").forEach(b=>b.addEventListener("click",()=>{
       const a=load(b.dataset.c);a.splice(+b.dataset.i,1);save(b.dataset.c,a);renderList(b.dataset.c);renderStat(b.dataset.c);updateGrand();
+      toast("ลบรายการเรียบร้อย");
     }));
   }
   renderStat(c);updateGrand();
 }
 
 function buildUI(){
-  // stat row
   document.getElementById("stat-row").innerHTML=CATS.map(c=>`
     <div class="stat-card">
       <div class="stat-icon">${ICONS[c]}</div>
@@ -626,7 +562,6 @@ function buildUI(){
     </div>
   `).join("");
 
-  // cards
   document.getElementById("app").innerHTML=CATS.map(c=>`
     <div class="card">
       <div class="card-stripe"></div>
@@ -636,12 +571,6 @@ function buildUI(){
           <span class="cat-name">${c}</span>
         </div>
         <span class="cat-pill" id="pill-${c}">0</span>
-      </div>
-      <div class="card-input-wrap">
-        <div class="input-inner">
-          <input class="nut-input" id="inp-${c}" type="text" placeholder="เช่น M12x1.5, M14x1.5 ..." autocomplete="off"/>
-          <button class="btn-add" data-c="${c}">+ เพิ่ม</button>
-        </div>
       </div>
       <ul class="nut-list" id="ul-${c}"></ul>
       <div class="card-foot">
@@ -653,21 +582,9 @@ function buildUI(){
 
   CATS.forEach(c=>{
     renderList(c);
-    document.querySelector(`.btn-add[data-c="${c}"]`).addEventListener("click",()=>{
-      const inp=document.getElementById("inp-"+c);
-      const val=inp.value.trim().toUpperCase();
-      if(!val)return toast("กรุณากรอกข้อมูลก่อน","error");
-      const a=load(c);
-      if(a.includes(val))return toast("มีรายการนี้อยู่แล้ว","error");
-      a.push(val);save(c,a);inp.value="";renderList(c);
-      toast("✓ เพิ่ม "+val+" ใน "+c);
-    });
-    document.getElementById("inp-"+c).addEventListener("keydown",e=>{
-      if(e.key==="Enter")document.querySelector(`.btn-add[data-c="${c}"]`).click();
-    });
     document.querySelector(`.btn-clear[data-c="${c}"]`).addEventListener("click",()=>{
       if(!load(c).length)return toast("ไม่มีข้อมูลใน "+c,"error");
-      if(confirm("ลบทั้งหมดใน "+c+" ?")){{save(c,[]);renderList(c);toast("ลบทั้งหมดใน "+c+" แล้ว");}}
+      if(confirm("ลบทั้งหมดใน "+c+" ?")){save(c,[]);renderList(c);toast("ลบทั้งหมดใน "+c+" แล้ว");}
     });
   });
 }
