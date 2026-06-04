@@ -1,259 +1,947 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ระบบติดตามกำหนดส่งสินค้า</title>
-
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+:root{
+  --blue-50:#E6F1FB;
+  --blue-100:#B5D4F4;
+  --blue-200:#85B7EB;
+  --blue-400:#378ADD;
+  --blue-600:#185FA5;
+  --blue-800:#0C447C;
+  --blue-900:#042C53;
+  --sidebar-w:240px;
 }
 
-body{
-    background:#f4f9ff;
-    padding:20px;
+body{background:#F0F6FF;display:flex;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{
+  width:var(--sidebar-w);
+  background:#fff;
+  border-right:1px solid #D6E8FA;
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  top:0;left:0;bottom:0;
+  z-index:100;
 }
 
-.header{
-    background:linear-gradient(135deg,#2196F3,#42A5F5);
-    color:white;
-    padding:20px;
-    border-radius:15px;
-    margin-bottom:20px;
+.sidebar-logo{
+  padding:24px 20px 16px;
+  border-bottom:1px solid #D6E8FA;
 }
 
-.header h1{
-    font-size:28px;
+.sidebar-logo .logo-icon{
+  width:40px;height:40px;
+  background:#E6F1FB;
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;margin-bottom:10px;
 }
 
-.dashboard{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:15px;
-    margin-bottom:20px;
+.sidebar-logo h2{
+  font-size:14px;font-weight:700;color:#0C447C;
+  line-height:1.3;
 }
 
-.card{
-    background:white;
-    border-radius:15px;
-    padding:20px;
-    box-shadow:0 3px 10px rgba(0,0,0,.1);
-    text-align:center;
+.sidebar-logo p{font-size:11px;color:#378ADD;margin-top:2px;}
+
+.sidebar-nav{padding:12px 12px;flex:1;}
+
+.nav-label{
+  font-size:10px;font-weight:700;
+  color:#378ADD;letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:0 8px;margin-bottom:6px;margin-top:12px;
 }
 
-.card h2{
-    color:#2196F3;
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:13px;color:#5F7B9C;
+  font-weight:500;
+  transition:all .15s;
+  margin-bottom:2px;
+  border:1px solid transparent;
 }
 
+.nav-item:hover{background:#E6F1FB;color:#0C447C;}
+
+.nav-item.active{
+  background:#E6F1FB;
+  color:#0C447C;
+  border-color:#B5D4F4;
+  font-weight:600;
+}
+
+.nav-item .nav-icon{
+  font-size:17px;width:22px;text-align:center;
+}
+
+.nav-badge{
+  margin-left:auto;
+  background:#378ADD;color:#fff;
+  font-size:10px;font-weight:700;
+  padding:2px 7px;border-radius:20px;
+}
+
+.nav-badge.red{background:#E24B4A;}
+.nav-badge.orange{background:#EF9F27;}
+
+.sidebar-footer{
+  padding:16px 20px;
+  border-top:1px solid #D6E8FA;
+}
+
+.sidebar-footer .user-row{
+  display:flex;align-items:center;gap:10px;
+}
+
+.avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:#E6F1FB;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:#185FA5;
+}
+
+.user-info p{font-size:12px;font-weight:600;color:#0C447C;}
+.user-info span{font-size:11px;color:#378ADD;}
+
+/* MAIN */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;}
+
+.topbar{
+  background:#fff;
+  border-bottom:1px solid #D6E8FA;
+  padding:16px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+
+.page-title{
+  font-size:18px;font-weight:700;color:#0C447C;
+}
+
+.page-sub{font-size:12px;color:#378ADD;margin-top:2px;}
+
+.topbar-actions{display:flex;gap:10px;align-items:center;}
+
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:8px;
+  font-size:13px;font-weight:500;cursor:pointer;
+  border:1px solid #B5D4F4;
+  background:#fff;color:#185FA5;
+  transition:all .15s;
+}
+
+.btn:hover{background:#E6F1FB;}
+
+.btn-primary{
+  background:#185FA5;color:#fff;
+  border-color:#185FA5;
+}
+
+.btn-primary:hover{background:#0C447C;}
+
+.content{padding:24px 28px;flex:1;}
+
+/* PAGE sections */
+.page{display:none;}
+.page.active{display:block;}
+
+/* STAT CARDS */
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:14px;margin-bottom:24px;
+}
+
+.stat-card{
+  background:#fff;
+  border:1px solid #D6E8FA;
+  border-radius:12px;
+  padding:16px 18px;
+  position:relative;
+  overflow:hidden;
+}
+
+.stat-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:3px;
+}
+
+.stat-card.total::before{background:#378ADD;}
+.stat-card.pending::before{background:#EF9F27;}
+.stat-card.overdue::before{background:#E24B4A;}
+.stat-card.done::before{background:#1D9E75;}
+
+.stat-label{font-size:11px;color:#5F7B9C;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+
+.stat-num{
+  font-size:32px;font-weight:700;
+  color:#0C447C;margin:4px 0 2px;
+  line-height:1;
+}
+
+.stat-card.pending .stat-num{color:#BA7517;}
+.stat-card.overdue .stat-num{color:#A32D2D;}
+.stat-card.done .stat-num{color:#0F6E56;}
+
+.stat-sub{font-size:11px;color:#5F7B9C;}
+
+.stat-icon{
+  position:absolute;right:14px;top:14px;
+  font-size:22px;opacity:.15;
+  color:#185FA5;
+}
+
+/* FORM BOX */
 .form-box{
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 3px 10px rgba(0,0,0,.1);
-    margin-bottom:20px;
+  background:#fff;
+  border:1px solid #D6E8FA;
+  border-radius:12px;
+  padding:20px 22px;
+  margin-bottom:20px;
+}
+
+.form-box h3{
+  font-size:13px;font-weight:700;color:#0C447C;
+  margin-bottom:14px;
+  display:flex;align-items:center;gap:6px;
 }
 
 .form-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:10px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:10px;margin-bottom:14px;
 }
 
-input{
-    padding:10px;
-    border:1px solid #ddd;
-    border-radius:8px;
+.field-group{display:flex;flex-direction:column;gap:4px;}
+
+.field-group label{
+  font-size:11px;font-weight:600;
+  color:#5F7B9C;letter-spacing:.04em;
+  text-transform:uppercase;
 }
 
-button{
-    background:#2196F3;
-    color:white;
-    border:none;
-    padding:12px 20px;
-    border-radius:8px;
-    cursor:pointer;
-    margin-top:10px;
+input[type=text],input[type=number],input[type=date],select,textarea{
+  padding:9px 12px;
+  border:1px solid #B5D4F4;
+  border-radius:8px;
+  font-size:13px;color:#0C447C;
+  background:#fff;
+  width:100%;
+  outline:none;
+  transition:border .15s;
+  font-family:inherit;
 }
 
-button:hover{
-    background:#1976D2;
+input:focus,select:focus,textarea:focus{
+  border-color:#378ADD;
+  box-shadow:0 0 0 3px #E6F1FB;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    background:white;
-    border-radius:15px;
-    overflow:hidden;
-    box-shadow:0 3px 10px rgba(0,0,0,.1);
+/* TABLE */
+.table-box{
+  background:#fff;
+  border:1px solid #D6E8FA;
+  border-radius:12px;
+  overflow:hidden;
 }
 
-th{
-    background:#2196F3;
-    color:white;
-    padding:12px;
+.table-header{
+  padding:14px 20px;
+  border-bottom:1px solid #D6E8FA;
+  display:flex;align-items:center;justify-content:space-between;
 }
 
-td{
-    padding:10px;
-    border-bottom:1px solid #eee;
+.table-header h3{font-size:13px;font-weight:700;color:#0C447C;}
+
+.search-input{
+  padding:7px 12px;
+  border:1px solid #B5D4F4;
+  border-radius:8px;
+  font-size:12px;color:#0C447C;
+  outline:none;width:200px;
+  background:#F0F6FF;
 }
 
-.overdue{
-    color:red;
-    font-weight:bold;
+.search-input:focus{border-color:#378ADD;}
+
+table{width:100%;border-collapse:collapse;table-layout:fixed;}
+
+thead th{
+  background:#F0F6FF;
+  padding:10px 14px;
+  font-size:11px;font-weight:700;
+  color:#185FA5;text-align:left;
+  letter-spacing:.04em;text-transform:uppercase;
+  border-bottom:1px solid #D6E8FA;
 }
 
-.warning{
-    color:orange;
-    font-weight:bold;
+tbody td{
+  padding:11px 14px;
+  font-size:13px;color:#0C447C;
+  border-bottom:1px solid #EEF4FB;
 }
 
-.complete{
-    color:green;
-    font-weight:bold;
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:#F7FAFF;}
+
+.badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 10px;border-radius:20px;
+  font-size:11px;font-weight:700;
 }
+
+.badge-done{background:#E1F5EE;color:#0F6E56;}
+.badge-overdue{background:#FCEBEB;color:#A32D2D;}
+.badge-pending{background:#FAEEDA;color:#854F0B;}
+
+.del-btn{
+  background:none;border:none;cursor:pointer;
+  color:#A32D2D;font-size:15px;padding:4px;
+  border-radius:6px;opacity:.6;
+}
+.del-btn:hover{opacity:1;background:#FCEBEB;}
+
+/* Progress bar */
+.progress-wrap{
+  background:#E6F1FB;border-radius:20px;
+  height:6px;width:100%;overflow:hidden;
+}
+
+.progress-bar{
+  height:100%;border-radius:20px;
+  background:#378ADD;
+  transition:width .3s;
+}
+
+/* REPORT page */
+.report-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:16px;margin-bottom:20px;
+}
+
+.report-card{
+  background:#fff;
+  border:1px solid #D6E8FA;
+  border-radius:12px;
+  padding:18px 20px;
+}
+
+.report-card h3{
+  font-size:13px;font-weight:700;color:#0C447C;
+  margin-bottom:14px;
+}
+
+.bar-chart-row{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:10px;font-size:12px;
+}
+
+.bar-label{width:70px;color:#5F7B9C;font-weight:500;}
+.bar-wrap{flex:1;background:#E6F1FB;border-radius:20px;height:10px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:20px;background:#378ADD;}
+.bar-val{width:30px;text-align:right;font-weight:700;color:#0C447C;}
+
+/* PRODUCT page */
+.prod-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:14px;margin-bottom:20px;
+}
+
+.prod-card{
+  background:#fff;border:1px solid #D6E8FA;
+  border-radius:12px;padding:16px;
+}
+
+.prod-card .prod-icon{
+  width:42px;height:42px;border-radius:10px;
+  background:#E6F1FB;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;margin-bottom:10px;
+}
+
+.prod-card h4{font-size:13px;font-weight:700;color:#0C447C;margin-bottom:4px;}
+.prod-card .prod-sku{font-size:11px;color:#378ADD;margin-bottom:8px;}
+.prod-card .prod-stock{
+  font-size:12px;font-weight:600;
+  display:flex;align-items:center;justify-content:space-between;
+}
+
+/* IMPORT page */
+.import-zone{
+  border:2px dashed #B5D4F4;
+  border-radius:12px;
+  padding:40px 20px;
+  text-align:center;
+  background:#F7FAFF;
+  cursor:pointer;
+  margin-bottom:20px;
+}
+
+.import-zone h3{color:#185FA5;font-size:15px;margin-bottom:6px;}
+.import-zone p{color:#378ADD;font-size:12px;}
+
+.import-format-row{
+  display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;
+}
+
+.format-pill{
+  display:flex;align-items:center;gap:6px;
+  background:#E6F1FB;border:1px solid #B5D4F4;
+  border-radius:8px;padding:8px 14px;
+  font-size:12px;font-weight:600;color:#185FA5;
+  cursor:pointer;
+}
+
+.format-pill:hover{background:#B5D4F4;}
+
+/* Empty state */
+.empty-state{
+  text-align:center;padding:40px 20px;
+  color:#5F7B9C;
+}
+
+.empty-state .big-icon{font-size:40px;opacity:.3;margin-bottom:10px;}
+.empty-state p{font-size:13px;}
 </style>
 </head>
-
 <body>
 
-<div class="header">
-    <h1>📦 ระบบติดตามกำหนดส่งสินค้า</h1>
-</div>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">📦</div>
+    <h2>DeliveryTrack</h2>
+    <p>ระบบติดตามสินค้า</p>
+  </div>
 
-<div class="dashboard">
-    <div class="card">
-        <h2 id="total">0</h2>
-        <p>รายการทั้งหมด</p>
+  <nav class="sidebar-nav">
+    <div class="nav-label">เมนูหลัก</div>
+
+    <div class="nav-item active" onclick="showPage('tracking', this)">
+      <span class="nav-icon">🚚</span>
+      ติดตามกำหนดส่ง
+      <span class="nav-badge red" id="nav-overdue-badge">0</span>
     </div>
 
-    <div class="card">
-        <h2 id="pending">0</h2>
-        <p>รอส่ง</p>
+    <div class="nav-item" onclick="showPage('report', this)">
+      <span class="nav-icon">📊</span>
+      รายงาน
     </div>
 
-    <div class="card">
-        <h2 id="late">0</h2>
-        <p>เกินกำหนด</p>
+    <div class="nav-label">จัดการข้อมูล</div>
+
+    <div class="nav-item" onclick="showPage('product', this)">
+      <span class="nav-icon">🏷️</span>
+      โปรดัก / สินค้า
     </div>
 
-    <div class="card">
-        <h2 id="done">0</h2>
-        <p>ส่งครบ</p>
+    <div class="nav-item" onclick="showPage('import', this)">
+      <span class="nav-icon">📥</span>
+      นำเข้าข้อมูล
     </div>
-</div>
+  </nav>
 
-<div class="form-box">
+  <div class="sidebar-footer">
+    <div class="user-row">
+      <div class="avatar">WH</div>
+      <div class="user-info">
+        <p>Warehouse Admin</p>
+        <span>ผู้ดูแลระบบ</span>
+      </div>
+    </div>
+  </div>
+</aside>
 
-<div class="form-grid">
-<input type="text" id="po" placeholder="เลขที่ PO">
-<input type="text" id="barcode" placeholder="Barcode">
-<input type="number" id="orderQty" placeholder="จำนวนสั่ง">
-<input type="number" id="receiveQty" placeholder="จำนวนรับเข้า">
-<input type="date" id="dueDate">
-</div>
+<!-- MAIN CONTENT -->
+<main class="main">
 
-<button onclick="addData()">บันทึก</button>
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div>
+      <div class="page-title" id="topbar-title">ติดตามกำหนดส่ง</div>
+      <div class="page-sub" id="topbar-sub">ตรวจสอบสถานะการจัดส่งสินค้าทั้งหมด</div>
+    </div>
+    <div class="topbar-actions">
+      <span id="current-date" style="font-size:12px;color:#378ADD;"></span>
+      <button class="btn" onclick="exportCSV()">⬇ Export CSV</button>
+    </div>
+  </div>
 
-</div>
+  <div class="content">
 
-<table>
+    <!-- PAGE 1: TRACKING -->
+    <div class="page active" id="page-tracking">
 
-<thead>
-<tr>
-<th>PO</th>
-<th>Barcode</th>
-<th>จำนวนสั่ง</th>
-<th>รับเข้า</th>
-<th>กำหนดส่ง</th>
-<th>สถานะ</th>
-</tr>
-</thead>
+      <div class="stat-grid">
+        <div class="stat-card total">
+          <span class="stat-icon">📦</span>
+          <div class="stat-label">รายการทั้งหมด</div>
+          <div class="stat-num" id="st-total">0</div>
+          <div class="stat-sub">ทุกสถานะ</div>
+        </div>
+        <div class="stat-card pending">
+          <span class="stat-icon">⏳</span>
+          <div class="stat-label">รอส่ง</div>
+          <div class="stat-num" id="st-pending">0</div>
+          <div class="stat-sub">ยังไม่ถึงกำหนด</div>
+        </div>
+        <div class="stat-card overdue">
+          <span class="stat-icon">⚠️</span>
+          <div class="stat-label">เกินกำหนด</div>
+          <div class="stat-num" id="st-overdue">0</div>
+          <div class="stat-sub">ต้องดำเนินการด่วน</div>
+        </div>
+        <div class="stat-card done">
+          <span class="stat-icon">✅</span>
+          <div class="stat-label">ส่งครบ</div>
+          <div class="stat-num" id="st-done">0</div>
+          <div class="stat-sub">เสร็จสมบูรณ์</div>
+        </div>
+      </div>
 
-<tbody id="tableBody"></tbody>
+      <div class="form-box">
+        <h3>➕ เพิ่มรายการส่งสินค้า</h3>
+        <div class="form-grid">
+          <div class="field-group">
+            <label>เลขที่ PO</label>
+            <input type="text" id="f-po" placeholder="เช่น PO-2024-001">
+          </div>
+          <div class="field-group">
+            <label>Barcode</label>
+            <input type="text" id="f-barcode" placeholder="สแกน หรือพิมพ์บาร์โค้ด">
+          </div>
+          <div class="field-group">
+            <label>ชื่อสินค้า</label>
+            <input type="text" id="f-name" placeholder="ชื่อสินค้า">
+          </div>
+          <div class="field-group">
+            <label>จำนวนสั่ง</label>
+            <input type="number" id="f-order" placeholder="0" min="0">
+          </div>
+          <div class="field-group">
+            <label>จำนวนรับเข้า</label>
+            <input type="number" id="f-receive" placeholder="0" min="0">
+          </div>
+          <div class="field-group">
+            <label>กำหนดส่ง</label>
+            <input type="date" id="f-due">
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="addItem()">➕ บันทึกรายการ</button>
+      </div>
 
-</table>
+      <div class="table-box">
+        <div class="table-header">
+          <h3>รายการทั้งหมด (<span id="tbl-count">0</span>)</h3>
+          <input class="search-input" type="text" placeholder="🔍 ค้นหา PO, Barcode..." oninput="filterTable(this.value)">
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:120px">PO</th>
+                <th style="width:140px">Barcode</th>
+                <th>ชื่อสินค้า</th>
+                <th style="width:80px">สั่ง</th>
+                <th style="width:80px">รับเข้า</th>
+                <th style="width:110px">ความคืบหน้า</th>
+                <th style="width:110px">กำหนดส่ง</th>
+                <th style="width:90px">สถานะ</th>
+                <th style="width:50px"></th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+          <div id="empty-tracking" class="empty-state">
+            <div class="big-icon">📭</div>
+            <p>ยังไม่มีรายการ กรุณาเพิ่มข้อมูล</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: REPORT -->
+    <div class="page" id="page-report">
+      <div class="report-grid">
+        <div class="report-card">
+          <h3>📊 สรุปสถานะการส่งสินค้า</h3>
+          <div id="report-bars"></div>
+        </div>
+        <div class="report-card">
+          <h3>📈 อัตราความสำเร็จ</h3>
+          <div id="report-rate" style="text-align:center;padding:20px 0;">
+            <div style="font-size:52px;font-weight:700;color:#185FA5;" id="rate-num">0%</div>
+            <div style="font-size:12px;color:#378ADD;margin-top:4px;">ส่งสำเร็จ / รายการทั้งหมด</div>
+            <div class="progress-wrap" style="margin-top:16px;">
+              <div class="progress-bar" id="rate-bar" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="table-box">
+        <div class="table-header">
+          <h3>รายการเกินกำหนด</h3>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>PO</th><th>ชื่อสินค้า</th><th>กำหนดส่ง</th><th>เกินมา (วัน)</th><th>ขาดอีก</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-report"></tbody>
+          </table>
+          <div id="empty-report" class="empty-state">
+            <div class="big-icon">🎉</div>
+            <p>ไม่มีรายการเกินกำหนด</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: PRODUCT -->
+    <div class="page" id="page-product">
+      <div class="form-box">
+        <h3>🏷️ เพิ่มสินค้า</h3>
+        <div class="form-grid">
+          <div class="field-group">
+            <label>ชื่อสินค้า</label>
+            <input type="text" id="p-name" placeholder="ชื่อสินค้า">
+          </div>
+          <div class="field-group">
+            <label>รหัส SKU / Barcode</label>
+            <input type="text" id="p-sku" placeholder="SKU-001">
+          </div>
+          <div class="field-group">
+            <label>หมวดหมู่</label>
+            <select id="p-cat">
+              <option>อิเล็กทรอนิกส์</option>
+              <option>เสื้อผ้า</option>
+              <option>อาหาร</option>
+              <option>เครื่องใช้ไฟฟ้า</option>
+              <option>อื่นๆ</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>สต็อกคงเหลือ</label>
+            <input type="number" id="p-stock" placeholder="0" min="0">
+          </div>
+          <div class="field-group">
+            <label>ราคา (บาท)</label>
+            <input type="number" id="p-price" placeholder="0.00">
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="addProduct()">➕ เพิ่มสินค้า</button>
+      </div>
+      <div class="prod-grid" id="prod-grid"></div>
+      <div id="empty-product" class="empty-state">
+        <div class="big-icon">🏷️</div>
+        <p>ยังไม่มีสินค้า กรุณาเพิ่มข้อมูล</p>
+      </div>
+    </div>
+
+    <!-- PAGE 4: IMPORT -->
+    <div class="page" id="page-import">
+      <div class="import-zone" onclick="document.getElementById('file-input').click()">
+        <div style="font-size:36px;margin-bottom:10px;">📂</div>
+        <h3>คลิกเพื่อเลือกไฟล์ หรือลากวางไฟล์ที่นี่</h3>
+        <p>รองรับไฟล์ CSV, Excel (.xlsx), JSON</p>
+        <input type="file" id="file-input" accept=".csv,.xlsx,.json" style="display:none" onchange="handleImport(this)">
+      </div>
+      <div style="margin-bottom:16px;">
+        <div style="font-size:13px;font-weight:700;color:#0C447C;margin-bottom:10px;">รูปแบบไฟล์ที่รองรับ</div>
+        <div class="import-format-row">
+          <div class="format-pill">📄 CSV</div>
+          <div class="format-pill">📊 Excel (.xlsx)</div>
+          <div class="format-pill">📋 JSON</div>
+        </div>
+      </div>
+      <div class="form-box">
+        <h3>📝 นำเข้าด้วยการวางข้อมูล CSV</h3>
+        <div class="field-group" style="margin-bottom:10px;">
+          <label>วางข้อมูล CSV (PO, Barcode, ชื่อสินค้า, จำนวนสั่ง, จำนวนรับเข้า, กำหนดส่ง)</label>
+          <textarea id="csv-paste" rows="5" style="resize:vertical;font-size:12px;font-family:monospace" placeholder="PO-001,8850001,สินค้า A,100,80,2024-12-31&#10;PO-002,8850002,สินค้า B,50,50,2024-12-25"></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="importCSVText()">📥 นำเข้าข้อมูล</button>
+      </div>
+      <div id="import-log" style="display:none;" class="table-box">
+        <div class="table-header"><h3>ผลการนำเข้า</h3></div>
+        <div id="import-log-body" style="padding:14px 20px;font-size:13px;color:#0C447C;"></div>
+      </div>
+    </div>
+
+  </div>
+</main>
 
 <script>
+let items = JSON.parse(localStorage.getItem('dt_items')||'[]');
+let products = JSON.parse(localStorage.getItem('dt_products')||'[]');
+let filterQ = '';
 
-let data = JSON.parse(localStorage.getItem('deliveryData')) || [];
+function save(){
+  localStorage.setItem('dt_items', JSON.stringify(items));
+  localStorage.setItem('dt_products', JSON.stringify(products));
+}
 
 function getStatus(item){
-
-    if(item.receiveQty >= item.orderQty)
-        return ['ส่งครบ','complete'];
-
-    let today = new Date();
-    let due = new Date(item.dueDate);
-
-    if(today > due)
-        return ['เกินกำหนด','overdue'];
-
-    return ['รอส่ง','warning'];
+  if(+item.receive >= +item.order) return {label:'ส่งครบ',cls:'badge-done',key:'done'};
+  let today = new Date(); today.setHours(0,0,0,0);
+  let due = new Date(item.due);
+  if(today > due) return {label:'เกินกำหนด',cls:'badge-overdue',key:'overdue'};
+  return {label:'รอส่ง',cls:'badge-pending',key:'pending'};
 }
 
-function addData(){
-
-    let item = {
-        po: po.value,
-        barcode: barcode.value,
-        orderQty: Number(orderQty.value),
-        receiveQty: Number(receiveQty.value),
-        dueDate: dueDate.value
-    };
-
-    data.push(item);
-
-    localStorage.setItem(
-        'deliveryData',
-        JSON.stringify(data)
-    );
-
-    render();
+function getDaysOverdue(due){
+  let today = new Date(); today.setHours(0,0,0,0);
+  let d = new Date(due);
+  return Math.floor((today - d)/(1000*60*60*24));
 }
 
-function render(){
-
-    tableBody.innerHTML='';
-
-    let pending=0;
-    let late=0;
-    let done=0;
-
-    data.forEach(x=>{
-
-        let status=getStatus(x);
-
-        if(status[0]=='รอส่ง') pending++;
-        if(status[0]=='เกินกำหนด') late++;
-        if(status[0]=='ส่งครบ') done++;
-
-        tableBody.innerHTML += `
-        <tr>
-            <td>${x.po}</td>
-            <td>${x.barcode}</td>
-            <td>${x.orderQty}</td>
-            <td>${x.receiveQty}</td>
-            <td>${x.dueDate}</td>
-            <td class="${status[1]}">${status[0]}</td>
-        </tr>`;
-    });
-
-    total.innerText=data.length;
-    pending.innerText=pending;
-    late.innerText=late;
-    done.innerText=done;
+function fmtDate(d){
+  if(!d) return '-';
+  let dt = new Date(d);
+  return dt.toLocaleDateString('th-TH',{day:'2-digit',month:'short',year:'2-digit'});
 }
 
-render();
+function renderTracking(){
+  let total=0,pending=0,overdue=0,done=0;
+  let rows = items.filter(x=>
+    !filterQ || x.po.toLowerCase().includes(filterQ) ||
+    x.barcode.toLowerCase().includes(filterQ) ||
+    (x.name||'').toLowerCase().includes(filterQ)
+  );
 
+  items.forEach(x=>{
+    total++;
+    let s = getStatus(x).key;
+    if(s==='pending') pending++;
+    else if(s==='overdue') overdue++;
+    else done++;
+  });
+
+  document.getElementById('st-total').textContent = total;
+  document.getElementById('st-pending').textContent = pending;
+  document.getElementById('st-overdue').textContent = overdue;
+  document.getElementById('st-done').textContent = done;
+  document.getElementById('tbl-count').textContent = rows.length;
+  document.getElementById('nav-overdue-badge').textContent = overdue;
+  document.getElementById('nav-overdue-badge').style.display = overdue>0?'':'none';
+
+  let tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  document.getElementById('empty-tracking').style.display = rows.length?'none':'block';
+
+  rows.forEach((x,i)=>{
+    let st = getStatus(x);
+    let pct = Math.min(100, Math.round((+x.receive / Math.max(+x.order,1))*100));
+    let tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="font-weight:600">${x.po}</td>
+      <td style="font-size:12px;color:#378ADD">${x.barcode}</td>
+      <td>${x.name||'-'}</td>
+      <td style="text-align:center">${x.order}</td>
+      <td style="text-align:center">${x.receive}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div class="progress-wrap" style="flex:1">
+            <div class="progress-bar" style="width:${pct}%;background:${pct===100?'#1D9E75':'#378ADD'}"></div>
+          </div>
+          <span style="font-size:11px;color:#5F7B9C;min-width:28px">${pct}%</span>
+        </div>
+      </td>
+      <td style="font-size:12px">${fmtDate(x.due)}</td>
+      <td><span class="badge ${st.cls}">${st.label}</span></td>
+      <td><button class="del-btn" onclick="delItem(${items.indexOf(x)})" title="ลบ">✕</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderReport(){
+  let total=items.length, pending=0, overdue=0, done=0;
+  items.forEach(x=>{
+    let s=getStatus(x).key;
+    if(s==='pending') pending++;
+    else if(s==='overdue') overdue++;
+    else done++;
+  });
+  let rate = total>0 ? Math.round((done/total)*100) : 0;
+  document.getElementById('rate-num').textContent = rate+'%';
+  document.getElementById('rate-bar').style.width = rate+'%';
+
+  let bars = [
+    {label:'ส่งครบ',val:done,color:'#1D9E75'},
+    {label:'รอส่ง',val:pending,color:'#EF9F27'},
+    {label:'เกินกำหนด',val:overdue,color:'#E24B4A'},
+  ];
+  document.getElementById('report-bars').innerHTML = bars.map(b=>`
+    <div class="bar-chart-row">
+      <span class="bar-label">${b.label}</span>
+      <div class="bar-wrap"><div class="bar-fill" style="width:${total>0?Math.round((b.val/total)*100):0}%;background:${b.color}"></div></div>
+      <span class="bar-val">${b.val}</span>
+    </div>
+  `).join('');
+
+  let overdueItems = items.filter(x=>getStatus(x).key==='overdue');
+  let tr2 = document.getElementById('tbody-report');
+  tr2.innerHTML = '';
+  document.getElementById('empty-report').style.display = overdueItems.length?'none':'block';
+  overdueItems.forEach(x=>{
+    let days = getDaysOverdue(x.due);
+    let need = +x.order - +x.receive;
+    let row = document.createElement('tr');
+    row.innerHTML = `
+      <td style="font-weight:600">${x.po}</td>
+      <td>${x.name||x.barcode}</td>
+      <td>${fmtDate(x.due)}</td>
+      <td style="color:#A32D2D;font-weight:700">+${days} วัน</td>
+      <td style="color:#854F0B;font-weight:600">${need} ชิ้น</td>
+    `;
+    tr2.appendChild(row);
+  });
+}
+
+function renderProducts(){
+  let grid = document.getElementById('prod-grid');
+  grid.innerHTML = '';
+  document.getElementById('empty-product').style.display = products.length?'none':'block';
+  let icons = {'อิเล็กทรอนิกส์':'💻','เสื้อผ้า':'👕','อาหาร':'🍱','เครื่องใช้ไฟฟ้า':'🔌','อื่นๆ':'📦'};
+  products.forEach((p,i)=>{
+    let div = document.createElement('div');
+    div.className = 'prod-card';
+    div.innerHTML = `
+      <div class="prod-icon">${icons[p.cat]||'📦'}</div>
+      <h4>${p.name}</h4>
+      <div class="prod-sku">${p.sku} · ${p.cat}</div>
+      <div class="prod-stock">
+        <span style="color:#5F7B9C">สต็อก</span>
+        <span style="color:${+p.stock<10?'#A32D2D':'#0F6E56'};font-weight:700">${p.stock} ชิ้น</span>
+      </div>
+      <div class="prod-stock" style="margin-top:4px">
+        <span style="color:#5F7B9C">ราคา</span>
+        <span style="color:#185FA5;font-weight:700">฿${Number(p.price).toLocaleString()}</span>
+      </div>
+      <button class="del-btn" style="margin-top:8px;width:100%;" onclick="delProduct(${i})">✕ ลบ</button>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function addItem(){
+  let po=document.getElementById('f-po').value.trim();
+  let bar=document.getElementById('f-barcode').value.trim();
+  let name=document.getElementById('f-name').value.trim();
+  let order=document.getElementById('f-order').value;
+  let receive=document.getElementById('f-receive').value;
+  let due=document.getElementById('f-due').value;
+  if(!po||!bar||!order||!due){alert('กรุณากรอก PO, Barcode, จำนวนสั่ง, กำหนดส่ง');return;}
+  items.push({po,barcode:bar,name,order:+order,receive:+(receive||0),due});
+  save(); renderTracking();
+  ['f-po','f-barcode','f-name','f-order','f-receive','f-due'].forEach(id=>document.getElementById(id).value='');
+}
+
+function delItem(i){
+  if(confirm('ลบรายการนี้?')){items.splice(i,1);save();renderTracking();renderReport();}
+}
+
+function addProduct(){
+  let name=document.getElementById('p-name').value.trim();
+  let sku=document.getElementById('p-sku').value.trim();
+  let cat=document.getElementById('p-cat').value;
+  let stock=document.getElementById('p-stock').value;
+  let price=document.getElementById('p-price').value;
+  if(!name||!sku){alert('กรุณากรอกชื่อสินค้าและ SKU');return;}
+  products.push({name,sku,cat,stock:+(stock||0),price:+(price||0)});
+  save(); renderProducts();
+  ['p-name','p-sku','p-stock','p-price'].forEach(id=>document.getElementById(id).value='');
+}
+
+function delProduct(i){
+  if(confirm('ลบสินค้านี้?')){products.splice(i,1);save();renderProducts();}
+}
+
+function filterTable(q){filterQ=q.toLowerCase();renderTracking();}
+
+function exportCSV(){
+  let csv = 'PO,Barcode,ชื่อสินค้า,จำนวนสั่ง,รับเข้า,กำหนดส่ง,สถานะ\n';
+  items.forEach(x=>{
+    csv += `${x.po},${x.barcode},"${x.name||''}",${x.order},${x.receive},${x.due},${getStatus(x).label}\n`;
+  });
+  let blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  let a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'delivery-export.csv';
+  a.click();
+}
+
+function importCSVText(){
+  let raw = document.getElementById('csv-paste').value.trim();
+  if(!raw){alert('กรุณาวางข้อมูล CSV');return;}
+  let lines = raw.split('\n').filter(l=>l.trim());
+  let count=0, errors=0;
+  lines.forEach(line=>{
+    let cols = line.split(',');
+    if(cols.length<6){errors++;return;}
+    items.push({po:cols[0].trim(),barcode:cols[1].trim(),name:(cols[2]||'').trim(),order:+cols[3],receive:+cols[4],due:cols[5].trim()});
+    count++;
+  });
+  save(); renderTracking(); renderReport();
+  let log = document.getElementById('import-log');
+  log.style.display='block';
+  document.getElementById('import-log-body').innerHTML =
+    `<span style="color:#0F6E56;font-weight:600">✅ นำเข้าสำเร็จ ${count} รายการ</span>` +
+    (errors?` <span style="color:#A32D2D">· ข้อผิดพลาด ${errors} แถว</span>`:'');
+  document.getElementById('csv-paste').value='';
+}
+
+function handleImport(inp){
+  let file = inp.files[0];
+  if(!file) return;
+  let reader = new FileReader();
+  reader.onload = e=>{
+    document.getElementById('csv-paste').value = e.target.result;
+    importCSVText();
+  };
+  reader.readAsText(file,'UTF-8');
+}
+
+const pageInfo = {
+  tracking:{title:'ติดตามกำหนดส่ง',sub:'ตรวจสอบสถานะการจัดส่งสินค้าทั้งหมด'},
+  report:{title:'รายงาน',sub:'วิเคราะห์และสรุปผลการส่งสินค้า'},
+  product:{title:'โปรดัก / สินค้า',sub:'จัดการรายการสินค้าในระบบ'},
+  import:{title:'นำเข้าข้อมูล',sub:'นำเข้าข้อมูลจากไฟล์ CSV หรือ Excel'},
+};
+
+function showPage(name, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  el.classList.add('active');
+  let info = pageInfo[name];
+  document.getElementById('topbar-title').textContent = info.title;
+  document.getElementById('topbar-sub').textContent = info.sub;
+  if(name==='report') renderReport();
+  if(name==='product') renderProducts();
+}
+
+document.getElementById('current-date').textContent =
+  new Date().toLocaleDateString('th-TH',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+renderTracking();
 </script>
-
 </body>
 </html>
