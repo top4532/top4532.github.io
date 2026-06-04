@@ -3,370 +3,814 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inventory CJL</title>
+<title>Inventory CJL - ระบบจัดการสินค้า</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:#f0f2f5;font-family:'Segoe UI',sans-serif;}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-/* header */
-.header{background:#0C447C;color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;}
-.header h1{font-size:20px;}
-.date{font-size:13px;opacity:0.9;}
+body {
+    background: #F0F8FF;
+    display: flex;
+    min-height: 100vh;
+}
 
-/* nav tabs */
-.tabs{display:flex;background:white;gap:5px;padding:10px 20px;border-bottom:1px solid #ddd;}
-.tab{padding:8px 20px;cursor:pointer;border-radius:8px;background:#e9ecef;border:none;font-size:14px;}
-.tab.active{background:#0C447C;color:white;}
+/* ========== SIDEBAR สีฟ้าขาว ========== */
+.sidebar {
+    width: 260px;
+    background: linear-gradient(135deg, #FFFFFF 0%, #E8F4FD 100%);
+    border-right: 2px solid #B8E1FC;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+    box-shadow: 2px 0 12px rgba(0, 100, 150, 0.08);
+}
+
+.sidebar-logo {
+    padding: 28px 20px 20px 24px;
+    border-bottom: 2px solid #C5E6FB;
+    margin-bottom: 8px;
+}
+
+.logo-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #4A90E2, #7AB8F5);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(74,144,226,0.2);
+}
+
+.sidebar-logo h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a2c3e;
+    letter-spacing: -0.3px;
+}
+
+.sidebar-logo p {
+    font-size: 11px;
+    color: #4A6F8F;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.sidebar-nav {
+    padding: 16px 16px;
+    flex: 1;
+}
+
+.nav-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #2C6B9E;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 0 12px;
+    margin-bottom: 8px;
+    margin-top: 8px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #1a2c3e;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin-bottom: 4px;
+    background: transparent;
+}
+
+.nav-item:hover {
+    background: #D9EEFC;
+    color: #0A4B7A;
+}
+
+.nav-item.active {
+    background: #C5E6FB;
+    color: #0A4B7A;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(74,144,226,0.15);
+}
+
+.nav-icon {
+    font-size: 20px;
+    width: 28px;
+    text-align: center;
+}
+
+.sidebar-footer {
+    padding: 20px 20px 24px;
+    border-top: 2px solid #C5E6FB;
+}
+
+.user-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6EA8FE, #3A7BD5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+}
+
+.user-info p {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a2c3e;
+}
+
+.user-info span {
+    font-size: 11px;
+    color: #3E6D8F;
+}
+
+/* ========== MAIN CONTENT ========== */
+.main {
+    margin-left: 260px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 260px);
+}
+
+.topbar {
+    background: #FFFFFF;
+    border-bottom: 2px solid #D4EAF9;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+}
+
+.page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a2c3e;
+}
+
+.page-sub {
+    font-size: 13px;
+    color: #4A6F8F;
+    margin-top: 4px;
+}
+
+.topbar-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.date-badge {
+    background: #E8F4FD;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 13px;
+    color: #1a2c3e;
+    font-weight: 500;
+}
 
 /* content */
-.content{padding:20px;}
+.content {
+    padding: 28px 32px;
+    flex: 1;
+}
 
-/* product grid */
-.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:15px;margin-top:15px;}
-.product-card{background:white;border-radius:10px;padding:15px;box-shadow:0 1px 3px rgba(0,0,0,0.1);}
-.product-card h3{font-size:16px;margin-bottom:5px;color:#0C447C;}
-.product-card p{font-size:12px;color:#666;}
-.btn-del{background:#dc3545;color:white;border:none;padding:5px 10px;border-radius:5px;margin-top:8px;cursor:pointer;font-size:12px;}
-.btn-add{background:#28a745;color:white;border:none;padding:8px 15px;border-radius:6px;cursor:pointer;margin-bottom:15px;}
+.page {
+    display: none;
+    animation: fadeIn 0.2s ease;
+}
 
-/* form */
-.form-add{background:white;padding:15px;border-radius:10px;margin-bottom:20px;display:flex;gap:10px;flex-wrap:wrap;}
-.form-add input{flex:1;padding:8px;border:1px solid #ddd;border-radius:5px;}
-.form-add button{background:#0C447C;color:white;border:none;padding:8px 20px;border-radius:5px;cursor:pointer;}
+.page.active {
+    display: block;
+}
 
-/* table */
-table{width:100%;background:white;border-radius:10px;overflow:hidden;}
-th,td{padding:12px;text-align:left;border-bottom:1px solid #eee;}
-th{background:#f8f9fa;color:#0C447C;}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px);}
+    to { opacity: 1; transform: translateY(0);}
+}
 
-/* other pages */
-.placeholder{background:white;padding:40px;text-align:center;border-radius:10px;color:#666;}
+/* สินค้า - การ์ด */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
 
-.hide{display:none;}
+.section-header h2 {
+    font-size: 18px;
+    color: #1a2c3e;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: #3A7BD5;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+    box-shadow: 0 2px 4px rgba(58,123,213,0.2);
+}
+
+.btn-primary:hover {
+    background: #2C65B0;
+    transform: translateY(-1px);
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 18px;
+}
+
+.product-card {
+    background: white;
+    border-radius: 20px;
+    padding: 18px;
+    border: 1px solid #D4EAF9;
+    transition: 0.2s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(58,123,213,0.12);
+    border-color: #B0D4F0;
+}
+
+.product-card h3 {
+    font-size: 17px;
+    color: #1a2c3e;
+    margin-bottom: 6px;
+}
+
+.product-category {
+    font-size: 12px;
+    color: #5B86A5;
+    background: #E8F4FD;
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 40px;
+    margin-top: 6px;
+}
+
+.btn-delete {
+    background: #FFE9E9;
+    color: #C23D3D;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: 0.2s;
+}
+
+.btn-delete:hover {
+    background: #FFD0D0;
+}
+
+/* ฟอร์มเพิ่มสินค้า */
+.add-form {
+    background: white;
+    padding: 20px;
+    border-radius: 24px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    border: 1px solid #D4EAF9;
+}
+
+.add-form input {
+    flex: 2;
+    padding: 12px 16px;
+    border: 1px solid #C5E6FB;
+    border-radius: 40px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.add-form input:focus {
+    border-color: #3A7BD5;
+    box-shadow: 0 0 0 3px rgba(58,123,213,0.1);
+}
+
+.btn-secondary {
+    background: #E8F4FD;
+    color: #1a2c3e;
+    border: none;
+    padding: 0 28px;
+    border-radius: 40px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+/* ตารางและ placeholder */
+.data-table {
+    width: 100%;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #D4EAF9;
+}
+
+.data-table th {
+    background: #F2F9FF;
+    padding: 14px 18px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1a2c3e;
+}
+
+.data-table td {
+    padding: 12px 18px;
+    border-top: 1px solid #E9F2F9;
+    color: #2C4F6E;
+}
+
+.status-badge {
+    background: #E8F4FD;
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #1a2c3e;
+}
+
+.placeholder-card {
+    background: white;
+    border-radius: 20px;
+    padding: 50px;
+    text-align: center;
+    border: 1px solid #D4EAF9;
+}
+
+.placeholder-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+    opacity: 0.6;
+}
+
+/* modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.2s;
+}
+
+.modal-overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
+    background: white;
+    width: 380px;
+    padding: 28px;
+    border-radius: 28px;
+    box-shadow: 0 20px 35px rgba(0,0,0,0.1);
+}
+
+.modal-content h3 {
+    color: #1a2c3e;
+    margin-bottom: 16px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #C5E6FB;
+    border-radius: 40px;
+    margin: 12px 0;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
 </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>📦 Inventory CJL</h1>
-    <div class="date" id="currentDate"></div>
-</div>
-
-<div class="tabs">
-    <button class="tab active" onclick="showPage('tracking')">🚚 ติดตามกำหนดส่ง</button>
-    <button class="tab" onclick="showPage('report')">📊 รายงาน</button>
-    <button class="tab" onclick="showPage('product')">🏷️ โปรดัก / สินค้า</button>
-    <button class="tab" onclick="showPage('import')">📥 นำเข้าข้อมูล</button>
-</div>
-
-<div class="content">
-    <!-- หน้า ติดตามกำหนดส่ง -->
-    <div id="trackingPage">
-        <div class="placeholder">
-            <h3>🚚 ติดตามกำหนดส่ง</h3>
-            <p>รายการจัดส่งล่าสุด</p>
-            <table style="margin-top:20px">
-                <thead>
-                    <tr><th>เลขที่จัดส่ง</th><th>สินค้า</th><th>กำหนดส่ง</th><th>สถานะ</th></tr>
-                </thead>
-                <tbody id="trackingList"></tbody>
-            </table>
-        </div>
+<!-- SIDEBAR ฟ้าขาว อักษรดำ -->
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <div class="logo-icon">📦</div>
+        <h2>Inventory CJL</h2>
+        <p>โชว์จุ่งลูกหมาก</p>
     </div>
-
-    <!-- หน้า รายงาน -->
-    <div id="reportPage" class="hide">
-        <div class="placeholder">
-            <h3>📊 รายงานสินค้าคงคลัง</h3>
-            <div id="reportStats" style="margin-top:20px"></div>
+    <nav class="sidebar-nav">
+        <div class="nav-label">เมนูหลัก</div>
+        <div class="nav-item active" data-page="tracking">
+            <span class="nav-icon">🚚</span> ติดตามกำหนดส่ง
         </div>
-    </div>
-
-    <!-- หน้า โปรดัก / สินค้า -->
-    <div id="productPage" class="hide">
-        <div class="form-add">
-            <input type="text" id="productName" placeholder="ชื่อสินค้า (เช่น น็อตล้อ)">
-            <button onclick="addProduct()">➕ เพิ่มสินค้า</button>
+        <div class="nav-item" data-page="report">
+            <span class="nav-icon">📊</span> รายงาน
         </div>
-        <div class="product-grid" id="productList"></div>
-    </div>
-
-    <!-- หน้า นำเข้าข้อมูล -->
-    <div id="importPage" class="hide">
-        <div class="placeholder">
-            <h3>📥 นำเข้าข้อมูล</h3>
-            <p>เลือกไฟล์ CSV เพื่อนำเข้าสินค้า</p>
-            <input type="file" id="fileInput" accept=".csv" style="margin:15px 0">
-            <button class="btn-add" onclick="importCSV()">นำเข้าข้อมูล</button>
-            <div style="margin-top:20px;font-size:13px;color:#666">
-                <strong>ตัวอย่าง CSV:</strong> น็อตล้อ,อะไหล่รถยนต์<br>
-                บูชปีกนก,อะไหล่ช่วงล่าง<br>
-                ยางกันฝุ่น,อุปกรณ์ป้องกัน
+        <div class="nav-label">จัดการข้อมูล</div>
+        <div class="nav-item" data-page="product">
+            <span class="nav-icon">🏷️</span> โปรดัก / สินค้า
+        </div>
+        <div class="nav-item" data-page="import">
+            <span class="nav-icon">📥</span> นำเข้าข้อมูล
+        </div>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="user-row">
+            <div class="avatar">AD</div>
+            <div class="user-info">
+                <p>Warehouse Admin</p>
+                <span>ผู้ดูแลระบบ</span>
             </div>
+        </div>
+    </div>
+</aside>
+
+<main class="main">
+    <div class="topbar">
+        <div>
+            <div class="page-title" id="topbarTitle">ติดตามกำหนดส่ง</div>
+            <div class="page-sub" id="topbarSub">ตรวจสอบสถานะการจัดส่งสินค้าทั้งหมด</div>
+        </div>
+        <div class="topbar-actions">
+            <div class="date-badge" id="currentDate"></div>
+        </div>
+    </div>
+    <div class="content">
+        <!-- หน้า ติดตาม -->
+        <div class="page active" id="page-tracking">
+            <div class="placeholder-card">
+                <div class="placeholder-icon">🚚</div>
+                <h3 style="margin-bottom: 12px;">ติดตามกำหนดส่ง</h3>
+                <div class="data-table" style="margin-top: 20px;">
+                    <table style="width:100%;">
+                        <thead>
+                            <tr><th>เลขที่</th><th>สินค้า</th><th>กำหนดส่ง</th><th>สถานะ</th></tr>
+                        </thead>
+                        <tbody id="trackingTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- หน้า รายงาน -->
+        <div class="page" id="page-report">
+            <div class="placeholder-card">
+                <div class="placeholder-icon">📊</div>
+                <h3>รายงานสรุปสินค้า</h3>
+                <div id="reportContainer" style="margin-top: 24px; text-align: left;"></div>
+            </div>
+        </div>
+
+        <!-- หน้า สินค้า (โปรดัก) -->
+        <div class="page" id="page-product">
+            <div class="section-header">
+                <h2>📦 รายการสินค้าทั้งหมด</h2>
+                <button class="btn-primary" id="openModalBtn">➕ เพิ่มสินค้า</button>
+            </div>
+            <div class="product-grid" id="productGrid"></div>
+        </div>
+
+        <!-- หน้า นำเข้าข้อมูล -->
+        <div class="page" id="page-import">
+            <div class="placeholder-card">
+                <div class="placeholder-icon">📥</div>
+                <h3>นำเข้าข้อมูลสินค้า</h3>
+                <p style="margin: 12px 0;">เลือกไฟล์ CSV (คอลัมน์: ชื่อสินค้า)</p>
+                <input type="file" id="csvFileInput" accept=".csv" style="margin: 12px auto; display: block; border:1px solid #C5E6FB; padding:6px; border-radius:20px;">
+                <button class="btn-primary" id="importBtn">📂 นำเข้า CSV</button>
+                <div style="margin-top: 20px; font-size: 12px; color: #4A6F8F;">
+                    💡 ตัวอย่าง CSV: น็อตล้อ<br>บูชปีกนก,ยางกันฝุ่น
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Modal เพิ่มสินค้า -->
+<div class="modal-overlay" id="productModal">
+    <div class="modal-content">
+        <h3>➕ เพิ่มสินค้าใหม่</h3>
+        <input type="text" id="newProductName" placeholder="ชื่อสินค้า (เช่น น็อตล้อ)" autocomplete="off">
+        <div class="modal-buttons">
+            <button class="btn-secondary" id="cancelModalBtn">ยกเลิก</button>
+            <button class="btn-primary" id="confirmAddBtn">เพิ่มสินค้า</button>
         </div>
     </div>
 </div>
 
 <script>
-// สินค้าตั้งต้นตามที่กำหนด
-let products = [
-    { id: 1, name: "น็อตล้อ", category: "อะไหล่รถยนต์" },
-    { id: 2, name: "บูชปีกนก", category: "อะไหล่ช่วงล่าง" },
-    { id: 3, name: "ยางกันฝุ่น", category: "อุปกรณ์ป้องกัน" },
-    { id: 4, name: "ยางหุ้มเเร็ค", category: "อะไหล่รถยนต์" },
-    { id: 5, name: "สเปย์", category: "สารพ่นพ่น" },
-    { id: 6, name: "สลักเกียว", category: "ชิ้นส่วนยึด" },
-    { id: 7, name: "FACTO", category: "อะไหล่รถยนต์" }
-];
+    // ---------- ข้อมูลเริ่มต้น 7 รายการ ----------
+    let products = [
+        { id: 1, name: "น็อตล้อ", category: "อะไหล่รถยนต์" },
+        { id: 2, name: "บูชปีกนก", category: "อะไหล่ช่วงล่าง" },
+        { id: 3, name: "ยางกันฝุ่น", category: "อุปกรณ์ป้องกัน" },
+        { id: 4, name: "ยางหุ้มเเร็ค", category: "อะไหล่เฉพาะทาง" },
+        { id: 5, name: "สเปย์", category: "สารพ่นพ่น" },
+        { id: 6, name: "สลักเกียว", category: "ชิ้นส่วนยึด" },
+        { id: 7, name: "FACTO", category: "อะไหล่รถยนต์" }
+    ];
+    let nextId = 8;
 
-let nextId = 8;
+    // ข้อมูลการจัดส่งตัวอย่าง
+    let deliveries = [
+        { id: 1, product: "น็อตล้อ", dueDate: "2026-06-18", status: "กำลังจัดส่ง" },
+        { id: 2, product: "บูชปีกนก", dueDate: "2026-06-20", status: "รอจัดส่ง" },
+        { id: 3, product: "FACTO", dueDate: "2026-06-15", status: "จัดส่งสำเร็จ" },
+        { id: 4, product: "ยางหุ้มเเร็ค", dueDate: "2026-06-22", status: "กำลังจัดส่ง" }
+    ];
 
-// ข้อมูลการจัดส่งจำลอง
-let shipments = [
-    { id: 1, product: "น็อตล้อ", date: "2026-06-10", status: "กำลังจัดส่ง" },
-    { id: 2, product: "บูชปีกนก", date: "2026-06-05", status: "จัดส่งสำเร็จ" },
-    { id: 3, product: "ยางกันฝุ่น", date: "2026-06-15", status: "รอจัดส่ง" }
-];
-
-// แสดงวันที่ปัจจุบัน
-function showDate() {
-    let d = new Date();
-    document.getElementById('currentDate').innerText = d.toLocaleDateString('th-TH');
-}
-
-// เปลี่ยนหน้า
-function showPage(page) {
-    document.getElementById('trackingPage').classList.add('hide');
-    document.getElementById('reportPage').classList.add('hide');
-    document.getElementById('productPage').classList.add('hide');
-    document.getElementById('importPage').classList.add('hide');
-    
-    document.getElementById(`${page}Page`).classList.remove('hide');
-    
-    // อัปเดต active tab
-    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-    event.target.classList.add('active');
-    
-    // reload ข้อมูลตามหน้า
-    if(page === 'tracking') renderTracking();
-    if(page === 'report') renderReport();
-    if(page === 'product') renderProducts();
-}
-
-// แสดงสินค้า
-function renderProducts() {
-    const container = document.getElementById('productList');
-    if(products.length === 0) {
-        container.innerHTML = '<div style="text-align:center;padding:40px;background:white;border-radius:10px;">ยังไม่มีสินค้า คลิก + เพิ่มเลย</div>';
-        return;
-    }
-    container.innerHTML = products.map(p => `
-        <div class="product-card">
-            <h3>${escapeHtml(p.name)}</h3>
-            <p>${p.category || 'อะไหล่'}</p>
-            <button class="btn-del" onclick="deleteProduct(${p.id})">🗑 ลบ</button>
-        </div>
-    `).join('');
-}
-
-// เพิ่มสินค้า
-function addProduct() {
-    let name = document.getElementById('productName').value.trim();
-    if(!name) {
-        alert('กรุณากรอกชื่อสินค้า');
-        return;
-    }
-    products.push({
-        id: nextId++,
-        name: name,
-        category: "อะไหล่ทั่วไป"
-    });
-    document.getElementById('productName').value = '';
-    renderProducts();
-    saveToLocal(); // เซฟ
-}
-
-// ลบสินค้า
-function deleteProduct(id) {
-    if(confirm('ลบสินค้านี้?')) {
-        products = products.filter(p => p.id !== id);
-        renderProducts();
-        saveToLocal();
-        if(document.getElementById('reportPage') && !document.getElementById('reportPage').classList.contains('hide')) {
-            renderReport();
+    // Helper โหลด/เซฟ localStorage
+    function loadData() {
+        const saved = localStorage.getItem('inventory_products');
+        if(saved) {
+            try {
+                products = JSON.parse(saved);
+                nextId = products.length ? Math.max(...products.map(p=>p.id)) + 1 : 8;
+            } catch(e) {}
+        }
+        const savedDel = localStorage.getItem('inventory_deliveries');
+        if(savedDel) {
+            deliveries = JSON.parse(savedDel);
         }
     }
-}
-
-// แสดงข้อมูลติดตาม
-function renderTracking() {
-    const tbody = document.getElementById('trackingList');
-    if(shipments.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">ไม่มีข้อมูลการจัดส่ง</td></tr>';
-        return;
+    function saveData() {
+        localStorage.setItem('inventory_products', JSON.stringify(products));
+        localStorage.setItem('inventory_deliveries', JSON.stringify(deliveries));
     }
-    tbody.innerHTML = shipments.map(s => `
-        <tr>
-            <td>#ORD${s.id}</td>
-            <td>${escapeHtml(s.product)}</td>
-            <td>${s.date}</td>
-            <td><span style="background:#e3f2fd;padding:3px 8px;border-radius:12px;font-size:12px;">${s.status}</span></td>
-        </tr>
-    `).join('');
-}
 
-// แสดงรายงาน
-function renderReport() {
-    const container = document.getElementById('reportStats');
-    let total = products.length;
-    let categoryCount = {};
-    products.forEach(p => {
-        let cat = p.category || 'ไม่ระบุ';
-        categoryCount[cat] = (categoryCount[cat] || 0) + 1;
-    });
-    
-    let catHtml = Object.entries(categoryCount).map(([cat, count]) => 
-        `<div style="display:flex;justify-content:space-between;padding:8px;border-bottom:1px solid #eee;">
-            <span>📂 ${cat}</span><span style="font-weight:bold">${count} รายการ</span>
-        </div>`
-    ).join('');
-    
-    container.innerHTML = `
-        <div style="background:#e9ecef;padding:15px;border-radius:10px;margin-bottom:20px;">
-            <h4>📦 สรุปสินค้าทั้งหมด</h4>
-            <p style="font-size:28px;font-weight:bold;margin:10px 0">${total} รายการ</p>
-        </div>
-        <div style="background:white;padding:15px;border-radius:10px;">
-            <h4>📊 แยกตามประเภท</h4>
-            ${catHtml || '<p>ไม่มีข้อมูล</p>'}
-        </div>
-        <div style="margin-top:20px;background:white;padding:15px;border-radius:10px;">
-            <h4>📋 รายการสินค้าทั้งหมด</h4>
-            ${products.map(p => `<div style="padding:5px 0">• ${escapeHtml(p.name)}</div>`).join('')}
-        </div>
-    `;
-}
-
-// นำเข้า CSV
-function importCSV() {
-    const file = document.getElementById('fileInput').files[0];
-    if(!file) {
-        alert('กรุณาเลือกไฟล์ CSV');
-        return;
+    // แสดงสินค้า
+    function renderProducts() {
+        const grid = document.getElementById('productGrid');
+        if(!grid) return;
+        if(products.length === 0) {
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px;">ไม่มีสินค้า กรุณาเพิ่ม</div>`;
+            return;
+        }
+        grid.innerHTML = products.map(p => `
+            <div class="product-card">
+                <h3>🔩 ${escapeHtml(p.name)}</h3>
+                <div class="product-category">📁 ${escapeHtml(p.category || 'อะไหล่')}</div>
+                <button class="btn-delete" data-id="${p.id}">🗑 ลบสินค้า</button>
+            </div>
+        `).join('');
+        // ผูก event ลบ
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(btn.dataset.id);
+                if(confirm('ต้องการลบสินค้านี้?')) {
+                    products = products.filter(p => p.id !== id);
+                    renderProducts();
+                    renderReport();       // อัปเดตรายงาน
+                    renderTracking();    // อัปเดตการติดตาม
+                    saveData();
+                }
+            });
+        });
     }
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const text = e.target.result;
-        const lines = text.split('\n');
-        let added = 0;
-        for(let line of lines) {
-            let name = line.trim().split(',')[0];
-            if(name && name !== 'ชื่อสินค้า' && name !== 'name') {
-                if(!products.some(p => p.name === name)) {
-                    products.push({
-                        id: nextId++,
-                        name: name,
-                        category: "นำเข้า"
-                    });
-                    added++;
+
+    function addProduct(name) {
+        if(!name.trim()) return false;
+        if(products.some(p => p.name.toLowerCase() === name.trim().toLowerCase())) {
+            alert('สินค้านี้มีอยู่แล้ว');
+            return false;
+        }
+        products.push({
+            id: nextId++,
+            name: name.trim(),
+            category: "สินค้าทั่วไป"
+        });
+        renderProducts();
+        renderReport();
+        saveData();
+        return true;
+    }
+
+    // แสดงการติดตาม
+    function renderTracking() {
+        const tbody = document.getElementById('trackingTableBody');
+        if(!tbody) return;
+        if(deliveries.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">ไม่มีข้อมูลการจัดส่ง</td></tr>';
+            return;
+        }
+        tbody.innerHTML = deliveries.map(d => `
+            <tr>
+                <td>#INV-${d.id}</td>
+                <td>${escapeHtml(d.product)}</td>
+                <td>${d.dueDate}</td>
+                <td><span class="status-badge">${d.status}</span></td>
+            </tr>
+        `).join('');
+    }
+
+    // รายงาน
+    function renderReport() {
+        const container = document.getElementById('reportContainer');
+        if(!container) return;
+        const total = products.length;
+        const categories = {};
+        products.forEach(p => {
+            let cat = p.category || 'ไม่ระบุ';
+            categories[cat] = (categories[cat] || 0) + 1;
+        });
+        let catHtml = '';
+        for(let [cat, count] of Object.entries(categories)) {
+            catHtml += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #E9F2F9;">
+                <span>📂 ${cat}</span><span style="font-weight:600;">${count} รายการ</span>
+            </div>`;
+        }
+        container.innerHTML = `
+            <div style="background:#F2F9FF; padding:18px; border-radius:20px; margin-bottom:20px;">
+                <h4>📊 สินค้าทั้งหมด</h4>
+                <p style="font-size:32px; font-weight:700; margin:10px 0;">${total}</p>
+            </div>
+            <div style="background:white; border-radius:20px; padding:16px;">
+                <h4>🏷️ แยกตามหมวดหมู่</h4>
+                ${catHtml || '<p>ไม่มีข้อมูล</p>'}
+            </div>
+            <div style="margin-top:20px; background:white; border-radius:20px; padding:16px;">
+                <h4>📋 รายการสินค้าทั้งหมด</h4>
+                ${products.map(p => `<div style="padding:4px 0;">• ${escapeHtml(p.name)}</div>`).join('')}
+            </div>
+        `;
+    }
+
+    // นำเข้า CSV
+    function importCSV(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const text = e.target.result;
+            const lines = text.split(/\r?\n/);
+            let added = 0;
+            for(let line of lines) {
+                let name = line.split(',')[0].trim();
+                if(name && name !== 'ชื่อสินค้า' && name !== 'name' && name !== 'สินค้า') {
+                    if(!products.some(p => p.name === name)) {
+                        products.push({ id: nextId++, name: name, category: "นำเข้า" });
+                        added++;
+                    }
                 }
             }
-        }
-        if(added > 0) {
-            alert(`นำเข้าเรียบร้อย ${added} รายการ`);
-            renderProducts();
-            saveToLocal();
-            if(!document.getElementById('productPage').classList.contains('hide')) renderProducts();
-            if(!document.getElementById('reportPage').classList.contains('hide')) renderReport();
-        } else {
-            alert('ไม่พบข้อมูลสินค้าใหม่ หรือซ้ำ');
-        }
-        document.getElementById('fileInput').value = '';
-    };
-    reader.readAsText(file, 'UTF-8');
-}
-
-// ป้องกัน XSS
-function escapeHtml(str) {
-    return str.replace(/[&<>]/g, function(m) {
-        if(m === '&') return '&amp;';
-        if(m === '<') return '&lt;';
-        if(m === '>') return '&gt;';
-        return m;
-    });
-}
-
-// บันทึก localStorage
-function saveToLocal() {
-    localStorage.setItem('cj_products', JSON.stringify(products));
-    localStorage.setItem('cj_nextId', nextId);
-}
-
-// โหลดข้อมูลจาก localStorage
-function loadFromLocal() {
-    let saved = localStorage.getItem('cj_products');
-    if(saved) {
-        products = JSON.parse(saved);
-        let savedId = localStorage.getItem('cj_nextId');
-        if(savedId) nextId = parseInt(savedId);
-        else nextId = Math.max(...products.map(p=>p.id),0)+1;
-    } else {
-        // ถ้าไม่มี localStorage ให้ใช้สินค้าเริ่มต้น 7 รายการ
-        // แต่กันซ้ำ id
-        nextId = 8;
+            if(added > 0) {
+                alert(`นำเข้าเรียบร้อย ${added} รายการ`);
+                renderProducts();
+                renderReport();
+                saveData();
+            } else {
+                alert('ไม่มีสินค้าใหม่ หรือไฟล์ไม่ถูกต้อง');
+            }
+        };
+        reader.readAsText(file, 'UTF-8');
     }
-    // อัปเดต shipments ก็เซฟได้ optional แต่คงเดิม
-}
 
-// เริ่มต้น
-loadFromLocal();
-showDate();
-renderProducts();
+    function escapeHtml(str) {
+        if(!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
 
-// ให้คลิกแท็บแรกแสดง tracking ตอนโหลด
-renderTracking();
+    // เปลี่ยนหน้า + อัปเดตธีม sidebar active
+    function switchPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(`page-${pageId}`).classList.add('active');
+        
+        // อัปเดต sidebar active class
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        document.querySelector(`.nav-item[data-page="${pageId}"]`).classList.add('active');
+        
+        // อัปเดต topbar text
+        const titles = {
+            tracking: { title: 'ติดตามกำหนดส่ง', sub: 'ตรวจสอบสถานะการจัดส่งสินค้าทั้งหมด' },
+            report: { title: 'รายงาน', sub: 'วิเคราะห์และสรุปผลการส่งสินค้า' },
+            product: { title: 'โปรดัก / สินค้า', sub: 'จัดการรายการสินค้าในระบบ' },
+            import: { title: 'นำเข้าข้อมูล', sub: 'นำเข้าข้อมูลจากไฟล์ CSV' }
+        };
+        document.getElementById('topbarTitle').innerText = titles[pageId].title;
+        document.getElementById('topbarSub').innerText = titles[pageId].sub;
+        
+        // รีเฟรชข้อมูลตามหน้า
+        if(pageId === 'tracking') renderTracking();
+        if(pageId === 'report') renderReport();
+        if(pageId === 'product') renderProducts();
+    }
 
-// เมื่อเปลี่ยนหน้าโดยไม่ผ่าน event (เช่น โหลดครั้งแรก)
-window.showPage = showPage;
-window.addProduct = addProduct;
-window.deleteProduct = deleteProduct;
-window.importCSV = importCSV;
+    // ตั้งค่าวันที่
+    function updateDate() {
+        const now = new Date();
+        document.getElementById('currentDate').innerText = now.toLocaleDateString('th-TH', { year:'numeric', month:'long', day:'numeric' });
+    }
 
-// สำหรับ tab ให้ดึง event
-document.querySelectorAll('.tab').forEach(tab => {
-    tab.onclick = (e) => {
-        let page = '';
-        if(tab.innerText.includes('ติดตาม')) page = 'tracking';
-        else if(tab.innerText.includes('รายงาน')) page = 'report';
-        else if(tab.innerText.includes('โปรดัก')) page = 'product';
-        else if(tab.innerText.includes('นำเข้า')) page = 'import';
-        showPage(page);
-    };
-});
-
-// override ให้ active สอดคล้อง
-function showPage(page) {
-    document.getElementById('trackingPage').classList.add('hide');
-    document.getElementById('reportPage').classList.add('hide');
-    document.getElementById('productPage').classList.add('hide');
-    document.getElementById('importPage').classList.add('hide');
-    document.getElementById(`${page}Page`).classList.remove('hide');
+    // Event binding และ modal
+    function init() {
+        loadData();
+        updateDate();
+        renderProducts();
+        renderTracking();
+        renderReport();
+        
+        // Sidebar event
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.dataset.page;
+                if(page) switchPage(page);
+            });
+        });
+        
+        // Modal controls
+        const modal = document.getElementById('productModal');
+        const openBtn = document.getElementById('openModalBtn');
+        const cancelBtn = document.getElementById('cancelModalBtn');
+        const confirmBtn = document.getElementById('confirmAddBtn');
+        const nameInput = document.getElementById('newProductName');
+        
+        if(openBtn) openBtn.onclick = () => modal.classList.add('active');
+        if(cancelBtn) cancelBtn.onclick = () => {
+            modal.classList.remove('active');
+            nameInput.value = '';
+        };
+        if(confirmBtn) confirmBtn.onclick = () => {
+            const pName = nameInput.value.trim();
+            if(pName) {
+                addProduct(pName);
+                modal.classList.remove('active');
+                nameInput.value = '';
+            } else {
+                alert('กรุณากรอกชื่อสินค้า');
+            }
+        };
+        // import CSV
+        const importBtn = document.getElementById('importBtn');
+        const fileInput = document.getElementById('csvFileInput');
+        if(importBtn) importBtn.onclick = () => {
+            if(fileInput.files.length === 0) alert('กรุณาเลือกไฟล์ CSV');
+            else importCSV(fileInput.files[0]);
+        };
+        // ปิด modal เมื่อคลิก overlay
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal) modal.classList.remove('active');
+        });
+    }
     
-    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-    let activeTab = Array.from(document.querySelectorAll('.tab')).find(t => {
-        if(page === 'tracking') return t.innerText.includes('ติดตาม');
-        if(page === 'report') return t.innerText.includes('รายงาน');
-        if(page === 'product') return t.innerText.includes('โปรดัก');
-        if(page === 'import') return t.innerText.includes('นำเข้า');
-    });
-    if(activeTab) activeTab.classList.add('active');
-    
-    if(page === 'tracking') renderTracking();
-    if(page === 'report') renderReport();
-    if(page === 'product') renderProducts();
-}
-// เรียกครั้งแรกให้ tracking active
-showPage('tracking');
+    init();
 </script>
 </body>
 </html>
