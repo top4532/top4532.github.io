@@ -199,7 +199,7 @@ body {
     to { opacity: 1; transform: translateY(0);}
 }
 
-/* ========== การ์ดสินค้า (คลิกได้ทั้งใบ) ========== */
+/* ========== การ์ดสินค้า (คลิกเปิดไฟล์) ========== */
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -235,7 +235,7 @@ body {
 
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
 }
 
@@ -278,6 +278,17 @@ body {
     margin-top: 8px;
 }
 
+.file-link-badge {
+    font-size: 11px;
+    color: #3A7BD5;
+    background: #E8F4FD;
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 40px;
+    margin-top: 10px;
+    margin-right: 8px;
+}
+
 .btn-delete {
     background: #FFE9E9;
     color: #C23D3D;
@@ -288,13 +299,30 @@ body {
     font-weight: 500;
     cursor: pointer;
     margin-top: 14px;
-    transition: 0.2s;
     width: auto;
     display: inline-block;
 }
 
 .btn-delete:hover {
     background: #FFD0D0;
+}
+
+.btn-set-link {
+    background: #E8F4FD;
+    color: #1a2c3e;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 14px;
+    margin-left: 8px;
+    display: inline-block;
+}
+
+.btn-set-link:hover {
+    background: #C5E6FB;
 }
 
 /* ปุ่มลิงก์ด่วน */
@@ -328,60 +356,62 @@ body {
     background: #C5E6FB;
 }
 
-/* หน้ารายละเอียดสินค้า */
-.product-detail-card {
+/* Modal สำหรับใส่ลิงก์ไฟล์ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.2s;
+}
+
+.modal-overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
     background: white;
-    border-radius: 24px;
-    padding: 32px;
-    border: 1px solid #D4EAF9;
-    max-width: 500px;
-    margin: 0 auto;
-    text-align: center;
+    width: 450px;
+    max-width: 90%;
+    padding: 28px;
+    border-radius: 28px;
 }
 
-.product-detail-emoji {
-    font-size: 64px;
-    margin-bottom: 20px;
-}
-
-.product-detail-name {
-    font-size: 28px;
+.modal-content h3 {
     color: #1a2c3e;
+    margin-bottom: 16px;
+}
+
+.modal-content input, .modal-content select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #C5E6FB;
+    border-radius: 40px;
+    margin: 12px 0;
+    font-size: 14px;
+}
+
+.modal-content .hint {
+    font-size: 11px;
+    color: #5B86A5;
+    margin-top: -8px;
     margin-bottom: 12px;
 }
 
-.product-detail-category {
-    background: #E8F4FD;
-    display: inline-block;
-    padding: 6px 20px;
-    border-radius: 40px;
-    font-size: 14px;
-    color: #2C6B9E;
-    margin-bottom: 20px;
-}
-
-.product-detail-info {
-    text-align: left;
-    background: #F8FBFE;
-    padding: 20px;
-    border-radius: 16px;
-    margin: 20px 0;
-}
-
-.back-btn {
-    background: #E8F4FD;
-    border: none;
-    padding: 10px 24px;
-    border-radius: 40px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    color: #1a2c3e;
-    margin-top: 16px;
-}
-
-.back-btn:hover {
-    background: #C5E6FB;
+.modal-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
 }
 
 .data-table {
@@ -421,47 +451,10 @@ body {
     border: 1px solid #D4EAF9;
 }
 
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    visibility: hidden;
-    opacity: 0;
-    transition: 0.2s;
-}
-
-.modal-overlay.active {
-    visibility: visible;
-    opacity: 1;
-}
-
-.modal-content {
-    background: white;
-    width: 380px;
-    padding: 28px;
-    border-radius: 28px;
-}
-
-.modal-content input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #C5E6FB;
-    border-radius: 40px;
-    margin: 12px 0;
-}
-
-.modal-buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-    margin-top: 20px;
+.placeholder-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+    opacity: 0.6;
 }
 </style>
 </head>
@@ -512,7 +505,7 @@ body {
         <!-- หน้า ติดตาม -->
         <div class="page active" id="page-tracking">
             <div class="placeholder-card">
-                <div class="placeholder-icon" style="font-size:56px;">🚚</div>
+                <div class="placeholder-icon">🚚</div>
                 <h3>ติดตามกำหนดส่ง</h3>
                 <div class="data-table" style="margin-top:20px;">
                     <table style="width:100%;">
@@ -526,13 +519,13 @@ body {
         <!-- หน้า รายงาน -->
         <div class="page" id="page-report">
             <div class="placeholder-card">
-                <div class="placeholder-icon" style="font-size:56px;">📊</div>
+                <div class="placeholder-icon">📊</div>
                 <h3>รายงานสรุปสินค้า</h3>
                 <div id="reportContainer" style="margin-top:24px; text-align:left;"></div>
             </div>
         </div>
 
-        <!-- หน้า สินค้า (โปรดัก) -->
+        <!-- หน้า สินค้า (โปรดัก) - คลิกการ์ดเปิดไฟล์อื่น -->
         <div class="page" id="page-product">
             <div class="quick-links">
                 <button class="quick-link-btn" onclick="switchPage('tracking')">🚚 ไปที่ ติดตามกำหนดส่ง</button>
@@ -544,51 +537,70 @@ body {
                 <button class="btn-primary" id="openModalBtn">➕ เพิ่มสินค้า</button>
             </div>
             <div class="product-grid" id="productGrid"></div>
-        </div>
-
-        <!-- หน้า หน้ารายละเอียดสินค้า (เพิ่มมาใหม่) -->
-        <div class="page" id="page-product-detail">
-            <button class="back-btn" onclick="goBackToProduct()">← กลับไปหน้ารายการสินค้า</button>
-            <div id="productDetailContainer" style="margin-top:24px;"></div>
+            <div style="margin-top:20px; padding:12px; background:#E8F4FD; border-radius:12px; text-align:center; font-size:12px; color:#2C6B9E;">
+                💡 คลิกที่การ์ดสินค้าเพื่อเปิดไฟล์ที่เชื่อมโยง (PDF, Excel, รูปภาพ หรือเว็บไซต์)
+            </div>
         </div>
 
         <!-- หน้า นำเข้าข้อมูล -->
         <div class="page" id="page-import">
             <div class="placeholder-card">
-                <div class="placeholder-icon" style="font-size:56px;">📥</div>
+                <div class="placeholder-icon">📥</div>
                 <h3>นำเข้าข้อมูลสินค้า</h3>
-                <p style="margin:12px 0;">เลือกไฟล์ CSV (คอลัมน์: ชื่อสินค้า)</p>
-                <input type="file" id="csvFileInput" accept=".csv">
+                <p style="margin:12px 0;">เลือกไฟล์ CSV (คอลัมน์: ชื่อสินค้า, ลิงก์ไฟล์)</p>
+                <input type="file" id="csvFileInput" accept=".csv" style="margin:12px auto; display:block;">
                 <button class="btn-primary" id="importBtn" style="margin-top:16px;">📂 นำเข้า CSV</button>
-                <div style="margin-top:20px; font-size:12px; color:#4A6F8F;">💡 ตัวอย่าง CSV: น็อตล้อ</div>
+                <div style="margin-top:20px; font-size:12px; color:#4A6F8F; text-align:left;">
+                    💡 ตัวอย่าง CSV:<br>
+                    น็อตล้อ,https://example.com/notlor.pdf<br>
+                    บูชปีกนก,https://example.com/bush.xlsx<br>
+                    ยางกันฝุ่น,https://example.com/image.jpg
+                </div>
             </div>
         </div>
     </div>
 </main>
 
+<!-- Modal เพิ่มสินค้า -->
 <div class="modal-overlay" id="productModal">
     <div class="modal-content">
         <h3>➕ เพิ่มสินค้าใหม่</h3>
         <input type="text" id="newProductName" placeholder="ชื่อสินค้า">
+        <input type="text" id="newProductLink" placeholder="ลิงก์ไฟล์/เว็บไซต์ (ไม่ใส่ก็ได้)">
+        <div class="hint">เช่น https://example.com/เอกสาร.pdf หรือ /files/data.xlsx</div>
         <div class="modal-buttons">
-            <button id="cancelModalBtn" style="background:#E8F4FD; border:none; padding:8px 16px; border-radius:30px;">ยกเลิก</button>
+            <button id="cancelModalBtn" style="background:#E8F4FD; border:none; padding:8px 16px; border-radius:30px; cursor:pointer;">ยกเลิก</button>
             <button class="btn-primary" id="confirmAddBtn">เพิ่มสินค้า</button>
         </div>
     </div>
 </div>
 
+<!-- Modal ใส่ลิงก์ไฟล์ -->
+<div class="modal-overlay" id="linkModal">
+    <div class="modal-content">
+        <h3>🔗 เชื่อมโยงไฟล์/ลิงก์</h3>
+        <input type="text" id="linkInput" placeholder="วางลิงก์ไฟล์หรือเว็บไซต์">
+        <div class="hint">เช่น PDF, Excel, รูปภาพ, หรือเว็บไซต์ใดๆ</div>
+        <div class="modal-buttons">
+            <button id="cancelLinkBtn" style="background:#E8F4FD; border:none; padding:8px 16px; border-radius:30px;">ยกเลิก</button>
+            <button class="btn-primary" id="saveLinkBtn">บันทึก</button>
+        </div>
+    </div>
+</div>
+
 <script>
-    // สินค้าทั้งหมด 7 รายการ (ตามที่แสดงในภาพ)
+    // สินค้าทั้งหมด 7 รายการ (เพิ่มฟิลด์ fileLink)
     let products = [
-        { id: 1, name: "น็อตล้อ", category: "อะไหล่รถยนต์", emoji: "🔩", stock: 150, price: 45 },
-        { id: 2, name: "บูชปีกนก", category: "อะไหล่ช่วงล่าง", emoji: "⚙️", stock: 80, price: 120 },
-        { id: 3, name: "ยางกันฝุ่น", category: "อุปกรณ์ป้องกัน", emoji: "🛡️", stock: 200, price: 25 },
-        { id: 4, name: "ยางหุ้มเเร็ค", category: "อะไหล่เฉพาะทาง", emoji: "🔧", stock: 45, price: 89 },
-        { id: 5, name: "สเปย์", category: "สารพ่นพ่น", emoji: "💨", stock: 120, price: 65 },
-        { id: 6, name: "สลักเกียว", category: "ชิ้นส่วนยึด", emoji: "🔗", stock: 300, price: 15 },
-        { id: 7, name: "FACTO", category: "อะไหล่รถยนต์", emoji: "⭐", stock: 35, price: 199 }
+        { id: 1, name: "น็อตล้อ", category: "อะไหล่รถยนต์", emoji: "🔩", stock: 150, price: 45, fileLink: "" },
+        { id: 2, name: "บูชปีกนก", category: "อะไหล่ช่วงล่าง", emoji: "⚙️", stock: 80, price: 120, fileLink: "" },
+        { id: 3, name: "ยางกันฝุ่น", category: "อุปกรณ์ป้องกัน", emoji: "🛡️", stock: 200, price: 25, fileLink: "" },
+        { id: 4, name: "ยางหุ้มเเร็ค", category: "อะไหล่เฉพาะทาง", emoji: "🔧", stock: 45, price: 89, fileLink: "" },
+        { id: 5, name: "สเปย์", category: "สารพ่นพ่น", emoji: "💨", stock: 120, price: 65, fileLink: "" },
+        { id: 6, name: "สลักเกียว", category: "ชิ้นส่วนยึด", emoji: "🔗", stock: 300, price: 15, fileLink: "" },
+        { id: 7, name: "FACTO", category: "อะไหล่รถยนต์", emoji: "⭐", stock: 35, price: 199, fileLink: "" }
     ];
     let nextId = 8;
+    let currentLinkProductId = null;
 
     let deliveries = [
         { id: 1, product: "น็อตล้อ", dueDate: "2026-06-18", status: "กำลังจัดส่ง" },
@@ -614,61 +626,37 @@ body {
         if(savedDel) deliveries = JSON.parse(savedDel);
     }
 
-    // แสดงการ์ดสินค้า (คลิกทั้งใบได้)
+    // เปิดไฟล์/ลิงก์เมื่อคลิกการ์ด
+    function openProductFile(productId) {
+        const product = products.find(p => p.id === productId);
+        if(product && product.fileLink && product.fileLink.trim() !== "") {
+            window.open(product.fileLink, '_blank');
+        } else {
+            alert(`⚠️ สินค้า "${product.name}" ยังไม่มีลิงก์ไฟล์\n\nคลิกปุ่ม "🔗 ตั้งค่าลิงก์" เพื่อเพิ่มลิงก์ไฟล์หรือเว็บไซต์`);
+        }
+    }
+
+    // แสดงการ์ดสินค้า
     function renderProducts() {
         const grid = document.getElementById('productGrid');
         if(!grid) return;
         if(products.length === 0) {
-            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px;">暂无สินค้า</div>`;
+            grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px;">ไม่มีสินค้า กรุณาเพิ่ม</div>`;
             return;
         }
         grid.innerHTML = products.map(p => `
-            <div class="product-card" onclick="showProductDetail(${p.id})">
+            <div class="product-card" onclick="openProductFile(${p.id})">
                 <h3><span class="product-emoji">${p.emoji || '🔩'}</span> ${escapeHtml(p.name)}</h3>
                 <div class="product-category">📁 ${escapeHtml(p.category)}</div>
                 <div style="margin-top:8px; font-size:12px; color:#5B86A5;">📦 คงเหลือ: ${p.stock} ชิ้น</div>
-                <button class="btn-delete" onclick="event.stopPropagation(); deleteProduct(${p.id})">🗑 ลบสินค้า</button>
+                ${p.fileLink ? `<div class="file-link-badge">🔗 มีลิงก์ไฟล์</div>` : `<div class="file-link-badge" style="background:#FFF3E0; color:#E67E22;">⚠️ ยังไม่มีลิงก์</div>`}
+                <div style="margin-top:12px;">
+                    <button class="btn-set-link" onclick="event.stopPropagation(); openLinkModal(${p.id})">🔗 ตั้งค่าลิงก์</button>
+                    <button class="btn-delete" onclick="event.stopPropagation(); deleteProduct(${p.id})">🗑 ลบสินค้า</button>
+                </div>
             </div>
         `).join('');
     }
-
-    // แสดงรายละเอียดสินค้า (กดที่การ์ด)
-    window.showProductDetail = function(productId) {
-        const product = products.find(p => p.id === productId);
-        if(!product) return;
-        
-        const container = document.getElementById('productDetailContainer');
-        container.innerHTML = `
-            <div class="product-detail-card">
-                <div class="product-detail-emoji">${product.emoji || '🔩'}</div>
-                <h2 class="product-detail-name">${escapeHtml(product.name)}</h2>
-                <div class="product-detail-category">📁 ${escapeHtml(product.category)}</div>
-                <div class="product-detail-info">
-                    <p>📦 <strong>จำนวนคงเหลือ:</strong> ${product.stock} ชิ้น</p>
-                    <p>💰 <strong>ราคาต่อหน่วย:</strong> ${product.price} บาท</p>
-                    <p>🆔 <strong>รหัสสินค้า:</strong> #PD-${product.id}</p>
-                    <p>📅 <strong>วันที่เพิ่ม:</strong> ${new Date().toLocaleDateString('th-TH')}</p>
-                </div>
-                <button class="back-btn" onclick="goBackToProduct()">← กลับไปหน้ารายการสินค้า</button>
-            </div>
-        `;
-        
-        // ซ่อนหน้า product แสดงหน้า detail
-        document.getElementById('page-product').classList.remove('active');
-        document.getElementById('page-product-detail').classList.add('active');
-        
-        // อัปเดต topbar
-        document.getElementById('topbarTitle').innerText = `รายละเอียด: ${product.name}`;
-        document.getElementById('topbarSub').innerText = `ข้อมูลสินค้าและการจัดการ`;
-    };
-
-    window.goBackToProduct = function() {
-        document.getElementById('page-product-detail').classList.remove('active');
-        document.getElementById('page-product').classList.add('active');
-        document.getElementById('topbarTitle').innerText = 'โปรดัก / สินค้า';
-        document.getElementById('topbarSub').innerText = 'จัดการรายการสินค้าในระบบ (คลิกที่การ์ดเพื่อดูรายละเอียด)';
-        renderProducts();
-    };
 
     function deleteProduct(id) {
         if(confirm('ต้องการลบสินค้านี้?')) {
@@ -680,7 +668,26 @@ body {
         }
     }
 
-    function addProduct(name) {
+    function openLinkModal(productId) {
+        currentLinkProductId = productId;
+        const product = products.find(p => p.id === productId);
+        document.getElementById('linkInput').value = product.fileLink || '';
+        document.getElementById('linkModal').classList.add('active');
+    }
+
+    function saveProductLink() {
+        if(currentLinkProductId) {
+            const product = products.find(p => p.id === currentLinkProductId);
+            const newLink = document.getElementById('linkInput').value.trim();
+            product.fileLink = newLink;
+            renderProducts();
+            saveData();
+            document.getElementById('linkModal').classList.remove('active');
+            alert(`✅ บันทึกลิงก์สำหรับ "${product.name}" เรียบร้อยแล้ว`);
+        }
+    }
+
+    function addProduct(name, link) {
         if(!name.trim()) return false;
         if(products.some(p => p.name === name.trim())) {
             alert('สินค้านี้มีอยู่แล้ว');
@@ -692,7 +699,8 @@ body {
             category: "สินค้าทั่วไป",
             emoji: "📦",
             stock: 0,
-            price: 0
+            price: 0,
+            fileLink: link || ""
         });
         renderProducts();
         renderReport();
@@ -703,8 +711,17 @@ body {
     function renderTracking() {
         const tbody = document.getElementById('trackingTableBody');
         if(!tbody) return;
+        if(deliveries.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center">ไม่มีข้อมูล</td></tr>';
+            return;
+        }
         tbody.innerHTML = deliveries.map(d => `
-            <tr><td>#INV-${d.id}</td><td>${escapeHtml(d.product)}</td><td>${d.dueDate}</td><td><span class="status-badge">${d.status}</span></td></tr>
+            <tr>
+                <td>#INV-${d.id}</td>
+                <td>${escapeHtml(d.product)}</td>
+                <td>${d.dueDate}</td>
+                <td><span class="status-badge">${d.status}</span></td>
+            </tr>
         `).join('');
     }
 
@@ -715,20 +732,23 @@ body {
         const categories = {};
         products.forEach(p => { categories[p.category] = (categories[p.category] || 0) + 1; });
         let catHtml = Object.entries(categories).map(([cat, count]) => 
-            `<div style="display:flex; justify-content:space-between; padding:8px 0;"><span>📂 ${cat}</span><span>${count} รายการ</span></div>`
+            `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #E9F2F9;">
+                <span>📂 ${cat}</span><span>${count} รายการ</span>
+            </div>`
         ).join('');
+        const withLink = products.filter(p => p.fileLink && p.fileLink.trim()).length;
         container.innerHTML = `
             <div style="background:#F2F9FF; padding:18px; border-radius:20px; margin-bottom:20px;">
                 <h4>📊 สินค้าทั้งหมด</h4>
                 <p style="font-size:32px; font-weight:700;">${total}</p>
             </div>
+            <div style="background:white; border-radius:20px; padding:16px; margin-bottom:16px;">
+                <h4>🔗 สินค้าที่มีลิงก์ไฟล์</h4>
+                <p style="font-size:24px; font-weight:700; color:#3A7BD5;">${withLink} / ${total}</p>
+            </div>
             <div style="background:white; border-radius:20px; padding:16px;">
                 <h4>🏷️ แยกตามหมวดหมู่</h4>
                 ${catHtml || '<p>ไม่มีข้อมูล</p>'}
-            </div>
-            <div style="margin-top:20px; background:white; border-radius:20px; padding:16px;">
-                <h4>📋 รายการสินค้าทั้งหมด</h4>
-                ${products.map(p => `<div style="padding:4px 0;">• ${p.emoji || '🔩'} ${escapeHtml(p.name)}</div>`).join('')}
             </div>
         `;
     }
@@ -739,10 +759,13 @@ body {
             const lines = e.target.result.split(/\r?\n/);
             let added = 0;
             for(let line of lines) {
-                let name = line.split(',')[0].trim();
+                if(!line.trim()) continue;
+                const parts = line.split(',');
+                const name = parts[0]?.trim();
+                const link = parts[1]?.trim() || "";
                 if(name && name !== 'ชื่อสินค้า' && name !== 'name') {
                     if(!products.some(p => p.name === name)) {
-                        products.push({ id: nextId++, name: name, category: "นำเข้า", emoji: "📥", stock: 0, price: 0 });
+                        products.push({ id: nextId++, name: name, category: "นำเข้า", emoji: "📥", stock: 0, price: 0, fileLink: link });
                         added++;
                     }
                 }
@@ -753,17 +776,19 @@ body {
         reader.readAsText(file, 'UTF-8');
     }
 
-    function escapeHtml(str) { return str?.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])) || ''; }
+    function escapeHtml(str) { 
+        if(!str) return '';
+        return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); 
+    }
 
     window.switchPage = function(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        if(pageId === 'product-detail') return;
         document.getElementById(`page-${pageId}`).classList.add('active');
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
         const activeNav = document.querySelector(`.nav-item[data-page="${pageId}"]`);
         if(activeNav) activeNav.classList.add('active');
         const titles = { tracking: 'ติดตามกำหนดส่ง', report: 'รายงาน', product: 'โปรดัก / สินค้า', import: 'นำเข้าข้อมูล' };
-        const subs = { tracking: 'ตรวจสอบสถานะการจัดส่ง', report: 'วิเคราะห์สรุปสินค้า', product: 'คลิกที่การ์ดสินค้าเพื่อดูรายละเอียด', import: 'นำเข้าข้อมูล CSV' };
+        const subs = { tracking: 'ตรวจสอบสถานะการจัดส่ง', report: 'วิเคราะห์สรุปสินค้า', product: 'คลิกที่การ์ดสินค้าเพื่อเปิดไฟล์ที่เชื่อมโยง', import: 'นำเข้าข้อมูล CSV พร้อมลิงก์ไฟล์' };
         document.getElementById('topbarTitle').innerText = titles[pageId];
         document.getElementById('topbarSub').innerText = subs[pageId];
         if(pageId === 'tracking') renderTracking();
@@ -781,24 +806,46 @@ body {
         renderProducts();
         renderTracking();
         renderReport();
+        
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', () => switchPage(item.dataset.page));
         });
-        const modal = document.getElementById('productModal');
-        document.getElementById('openModalBtn').onclick = () => modal.classList.add('active');
-        document.getElementById('cancelModalBtn').onclick = () => { modal.classList.remove('active'); document.getElementById('newProductName').value = ''; };
+        
+        // Modal เพิ่มสินค้า
+        const productModal = document.getElementById('productModal');
+        document.getElementById('openModalBtn').onclick = () => productModal.classList.add('active');
+        document.getElementById('cancelModalBtn').onclick = () => { 
+            productModal.classList.remove('active'); 
+            document.getElementById('newProductName').value = '';
+            document.getElementById('newProductLink').value = '';
+        };
         document.getElementById('confirmAddBtn').onclick = () => {
             let name = document.getElementById('newProductName').value.trim();
-            if(name) { addProduct(name); modal.classList.remove('active'); document.getElementById('newProductName').value = ''; }
-            else alert('กรุณากรอกชื่อสินค้า');
+            let link = document.getElementById('newProductLink').value.trim();
+            if(name) { 
+                addProduct(name, link); 
+                productModal.classList.remove('active'); 
+                document.getElementById('newProductName').value = '';
+                document.getElementById('newProductLink').value = '';
+            } else alert('กรุณากรอกชื่อสินค้า');
         };
+        
+        // Modal ลิงก์ไฟล์
+        const linkModal = document.getElementById('linkModal');
+        document.getElementById('cancelLinkBtn').onclick = () => linkModal.classList.remove('active');
+        document.getElementById('saveLinkBtn').onclick = () => saveProductLink();
+        linkModal.onclick = (e) => { if(e.target === linkModal) linkModal.classList.remove('active'); };
+        
+        // นำเข้า CSV
         document.getElementById('importBtn').onclick = () => {
             let file = document.getElementById('csvFileInput').files[0];
             if(file) importCSV(file);
             else alert('เลือกไฟล์ CSV');
         };
-        modal.onclick = (e) => { if(e.target === modal) modal.classList.remove('active'); };
+        
+        productModal.onclick = (e) => { if(e.target === productModal) productModal.classList.remove('active'); };
     }
+    
     init();
 </script>
 </body>
