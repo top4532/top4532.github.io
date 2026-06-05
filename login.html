@@ -2,82 +2,207 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Login System - PATIWAT</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        fontFamily: { prompt: ['Prompt', 'sans-serif'] },
-        keyframes: {
-          floatOrb: {
-            '0%,100%': { transform: 'translate(0,0) scale(1)' },
-            '33%': { transform: 'translate(20px,-30px) scale(1.05)' },
-            '66%': { transform: 'translate(-15px,20px) scale(0.95)' },
-          },
-          riseUp: {
-            from: { opacity: '0', transform: 'translateY(40px) scale(0.97)' },
-            to:   { opacity: '1', transform: 'translateY(0) scale(1)' },
-          },
-          shimmerBar: {
-            '0%':   { backgroundPosition: '0% 50%' },
-            '100%': { backgroundPosition: '200% 50%' },
-          },
-          pulseLogo: {
-            '0%,100%': { boxShadow: '0 12px 32px rgba(37,99,235,0.35), 0 0 0 6px rgba(147,197,253,0.2)' },
-            '50%':     { boxShadow: '0 12px 40px rgba(37,99,235,0.5), 0 0 0 10px rgba(147,197,253,0.15)' },
-          },
-          drift: {
-            '0%':   { transform: 'translateY(100vh) rotate(0deg)', opacity: '0' },
-            '10%':  { opacity: '0.2' },
-            '90%':  { opacity: '0.1' },
-            '100%': { transform: 'translateY(-100px) rotate(720deg)', opacity: '0' },
-          },
-          spin: {
-            to: { transform: 'rotate(360deg)' },
-          },
-        },
-        animation: {
-          floatOrb:   'floatOrb 8s ease-in-out infinite',
-          floatOrb2:  'floatOrb 8s ease-in-out -3s infinite',
-          floatOrb3:  'floatOrb 8s ease-in-out -5s infinite',
-          riseUp:     'riseUp 0.7s cubic-bezier(0.16,1,0.3,1) both',
-          shimmerBar: 'shimmerBar 3s linear infinite',
-          pulseLogo:  'pulseLogo 3s ease-in-out infinite',
-          drift:      'drift linear infinite',
-          spin:       'spin 1s linear infinite',
-        },
-      },
-    },
-  }
-</script>
 <style>
-  body { font-family: 'Prompt', sans-serif; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* shimmer top bar */
+  :root {
+    --blue-50:  #eff6ff;
+    --blue-100: #dbeafe;
+    --blue-200: #bfdbfe;
+    --blue-400: #60a5fa;
+    --blue-500: #3b82f6;
+    --blue-600: #2563eb;
+    --sky-400:  #38bdf8;
+    --slate-300:#cbd5e1;
+    --slate-400:#94a3b8;
+    --slate-500:#64748b;
+    --slate-600:#475569;
+    --slate-800:#1e293b;
+    --green-50: #f0fdf4;
+    --green-200:#bbf7d0;
+    --green-700:#15803d;
+    --red-500:  #ef4444;
+  }
+
+  html, body {
+    height: 100%;
+    font-family: 'Prompt', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 40%, #e0f2fe 70%, #bfdbfe 100%);
+    overflow: hidden;
+    position: relative;
+    padding: clamp(12px, 4vw, 32px);
+    padding-top: max(env(safe-area-inset-top, 12px), 12px);
+    padding-bottom: max(env(safe-area-inset-bottom, 12px), 12px);
+  }
+
+  /* ── Background ── */
+  .bg-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.5;
+  }
+  .orb-1 {
+    width: clamp(200px, 50vw, 500px);
+    height: clamp(200px, 50vw, 500px);
+    background: radial-gradient(circle, #93c5fd, transparent);
+    top: -15%; left: -10%;
+    animation: floatOrb 8s ease-in-out infinite;
+  }
+  .orb-2 {
+    width: clamp(160px, 40vw, 400px);
+    height: clamp(160px, 40vw, 400px);
+    background: radial-gradient(circle, #60a5fa, transparent);
+    bottom: -10%; right: -8%;
+    animation: floatOrb 8s ease-in-out -3s infinite;
+  }
+  .orb-3 {
+    width: clamp(120px, 30vw, 300px);
+    height: clamp(120px, 30vw, 300px);
+    background: radial-gradient(circle, #38bdf8, transparent);
+    top: 50%; left: 60%;
+    animation: floatOrb 8s ease-in-out -5s infinite;
+  }
+
+  .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(37,99,235,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37,99,235,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* ── Card ── */
+  .card-wrap {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: min(440px, 100%);
+    animation: riseUp 0.7s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  .glass-card {
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1.5px solid rgba(255,255,255,0.92);
+    border-radius: clamp(16px, 4vw, 28px);
+    overflow: hidden;
+    box-shadow:
+      0 4px 6px -1px rgba(37,99,235,0.07),
+      0 20px 60px rgba(37,99,235,0.18),
+      0 0 0 1px rgba(147,197,253,0.3) inset;
+  }
+
   .shimmer-bar {
+    height: 3px;
     background: linear-gradient(90deg, #38bdf8, #2563eb, #1d4ed8, #38bdf8);
     background-size: 200% 100%;
     animation: shimmerBar 3s linear infinite;
   }
 
-  /* glassy card */
-  .glass-card {
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1.5px solid rgba(255,255,255,0.9);
-    box-shadow:
-      0 4px 6px -1px rgba(37,99,235,0.06),
-      0 20px 60px rgba(37,99,235,0.15),
-      0 0 0 1px rgba(147,197,253,0.3) inset;
+  .card-body {
+    padding: clamp(20px, 6vw, 44px);
+    padding-top: clamp(24px, 5vw, 40px);
   }
 
-  /* input focus ring */
+  /* ── Logo ── */
+  .logo-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: clamp(20px, 5vw, 36px);
+  }
+
+  .logo-ring {
+    width: clamp(56px, 14vw, 80px);
+    height: clamp(56px, 14vw, 80px);
+    border-radius: clamp(12px, 3vw, 18px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
+    box-shadow: 0 12px 32px rgba(37,99,235,0.35), 0 0 0 6px rgba(147,197,253,0.2);
+    animation: pulseLogo 3s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  .logo-ring i {
+    font-size: clamp(22px, 6vw, 36px);
+    color: #fff;
+  }
+
+  .logo-title {
+    margin-top: clamp(12px, 3vw, 20px);
+    font-size: clamp(18px, 5vw, 24px);
+    font-weight: 700;
+    color: var(--slate-800);
+    letter-spacing: -0.01em;
+  }
+
+  .logo-sub {
+    margin-top: 4px;
+    font-size: clamp(12px, 3vw, 14px);
+    color: var(--slate-400);
+    font-weight: 300;
+  }
+
+  /* ── Form ── */
+  .field-group { margin-bottom: clamp(14px, 3vw, 20px); }
+
+  .field-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-size: clamp(10px, 2.5vw, 12px);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--slate-500);
+  }
+
+  .field-label i { color: var(--blue-400); font-size: 9px; }
+
+  .field-wrap { position: relative; }
+
+  .field-input {
+    width: 100%;
+    height: clamp(46px, 12vw, 54px);
+    border-radius: clamp(10px, 2.5vw, 14px);
+    border: 1.5px solid #dbeafe;
+    background: rgba(239,246,255,0.6);
+    padding: 0 clamp(36px, 9vw, 48px) 0 clamp(12px, 3vw, 16px);
+    font-size: clamp(13px, 3.5vw, 15px);
+    font-family: 'Prompt', sans-serif;
+    color: var(--slate-800);
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+
+  .field-input::placeholder { color: var(--slate-300); font-weight: 300; }
+
   .field-input:focus {
     border-color: #60a5fa;
     background: #fff;
@@ -85,182 +210,313 @@
     outline: none;
   }
 
-  /* btn hover shimmer overlay */
+  .field-icon {
+    position: absolute;
+    right: clamp(12px, 3vw, 16px);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--slate-400);
+    font-size: clamp(12px, 3vw, 14px);
+    pointer-events: none;
+  }
+
+  .toggle-pw { cursor: pointer; pointer-events: all; }
+  .toggle-pw:hover { color: var(--blue-500); }
+
+  .err-msg {
+    font-size: clamp(11px, 2.8vw, 12px);
+    color: var(--red-500);
+    margin-top: 6px;
+    padding-left: 4px;
+    display: none;
+  }
+
+  /* ── Options row ── */
+  .options-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: clamp(18px, 5vw, 28px);
+  }
+
+  .remember-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    font-size: clamp(12px, 3.5vw, 14px);
+    color: var(--slate-600);
+  }
+
+  .remember-label input[type=checkbox] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--blue-500);
+    cursor: pointer;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .forgot-link {
+    font-size: clamp(12px, 3.5vw, 14px);
+    font-weight: 600;
+    color: var(--blue-600);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .forgot-link:hover { color: #1e40af; }
+
+  /* ── Login button ── */
+  .btn-login {
+    position: relative;
+    width: 100%;
+    height: clamp(48px, 13vw, 56px);
+    border-radius: clamp(10px, 2.5vw, 14px);
+    border: none;
+    font-family: 'Prompt', sans-serif;
+    font-size: clamp(14px, 4vw, 16px);
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    letter-spacing: 0.02em;
+    background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
+    box-shadow: 0 6px 20px rgba(37,99,235,0.35);
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    overflow: hidden;
+  }
+
   .btn-login::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+    background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent);
     opacity: 0;
     transition: opacity 0.3s;
     border-radius: inherit;
   }
-  .btn-login:hover::after { opacity: 1; }
 
-  /* logo pulse */
-  .logo-ring { animation: pulseLogo 3s ease-in-out infinite; }
+  .btn-login:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(37,99,235,0.4); }
+  .btn-login:hover:not(:disabled)::after { opacity: 1; }
+  .btn-login:active:not(:disabled) { transform: translateY(0); }
+  .btn-login:disabled { opacity: 0.7; cursor: not-allowed; }
 
-  /* spinner */
+  /* ── Success ── */
+  .success-msg {
+    display: none;
+    margin-top: clamp(10px, 2.5vw, 16px);
+    padding: clamp(10px, 2.5vw, 14px) clamp(12px, 3vw, 16px);
+    border-radius: clamp(8px, 2vw, 12px);
+    background: var(--green-50);
+    border: 1px solid var(--green-200);
+    color: var(--green-700);
+    font-size: clamp(12px, 3.5vw, 14px);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: clamp(14px, 4vw, 24px) 0;
+  }
+  .divider-line { flex: 1; height: 1px; background: #dbeafe; }
+  .divider-text { font-size: clamp(10px, 2.8vw, 12px); color: var(--slate-300); letter-spacing: 0.08em; }
+
+  /* ── Footer ── */
+  .footer-text {
+    text-align: center;
+    font-size: clamp(12px, 3.5vw, 14px);
+    color: var(--slate-400);
+  }
+
+  .footer-text a {
+    font-weight: 600;
+    color: var(--blue-600);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-text a:hover { color: #1e40af; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: clamp(12px, 3.5vw, 14px);
+    font-weight: 500;
+    color: var(--blue-500);
+    text-decoration: none;
+    transition: color 0.2s, gap 0.2s;
+    margin-top: clamp(10px, 2.5vw, 16px);
+  }
+  .back-link:hover { color: var(--blue-600); gap: 12px; }
+
+  /* ── Particles ── */
+  #particles { position: absolute; inset: 0; }
+
+  /* ── Animations ── */
+  @keyframes floatOrb {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33%      { transform: translate(20px,-30px) scale(1.05); }
+    66%      { transform: translate(-15px,20px) scale(0.95); }
+  }
+  @keyframes riseUp {
+    from { opacity: 0; transform: translateY(40px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes shimmerBar {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+  @keyframes pulseLogo {
+    0%,100% { box-shadow: 0 12px 32px rgba(37,99,235,0.35), 0 0 0 6px rgba(147,197,253,0.2); }
+    50%     { box-shadow: 0 12px 40px rgba(37,99,235,0.5), 0 0 0 10px rgba(147,197,253,0.15); }
+  }
+  @keyframes drift {
+    0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.2; }
+    90%  { opacity: 0.1; }
+    100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
   .fa-spin { animation: spin 1s linear infinite; }
+
+  /* ── Small screens: ensure nothing gets cut ── */
+  @media (max-height: 600px) {
+    body { align-items: flex-start; padding-top: 16px; }
+    .card-body { padding-top: 18px; padding-bottom: 18px; }
+    .logo-area { margin-bottom: 14px; }
+  }
+
+  /* ── Very small phones (< 360px) ── */
+  @media (max-width: 359px) {
+    .card-body { padding-left: 16px; padding-right: 16px; }
+  }
 </style>
 </head>
-<body class="min-h-screen flex justify-center items-center bg-blue-50 overflow-hidden relative p-4">
+<body>
 
-<!-- ─── Background ─── -->
-<div class="fixed inset-0 z-0 overflow-hidden"
-     style="background: linear-gradient(135deg,#dbeafe 0%,#eff6ff 40%,#e0f2fe 70%,#bfdbfe 100%)">
-
-  <!-- Orbs -->
-  <div class="absolute rounded-full opacity-50 animate-floatOrb"
-       style="width:500px;height:500px;background:radial-gradient(circle,#93c5fd,transparent);
-              top:-150px;left:-100px;filter:blur(60px)"></div>
-  <div class="absolute rounded-full opacity-50 animate-floatOrb2"
-       style="width:400px;height:400px;background:radial-gradient(circle,#60a5fa,transparent);
-              bottom:-100px;right:-80px;filter:blur(60px)"></div>
-  <div class="absolute rounded-full opacity-50 animate-floatOrb3"
-       style="width:300px;height:300px;background:radial-gradient(circle,#38bdf8,transparent);
-              top:50%;left:60%;filter:blur(60px)"></div>
-
-  <!-- Grid -->
-  <div class="absolute inset-0"
-       style="background-image:linear-gradient(rgba(37,99,235,0.05) 1px,transparent 1px),
-              linear-gradient(90deg,rgba(37,99,235,0.05) 1px,transparent 1px);
-              background-size:40px 40px"></div>
-
-  <!-- Particles -->
+<!-- Background -->
+<div class="bg-layer">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="grid-bg"></div>
   <div id="particles"></div>
 </div>
 
-<!-- ─── Card ─── -->
-<div class="relative z-10 w-full max-w-md animate-riseUp">
-  <div class="glass-card rounded-3xl overflow-hidden">
+<!-- Card -->
+<div class="card-wrap">
+  <div class="glass-card">
+    <div class="shimmer-bar"></div>
 
-    <!-- Shimmer top border -->
-    <div class="shimmer-bar h-[3px] w-full"></div>
-
-    <div class="px-10 py-10">
+    <div class="card-body">
 
       <!-- Logo -->
-      <div class="flex flex-col items-center mb-9">
-        <div class="logo-ring w-20 h-20 rounded-2xl flex items-center justify-center
-                    bg-gradient-to-br from-sky-400 to-blue-600 shadow-lg shadow-blue-500/30">
-          <i class="fas fa-user-shield text-4xl text-white"></i>
+      <div class="logo-area">
+        <div class="logo-ring">
+          <i class="fas fa-user-shield"></i>
         </div>
-        <h1 class="mt-5 text-2xl font-bold tracking-tight text-slate-800">เข้าสู่ระบบ</h1>
-        <p class="mt-1 text-sm text-slate-400 font-light">กรุณาเข้าสู่ระบบเพื่อใช้งาน</p>
+        <h1 class="logo-title">เข้าสู่ระบบ</h1>
+        <p class="logo-sub">กรุณาเข้าสู่ระบบเพื่อใช้งาน</p>
       </div>
 
       <!-- Form -->
       <form id="loginForm">
 
         <!-- Username -->
-        <div class="mb-5">
-          <label class="flex items-center gap-1.5 mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-            <i class="fas fa-circle-dot text-blue-400 text-[10px]"></i> ชื่อผู้ใช้
+        <div class="field-group">
+          <label class="field-label">
+            <i class="fas fa-circle-dot"></i> ชื่อผู้ใช้
           </label>
-          <div class="relative">
-            <input id="username" type="text" placeholder="กรอกชื่อผู้ใช้" autocomplete="username" required
-                   class="field-input w-full h-13 rounded-xl border-[1.5px] border-blue-100
-                          bg-blue-50/50 px-4 pr-12 text-[15px] text-slate-800 transition-all
-                          placeholder:text-slate-300 placeholder:font-light"
-                   style="height:52px">
-            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
-              <i class="fas fa-user text-sm"></i>
-            </span>
+          <div class="field-wrap">
+            <input id="username" type="text" placeholder="กรอกชื่อผู้ใช้"
+                   autocomplete="username" required class="field-input">
+            <span class="field-icon"><i class="fas fa-user"></i></span>
           </div>
-          <p class="err-msg text-red-500 text-xs mt-1.5 pl-1 hidden" id="usernameError"></p>
+          <p class="err-msg" id="usernameError"></p>
         </div>
 
         <!-- Password -->
-        <div class="mb-5">
-          <label class="flex items-center gap-1.5 mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-            <i class="fas fa-circle-dot text-blue-400 text-[10px]"></i> รหัสผ่าน
+        <div class="field-group">
+          <label class="field-label">
+            <i class="fas fa-circle-dot"></i> รหัสผ่าน
           </label>
-          <div class="relative">
-            <input id="password" type="password" placeholder="กรอกรหัสผ่าน" autocomplete="current-password" required
-                   class="field-input w-full h-13 rounded-xl border-[1.5px] border-blue-100
-                          bg-blue-50/50 px-4 pr-12 text-[15px] text-slate-800 transition-all
-                          placeholder:text-slate-300 placeholder:font-light"
-                   style="height:52px">
-            <span onclick="togglePassword()"
-                  class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 cursor-pointer
-                         hover:text-blue-500 transition-colors">
-              <i class="fas fa-eye text-sm" id="eyeIcon"></i>
+          <div class="field-wrap">
+            <input id="password" type="password" placeholder="กรอกรหัสผ่าน"
+                   autocomplete="current-password" required class="field-input">
+            <span class="field-icon toggle-pw" onclick="togglePassword()">
+              <i class="fas fa-eye" id="eyeIcon"></i>
             </span>
           </div>
-          <p class="err-msg text-red-500 text-xs mt-1.5 pl-1 hidden" id="passwordError"></p>
+          <p class="err-msg" id="passwordError"></p>
         </div>
 
         <!-- Options -->
-        <div class="flex justify-between items-center mb-7 flex-wrap gap-2.5">
-          <label class="flex items-center gap-2 cursor-pointer select-none text-sm text-slate-600">
-            <input type="checkbox" id="rememberMe" class="w-4 h-4 accent-blue-500 cursor-pointer rounded">
+        <div class="options-row">
+          <label class="remember-label">
+            <input type="checkbox" id="rememberMe">
             <span>จดจำรหัสผ่าน</span>
           </label>
-          <a href="#" onclick="handleForgotPassword(event)"
-             class="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors">
-            ลืมรหัสผ่าน?
-          </a>
+          <a href="#" onclick="handleForgotPassword(event)" class="forgot-link">ลืมรหัสผ่าน?</a>
         </div>
 
-        <!-- Submit button -->
-        <button type="submit" id="loginBtn"
-                class="btn-login relative w-full h-[54px] rounded-xl font-semibold text-[15.5px]
-                       text-white cursor-pointer flex items-center justify-center gap-2.5
-                       tracking-wide transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0
-                       disabled:opacity-70 disabled:cursor-not-allowed disabled:translate-y-0"
-                style="background:linear-gradient(135deg,#38bdf8 0%,#2563eb 100%);
-                       box-shadow:0 6px 20px rgba(37,99,235,0.35)">
+        <!-- Submit -->
+        <button type="submit" id="loginBtn" class="btn-login">
           <i class="fas fa-right-to-bracket"></i>
           เข้าสู่ระบบ
         </button>
 
         <!-- Success -->
-        <div id="successMessage"
-             class="hidden mt-4 px-4 py-3 rounded-xl bg-green-50 border border-green-200
-                    text-green-700 text-sm font-semibold text-center">
-          <i class="fas fa-circle-check mr-1"></i> เข้าสู่ระบบสำเร็จ! กำลังนำไปยังหน้าหลัก…
+        <div id="successMessage" class="success-msg">
+          <i class="fas fa-circle-check"></i> เข้าสู่ระบบสำเร็จ! กำลังนำไปยังหน้าหลัก…
         </div>
 
       </form>
 
       <!-- Divider -->
-      <div class="flex items-center gap-3 my-6">
-        <div class="flex-1 h-px bg-blue-100"></div>
-        <span class="text-xs text-slate-300 tracking-wider">หรือ</span>
-        <div class="flex-1 h-px bg-blue-100"></div>
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-text">หรือ</span>
+        <div class="divider-line"></div>
       </div>
 
       <!-- Footer -->
-      <p class="text-center text-sm text-slate-400">
+      <p class="footer-text">
         ยังไม่มีบัญชี?
-        <a href="#" onclick="handleSignup(event)"
-           class="font-semibold text-blue-600 hover:text-blue-800 transition-colors">สมัครสมาชิก</a>
+        <a href="#" onclick="handleSignup(event)">สมัครสมาชิก</a>
       </p>
 
-      <div class="text-center mt-4">
-        <a href="index.html"
-           class="inline-flex items-center gap-2 text-sm font-medium text-blue-500
-                  hover:text-blue-700 hover:gap-3 transition-all duration-200">
+      <div style="text-align:center">
+        <a href="index.html" class="back-link">
           <i class="fas fa-arrow-left"></i>
           กลับไปหน้าแรก
         </a>
       </div>
 
-    </div><!-- /px-10 -->
-  </div><!-- /glass-card -->
-</div><!-- /card-wrap -->
+    </div>
+  </div>
+</div>
 
 <script>
 /* Particles */
 (function(){
   const wrap = document.getElementById('particles');
-  for(let i=0;i<12;i++){
-    const p=document.createElement('div');
-    const size=Math.random()*6+3;
-    const dur=Math.random()*15+10;
-    const delay=Math.random()*-20;
-    p.style.cssText=`position:absolute;border-radius:50%;background:#60a5fa;
+  const count = window.innerWidth < 480 ? 6 : 12;
+  for(let i = 0; i < count; i++){
+    const p = document.createElement('div');
+    const size = Math.random() * 6 + 3;
+    const dur  = Math.random() * 15 + 10;
+    const delay = Math.random() * -20;
+    p.style.cssText = `position:absolute;border-radius:50%;background:#60a5fa;
       width:${size}px;height:${size}px;left:${Math.random()*100}%;
       opacity:0.2;animation:drift ${dur}s ${delay}s linear infinite`;
     wrap.appendChild(p);
@@ -269,60 +525,65 @@
 
 /* Toggle password */
 function togglePassword(){
-  const pw=document.getElementById('password');
-  const ic=document.getElementById('eyeIcon');
-  if(pw.type==='password'){pw.type='text';ic.classList.replace('fa-eye','fa-eye-slash');}
-  else{pw.type='password';ic.classList.replace('fa-eye-slash','fa-eye');}
+  const pw = document.getElementById('password');
+  const ic = document.getElementById('eyeIcon');
+  if(pw.type === 'password'){ pw.type = 'text'; ic.classList.replace('fa-eye','fa-eye-slash'); }
+  else { pw.type = 'password'; ic.classList.replace('fa-eye-slash','fa-eye'); }
 }
 
 /* Validate */
 function validateForm(){
-  const u=document.getElementById('username').value.trim();
-  const p=document.getElementById('password').value;
-  const ue=document.getElementById('usernameError');
-  const pe=document.getElementById('passwordError');
-  let ok=true;
-  ue.classList.add('hidden'); pe.classList.add('hidden');
-  if(!u){ue.textContent='กรุณากรอกชื่อผู้ใช้';ue.classList.remove('hidden');ok=false;}
-  else if(u.length<3){ue.textContent='ชื่อผู้ใช้ต้องมีอย่างน้อย 3 ตัวอักษร';ue.classList.remove('hidden');ok=false;}
-  if(!p){pe.textContent='กรุณากรอกรหัสผ่าน';pe.classList.remove('hidden');ok=false;}
-  else if(p.length<4){pe.textContent='รหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร';pe.classList.remove('hidden');ok=false;}
+  const u  = document.getElementById('username').value.trim();
+  const p  = document.getElementById('password').value;
+  const ue = document.getElementById('usernameError');
+  const pe = document.getElementById('passwordError');
+  let ok = true;
+  ue.style.display = 'none'; pe.style.display = 'none';
+  if(!u){ ue.textContent = 'กรุณากรอกชื่อผู้ใช้'; ue.style.display = 'block'; ok = false; }
+  else if(u.length < 3){ ue.textContent = 'ชื่อผู้ใช้ต้องมีอย่างน้อย 3 ตัวอักษร'; ue.style.display = 'block'; ok = false; }
+  if(!p){ pe.textContent = 'กรุณากรอกรหัสผ่าน'; pe.style.display = 'block'; ok = false; }
+  else if(p.length < 4){ pe.textContent = 'รหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร'; pe.style.display = 'block'; ok = false; }
   return ok;
 }
 
-/* Load saved */
-window.onload=function(){
-  const su=localStorage.getItem('username');
-  const sp=localStorage.getItem('password');
-  if(su){document.getElementById('username').value=su;}
-  if(sp){document.getElementById('password').value=sp;document.getElementById('rememberMe').checked=true;}
+/* Load saved credentials */
+window.onload = function(){
+  const su = localStorage.getItem('username');
+  const sp = localStorage.getItem('password');
+  if(su){ document.getElementById('username').value = su; }
+  if(sp){ document.getElementById('password').value = sp; document.getElementById('rememberMe').checked = true; }
 };
 
 /* Submit */
-document.getElementById('loginForm').addEventListener('submit',function(e){
+document.getElementById('loginForm').addEventListener('submit', function(e){
   e.preventDefault();
-  if(!validateForm())return;
-  const username=document.getElementById('username').value.trim();
-  const password=document.getElementById('password').value;
-  const remember=document.getElementById('rememberMe').checked;
-  const btn=document.getElementById('loginBtn');
-  const succ=document.getElementById('successMessage');
-  btn.disabled=true;
-  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> กำลังเข้าสู่ระบบ…';
+  if(!validateForm()) return;
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  const remember = document.getElementById('rememberMe').checked;
+  const btn  = document.getElementById('loginBtn');
+  const succ = document.getElementById('successMessage');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังเข้าสู่ระบบ…';
   setTimeout(function(){
-    if(remember){localStorage.setItem('username',username);localStorage.setItem('password',password);}
-    else{localStorage.removeItem('username');localStorage.removeItem('password');}
-    succ.classList.remove('hidden');
-    setTimeout(function(){window.location.href='index.html';},1500);
-    btn.disabled=false;
-    btn.innerHTML='<i class="fas fa-right-to-bracket"></i> เข้าสู่ระบบ';
-  },1000);
+    if(remember){
+      localStorage.setItem('username', username);
+      localStorage.setItem('password', password);
+    } else {
+      localStorage.removeItem('username');
+      localStorage.removeItem('password');
+    }
+    succ.style.display = 'block';
+    setTimeout(function(){ window.location.href = 'index.html'; }, 1500);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-right-to-bracket"></i> เข้าสู่ระบบ';
+  }, 1000);
 });
 
-function handleForgotPassword(e){e.preventDefault();alert('ระบบกู้คืนรหัสผ่านจะส่งลิงค์ไปที่อีเมลของคุณ');}
-function handleSignup(e){e.preventDefault();alert('หน้าสมัครสมาชิกจะเปิดให้ใช้งานเร็วๆนี้');}
-document.getElementById('rememberMe').addEventListener('change',function(){
-  if(!this.checked){localStorage.removeItem('username');localStorage.removeItem('password');}
+function handleForgotPassword(e){ e.preventDefault(); alert('ระบบกู้คืนรหัสผ่านจะส่งลิงค์ไปที่อีเมลของคุณ'); }
+function handleSignup(e){ e.preventDefault(); alert('หน้าสมัครสมาชิกจะเปิดให้ใช้งานเร็วๆนี้'); }
+document.getElementById('rememberMe').addEventListener('change', function(){
+  if(!this.checked){ localStorage.removeItem('username'); localStorage.removeItem('password'); }
 });
 </script>
 </body>
