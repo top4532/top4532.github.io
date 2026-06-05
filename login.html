@@ -2,316 +2,695 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>ระบบลงชื่อเข้าใช้ | Secure Login</title>
 
-<!-- Font Awesome -->
+<!-- Font Awesome 6 (CDN) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
-
-body{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#0ea5e9,#2563eb);
-    padding:20px;
-}
-
-.login-container{
-    width:100%;
-    max-width:420px;
-}
-
-.login-box{
-    background:#fff;
-    border-radius:25px;
-    padding:40px;
-    box-shadow:0 20px 50px rgba(0,0,0,.2);
-}
-
-.logo{
-    text-align:center;
-    margin-bottom:25px;
-}
-
-.logo i{
-    width:90px;
-    height:90px;
-    line-height:90px;
-    font-size:40px;
-    color:#fff;
-    background:linear-gradient(135deg,#0ea5e9,#2563eb);
-    border-radius:50%;
-    box-shadow:0 10px 30px rgba(37,99,235,.3);
-}
-
-.logo h2{
-    margin-top:15px;
-    color:#1e293b;
-}
-
-.logo p{
-    color:#64748b;
-    font-size:14px;
-    margin-top:5px;
-}
-
-.input-group{
-    margin-bottom:18px;
-}
-
-.input-group label{
-    display:block;
-    margin-bottom:8px;
-    color:#334155;
-    font-weight:600;
-}
-
-.input-box{
-    position:relative;
-}
-
-.input-box i{
-    position:absolute;
-    left:15px;
-    top:50%;
-    transform:translateY(-50%);
-    color:#3b82f6;
-}
-
-.input-box input{
-    width:100%;
-    height:50px;
-    border:2px solid #e2e8f0;
-    border-radius:12px;
-    padding-left:45px;
-    padding-right:45px;
-    font-size:15px;
-    outline:none;
-    transition:.3s;
-}
-
-.input-box input:focus{
-    border-color:#2563eb;
-}
-
-.toggle-password{
-    position:absolute;
-    right:15px;
-    top:50%;
-    transform:translateY(-50%);
-    cursor:pointer;
-    color:#64748b;
-}
-
-.options{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
-    font-size:14px;
-}
-
-.remember{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    color:#475569;
-}
-
-.forgot{
-    text-decoration:none;
-    color:#2563eb;
-    font-weight:600;
-}
-
-.login-btn{
-    width:100%;
-    height:50px;
-    border:none;
-    border-radius:12px;
-    background:linear-gradient(135deg,#0ea5e9,#2563eb);
-    color:#fff;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.login-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 10px 25px rgba(37,99,235,.3);
-}
-
-.footer{
-    text-align:center;
-    margin-top:20px;
-    color:#64748b;
-}
-
-.footer a{
-    color:#2563eb;
-    text-decoration:none;
-    font-weight:600;
-}
-
-@media(max-width:480px){
-    .login-box{
-        padding:30px 25px;
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
     }
-}
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(145deg, #0c4e6e 0%, #0f2b5c 100%);
+        padding: 20px;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    /* ตกแต่งพื้นหลังเพิ่มความสวยงาม */
+    body::before {
+        content: '';
+        position: absolute;
+        width: 250px;
+        height: 250px;
+        background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+        top: 10%;
+        left: -80px;
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    body::after {
+        content: '';
+        position: absolute;
+        width: 350px;
+        height: 350px;
+        background: radial-gradient(circle, rgba(14,165,233,0.2) 0%, rgba(0,0,0,0) 70%);
+        bottom: -100px;
+        right: -100px;
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .login-container {
+        width: 100%;
+        max-width: 440px;
+        z-index: 2;
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .login-box {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(0px);
+        border-radius: 36px;
+        padding: 38px 32px 42px 32px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255,255,255,0.2);
+        transition: all 0.3s;
+    }
+
+    .logo {
+        text-align: center;
+        margin-bottom: 28px;
+    }
+
+    .logo i {
+        width: 85px;
+        height: 85px;
+        line-height: 85px;
+        font-size: 42px;
+        color: white;
+        background: linear-gradient(145deg, #0ea5e9, #1e40af);
+        border-radius: 32px;
+        box-shadow: 0 18px 30px -8px rgba(37, 99, 235, 0.5);
+        transition: transform 0.2s ease;
+        display: inline-block;
+    }
+
+    .logo i:hover {
+        transform: scale(1.02);
+    }
+
+    .logo h2 {
+        margin-top: 18px;
+        font-size: 28px;
+        font-weight: 700;
+        color: #0f172a;
+        letter-spacing: -0.3px;
+    }
+
+    .logo p {
+        color: #475569;
+        font-size: 14px;
+        margin-top: 6px;
+        font-weight: 500;
+    }
+
+    .input-group {
+        margin-bottom: 20px;
+    }
+
+    .input-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #1e293b;
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.3px;
+    }
+
+    .input-box {
+        position: relative;
+    }
+
+    .input-box i:first-child {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #3b82f6;
+        font-size: 18px;
+        transition: color 0.2s;
+        pointer-events: none;
+    }
+
+    .input-box input {
+        width: 100%;
+        height: 52px;
+        border: 2px solid #e2e8f0;
+        border-radius: 20px;
+        padding-left: 46px;
+        padding-right: 48px;
+        font-size: 15px;
+        font-weight: 500;
+        background-color: #ffffff;
+        outline: none;
+        transition: all 0.25s ease;
+        color: #0f172a;
+    }
+
+    .input-box input:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #64748b;
+        font-size: 18px;
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .toggle-password:hover {
+        color: #2563eb;
+    }
+
+    .options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 28px;
+        font-size: 14px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .remember {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #334155;
+        cursor: pointer;
+        font-weight: 500;
+        user-select: none;
+    }
+
+    .remember input {
+        width: 17px;
+        height: 17px;
+        accent-color: #2563eb;
+        cursor: pointer;
+    }
+
+    .forgot {
+        text-decoration: none;
+        color: #2563eb;
+        font-weight: 600;
+        transition: color 0.2s;
+        font-size: 13.5px;
+    }
+
+    .forgot:hover {
+        color: #0f2b5c;
+        text-decoration: underline;
+    }
+
+    .login-btn {
+        width: 100%;
+        height: 54px;
+        border: none;
+        border-radius: 30px;
+        background: linear-gradient(115deg, #0ea5e9, #1e3a8a);
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        letter-spacing: 0.5px;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .login-btn i {
+        font-size: 18px;
+    }
+
+    .login-btn:hover {
+        transform: translateY(-3px);
+        background: linear-gradient(115deg, #0284c7, #1e3a8a);
+        box-shadow: 0 16px 28px -8px rgba(37, 99, 235, 0.5);
+    }
+
+    .login-btn:active {
+        transform: translateY(1px);
+    }
+
+    .footer {
+        text-align: center;
+        margin-top: 28px;
+        color: #475569;
+        font-size: 14px;
+        font-weight: 500;
+        border-top: 1px solid #eef2ff;
+        padding-top: 22px;
+    }
+
+    .footer a {
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 700;
+        margin-left: 5px;
+        transition: all 0.2s;
+    }
+
+    .footer a:hover {
+        color: #0c4a6e;
+        text-decoration: underline;
+    }
+
+    /* ข้อความแจ้งเตือน (toast / alert แบบ modern) */
+    .toast-message {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%) scale(0.9);
+        background: #0f172ad9;
+        backdrop-filter: blur(12px);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 60px;
+        font-weight: 600;
+        font-size: 14px;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.25s, transform 0.2s;
+        pointer-events: none;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .toast-message.show {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+
+    .error-shake {
+        animation: shake 0.4s ease-in-out 0s 2;
+    }
+
+    @keyframes shake {
+        0%,100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+
+    /* responsive */
+    @media (max-width: 500px) {
+        .login-box {
+            padding: 28px 22px 34px;
+        }
+        .logo i {
+            width: 72px;
+            height: 72px;
+            line-height: 72px;
+            font-size: 34px;
+        }
+        .logo h2 {
+            font-size: 24px;
+        }
+    }
+
+    /* ลบลูกศร autofill background */
+    input:-webkit-autofill,
+    input:-webkit-autofill:focus {
+        transition: background-color 0s 600000s, color 0s 600000s;
+    }
 </style>
 </head>
 <body>
 
 <div class="login-container">
-
     <div class="login-box">
-
         <div class="logo">
-            <i class="fas fa-user-shield"></i>
-            <h2>เข้าสู่ระบบ</h2>
-            <p>กรุณาเข้าสู่ระบบเพื่อใช้งาน</p>
+            <i class="fas fa-fingerprint"></i>
+            <h2>บัญชีผู้ใช้</h2>
+            <p>ลงชื่อเข้าระบบอย่างปลอดภัย</p>
         </div>
 
-        <form id="loginForm">
-
+        <form id="loginForm" novalidate>
             <div class="input-group">
-                <label>ชื่อผู้ใช้</label>
-
+                <label><i class="fas fa-user-circle" style="margin-right: 6px;"></i> ชื่อผู้ใช้</label>
                 <div class="input-box">
                     <i class="fas fa-user"></i>
-                    <input type="text" id="username" placeholder="กรอกชื่อผู้ใช้">
+                    <input type="text" id="username" placeholder="ชื่อผู้ใช้ / อีเมล" autocomplete="username">
                 </div>
+                <div id="usernameError" style="font-size: 12px; color:#dc2626; margin-top: 6px; margin-left: 8px; min-height: 18px;"></div>
             </div>
 
             <div class="input-group">
-                <label>รหัสผ่าน</label>
-
+                <label><i class="fas fa-key" style="margin-right: 6px;"></i> รหัสผ่าน</label>
                 <div class="input-box">
                     <i class="fas fa-lock"></i>
-
-                    <input type="password" id="password" placeholder="กรอกรหัสผ่าน">
-
-                    <span class="toggle-password" onclick="togglePassword()">
+                    <input type="password" id="password" placeholder="รหัสผ่านของคุณ" autocomplete="current-password">
+                    <span class="toggle-password" onclick="togglePasswordVisibility()">
                         <i class="fas fa-eye" id="eyeIcon"></i>
                     </span>
                 </div>
+                <div id="passwordError" style="font-size: 12px; color:#dc2626; margin-top: 6px; margin-left: 8px; min-height: 18px;"></div>
             </div>
 
             <div class="options">
-
                 <label class="remember">
-                    <input type="checkbox" id="rememberMe">
-                    จดจำรหัสผ่าน
+                    <input type="checkbox" id="rememberMe"> 
+                    <span>จำรหัสผ่านของฉัน</span>
                 </label>
-
-                <a href="#" class="forgot">
-                    ลืมรหัสผ่าน?
-                </a>
-
+                <a href="#" class="forgot" id="forgotPasswordLink">ลืมรหัสผ่าน?</a>
             </div>
 
             <button type="submit" class="login-btn">
-                <i class="fas fa-right-to-bracket"></i>
-                เข้าสู่ระบบ
+                <i class="fas fa-arrow-right-to-bracket"></i> เข้าสู่ระบบ
             </button>
-
         </form>
 
         <div class="footer">
             ยังไม่มีบัญชี?
-            <a href="#">สมัครสมาชิก</a>
+            <a href="#" id="registerLink">สมัครสมาชิกทันที</a>
         </div>
-
     </div>
+</div>
 
+<!-- Toast notification element -->
+<div id="toastMsg" class="toast-message">
+    <i class="fas fa-circle-check" style="color:#4ade80;"></i> 
+    <span id="toastText">เข้าสู่ระบบสำเร็จ</span>
 </div>
 
 <script>
-// เปิด-ปิด รหัสผ่าน
-function togglePassword(){
+    // --- DOM elements ---
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const rememberCheckbox = document.getElementById('rememberMe');
+    const loginForm = document.getElementById('loginForm');
+    const usernameErrorDiv = document.getElementById('usernameError');
+    const passwordErrorDiv = document.getElementById('passwordError');
+    const toastMsg = document.getElementById('toastMsg');
+    const toastTextSpan = document.getElementById('toastText');
 
-    const password =
-        document.getElementById("password");
-
-    const eyeIcon =
-        document.getElementById("eyeIcon");
-
-    if(password.type === "password"){
-        password.type = "text";
-        eyeIcon.classList.remove("fa-eye");
-        eyeIcon.classList.add("fa-eye-slash");
-    }else{
-        password.type = "password";
-        eyeIcon.classList.remove("fa-eye-slash");
-        eyeIcon.classList.add("fa-eye");
-    }
-}
-
-// โหลดข้อมูลที่เคยจำไว้
-window.onload = function(){
-
-    const savedUser =
-        localStorage.getItem("username");
-
-    const savedPass =
-        localStorage.getItem("password");
-
-    if(savedUser){
-        document.getElementById("username").value = savedUser;
+    // --- ฟังก์ชันแสดง Toast แจ้งเตือนแบบสวยงาม ---
+    function showToast(message, isError = false) {
+        toastTextSpan.innerText = message;
+        const iconElement = toastMsg.querySelector('i');
+        if (isError) {
+            iconElement.className = 'fas fa-circle-exclamation';
+            iconElement.style.color = '#f97316';
+            toastMsg.style.background = '#1e293be6';
+        } else {
+            iconElement.className = 'fas fa-circle-check';
+            iconElement.style.color = '#4ade80';
+            toastMsg.style.background = '#0f172ae6';
+        }
+        toastMsg.classList.add('show');
+        setTimeout(() => {
+            toastMsg.classList.remove('show');
+        }, 2800);
     }
 
-    if(savedPass){
-        document.getElementById("password").value = savedPass;
-        document.getElementById("rememberMe").checked = true;
-    }
-}
-
-// บันทึกข้อมูล
-document.getElementById("loginForm")
-.addEventListener("submit",function(e){
-
-    e.preventDefault();
-
-    const username =
-        document.getElementById("username").value;
-
-    const password =
-        document.getElementById("password").value;
-
-    const remember =
-        document.getElementById("rememberMe").checked;
-
-    if(remember){
-
-        localStorage.setItem(
-            "username",
-            username
-        );
-
-        localStorage.setItem(
-            "password",
-            password
-        );
-
-    }else{
-
-        localStorage.removeItem("username");
-        localStorage.removeItem("password");
+    // --- ฟังก์ชันล้าง error แบบเรียลไทม์ ---
+    function clearErrors() {
+        usernameErrorDiv.innerText = '';
+        passwordErrorDiv.innerText = '';
+        usernameInput.classList.remove('error-shake');
+        passwordInput.classList.remove('error-shake');
     }
 
-    alert("เข้าสู่ระบบสำเร็จ");
-});
+    // แสดง error เฉพาะฟิลด์
+    function setFieldError(field, message) {
+        if (field === 'username') {
+            usernameErrorDiv.innerText = message;
+            usernameInput.classList.add('error-shake');
+            setTimeout(() => usernameInput.classList.remove('error-shake'), 500);
+        } else if (field === 'password') {
+            passwordErrorDiv.innerText = message;
+            passwordInput.classList.add('error-shake');
+            setTimeout(() => passwordInput.classList.remove('error-shake'), 500);
+        }
+    }
+
+    // --- ตรวจสอบความถูกต้องของฟอร์ม (ขั้นสูง) ---
+    function validateForm(username, password) {
+        let isValid = true;
+        clearErrors();
+
+        // ตรวจสอบชื่อผู้ใช้: ต้องไม่เว้นว่าง และมีความยาว 3-30 ตัวอักษร (อนุญาตตัวอักษร,数字,อักษรพิเศษบางตัว)
+        const usernameTrim = username.trim();
+        if (usernameTrim === '') {
+            setFieldError('username', 'กรุณากรอกชื่อผู้ใช้');
+            isValid = false;
+        } else if (usernameTrim.length < 3) {
+            setFieldError('username', 'ชื่อผู้ใช้ต้องมีอย่างน้อย 3 ตัวอักษร');
+            isValid = false;
+        } else if (usernameTrim.length > 30) {
+            setFieldError('username', 'ชื่อผู้ใช้ยาวเกินไป (สูงสุด 30 ตัวอักษร)');
+            isValid = false;
+        } else if (!/^[a-zA-Z0-9\u0E00-\u0E7F._@-]{3,30}$/.test(usernameTrim)) {
+            // รองรับภาษาไทย, อังกฤษ, ตัวเลข, . _ @ -
+            setFieldError('username', 'รูปแบบชื่อผู้ใช้ไม่ถูกต้อง (ใช้ตัวอักษร, ตัวเลข, . _ @ -)');
+            isValid = false;
+        }
+
+        // ตรวจสอบรหัสผ่าน: ต้องไม่ว่าง และความยาวขั้นต่ำ 4 ตัวอักษร (demo-friendly)
+        const passRaw = password;
+        if (passRaw === '') {
+            setFieldError('password', 'กรุณากรอกรหัสผ่าน');
+            isValid = false;
+        } else if (passRaw.length < 4) {
+            setFieldError('password', 'รหัสผ่านต้องมีความยาวอย่างน้อย 4 ตัวอักษร');
+            isValid = false;
+        } else if (passRaw.length > 64) {
+            setFieldError('password', 'รหัสผ่านยาวเกินไป (สูงสุด 64 ตัวอักษร)');
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    // --- จำลองการตรวจสอบข้อมูลจาก backend (demo credential) ---
+    // ในที่นี้รองรับการล็อกอินแบบตัวอย่าง : username = 'admin' หรือ 'demo' หรือ 'user@test'
+    // ใครก็ตามที่ผ่านการ validate รูปแบบ จะสามารถล็อกอินได้ (demo environment)
+    // แต่เพื่อความสมจริง สร้างเงื่อนไขให้ดูสมเหตุสมผล
+    // แต่ถ้าต้องการสามารถเพิ่ม credentials เพิ่มเติม
+    function authenticateUser(username, password) {
+        // ลบช่องว่างหน้า-หลัง username
+        const cleanUsername = username.trim();
+        const cleanPassword = password;   // ไม่ต้อง trim รหัสผ่านจริง (คงเดิมเพื่อความปลอดภัย)
+
+        // ตัวอย่างระบบมีบัญชีตัวอย่าง 2 บัญชี เพื่อจำลองความถูกต้อง
+        // แต่เราจะให้ระบบผ่านได้ถ้าตรงกับบัญชีใดบัญชีหนึ่ง หรือถ้าเป็น user ใหม่? 
+        // เราจะออกแบบให้ demo นี้รองรับการ login แบบมีบัญชีตัวอย่างที่กำหนดไว้ หรือ 
+        // หากไม่มีบัญชีแต่ผ่านการ validate รูปแบบก็ยัง login ได้? ไม่แนะนำให้ insecure
+        // ดังนั้นเราจะทำเป็นระบบตรวจสอบกับ base users ที่จำลอง (คล้าย DB ใน memory)
+        const validUsers = [
+            { username: "admin", password: "1234" },
+            { username: "demo", password: "demo123" },
+            { username: "สมชาย", password: "pass1234" },
+            { username: "software", password: "login66" },
+            { username: "test@example.com", password: "testme" }
+        ];
+        
+        const matchedUser = validUsers.find(user => user.username === cleanUsername && user.password === cleanPassword);
+        if (matchedUser) {
+            return true;
+        }
+        // ถ้าไม่เจอ แต่ยังอยากให้ระบบสามารถจำลองการสมัคร? แต่ในที่นี้เราต้องการความถูกต้องสมบูรณ์
+        // ดังนั้นจะคืนค่า false เมื่อ credential ไม่ถูกต้องตามรายชื่อ
+        // แต่ผู้ใช้สามารถ 'สมัครสมาชิก' ได้ผ่านลิงค์สมมติ ซึ่งเราแจ้งเตือน demo
+        return false;
+    }
+
+    // --- บันทึกหรือลบข้อมูล localStorage (จำรหัสผ่าน) ---
+    function saveCredentials(username, password, remember) {
+        if (remember) {
+            if (username && password) {
+                localStorage.setItem('saved_username', username);
+                localStorage.setItem('saved_password', password);
+                localStorage.setItem('remember_flag', 'true');
+            } else {
+                // กรณีไม่ควรเกิด แต่กัน error
+                localStorage.removeItem('saved_username');
+                localStorage.removeItem('saved_password');
+                localStorage.setItem('remember_flag', 'false');
+            }
+        } else {
+            localStorage.removeItem('saved_username');
+            localStorage.removeItem('saved_password');
+            localStorage.setItem('remember_flag', 'false');
+        }
+    }
+
+    // --- โหลดข้อมูลจาก localStorage เมื่อเปิดหน้า ---
+    function loadRememberedData() {
+        const rememberedUsername = localStorage.getItem('saved_username');
+        const rememberedPassword = localStorage.getItem('saved_password');
+        const rememberFlag = localStorage.getItem('remember_flag');
+        
+        if (rememberFlag === 'true' && rememberedUsername) {
+            usernameInput.value = rememberedUsername;
+            if (rememberedPassword) {
+                passwordInput.value = rememberedPassword;
+            }
+            rememberCheckbox.checked = true;
+        } else {
+            // ไม่มีข้อมูล หรือ flag false
+            rememberCheckbox.checked = false;
+            // อย่าเคลียฟิลด์อัตโนมัติ
+        }
+    }
+
+    // --- ฟังก์ชัน toggle รูปแบบรหัสผ่าน ---
+    window.togglePasswordVisibility = function() {
+        const passwordField = passwordInput;
+        const eyeIcon = document.getElementById('eyeIcon');
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    }
+
+    // --- จัดการ submit ฟอร์ม ---
+    async function handleLogin(event) {
+        event.preventDefault();
+        
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+        const remember = rememberCheckbox.checked;
+        
+        // ขั้นตอน validate ข้อมูล
+        const isValid = validateForm(username, password);
+        if (!isValid) {
+            showToast('กรุณากรอกข้อมูลให้ถูกต้อง', true);
+            return;
+        }
+        
+        // ขั้นตอนตรวจสอบตัวตน (authentication)
+        const authSuccess = authenticateUser(username.trim(), password);
+        
+        if (!authSuccess) {
+            // แสดงข้อความผิดพลาด
+            setFieldError('username', 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+            setFieldError('password', '');
+            showToast('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง กรุณาลองอีกครั้ง', true);
+            // ถ้าจำไม่ได้ แต่ login ไม่ผ่าน ไม่ต้องบันทึกข้อมูลรหัส
+            return;
+        }
+        
+        // Login สำเร็จ ✅
+        // บันทึกข้อมูลตาม checkbox จำรหัสผ่าน
+        saveCredentials(username.trim(), password, remember);
+        
+        // แสดงข้อความสำเร็จ (ใช้ sweet toast)
+        showToast(`ยินดีต้อนรับ ${username.trim()}! เข้าสู่ระบบสำเร็จ`, false);
+        
+        // จำลอง redirect หรือ action เพิ่มเติม (demo)
+        // ตัวอย่าง : อาจเปลี่ยนข้อความในปุ่มหรือ redirect link ใน 1.5 วิ
+        const submitBtn = document.querySelector('.login-btn');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> กำลังดำเนินการ...';
+        submitBtn.disabled = true;
+        
+        setTimeout(() => {
+            // เสมือนเปลี่ยนหน้าไป dashboard (จำลอง)
+            // สำหรับตัวอย่างนี้จะ popup ข้อความและ reset ปุ่ม (เพื่อความสมบูรณ์)
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+            // แสดง alert แทนการเปลี่ยนหน้า (เพราะเป็นระบบสาธิต)
+            // แต่เพื่อความสมบูรณ์แบบไม่ต้อง redirect จริง, แต่แจ้ง success ละเอียด
+            // และสามารถล้าง error อัตโนมัติ
+            clearErrors();
+            // เคลียร์ฟิลด์รหัสผ่าน? ไม่ควร แต่จำลอง:
+            // แต่เพื่อประสบการณ์ที่ดีไม่ต้องล้าง เพราะ user login แล้ว
+            // จำลองการล็อกอินสมบูรณ์ -- reset ฟอร์ม? ไม่ reset ค่า
+            // เพิ่ม animation โลโก้
+            const logoIcon = document.querySelector('.logo i');
+            logoIcon.style.transform = 'scale(1.1)';
+            setTimeout(() => { logoIcon.style.transform = ''; }, 300);
+            
+            // เพิ่มการจำลอง console หรือ message เพิ่ม
+            console.log("✅ Login success | User: " + username.trim());
+        }, 1200);
+    }
+    
+    // --- ลิงก์ลืมรหัสผ่านและสมัครสมาชิก interactive แบบสมบูรณ์ ---
+    function setupDemoLinks() {
+        const forgotLink = document.getElementById('forgotPasswordLink');
+        const registerLink = document.getElementById('registerLink');
+        
+        if (forgotLink) {
+            forgotLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showToast('🔐 ฟังก์ชันรีเซ็ตรหัสผ่าน: โปรดติดต่อแอดมิน (ตัวอย่าง)', false);
+            });
+        }
+        
+        if (registerLink) {
+            registerLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showToast('✨ ระบบสมัครสมาชิก: ติดต่อผู้ดูแลระบบ หรือลงทะเบียนด้วยตนเอง (Demo)', false);
+                // เสริมว่า demo มีบัญชีให้ลอง: admin/1234 , demo/demo123 เป็นต้น
+                setTimeout(() => {
+                    showToast('💡 บัญชีทดสอบ: admin/1234 , demo/demo123 , สมชาย/pass1234', false);
+                }, 1500);
+            });
+        }
+    }
+    
+    // --- ตรวจสอบเมื่อผู้ใช้พิมพ์เพื่อลด error แบบเรียลไทม์ (UX) ---
+    function attachRealtimeValidation() {
+        usernameInput.addEventListener('input', () => {
+            if (usernameErrorDiv.innerText !== '') {
+                usernameErrorDiv.innerText = '';
+                usernameInput.classList.remove('error-shake');
+            }
+        });
+        passwordInput.addEventListener('input', () => {
+            if (passwordErrorDiv.innerText !== '') {
+                passwordErrorDiv.innerText = '';
+                passwordInput.classList.remove('error-shake');
+            }
+        });
+    }
+    
+    // --- ป้องกันการ submit ซ้ำ และ dynamic sanitize ---
+    function init() {
+        loadRememberedData();
+        loginForm.addEventListener('submit', handleLogin);
+        setupDemoLinks();
+        attachRealtimeValidation();
+        
+        // เพิ่ม effect สำหรับ toggle eye เริ่มต้น
+        // ตรวจสอบสถานะ localStorage ถ้ามี flag และรหัสผ่านจำไว้ก็แสดง eye ปกติ
+        // ไม่ต้องดำเนินการเพิ่ม
+    }
+    
+    // เริ่มต้นระบบเมื่อโหลดหน้า
+    init();
 </script>
-
 </body>
 </html>
