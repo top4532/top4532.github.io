@@ -1,1 +1,307 @@
 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEW MODEL</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f1f5f9;
+    padding:30px;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+}
+
+/* Header */
+
+.page-header{
+    background:#fff;
+    border-radius:20px;
+    padding:30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    margin-bottom:25px;
+}
+
+.header-title h1{
+    font-size:36px;
+    color:#0f172a;
+    font-weight:700;
+}
+
+.header-title p{
+    margin-top:8px;
+    color:#64748b;
+}
+
+.header-action button{
+    background:#2563eb;
+    color:#fff;
+    border:none;
+    padding:14px 24px;
+    border-radius:12px;
+    font-size:15px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.header-action button:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
+}
+
+/* Form */
+
+.form-card{
+    background:#fff;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.section-title{
+    font-size:22px;
+    color:#0f172a;
+    margin-bottom:25px;
+    font-weight:600;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group label{
+    margin-bottom:8px;
+    font-weight:600;
+    color:#334155;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    border:1px solid #cbd5e1;
+    border-radius:12px;
+    padding:14px;
+    font-size:15px;
+    outline:none;
+    transition:.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,.15);
+}
+
+textarea{
+    resize:none;
+    min-height:120px;
+}
+
+.full-width{
+    grid-column:1/-1;
+}
+
+/* Upload */
+
+.upload-box{
+    border:2px dashed #cbd5e1;
+    border-radius:16px;
+    padding:40px;
+    text-align:center;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.upload-box:hover{
+    border-color:#2563eb;
+    background:#f8fafc;
+}
+
+.upload-box i{
+    font-size:50px;
+    color:#2563eb;
+    margin-bottom:15px;
+}
+
+.upload-box p{
+    color:#64748b;
+}
+
+/* Buttons */
+
+.button-group{
+    display:flex;
+    justify-content:flex-end;
+    gap:15px;
+    margin-top:30px;
+}
+
+.btn-cancel{
+    background:#e2e8f0;
+    color:#334155;
+    border:none;
+    padding:14px 28px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.btn-save{
+    background:#16a34a;
+    color:white;
+    border:none;
+    padding:14px 28px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.btn-save:hover{
+    background:#15803d;
+}
+
+@media(max-width:768px){
+
+    .page-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:20px;
+    }
+
+    .button-group{
+        flex-direction:column;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+
+    <div class="page-header">
+
+        <div class="header-title">
+            <h1><i class="fa-solid fa-cube"></i> NEW MODEL</h1>
+            <p>เพิ่มข้อมูลโมเดลสินค้าใหม่เข้าสู่ระบบ Inventory</p>
+        </div>
+
+        <div class="header-action">
+            <button>
+                <i class="fa-solid fa-arrow-left"></i>
+                กลับหน้าหลัก
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Form -->
+
+    <div class="form-card">
+
+        <div class="section-title">
+            ข้อมูลโมเดลสินค้า
+        </div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Model Code</label>
+                <input type="text" placeholder="เช่น MDL-001">
+            </div>
+
+            <div class="form-group">
+                <label>Model Name</label>
+                <input type="text" placeholder="ชื่อโมเดล">
+            </div>
+
+            <div class="form-group">
+                <label>Category</label>
+                <select>
+                    <option>เลือกหมวดหมู่</option>
+                    <option>สินค้า</option>
+                    <option>อะไหล่</option>
+                    <option>อุปกรณ์</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Brand</label>
+                <input type="text" placeholder="ชื่อแบรนด์">
+            </div>
+
+            <div class="form-group">
+                <label>Unit</label>
+                <input type="text" placeholder="PCS">
+            </div>
+
+            <div class="form-group">
+                <label>Price</label>
+                <input type="number" placeholder="0.00">
+            </div>
+
+            <div class="form-group full-width">
+                <label>รายละเอียดสินค้า</label>
+                <textarea placeholder="กรอกรายละเอียดสินค้า"></textarea>
+            </div>
+
+            <div class="form-group full-width">
+
+                <label>รูปภาพสินค้า</label>
+
+                <div class="upload-box">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <h3>อัปโหลดรูปภาพ</h3>
+                    <p>ลากไฟล์มาวาง หรือคลิกเพื่อเลือกไฟล์</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="button-group">
+            <button class="btn-cancel">
+                ยกเลิก
+            </button>
+
+            <button class="btn-save">
+                <i class="fa-solid fa-floppy-disk"></i>
+                บันทึกข้อมูล
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
