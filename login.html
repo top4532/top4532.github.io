@@ -1,1 +1,238 @@
 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ | Modern Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'shake': 'shake 0.3s ease-in-out',
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                    },
+                    keyframes: {
+                        shake: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '25%': { transform: 'translateX(-5px)' },
+                            '75%': { transform: 'translateX(5px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 flex items-center justify-center p-4 font-sans">
+
+    <div class="w-full max-w-md animate-[fadeIn_0.5s_ease-out]" id="loginContainer">
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300 hover:scale-105">
+            
+            <div class="bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-10 text-center">
+                <div class="text-6xl mb-3">🎉</div>
+                <h1 class="text-3xl font-bold text-white mb-2">ยินดีต้อนรับ</h1>
+                <p class="text-purple-100 text-sm">กรุณาเข้าสู่ระบบเพื่อใช้งาน</p>
+            </div>
+            
+            <div class="px-8 py-8">
+                <div id="errorMsg" class="hidden mb-4 p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm rounded-lg"></div>
+                <div id="successMsg" class="hidden mb-4 p-3 bg-green-50 border-l-4 border-green-500 text-green-700 text-sm rounded-lg"></div>
+                
+                <form id="loginForm">
+                    <div class="mb-6">
+                        <label class="block text-gray-700 font-semibold mb-2 text-sm">
+                            📧 อีเมลหรือชื่อผู้ใช้
+                        </label>
+                        <input type="text" id="username" 
+                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200 transition-all duration-200"
+                               placeholder="กรอกอีเมลหรือชื่อผู้ใช้" required>
+                    </div>
+                    
+                    <div class="mb-4 relative">
+                        <label class="block text-gray-700 font-semibold mb-2 text-sm">
+                            🔒 รหัสผ่าน
+                        </label>
+                        <div class="relative">
+                            <input type="password" id="password" 
+                                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200 transition-all duration-200 pr-12"
+                                   placeholder="กรอกรหัสผ่าน" required>
+                            <button type="button" onclick="togglePassword()" 
+                                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+                                👁️
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mb-8">
+                        <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                            <input type="checkbox" id="remember" class="w-4 h-4 text-purple-600 rounded focus:ring-purple-500">
+                            <span>จำฉันไว้</span>
+                        </label>
+                        <a href="#" onclick="forgotPassword(event)" 
+                           class="text-sm text-purple-600 hover:text-purple-700 hover:underline transition">
+                            ลืมรหัสผ่าน?
+                        </a>
+                    </div>
+                    
+                    <button type="submit" 
+                            class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold py-3 rounded-xl hover:shadow-lg hover:scale-[1.02] transform transition-all duration-200">
+                        เข้าสู่ระบบ
+                    </button>
+                    
+                    <div class="text-center mt-6">
+                        <p class="text-gray-600 text-sm">
+                            ยังไม่มีบัญชี? 
+                            <a href="#" onclick="register(event)" 
+                               class="text-purple-600 font-semibold hover:text-purple-700 hover:underline transition">
+                                สมัครสมาชิก
+                            </a>
+                        </p>
+                    </div>
+                </form>
+                
+                <div class="relative my-8">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-200"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-4 bg-white text-gray-500">หรือเข้าสู่ระบบด้วย</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="socialLogin('google')" 
+                            class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition group">
+                        <span class="text-xl">🔵</span>
+                        <span class="text-sm font-medium text-gray-700">Google</span>
+                    </button>
+                    <button onclick="socialLogin('facebook')" 
+                            class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition group">
+                        <span class="text-xl">📘</span>
+                        <span class="text-sm font-medium text-gray-700">Facebook</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <p class="text-center text-white text-xs mt-6 opacity-80">
+            © 2024 Login System | เวอร์ชัน 2.0
+        </p>
+    </div>
+
+    <script>
+        const validUsers = [
+            { username: "admin@example.com", password: "admin123" },
+            { username: "user@example.com", password: "user123" },
+            { username: "ทดสอบ", password: "1234" },
+            { username: "demo", password: "demo123" }
+        ];
+
+        function showMessage(type, message) {
+            const errorDiv = document.getElementById('errorMsg');
+            const successDiv = document.getElementById('successMsg');
+            
+            errorDiv.classList.add('hidden');
+            successDiv.classList.add('hidden');
+            
+            if (type === 'error') {
+                errorDiv.innerHTML = message;
+                errorDiv.classList.remove('hidden');
+                const container = document.getElementById('loginContainer');
+                container.classList.add('animate-shake');
+                setTimeout(() => {
+                    container.classList.remove('animate-shake');
+                }, 300);
+            } else if (type === 'success') {
+                successDiv.innerHTML = message;
+                successDiv.classList.remove('hidden');
+            }
+        }
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const button = document.querySelector('#password + button');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                button.innerHTML = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                button.innerHTML = '👁️';
+            }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const remember = document.getElementById('remember').checked;
+            
+            if (!username || !password) {
+                showMessage('error', '❌ กรุณากรอกชื่อผู้ใช้และรหัสผ่าน');
+                return;
+            }
+            
+            const user = validUsers.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                showMessage('success', '✅ เข้าสู่ระบบสำเร็จ! กำลังนำทาง...');
+                
+                if (remember) {
+                    localStorage.setItem('savedUsername', username);
+                    localStorage.setItem('rememberMe', 'true');
+                } else {
+                    localStorage.removeItem('savedUsername');
+                    localStorage.removeItem('rememberMe');
+                }
+                
+                setTimeout(() => {
+                    alert(`ยินดีต้อนรับ ${username}!`);
+                }, 1000);
+            } else {
+                showMessage('error', '❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+            }
+        });
+        
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedUsername = localStorage.getItem('savedUsername');
+            const rememberMe = localStorage.getItem('rememberMe');
+            
+            if (rememberMe === 'true' && savedUsername) {
+                document.getElementById('username').value = savedUsername;
+                document.getElementById('remember').checked = true;
+            }
+        });
+        
+        function forgotPassword(event) {
+            event.preventDefault();
+            showMessage('success', '📧 ระบบจะส่งลิงก์รีเซ็ตรหัสผ่านไปยังอีเมลของคุณ');
+        }
+        
+        function register(event) {
+            event.preventDefault();
+            showMessage('success', '📝 ฟังก์ชันสมัครสมาชิก (ตัวอย่าง)');
+        }
+        
+        function socialLogin(provider) {
+            showMessage('success', `🔐 กำลังเชื่อมต่อกับ ${provider}... (จำลอง)`);
+            setTimeout(() => {
+                alert(`เชื่อมต่อกับ ${provider} สำเร็จ!`);
+            }, 1000);
+        }
+        
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html>
