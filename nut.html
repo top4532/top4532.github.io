@@ -288,7 +288,7 @@
   }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-  .btn-export {
+  .btn-export, .btn-reset-all {
     display: flex; align-items: center; gap: 6px;
     background: var(--surface);
     color: var(--blue);
@@ -307,6 +307,16 @@
     background: var(--blue-xlight);
     border-color: var(--blue);
     box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+  .btn-reset-all {
+    color: var(--red);
+    border-color: rgba(239,68,68,0.3);
+  }
+  .btn-reset-all:hover {
+    background: var(--red-light);
+    border-color: var(--red);
+    color: var(--red);
     transform: translateY(-1px);
   }
 
@@ -684,6 +694,7 @@
         <div class="header-actions">
           <div class="badge-live">LOCAL STORAGE</div>
           <button class="btn-export" id="exportDataBtn">📎 ส่งออก JSON</button>
+          <button class="btn-reset-all" id="resetAllBtn">🗑️ รีเซ็ตทั้งหมด</button>
         </div>
       </div>
       <div class="stat-row" id="statRow"></div>
@@ -692,10 +703,9 @@
     <!-- Cards dynamic -->
     <div id="cardsContainer" class="cards-grid"></div>
 
-    <!-- add section per category in UI? show quick add universal -->
     <div class="bottom-info-bar">
       <div>🔧 คลิกที่ปุ่ม + เพื่อเพิ่มน็อตในแต่ละหมวดหมู่</div>
-      <div>✨ ลบรายการ หรือเคลียร์ทั้งหมดได้ที่การ์ดแต่ละใบ</div>
+      <div>✨ ลบรายการ หรือเคลียร์ทั้งหมดได้ที่การ์ดแต่ละใบ • กด "รีเซ็ตทั้งหมด" เพื่อล้างข้อมูลทุกหมวด</div>
     </div>
   </main>
 </div>
@@ -848,10 +858,11 @@
             const catDel = delBtn.getAttribute("data-cat");
             const idxDel = parseInt(delBtn.getAttribute("data-index"));
             if (nutsData[catDel] && nutsData[catDel][idxDel]) {
+              const deletedName = nutsData[catDel][idxDel];
               nutsData[catDel].splice(idxDel, 1);
               saveToLocal();
               renderAll();
-              showToast(`ลบ "${nutsData[catDel]?.[idxDel] || 'น็อต'}" ออกจาก ${catDel}`, 1500);
+              showToast(`ลบ "${deletedName}" ออกจาก ${catDel}`, 1500);
             }
           });
           listUl.appendChild(li);
@@ -952,12 +963,29 @@
     showToast("📁 ส่งออกข้อมูล JSON สำเร็จ", 1800);
   }
 
+  // รีเซ็ตข้อมูลทั้งหมด (ล้างทุกหมวด)
+  function resetAllData() {
+    const total = CATEGORIES.reduce((sum, cat) => sum + nutsData[cat].length, 0);
+    if (total === 0) {
+      showToast("⚠️ ไม่มีข้อมูลที่จะลบ ระบบว่างอยู่แล้ว", 1200);
+      return;
+    }
+    if (confirm(`⚠️ คำเตือน! คุณต้องการลบข้อมูลน็อตทั้งหมด ${total} ชิ้น ในทุกหมวดหมู่ใช่หรือไม่? (ไม่สามารถกู้คืนได้)`)) {
+      resetToEmpty();
+      saveToLocal();
+      renderAll();
+      showToast(`🗑️ รีเซ็ตระบบสำเร็จ! ลบข้อมูลทั้งหมด ${total} ชิ้น`, 2000);
+    }
+  }
+
   // เริ่มต้นและผูก event
   document.addEventListener("DOMContentLoaded", () => {
     loadData();
     renderAll();
     const exportBtn = document.getElementById("exportDataBtn");
     if (exportBtn) exportBtn.addEventListener("click", exportToJSON);
+    const resetBtn = document.getElementById("resetAllBtn");
+    if (resetBtn) resetBtn.addEventListener("click", resetAllData);
   });
 </script>
 </body>
