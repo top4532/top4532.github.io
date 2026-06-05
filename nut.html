@@ -121,6 +121,8 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;height:400px;backgrou
 .btn-act.red:hover{background:var(--red-light);border-color:var(--red)}
 .btn-act.green{color:var(--green);border-color:rgba(16,185,129,0.3)}
 .btn-act.green:hover{background:var(--green-light);border-color:var(--green)}
+.btn-act.amber{color:var(--amber);border-color:rgba(245,158,11,0.3)}
+.btn-act.amber:hover{background:var(--amber-light);border-color:var(--amber)}
 
 .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm);transition:all 0.2s;cursor:pointer}
@@ -285,7 +287,9 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
         </div>
         <div class="header-actions">
           <button class="btn-act green" onclick="openAddModal()">➕ เพิ่มรายการ</button>
-          <button class="btn-act" id="exportBtn">📎 ส่งออก JSON</button>
+          <button class="btn-act amber" id="newModelBtn">🆕 NewModel</button>
+          <button class="btn-act amber" id="bestSellerBtn">🏆 สินค้าขายดีน็อตล้อ</button>
+          <button class="btn-act amber" id="trackOrderBtn">📅 ติดตามกำหนดส่งน็อตล้อ</button>
           <button class="btn-act red" id="resetBtn">🗑️ รีเซ็ตทั้งหมด</button>
         </div>
       </div>
@@ -613,7 +617,6 @@ function saveItem(){
     data[currentCat][editIndex] = item;
     showToast(`อัปเดต "${code}" แล้ว ✓`, 'success');
   } else {
-    // check duplicate code in same cat
     if(data[cat].some(it=>it.code.toLowerCase()===code.toLowerCase())){
       showToast(`รหัส "${code}" มีอยู่แล้วในหมวด ${cat}`, 'error');
       return;
@@ -631,15 +634,51 @@ function saveItem(){
   saveData(); renderAll(); closeModal();
 }
 
-/* --- EXPORT / RESET --- */
-document.getElementById('exportBtn').addEventListener('click', ()=>{
-  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  Object.assign(document.createElement('a'),{href:url,download:'nut-system-data.json'}).click();
-  URL.revokeObjectURL(url);
-  showToast('ส่งออก JSON แล้ว ✓');
-});
+/* --- NEW MODAL, BEST SELLER, TRACK ORDER ฟังก์ชันตัวอย่าง (UI Dialog) --- */
+function handleNewModel(){
+  showToast('🆕 ฟีเจอร์ NewModel: กำลังพัฒนาระบบโมเดลใหม่ (จำลอง)', 'success');
+  // สามารถเพิ่ม modal หรือ redirect ได้
+}
+function handleBestSeller(){
+  const allItems = [...CATEGORIES.flatMap(cat=> data[cat].map(item=>({...item, category: cat})))];
+  if(allItems.length===0){
+    showToast('暂无商品数据，无法分析畅销品', 'error');
+    return;
+  }
+  // จำลองการจัดอันดับ (ใช้ราคาสูง+จำนวนเรียง เป็นตัววัด demo)
+  const sorted = [...allItems].sort((a,b)=> (b.price*b.qty) - (a.price*a.qty)).slice(0,5);
+  let msg = '🏆 สินค้าขายดี Top 5:\n';
+  sorted.forEach((item,idx)=> msg += `${idx+1}. ${item.code} (${item.category}) ราคา ${formatPrice(item.price)} x${item.qty}\n`);
+  alert(msg);
+}
+function handleTrackOrder(){
+  // จำลองกำหนดส่ง: สุ่มรายการที่ใกล้ถึงวันครบกำหนดสมมติ (demo)
+  const today = new Date();
+  const nearDue = [];
+  CATEGORIES.forEach(cat=>{
+    data[cat].forEach(item=>{
+      if(item.dueDateDemo) return; 
+      // สร้าง demo due date: สุ่มวันที่ 2-7 วันข้างหน้า
+      const randomDays = Math.floor(Math.random()*10)+2;
+      const due = new Date(today);
+      due.setDate(today.getDate()+randomDays);
+      nearDue.push({...item, category: cat, dueDate: due});
+    });
+  });
+  if(nearDue.length===0){
+    showToast('ไม่มีข้อมูลกำหนดส่ง (จำลอง)','error');
+    return;
+  }
+  const sortedDue = nearDue.sort((a,b)=>a.dueDate - b.dueDate).slice(0,6);
+  let msg = '📅 รายการที่ต้องติดตาม (กำหนดส่งใกล้):\n';
+  sortedDue.forEach(d=>{
+    const diffDays = Math.ceil((d.dueDate - today)/(1000*3600*24));
+    msg += `- ${d.code} (${d.category}) กำหนดส่งใน ${diffDays} วัน\n`;
+  });
+  alert(msg);
+}
 
+/* --- RESET --- */
 document.getElementById('resetBtn').addEventListener('click', ()=>{
   if(!confirm('รีเซ็ตข้อมูลทั้งหมดหรือไม่?')) return;
   CATEGORIES.forEach(c=>data[c]=[]);
@@ -657,6 +696,11 @@ document.addEventListener('keydown', e=>{
   if(e.key==='Escape') closeModal();
   if(e.key==='n'&&(e.ctrlKey||e.metaKey)){ e.preventDefault(); openAddModal(); }
 });
+
+/* --- INIT BUTTONS (สามปุ่มใหม่) --- */
+document.getElementById('newModelBtn').addEventListener('click', handleNewModel);
+document.getElementById('bestSellerBtn').addEventListener('click', handleBestSeller);
+document.getElementById('trackOrderBtn').addEventListener('click', handleTrackOrder);
 
 /* --- INIT --- */
 loadData();
