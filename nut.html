@@ -9,7 +9,6 @@
 <style>
   :root {
     --bg: #f0f5ff;
-    --bg2: #e6eeff;
     --surface: #ffffff;
     --surface2: #f7f9ff;
     --blue: #2563eb;
@@ -35,6 +34,7 @@
     --radius-lg: 16px;
     --radius-xl: 20px;
     --sidebar-width: 260px;
+    --topbar-height: 64px;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -67,69 +67,189 @@
     z-index: 0;
   }
 
+  /* ===== TOP BAR ===== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    width: 100%;
+    height: var(--topbar-height);
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border-mid);
+    box-shadow: 0 2px 16px rgba(37,99,235,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    gap: 20px;
+  }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .topbar-logo {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, #2563eb, #60a5fa);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+    flex-shrink: 0;
+  }
+
+  .topbar-brand {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  .topbar-brand span { color: var(--blue); }
+
+  .topbar-divider {
+    width: 1px;
+    height: 28px;
+    background: var(--border-mid);
+    flex-shrink: 0;
+  }
+
+  .topbar-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .datetime-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+  }
+
+  .datetime-date {
+    font-family: var(--thai);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .datetime-time {
+    font-family: var(--sans);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 0.05em;
+    line-height: 1;
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .admin-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--blue-xlight);
+    border: 1px solid var(--blue-light);
+    border-radius: 99px;
+    padding: 6px 16px 6px 6px;
+  }
+
+  .admin-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #60a5fa);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 12px;
+    color: #fff;
+    flex-shrink: 0;
+    letter-spacing: 0.04em;
+  }
+
+  .admin-info {}
+  .admin-name {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--blue-dark);
+    line-height: 1.2;
+  }
+  .admin-role {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--blue-mid);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .badge-live {
+    display: flex; align-items: center; gap: 6px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: var(--green);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 99px;
+    letter-spacing: 0.05em;
+  }
+  .badge-live::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* ===== LAYOUT ===== */
   .app-layout {
     display: flex;
-    min-height: 100vh;
+    min-height: calc(100vh - var(--topbar-height));
     position: relative;
     z-index: 2;
   }
 
-  /* ========= SIDEBAR ========= */
+  /* ===== SIDEBAR ===== */
   .sidebar {
     width: var(--sidebar-width);
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255,255,255,0.92);
     backdrop-filter: blur(12px);
     border-right: 1px solid var(--border);
     box-shadow: 4px 0 20px rgba(37,99,235,0.06);
     display: flex;
     flex-direction: column;
     position: sticky;
-    top: 0;
-    height: 100vh;
-    transition: all 0.2s;
+    top: var(--topbar-height);
+    height: calc(100vh - var(--topbar-height));
     z-index: 10;
     flex-shrink: 0;
   }
 
   .sidebar-header {
-    padding: 32px 20px 20px;
+    padding: 24px 20px 18px;
     border-bottom: 1px solid var(--border);
   }
 
-  .mini-logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 28px;
-  }
-  .mini-icon {
-    width: 40px; height: 40px;
-    background: linear-gradient(135deg, #2563eb, #60a5fa);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    box-shadow: 0 2px 8px rgba(37,99,235,0.3);
-  }
-  .mini-title {
-    font-family: var(--sans);
-    font-weight: 700;
-    font-size: 18px;
-    color: var(--text);
-  }
-  .mini-title span { color: var(--blue); }
-  .sidebar-sub {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 4px;
-  }
-
   .stat-summary {
-    margin-top: 24px;
     background: var(--blue-xlight);
     border-radius: 20px;
-    padding: 16px;
+    padding: 14px;
   }
   .stat-summary p {
     font-size: 11px;
@@ -137,26 +257,19 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--blue-dark);
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   .total-badge {
     background: var(--surface);
-    border-radius: 16px;
+    border-radius: 14px;
     padding: 8px 12px;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     font-family: var(--sans);
   }
-  .total-label {
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-  .total-number {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--blue);
-  }
+  .total-label { font-size: 12px; color: var(--text-muted); }
+  .total-number { font-size: 24px; font-weight: 700; color: var(--blue); }
 
   .sidebar-nav {
     flex: 1;
@@ -174,7 +287,7 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text-dim);
-    padding: 8px 14px 4px;
+    padding: 6px 14px 6px;
   }
 
   .nav-item {
@@ -194,39 +307,30 @@
     width: 100%;
     text-align: left;
   }
-  .nav-item i { font-size: 18px; width: 24px; }
   .nav-item:hover { background: var(--blue-xlight); color: var(--blue); }
   .nav-item.active {
     background: var(--blue-light);
     color: var(--blue-dark);
-    font-weight: 600;
+    font-weight: 700;
     box-shadow: inset 0 0 0 1px var(--surface);
   }
 
-  .nav-divider {
-    height: 1px;
-    background: var(--border);
-    margin: 8px 4px;
-  }
-
   .sidebar-footer {
-    padding: 16px 20px 28px;
+    padding: 14px 20px 24px;
     border-top: 1px solid var(--border);
     font-size: 10px;
     color: var(--text-dim);
+    line-height: 1.6;
   }
 
-  /* MAIN CONTENT */
+  /* ===== MAIN CONTENT ===== */
   .main-content {
     flex: 1;
     padding: 32px 32px 60px;
     max-width: calc(100% - var(--sidebar-width));
-    transition: all 0.2s;
   }
 
-  .header-area {
-    margin-bottom: 28px;
-  }
+  .header-area { margin-bottom: 28px; }
 
   .header-top {
     display: flex;
@@ -237,11 +341,7 @@
     margin-bottom: 24px;
   }
 
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
+  .brand { display: flex; align-items: center; gap: 16px; }
 
   .brand-icon {
     width: 52px; height: 52px;
@@ -270,40 +370,9 @@
     line-height: 1.1;
   }
   .brand-title span { color: var(--blue); }
-  .brand-sub {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-top: 3px;
-  }
+  .brand-sub { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
 
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .badge-live {
-    display: flex; align-items: center; gap: 6px;
-    background: #ecfdf5;
-    border: 1px solid #a7f3d0;
-    color: var(--green);
-    font-family: var(--sans);
-    font-size: 11px;
-    font-weight: 600;
-    padding: 5px 12px;
-    border-radius: 99px;
-    letter-spacing: 0.05em;
-  }
-  .badge-live::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 6px var(--green);
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
   .btn-export, .btn-reset-all {
     display: flex; align-items: center; gap: 6px;
@@ -318,7 +387,6 @@
     cursor: pointer;
     box-shadow: var(--shadow-sm);
     transition: all 0.2s;
-    letter-spacing: 0.03em;
   }
   .btn-export:hover {
     background: var(--blue-xlight);
@@ -333,7 +401,6 @@
   .btn-reset-all:hover {
     background: var(--red-light);
     border-color: var(--red);
-    color: var(--red);
     transform: translateY(-1px);
   }
 
@@ -387,6 +454,7 @@
     line-height: 1.1;
   }
 
+  /* ===== CARDS ===== */
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -423,9 +491,7 @@
     border-bottom: 1px solid var(--border);
   }
 
-  .cat-left {
-    display: flex; align-items: center; gap: 10px;
-  }
+  .cat-left { display: flex; align-items: center; gap: 10px; }
 
   .cat-dot {
     width: 10px; height: 10px;
@@ -483,10 +549,7 @@
     from { opacity: 0; transform: translateX(-8px); }
     to   { opacity: 1; transform: translateX(0); }
   }
-  .nut-item:hover {
-    background: var(--blue-xlight);
-    border-color: var(--blue-light);
-  }
+  .nut-item:hover { background: var(--blue-xlight); border-color: var(--blue-light); }
 
   .item-idx {
     font-family: var(--sans);
@@ -525,12 +588,8 @@
     font-size: 14px;
     transition: all 0.15s;
     flex-shrink: 0;
-    line-height: 1;
   }
-  .btn-del:hover {
-    background: var(--red-light);
-    color: var(--red);
-  }
+  .btn-del:hover { background: var(--red-light); color: var(--red); }
 
   .empty-state {
     display: flex;
@@ -541,12 +600,7 @@
     gap: 8px;
   }
   .empty-icon { font-size: 32px; opacity: 0.2; }
-  .empty-txt {
-    font-family: var(--sans);
-    font-size: 12px;
-    color: var(--text-dim);
-    font-weight: 500;
-  }
+  .empty-txt { font-family: var(--sans); font-size: 12px; color: var(--text-dim); font-weight: 500; }
 
   .card-foot {
     padding: 10px 16px;
@@ -555,13 +609,11 @@
     align-items: center;
     justify-content: space-between;
     background: var(--surface2);
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
-  .foot-count {
-    font-family: var(--sans);
-    font-size: 11px;
-    color: var(--text-muted);
-  }
+  .foot-count { font-family: var(--sans); font-size: 11px; color: var(--text-muted); }
   .foot-count b { color: var(--blue); }
 
   .btn-clear {
@@ -577,6 +629,41 @@
     font-weight: 500;
   }
   .btn-clear:hover { color: var(--red); background: var(--red-light); }
+
+  .add-area {
+    background: var(--surface);
+    border-radius: 60px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--border-mid);
+    box-shadow: var(--shadow-sm);
+  }
+  .add-input {
+    border: none;
+    padding: 7px 12px;
+    font-family: var(--sans);
+    font-size: 12px;
+    border-radius: 60px;
+    background: transparent;
+    outline: none;
+    width: 130px;
+  }
+  .add-input:focus { background: var(--blue-xlight); }
+  .add-btn {
+    background: var(--blue);
+    border: none;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 60px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .add-btn:hover { background: var(--blue-dark); }
 
   .toast {
     position: fixed;
@@ -596,7 +683,7 @@
     box-shadow: 0 8px 28px rgba(30,58,138,0.4);
     white-space: nowrap;
   }
-  .toast.error { background: var(--red); box-shadow: 0 8px 28px rgba(239,68,68,0.3); }
+  .toast.error { background: var(--red); }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   .bottom-info-bar {
@@ -608,80 +695,60 @@
     font-size: 12px;
     color: var(--text-muted);
     flex-wrap: wrap;
-  }
-
-  .add-area {
-    background: var(--surface);
-    border-radius: 60px;
-    padding: 6px;
-    display: flex;
-    align-items: center;
     gap: 8px;
-    border: 1px solid var(--border-mid);
-    box-shadow: var(--shadow-sm);
   }
-  .add-input {
-    border: none;
-    padding: 8px 14px;
-    font-family: var(--sans);
-    font-size: 12px;
-    border-radius: 60px;
-    background: transparent;
-    outline: none;
-    width: 140px;
-  }
-  .add-input:focus { background: var(--blue-xlight); }
-  .add-btn {
-    background: var(--blue);
-    border: none;
-    color: white;
-    padding: 6px 14px;
-    border-radius: 60px;
-    font-family: var(--sans);
-    font-weight: 600;
-    font-size: 12px;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-  .add-btn:hover { background: var(--blue-dark); }
 
-  @media (max-width: 780px) {
-    .sidebar { width: 220px; }
-    .main-content { padding: 20px; }
+  @media (max-width: 900px) {
     .stat-row { grid-template-columns: repeat(2, 1fr); }
-    .brand-title { font-size: 22px; }
+    .topbar-center { display: none; }
   }
   @media (max-width: 650px) {
     .app-layout { flex-direction: column; }
-    .sidebar {
-      width: 100%;
-      height: auto;
-      position: relative;
-      flex-direction: row;
-      flex-wrap: wrap;
-      padding: 12px 16px;
-      backdrop-filter: blur(16px);
-    }
-    .sidebar-header { padding: 8px 0; border-bottom: none; width: 100%; }
-    .sidebar-nav { flex-direction: row; padding: 8px; gap: 6px; flex-wrap: wrap; }
-    .nav-item { width: auto; padding: 6px 12px; }
-    .main-content { max-width: 100%; }
+    .sidebar { width: 100%; height: auto; position: relative; top: 0; }
+    .sidebar-nav { flex-direction: row; flex-wrap: wrap; padding: 10px; }
+    .nav-item { width: auto; }
+    .main-content { max-width: 100%; padding: 16px; }
+    .brand-title { font-size: 22px; }
+    .topbar { padding: 0 16px; }
+    .admin-chip { padding: 5px 10px 5px 5px; }
   }
 </style>
 </head>
 <body>
+
+<!-- ===== TOP BAR ===== -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">⚙️</div>
+    <div class="topbar-brand">NUT<span>SYSTEM</span></div>
+    <div class="topbar-divider"></div>
+    <span style="font-family:var(--sans);font-size:12px;color:var(--text-muted);">ระบบจัดการน็อตล้อ</span>
+  </div>
+
+  <div class="topbar-center">
+    <div class="datetime-block">
+      <div class="datetime-date" id="tb-date">—</div>
+      <div class="datetime-time" id="tb-time">00:00:00</div>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <div class="badge-live">LIVE</div>
+    <div class="admin-chip">
+      <div class="admin-avatar">PW</div>
+      <div class="admin-info">
+        <div class="admin-name">PATIWAT</div>
+        <div class="admin-role">ADMIN</div>
+      </div>
+    </div>
+  </div>
+</header>
+
 <div class="app-layout">
 
-  <!-- SIDEBAR -->
+  <!-- ===== SIDEBAR ===== -->
   <aside class="sidebar">
     <div class="sidebar-header">
-      <div class="mini-logo">
-        <div class="mini-icon">⚙️</div>
-        <div>
-          <div class="mini-title">NUT<span>SYSTEM</span></div>
-          <div class="sidebar-sub">ระบบจัดการน็อตล้อ</div>
-        </div>
-      </div>
       <div class="stat-summary">
         <p>📊 สรุปทั้งหมด</p>
         <div class="total-badge">
@@ -692,33 +759,20 @@
     </div>
 
     <nav class="sidebar-nav">
-      <!-- หมวดหมู่ -->
       <div class="nav-section-label">หมวดหมู่</div>
-
-      <button class="nav-item active" data-cat="3RHB" onclick="switchCat('3RHB', this)">
-        🔩 3RHB
-      </button>
-
-      <button class="nav-item" data-cat="3FHB" onclick="switchCat('3FHB', this)">
-        🔩 3FHB
-      </button>
-
-      <button class="nav-item" data-cat="3FHN" onclick="switchCat('3FHN', this)">
-        🔩 3FHN
-      </button>
-
-      <button class="nav-item" data-cat="3RHN" onclick="switchCat('3RHN', this)">
-        🔩 3RHN
-      </button>
+      <button class="nav-item active" data-cat="3RHB" onclick="switchCat('3RHB', this)">🔩 3RHB</button>
+      <button class="nav-item" data-cat="3FHB" onclick="switchCat('3FHB', this)">🔧 3FHB</button>
+      <button class="nav-item" data-cat="3FHN" onclick="switchCat('3FHN', this)">⚙️ 3FHN</button>
+      <button class="nav-item" data-cat="3RHN" onclick="switchCat('3RHN', this)">🔑 3RHN</button>
     </nav>
 
     <div class="sidebar-footer">
       <div>© Workshop Manager | NUT SYSTEM</div>
-      <div style="margin-top: 6px;">⚡ ข้อมูลถูกบันทึกใน LocalStorage | ไม่มีข้อมูลเริ่มต้น</div>
+      <div style="margin-top:4px;">⚡ ข้อมูลถูกบันทึกใน LocalStorage</div>
     </div>
   </aside>
 
-  <!-- MAIN CONTENT -->
+  <!-- ===== MAIN CONTENT ===== -->
   <main class="main-content">
     <div class="header-area">
       <div class="header-top">
@@ -731,17 +785,13 @@
           </div>
         </div>
         <div class="header-actions">
-          <div class="badge-live">LOCAL STORAGE</div>
           <button class="btn-export" id="exportDataBtn">📎 ส่งออก JSON</button>
           <button class="btn-reset-all" id="resetAllBtn">🗑️ รีเซ็ตทั้งหมด</button>
         </div>
       </div>
-
-      <!-- Stat row -->
       <div class="stat-row" id="statRow"></div>
     </div>
 
-    <!-- Cards grid — แสดงเฉพาะหมวดที่เลือก -->
     <div class="cards-grid" id="cardsGrid"></div>
 
     <div class="bottom-info-bar">
@@ -760,8 +810,31 @@
   const STORAGE_KEY = 'nutSystem_v1';
 
   /* ====== STATE ====== */
-  let data = {};          // { cat: [items...] }
+  let data = {};
   let currentCat = '3RHB';
+
+  /* ====== CLOCK (real-time, Thai locale) ====== */
+  const THAI_MONTHS = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+  const THAI_DAYS   = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function updateClock() {
+    const now = new Date();
+    const day  = THAI_DAYS[now.getDay()];
+    const d    = now.getDate();
+    const mon  = THAI_MONTHS[now.getMonth()];
+    const year = now.getFullYear() + 543;
+    const h    = pad(now.getHours());
+    const m    = pad(now.getMinutes());
+    const s    = pad(now.getSeconds());
+
+    document.getElementById('tb-date').textContent = `วัน${day}ที่ ${d} ${mon} พ.ศ. ${year}`;
+    document.getElementById('tb-time').textContent = `${h}:${m}:${s}`;
+  }
+
+  updateClock();
+  setInterval(updateClock, 1000);
 
   /* ====== STORAGE ====== */
   function loadData() {
@@ -788,7 +861,7 @@
     toastTimer = setTimeout(() => t.className = 'toast', 2200);
   }
 
-  /* ====== SWITCH CATEGORY (sidebar) ====== */
+  /* ====== SWITCH CATEGORY ====== */
   function switchCat(cat, el) {
     currentCat = cat;
     document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -800,20 +873,18 @@
   function renderStats() {
     const row = document.getElementById('statRow');
     row.innerHTML = CATEGORIES.map(c => `
-      <div class="stat-card" onclick="switchCat('${c}', document.querySelector('[data-cat=${c}]'))">
+      <div class="stat-card" onclick="switchCat('${c}', document.querySelector('[data-cat=\\'${c}\\']'))">
         <div class="stat-icon">${CAT_ICONS[c]}</div>
         <div class="stat-info">
           <div class="stat-cat">${c}</div>
           <div class="stat-num">${data[c].length}</div>
         </div>
-      </div>
-    `).join('');
-
+      </div>`).join('');
     const total = CATEGORIES.reduce((s, c) => s + data[c].length, 0);
     document.getElementById('global-total-count').textContent = total;
   }
 
-  /* ====== RENDER CARD (single category) ====== */
+  /* ====== RENDER CARD ====== */
   function renderCard(cat) {
     const items = data[cat];
     const listHtml = items.length === 0
@@ -842,9 +913,10 @@
         <ul class="nut-list">${listHtml}</ul>
         <div class="card-foot">
           <span class="foot-count">ทั้งหมด <b>${items.length}</b> รายการ</span>
-          <div style="display:flex;align-items:center;gap:8px;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
             <div class="add-area">
-              <input class="add-input" id="inp-${cat}" placeholder="เพิ่มน็อต..." onkeydown="if(event.key==='Enter')addItem('${cat}')">
+              <input class="add-input" id="inp-${cat}" placeholder="เพิ่มน็อต..."
+                onkeydown="if(event.key==='Enter')addItem('${cat}')">
               <button class="add-btn" onclick="addItem('${cat}')">+ เพิ่ม</button>
             </div>
             <button class="btn-clear" onclick="clearCat('${cat}')">ล้างทั้งหมด</button>
@@ -856,9 +928,7 @@
   /* ====== RENDER ALL ====== */
   function renderAll() {
     renderStats();
-    const grid = document.getElementById('cardsGrid');
-    // แสดงเฉพาะหมวดที่เลือกจาก sidebar
-    grid.innerHTML = renderCard(currentCat);
+    document.getElementById('cardsGrid').innerHTML = renderCard(currentCat);
   }
 
   /* ====== ADD / DELETE / CLEAR ====== */
