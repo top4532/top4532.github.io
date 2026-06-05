@@ -4,252 +4,160 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NEW MODEL | จัดการสินค้า</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#1e6fdf',
+                    primaryDark: '#0f5bc2',
+                    navy: '#0a2b4e',
+                }
+            }
+        }
+    }
+</script>
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-}
-body {
-    background: linear-gradient(135deg, #e6f0ff, #f0f7ff);
-    padding: 30px;
-}
-.container {
-    max-width: 1500px;
-    margin: auto;
-}
-/* header */
-.page-header {
-    background: white;
-    border-radius: 32px;
-    padding: 20px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin-bottom: 25px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-}
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-}
-.logo-small {
-    width: 55px;
-    height: 55px;
-    background: linear-gradient(135deg,#2b7be4,#1a5fc9);
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 28px;
-}
-.header-text h2 {
-    color: #0a2b4e;
-}
-.btn-back {
-    background: #eef4ff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 40px;
-    cursor: pointer;
-    font-weight: 600;
-    color: #1e4a8a;
-}
-/* ตาราง */
-.table-card {
-    background: white;
-    border-radius: 28px;
-    padding: 24px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-}
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-.add-btn {
-    background: #1e6fdf;
-    color: white;
-    border: none;
-    padding: 10px 24px;
-    border-radius: 40px;
-    cursor: pointer;
-    font-weight: 600;
-}
-.table-responsive {
-    overflow-x: auto;
-}
-table {
-    width: 100%;
-    min-width: 1200px;
-    border-collapse: collapse;
-}
-thead {
-    background: #eef4ff;
-}
-th {
-    padding: 14px 12px;
-    text-align: left;
-    color: #1e3a6b;
-}
-td {
-    padding: 12px;
-    border-bottom: 1px solid #e2edf5;
-    color: #1e2f45;
-}
-.action-buttons {
-    display: flex;
-    gap: 8px;
-}
-.edit-btn, .delete-btn {
-    background: none;
-    border: none;
-    width: 34px;
-    height: 34px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 1rem;
-}
-.edit-btn:hover { background: #e2edff; color: #1e6fdf; }
-.delete-btn:hover { background: #ffe6e5; color: #dc2626; }
-
-/* Modal (เหมือนเดิม) */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,20,50,0.5);
-    backdrop-filter: blur(3px);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-.modal-content {
-    background: white;
-    max-width: 700px;
-    width: 90%;
-    border-radius: 36px;
-    padding: 28px;
-    border: 1px solid #bfd9ff;
-}
-.modal-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-    margin-bottom: 20px;
-}
-.modal-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-.modal-field label {
-    font-weight: 600;
-    color: #1e4a76;
-}
-.modal-field input, .modal-field select {
-    padding: 10px 14px;
-    border-radius: 24px;
-    border: 1px solid #cbdff1;
-}
-.modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-}
-.cancel-btn {
-    background: #edf3fc;
-    padding: 10px 24px;
-    border-radius: 40px;
-    border: none;
-}
-.submit-btn {
-    background: #1e6fdf;
-    color: white;
-    padding: 10px 24px;
-    border-radius: 40px;
-    border: none;
-}
-.toast-msg {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: #0a2b4e;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 50px;
-    opacity: 0;
-    transition: 0.25s;
-    pointer-events: none;
-    z-index: 1100;
-}
-.toast-msg.show { opacity: 1; }
-@media (max-width: 700px) {
-    .modal-grid { grid-template-columns: 1fr; }
-}
+    body {
+        background: linear-gradient(135deg, #e6f0ff, #f0f7ff);
+    }
+    .modal-animation {
+        animation: fadeInUp 0.25s ease;
+    }
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 </style>
 </head>
-<body>
-<div class="container">
-    <div class="page-header">
-        <div class="header-left">
-            <div class="logo-small"><i class="fa-solid fa-table-list"></i></div>
-            <div class="header-text"><h2><i class="fa-solid fa-cubes"></i> จัดการข้อมูล NEW MODEL</h2><p>ตารางสินค้า - เพิ่ม/แก้ไข/ลบ</p></div>
+<body class="min-h-screen p-5 md:p-8">
+
+<div class="max-w-[1500px] mx-auto">
+    <!-- Header -->
+    <div class="bg-white rounded-3xl p-5 md:p-6 flex flex-wrap justify-between items-center gap-4 shadow-md border border-blue-100 mb-6">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center text-white text-xl">
+                <i class="fa-solid fa-table-list"></i>
+            </div>
+            <div>
+                <h2 class="text-xl md:text-2xl font-bold text-navy">
+                    <i class="fa-solid fa-cubes text-primary mr-2"></i>
+                    จัดการข้อมูล NEW MODEL
+                </h2>
+                <p class="text-gray-500 text-sm">ตารางสินค้า - เพิ่ม/แก้ไข/ลบ</p>
+            </div>
         </div>
-        <button class="btn-back" id="backToHomeBtn"><i class="fa-solid fa-arrow-left"></i> กลับหน้าแรก</button>
+        <button id="backToHomeBtn" class="bg-gray-100 hover:bg-gray-200 text-navy font-semibold px-5 py-2 rounded-full transition flex items-center gap-2">
+            <i class="fa-solid fa-arrow-left"></i> กลับหน้าแรก
+        </button>
     </div>
-    <div class="table-card">
-        <div class="card-header">
-            <h3>รายการสินค้าทั้งหมด</h3>
-            <button class="add-btn" id="openAddModalBtn"><i class="fa-solid fa-plus"></i> เพิ่มสินค้า</button>
+    
+    <!-- Table Card -->
+    <div class="bg-white rounded-3xl p-5 md:p-6 shadow-md border border-blue-100">
+        <div class="flex flex-wrap justify-between items-center mb-5 gap-3">
+            <h3 class="text-lg font-bold text-navy">รายการสินค้าทั้งหมด</h3>
+            <button id="openAddModalBtn" class="bg-primary hover:bg-primaryDark text-white font-semibold px-5 py-2.5 rounded-full transition shadow-md flex items-center gap-2">
+                <i class="fa-solid fa-plus"></i> เพิ่มสินค้า
+            </button>
         </div>
-        <div class="table-responsive">
-            <table id="productTable">
-                <thead><tr><th>รหัสสินค้า</th><th>บาร์โค้ด</th><th>รายละเอียด</th><th>ยี่ห้อ</th><th>ราคา</th><th>จำนวน</th><th>MOQ</th><th>ซัพพลายเออร์</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-[1000px] border-collapse">
+                <thead class="bg-blue-50">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">รหัสสินค้า</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">บาร์โค้ด</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">รายละเอียด</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">ยี่ห้อ</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">ราคา</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">จำนวน</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">MOQ</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">ซัพพลายเออร์</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">สถานะ</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">จัดการ</th>
+                    </tr>
+                </thead>
                 <tbody id="tableBody"></tbody>
             </table>
         </div>
     </div>
 </div>
 
-<!-- Modal CRUD -->
-<div id="productModal" class="modal">
-    <div class="modal-content">
-        <h3 id="modalTitle">เพิ่มสินค้าใหม่</h3>
-        <div class="modal-grid">
-            <div class="modal-field"><label>รหัสสินค้า</label><input type="text" id="modalSku" placeholder="SKU001"></div>
-            <div class="modal-field"><label>บาร์โค้ด</label><input type="text" id="modalBarcode" placeholder="885xxxxxxxxxxxx"></div>
-            <div class="modal-field"><label>รายละเอียด</label><input type="text" id="modalDesc" placeholder="รายละเอียด"></div>
-            <div class="modal-field"><label>ยี่ห้อ</label><input type="text" id="modalBrand" placeholder="Brand"></div>
-            <div class="modal-field"><label>ราคา</label><input type="number" id="modalPrice" step="0.01" placeholder="0.00"></div>
-            <div class="modal-field"><label>จำนวน</label><input type="number" id="modalQty" placeholder="0"></div>
-            <div class="modal-field"><label>MOQ</label><input type="number" id="modalMoq" placeholder="100"></div>
-            <div class="modal-field"><label>ซัพพลายเออร์</label><input type="text" id="modalSupplier" placeholder="Supplier"></div>
-            <div class="modal-field"><label>สถานะ</label>
-                <select id="modalStatus"><option>เสร็จสมบูรณ์</option><option>อยู่ในขั้นตอนผลิต</option><option>ขั้นตอนวาด Drawing</option></select>
+<!-- Modal Popup สำหรับเพิ่ม/แก้ไข -->
+<div id="productModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 md:p-8 border border-blue-100 modal-animation">
+        <h3 id="modalTitle" class="text-2xl font-bold text-navy mb-6 flex items-center gap-2 border-l-4 border-primary pl-4">
+            <i class="fa-solid fa-pen-to-square text-primary"></i>
+            เพิ่มสินค้าใหม่
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+            <div>
+                <label class="block font-semibold text-gray-700 text-sm mb-1">📦 รหัสสินค้า *</label>
+                <input type="text" id="modalSku" placeholder="SKU001" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition">
+            </div>
+            <div>
+                <label class="block font-semibold text-gray-700 text-sm mb-1">📱 บาร์โค้ด</label>
+                <input type="text" id="modalBarcode" placeholder="885xxxxxxxxxxxx" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition">
+            </div>
+            <div>
+                <label class="block font-semibold text-gray-700 text-sm mb-1">📝 รายละเอียดสินค้า</label>
+                <input type="text" id="modalDesc" placeholder="ชื่อสินค้า / รายละเอียด" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition">
+            </div>
+            <div>
+                <label class="block font-semibold text-gray-700 text-sm mb-1">🏷️ ยี่ห้อ</label>
+                <input type="text" id="modalBrand" placeholder="Brand" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition">
+            </div>
+            <div>
+                <label class="block font-semibold text-gray-700 text-sm mb-1">💰 ราคา (บาท)</label>
+                <input type="number" id="modalPrice" step="0.01" placeholder="0.00" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition">
+            </div>
+            <div>
+                <label class="block font-semibold text-gray-700 text-sm mb-1">📊 จำนวน</label>
+                <input type="number" id="modalQty" placeholder="0" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition">
+            </div>
+            <div>
+                <label class="block font-semibold text-gray-700 text-sm mb-1">🎯 MOQ</label>
+                <input type="number" id="modalMoq" placeholder="100" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition">
+            </div>
+            <div>
+                <label class="block font-semibold text-gray-700 text-sm mb-1">🚚 ซัพพลายเออร์</label>
+                <input type="text" id="modalSupplier" placeholder="Supplier" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition">
+            </div>
+            <div class="md:col-span-2">
+                <label class="block font-semibold text-gray-700 text-sm mb-1">⚙️ สถานะ</label>
+                <select id="modalStatus" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition bg-white">
+                    <option>เสร็จสมบูรณ์</option>
+                    <option>อยู่ในขั้นตอนผลิต</option>
+                    <option>ขั้นตอนวาด Drawing</option>
+                </select>
             </div>
         </div>
-        <div class="modal-actions">
-            <button class="cancel-btn" id="closeModalBtn">ยกเลิก</button>
-            <button class="submit-btn" id="submitBtn">บันทึก</button>
+        
+        <div class="flex justify-end gap-3 mt-4">
+            <button id="closeModalBtn" class="px-6 py-2.5 rounded-full bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition">
+                <i class="fa-regular fa-circle-xmark"></i> ยกเลิก
+            </button>
+            <button id="submitBtn" class="px-6 py-2.5 rounded-full bg-primary text-white font-semibold hover:bg-primaryDark transition shadow-md">
+                <i class="fa-regular fa-floppy-disk"></i> บันทึก
+            </button>
         </div>
     </div>
 </div>
-<div id="toastMsg" class="toast-msg"></div>
+
+<!-- Toast -->
+<div id="toastMsg" class="fixed bottom-5 right-5 bg-navy text-white px-5 py-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 z-50 pointer-events-none">
+    ✅ ดำเนินการสำเร็จ
+</div>
 
 <script>
     const STORAGE_KEY = "new_model_products";
     let currentProducts = [];
-    let editIndex = null; // null = เพิ่มใหม่, not null = แก้ไข
+    let editIndex = null;
 
     function loadProducts() {
         const stored = localStorage.getItem(STORAGE_KEY);
@@ -257,47 +165,79 @@ td {
             try { currentProducts = JSON.parse(stored); } catch(e) { currentProducts = []; }
         } else { currentProducts = []; }
     }
+    
     function saveProducts() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(currentProducts));
     }
+    
+    function showToast(msg, type = "success") {
+        const toast = document.getElementById("toastMsg");
+        if(type === "warning") {
+            toast.classList.remove("bg-navy");
+            toast.classList.add("bg-amber-500");
+        } else {
+            toast.classList.remove("bg-amber-500");
+            toast.classList.add("bg-navy");
+        }
+        toast.textContent = msg;
+        toast.classList.remove("opacity-0");
+        toast.classList.add("opacity-100");
+        setTimeout(() => {
+            toast.classList.remove("opacity-100");
+            toast.classList.add("opacity-0");
+        }, 2200);
+    }
+    
     function renderTable() {
         const tbody = document.getElementById("tableBody");
         if(!tbody) return;
         tbody.innerHTML = "";
+        
         if(currentProducts.length === 0) {
             const row = tbody.insertRow();
-            row.insertCell(0).colSpan = 10;
-            row.insertCell(0).textContent = "ไม่มีข้อมูลสินค้า คลิก 'เพิ่มสินค้า' เพื่อเริ่มต้น";
-            row.cells[0].style.padding = "40px";
-            row.cells[0].style.textAlign = "center";
+            const cell = row.insertCell(0);
+            cell.colSpan = 10;
+            cell.textContent = "ไม่มีข้อมูลสินค้า คลิก 'เพิ่มสินค้า' เพื่อเริ่มต้น";
+            cell.className = "text-center py-10 text-gray-400";
             return;
         }
+        
         currentProducts.forEach((prod, idx) => {
             const row = tbody.insertRow();
-            row.insertCell(0).textContent = prod.sku || "-";
-            row.insertCell(1).textContent = prod.barcode || "-";
-            row.insertCell(2).textContent = prod.description || "-";
-            row.insertCell(3).textContent = prod.brand || "-";
+            row.className = "border-b border-gray-100 hover:bg-blue-50/50 transition";
+            
+            row.insertCell(0).innerHTML = `<div class="px-4 py-3">${escapeHtml(prod.sku) || "-"}</div>`;
+            row.insertCell(1).innerHTML = `<div class="px-4 py-3">${escapeHtml(prod.barcode) || "-"}</div>`;
+            row.insertCell(2).innerHTML = `<div class="px-4 py-3">${escapeHtml(prod.description) || "-"}</div>`;
+            row.insertCell(3).innerHTML = `<div class="px-4 py-3">${escapeHtml(prod.brand) || "-"}</div>`;
             let priceShow = (prod.price !== "" && prod.price !== undefined) ? `฿ ${parseFloat(prod.price).toFixed(2)}` : "-";
-            row.insertCell(4).textContent = priceShow;
-            row.insertCell(5).textContent = prod.quantity !== "" ? prod.quantity : "0";
-            row.insertCell(6).textContent = prod.moq !== "" ? prod.moq : "-";
-            row.insertCell(7).textContent = prod.supplier || "-";
-            row.insertCell(8).textContent = prod.status;
+            row.insertCell(4).innerHTML = `<div class="px-4 py-3">${priceShow}</div>`;
+            row.insertCell(5).innerHTML = `<div class="px-4 py-3">${prod.quantity !== "" ? prod.quantity : "0"}</div>`;
+            row.insertCell(6).innerHTML = `<div class="px-4 py-3">${prod.moq !== "" ? prod.moq : "-"}</div>`;
+            row.insertCell(7).innerHTML = `<div class="px-4 py-3">${escapeHtml(prod.supplier) || "-"}</div>`;
+            row.insertCell(8).innerHTML = `<div class="px-4 py-3"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">${escapeHtml(prod.status)}</span></div>`;
+            
             const actionCell = row.insertCell(9);
-            actionCell.className = "action-buttons";
-            const editBtn = document.createElement("button");
-            editBtn.className = "edit-btn";
-            editBtn.innerHTML = '<i class="fa-regular fa-pen-to-square"></i>';
-            editBtn.onclick = () => openEditModal(idx);
-            const delBtn = document.createElement("button");
-            delBtn.className = "delete-btn";
-            delBtn.innerHTML = '<i class="fa-regular fa-trash-can"></i>';
-            delBtn.onclick = () => { deleteProduct(idx); };
-            actionCell.appendChild(editBtn);
-            actionCell.appendChild(delBtn);
+            actionCell.className = "px-4 py-3";
+            actionCell.innerHTML = `
+                <div class="flex gap-2">
+                    <button onclick="openEditModal(${idx})" class="w-8 h-8 rounded-xl hover:bg-blue-100 text-gray-600 hover:text-primary transition"><i class="fa-regular fa-pen-to-square"></i></button>
+                    <button onclick="deleteProduct(${idx})" class="w-8 h-8 rounded-xl hover:bg-red-100 text-gray-600 hover:text-red-500 transition"><i class="fa-regular fa-trash-can"></i></button>
+                </div>
+            `;
         });
     }
+    
+    function escapeHtml(str) {
+        if(!str) return "";
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
     function deleteProduct(idx) {
         if(confirm("ยืนยันการลบรายการนี้?")) {
             currentProducts.splice(idx, 1);
@@ -306,16 +246,19 @@ td {
             showToast("🗑️ ลบรายการสำเร็จ");
         }
     }
+    
     function openAddModal() {
         editIndex = null;
-        document.getElementById("modalTitle").innerText = "เพิ่มสินค้าใหม่";
+        document.getElementById("modalTitle").innerHTML = '<i class="fa-solid fa-plus-circle text-primary"></i> เพิ่มสินค้าใหม่';
         clearModalFields();
-        document.getElementById("productModal").style.display = "flex";
+        document.getElementById("productModal").classList.remove("hidden");
+        document.getElementById("productModal").classList.add("flex");
     }
-    function openEditModal(idx) {
+    
+    window.openEditModal = function(idx) {
         editIndex = idx;
         const prod = currentProducts[idx];
-        document.getElementById("modalTitle").innerText = "แก้ไขสินค้า";
+        document.getElementById("modalTitle").innerHTML = '<i class="fa-solid fa-pen-to-square text-primary"></i> แก้ไขสินค้า';
         document.getElementById("modalSku").value = prod.sku || "";
         document.getElementById("modalBarcode").value = prod.barcode || "";
         document.getElementById("modalDesc").value = prod.description || "";
@@ -325,8 +268,10 @@ td {
         document.getElementById("modalMoq").value = prod.moq || "";
         document.getElementById("modalSupplier").value = prod.supplier || "";
         document.getElementById("modalStatus").value = prod.status || "เสร็จสมบูรณ์";
-        document.getElementById("productModal").style.display = "flex";
+        document.getElementById("productModal").classList.remove("hidden");
+        document.getElementById("productModal").classList.add("flex");
     }
+    
     function clearModalFields() {
         document.getElementById("modalSku").value = "";
         document.getElementById("modalBarcode").value = "";
@@ -338,9 +283,16 @@ td {
         document.getElementById("modalSupplier").value = "";
         document.getElementById("modalStatus").value = "เสร็จสมบูรณ์";
     }
+    
     function saveFromModal() {
+        const sku = document.getElementById("modalSku").value.trim();
+        if(!sku) {
+            showToast("⚠️ กรุณากรอกรหัสสินค้า", "warning");
+            return;
+        }
+        
         const newProduct = {
-            sku: document.getElementById("modalSku").value.trim(),
+            sku: sku,
             barcode: document.getElementById("modalBarcode").value.trim(),
             description: document.getElementById("modalDesc").value.trim(),
             brand: document.getElementById("modalBrand").value.trim(),
@@ -350,10 +302,7 @@ td {
             supplier: document.getElementById("modalSupplier").value.trim(),
             status: document.getElementById("modalStatus").value
         };
-        if(!newProduct.sku) {
-            showToast("⚠️ กรุณากรอกรหัสสินค้า", "warning");
-            return;
-        }
+        
         if(editIndex !== null) {
             currentProducts[editIndex] = newProduct;
             showToast("✏️ อัปเดตเรียบร้อย");
@@ -365,31 +314,28 @@ td {
         renderTable();
         closeModal();
     }
+    
     function closeModal() {
-        document.getElementById("productModal").style.display = "none";
+        document.getElementById("productModal").classList.remove("flex");
+        document.getElementById("productModal").classList.add("hidden");
         editIndex = null;
     }
-    function showToast(msg, type="success") {
-        let toast = document.getElementById("toastMsg");
-        if(type==="warning") toast.style.backgroundColor = "#eab308";
-        else toast.style.backgroundColor = "#0a2b4e";
-        toast.textContent = msg;
-        toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 2000);
-    }
+    
     function goBackHome() {
-        window.location.href = "index.html"; // หรือชื่อไฟล์หน้าแรกของคุณ
+        window.location.href = "index.html";
     }
-
+    
     loadProducts();
     renderTable();
-
+    
     document.getElementById("openAddModalBtn").addEventListener("click", openAddModal);
     document.getElementById("closeModalBtn").addEventListener("click", closeModal);
     document.getElementById("submitBtn").addEventListener("click", saveFromModal);
     document.getElementById("backToHomeBtn").addEventListener("click", goBackHome);
+    
     window.onclick = function(e) {
-        if(e.target === document.getElementById("productModal")) closeModal();
+        const modal = document.getElementById("productModal");
+        if(e.target === modal) closeModal();
     }
 </script>
 </body>
