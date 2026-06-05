@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NUT SYSTEM — ระบบแสดงข้อมูลน็อตล้อ (ไม่สามารถเพิ่มได้)</title>
+<title>NUT SYSTEM — ระบบจัดการน็อตล้อ พร้อม Sidebar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -34,6 +34,7 @@
     --radius: 10px;
     --radius-lg: 16px;
     --radius-xl: 20px;
+    --sidebar-width: 260px;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -46,6 +47,7 @@
     overflow-x: hidden;
   }
 
+  /* Global background pattern */
   body::before {
     content: '';
     position: fixed;
@@ -66,24 +68,157 @@
     z-index: 0;
   }
 
-  .wrapper {
+  /* LAYOUT ด้วย flex + sidebar จริงจัง */
+  .app-layout {
+    display: flex;
+    min-height: 100vh;
     position: relative;
     z-index: 2;
-    max-width: 1160px;
-    margin: 0 auto;
-    padding: 48px 24px 80px;
+  }
+
+  /* ========= SIDEBAR (ทางซ้าย) ========= */
+  .sidebar {
+    width: var(--sidebar-width);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    border-right: 1px solid var(--border);
+    box-shadow: 4px 0 20px rgba(37,99,235,0.06);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    transition: all 0.2s;
+    z-index: 10;
+    flex-shrink: 0;
+  }
+
+  .sidebar-header {
+    padding: 32px 20px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mini-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .mini-icon {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, #2563eb, #60a5fa);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+  }
+  .mini-title {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text);
+  }
+  .mini-title span { color: var(--blue); }
+  .sidebar-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .stat-summary {
+    margin-top: 24px;
+    background: var(--blue-xlight);
+    border-radius: 20px;
+    padding: 16px;
+  }
+  .stat-summary p {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--blue-dark);
+    margin-bottom: 12px;
+  }
+  .total-badge {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--sans);
+  }
+  .total-label {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .total-number {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--blue);
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    padding: 24px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: 14px;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+  }
+  .nav-item i { font-size: 18px; width: 24px; }
+  .nav-item:hover { background: var(--blue-xlight); color: var(--blue); }
+  .nav-item.active {
+    background: var(--blue-light);
+    color: var(--blue-dark);
+    font-weight: 600;
+    box-shadow: inset 0 0 0 1px var(--surface);
+  }
+
+  .sidebar-footer {
+    padding: 16px 20px 28px;
+    border-top: 1px solid var(--border);
+    font-size: 10px;
+    color: var(--text-dim);
+  }
+
+  /* MAIN CONTENT */
+  .main-content {
+    flex: 1;
+    padding: 32px 32px 60px;
+    max-width: calc(100% - var(--sidebar-width));
+    transition: all 0.2s;
   }
 
   .header-area {
-    margin-bottom: 48px;
+    margin-bottom: 28px;
   }
 
   .header-top {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: 24px;
     flex-wrap: wrap;
+    margin-bottom: 24px;
   }
 
   .brand {
@@ -114,7 +249,7 @@
   }
   .brand-title {
     font-family: var(--sans);
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 700;
     color: var(--text);
     line-height: 1.1;
@@ -181,20 +316,20 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
-    margin-top: 28px;
+    margin-top: 8px;
   }
 
   .stat-card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 16px 20px;
+    padding: 14px 16px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     box-shadow: var(--shadow-sm);
     transition: all 0.2s;
-    cursor: default;
+    cursor: pointer;
   }
   .stat-card:hover {
     box-shadow: var(--shadow-md);
@@ -231,7 +366,7 @@
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px;
+    gap: 18px;
     margin-top: 32px;
   }
 
@@ -244,7 +379,6 @@
     display: flex;
     flex-direction: column;
     transition: all 0.25s;
-    position: relative;
   }
 
   .card:hover {
@@ -296,7 +430,6 @@
     font-weight: 600;
   }
 
-  /* ไม่มีส่วน input แล้ว */
   .nut-list {
     list-style: none;
     flex: 1;
@@ -443,160 +576,298 @@
   .toast.error { background: var(--red); box-shadow: 0 8px 28px rgba(239,68,68,0.3); }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  .bottom-bar {
+  .bottom-info-bar {
     margin-top: 48px;
-    padding-top: 24px;
+    padding-top: 20px;
     border-top: 1px solid var(--border-mid);
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .bottom-info {
     font-size: 12px;
     color: var(--text-muted);
   }
-  .bottom-info span { color: var(--blue); font-weight: 500; }
 
-  @media (max-width: 700px) {
-    .header-top { flex-direction: column; }
+  @media (max-width: 780px) {
+    .sidebar { width: 220px; }
+    .main-content { padding: 20px; }
     .stat-row { grid-template-columns: repeat(2, 1fr); }
-    .brand-title { font-size: 21px; }
+    .brand-title { font-size: 22px; }
+  }
+  @media (max-width: 650px) {
+    .app-layout { flex-direction: column; }
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+      flex-direction: row;
+      flex-wrap: wrap;
+      padding: 12px 16px;
+      backdrop-filter: blur(16px);
+    }
+    .sidebar-header { padding: 8px 0; border-bottom: none; width: 100%; }
+    .sidebar-nav { flex-direction: row; padding: 8px; gap: 6px; flex-wrap: wrap; }
+    .nav-item { width: auto; padding: 6px 12px; }
+    .main-content { max-width: 100%; }
   }
 </style>
 </head>
 <body>
-<div class="wrapper">
-
-  <div class="header-area">
-    <div class="header-top">
-      <div class="brand">
-        <div class="brand-icon">⚙️</div>
-        <div class="brand-text">
-          <div class="brand-eyebrow">Workshop Management</div>
-          <div class="brand-title">ระบบ<span>น็อตล้อ</span></div>
-          <div class="brand-sub">แสดงข้อมูลน็อตแยกตามหมวดหมู่ (ไม่สามารถเพิ่มได้)</div>
+<div class="app-layout">
+  <!-- SIDEBAR ทางซ้าย -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="mini-logo">
+        <div class="mini-icon">⚙️</div>
+        <div class="mini-title">NUT<span>SYSTEM</span></div>
+      </div>
+      <div class="sidebar-sub">แสดงข้อมูลน็อตล้อ — หมวดหมู่ 4 กลุ่ม</div>
+      <div class="stat-summary">
+        <p>📊 สรุปทั้งหมด</p>
+        <div class="total-badge">
+          <span class="total-label">จำนวนน็อตทั้งหมด</span>
+          <span class="total-number" id="global-total-count">0</span>
         </div>
       </div>
-      <div class="header-actions">
-        <div class="badge-live">LIVE</div>
-        <button class="btn-export" id="btn-export">⬇ Export JSON</button>
+    </div>
+    <div class="sidebar-nav" id="sidebar-nav">
+      <!-- dynamic nav items will be injected -->
+    </div>
+    <div class="sidebar-footer">
+      <div>© Workshop Manager</div>
+      <div style="margin-top: 6px;">⚡ ข้อมูลถูกบันทึกใน LocalStorage</div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="header-area">
+      <div class="header-top">
+        <div class="brand">
+          <div class="brand-icon">🔩</div>
+          <div class="brand-text">
+            <div class="brand-eyebrow">Inventory Viewer</div>
+            <div class="brand-title">ระบบ<span>น็อตล้อ</span></div>
+            <div class="brand-sub">แสดงข้อมูลน็อตแยกตามหมวดหมู่ (ไม่สามารถเพิ่มได้)</div>
+          </div>
+        </div>
+        <div class="header-actions">
+          <div class="badge-live">LIVE DATA</div>
+          <button class="btn-export" id="btn-export">⬇ Export JSON</button>
+        </div>
       </div>
+      <div class="stat-row" id="stat-row"></div>
     </div>
 
-    <div class="stat-row" id="stat-row"></div>
-  </div>
+    <div class="cards-grid" id="app"></div>
 
-  <div class="cards-grid" id="app"></div>
-
-  <div class="bottom-bar">
-    <div class="bottom-info">บันทึกใน localStorage • <span>ข้อมูลไม่หายเมื่อปิดเบราว์เซอร์</span></div>
-    <div class="bottom-info">รายการทั้งหมด: <span id="grand-total">0</span> รายการ</div>
-  </div>
+    <div class="bottom-info-bar">
+      <span>💾 ระบบอ่านข้อมูลจาก localStorage • ข้อมูลคงอยู่ถาวร</span>
+      <span>🔧 ฟังก์ชัน: ลบทีละรายการ / ลบทั้งหมดในหมวด</span>
+    </div>
+  </main>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const CATS = ["3RHB","3FHB","3RHN","3FHN"];
-const ICONS = { "3RHB":"🔩","3FHB":"⚙️","3RHN":"🔧","3FHN":"🛞" };
+  const CATS = ["3RHB","3FHB","3RHN","3FHN"];
+  const ICONS = { "3RHB":"🔩","3FHB":"⚙️","3RHN":"🔧","3FHN":"🛞" };
+  const NICE_NAMES = { "3RHB":"Rear Right (B)","3FHB":"Front Right (B)","3RHN":"Rear Right (N)","3FHN":"Front Right (N)" };
 
-function load(c){try{return JSON.parse(localStorage.getItem("ns2_"+c)||"[]")}catch{return[]}}
-function save(c,a){localStorage.setItem("ns2_"+c,JSON.stringify(a))}
-
-function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-
-function toast(msg,type=""){
-  const t=document.getElementById("toast");
-  t.textContent=msg;
-  t.className="toast"+(type?" "+type:"")+" show";
-  clearTimeout(t._t);
-  t._t=setTimeout(()=>t.classList.remove("show"),2200);
-}
-
-function updateGrand(){
-  document.getElementById("grand-total").textContent=CATS.reduce((s,c)=>s+load(c).length,0);
-}
-
-function renderStat(c){
-  const el=document.getElementById("sn-"+c);
-  if(el)el.textContent=load(c).length;
-}
-
-function renderList(c){
-  const items=load(c);
-  const ul=document.getElementById("ul-"+c);
-  const fc=document.getElementById("fc-"+c);
-  const pill=document.getElementById("pill-"+c);
-  if(!ul)return;
-  if(pill)pill.textContent=items.length;
-  if(fc)fc.innerHTML=`<b>${items.length}</b> รายการ`;
-  if(items.length===0){
-    ul.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-txt">ไม่มีข้อมูล</div></div>`;
-  } else {
-    ul.innerHTML=items.map((v,i)=>`
-      <li class="nut-item">
-        <span class="item-idx">${String(i+1).padStart(2,"0")}</span>
-        <span class="item-dot-small"></span>
-        <span class="item-val">${esc(v)}</span>
-        <button class="btn-del" data-c="${c}" data-i="${i}" title="ลบ">×</button>
-      </li>
-    `).join("");
-    ul.querySelectorAll(".btn-del").forEach(b=>b.addEventListener("click",()=>{
-      const a=load(b.dataset.c);a.splice(+b.dataset.i,1);save(b.dataset.c,a);renderList(b.dataset.c);renderStat(b.dataset.c);updateGrand();
-      toast("ลบรายการเรียบร้อย");
-    }));
+  // helper localstorage
+  function load(cat) {
+    try { return JSON.parse(localStorage.getItem("nut_"+cat) || "[]"); } catch(e) { return []; }
   }
-  renderStat(c);updateGrand();
-}
+  function save(cat, arr) { localStorage.setItem("nut_"+cat, JSON.stringify(arr)); }
 
-function buildUI(){
-  document.getElementById("stat-row").innerHTML=CATS.map(c=>`
-    <div class="stat-card">
-      <div class="stat-icon">${ICONS[c]}</div>
-      <div class="stat-info">
-        <div class="stat-cat">${c}</div>
-        <div class="stat-num" id="sn-${c}">0</div>
-      </div>
-    </div>
-  `).join("");
-
-  document.getElementById("app").innerHTML=CATS.map(c=>`
-    <div class="card">
-      <div class="card-stripe"></div>
-      <div class="card-header">
-        <div class="cat-left">
-          <div class="cat-dot"></div>
-          <span class="cat-name">${c}</span>
-        </div>
-        <span class="cat-pill" id="pill-${c}">0</span>
-      </div>
-      <ul class="nut-list" id="ul-${c}"></ul>
-      <div class="card-foot">
-        <span class="foot-count" id="fc-${c}"><b>0</b> รายการ</span>
-        <button class="btn-clear" data-c="${c}">ลบทั้งหมด</button>
-      </div>
-    </div>
-  `).join("");
-
-  CATS.forEach(c=>{
-    renderList(c);
-    document.querySelector(`.btn-clear[data-c="${c}"]`).addEventListener("click",()=>{
-      if(!load(c).length)return toast("ไม่มีข้อมูลใน "+c,"error");
-      if(confirm("ลบทั้งหมดใน "+c+" ?")){save(c,[]);renderList(c);toast("ลบทั้งหมดใน "+c+" แล้ว");}
+  // initial mock data สำหรับโชว์ว่าระบบมีข้อมูล (ไม่มีการเพิ่มฟอร์มใดๆ) 
+  // แต่ถ้า localStorage ยังว่างเปล่าให้เพิ่ม demo data ไว้เป็นตัวอย่าง (ไม่สามารถเพิ่มเองได้)
+  function initSampleData() {
+    let changed = false;
+    CATS.forEach(c => {
+      const current = load(c);
+      if(current.length === 0) {
+        if(c === "3RHB") save(c, ["M12x1.25","M12x1.5","SW19"]);
+        else if(c === "3FHB") save(c, ["SW17 Zinc","SW19 Black","M14x1.5"]);
+        else if(c === "3RHN") save(c, ["Nickel Plated","Stainless M12"]);
+        else if(c === "3FHN") save(c, ["High Tensile","Flange Nut"]);
+        changed = true;
+      }
     });
+    if(changed) toast("โหลดข้อมูลตัวอย่างเริ่มต้น ✓","");
+  }
+
+  function esc(s) { return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+  
+  let currentActiveCat = CATS[0]; // default active for sidebar highlight
+
+  function toast(msg, type="") {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.className = "toast" + (type ? " " + type : "") + " show";
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.classList.remove("show"), 2200);
+  }
+
+  function updateGlobalTotal() {
+    const total = CATS.reduce((sum, c) => sum + load(c).length, 0);
+    document.getElementById("global-total-count").innerText = total;
+  }
+
+  function renderStatCards() {
+    const statRow = document.getElementById("stat-row");
+    statRow.innerHTML = CATS.map(c => `
+      <div class="stat-card" data-cat="${c}">
+        <div class="stat-icon">${ICONS[c]}</div>
+        <div class="stat-info">
+          <div class="stat-cat">${c}</div>
+          <div class="stat-num" id="stat-${c}">${load(c).length}</div>
+        </div>
+      </div>
+    `).join("");
+    // click on stat -> scroll to card? ดีงาม
+    document.querySelectorAll(".stat-card").forEach(el => {
+      el.addEventListener("click", () => {
+        const cat = el.dataset.cat;
+        const targetCard = document.getElementById(`card-${cat}`);
+        if(targetCard) targetCard.scrollIntoView({ behavior: "smooth", block: "center" });
+        setActiveNav(cat);
+      });
+    });
+  }
+
+  function renderListByCat(cat) {
+    const items = load(cat);
+    const container = document.getElementById(`list-${cat}`);
+    const countSpan = document.getElementById(`count-${cat}`);
+    const pillSpan = document.getElementById(`pill-${cat}`);
+    if(!container) return;
+    if(pillSpan) pillSpan.innerText = items.length;
+    if(countSpan) countSpan.innerHTML = `<b>${items.length}</b> รายการ`;
+    if(items.length === 0) {
+      container.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><div class="empty-txt">ไม่มีข้อมูลน็อตในหมวดนี้</div></div>`;
+    } else {
+      container.innerHTML = items.map((val, idx) => `
+        <li class="nut-item">
+          <span class="item-idx">${String(idx+1).padStart(2,"0")}</span>
+          <span class="item-dot-small"></span>
+          <span class="item-val">${esc(val)}</span>
+          <button class="btn-del" data-cat="${cat}" data-index="${idx}" title="ลบ">×</button>
+        </li>
+      `).join("");
+      container.querySelectorAll(".btn-del").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          const catDel = btn.dataset.cat;
+          const idxDel = parseInt(btn.dataset.index);
+          const arr = load(catDel);
+          if(idxDel >= 0 && idxDel < arr.length) {
+            arr.splice(idxDel, 1);
+            save(catDel, arr);
+            renderListByCat(catDel);
+            renderStatCards();
+            updateGlobalTotal();
+            setActiveNav(catDel);
+            toast(`ลบ "${arr[idxDel]}" ออกจาก ${catDel}`, "");
+          }
+        });
+      });
+    }
+    // update stat number
+    const statSpan = document.getElementById(`stat-${cat}`);
+    if(statSpan) statSpan.innerText = items.length;
+    updateGlobalTotal();
+  }
+
+  function renderAllCards() {
+    const grid = document.getElementById("app");
+    grid.innerHTML = CATS.map(c => `
+      <div class="card" id="card-${c}">
+        <div class="card-stripe"></div>
+        <div class="card-header">
+          <div class="cat-left">
+            <div class="cat-dot"></div>
+            <span class="cat-name">${c}</span>
+          </div>
+          <span class="cat-pill" id="pill-${c}">0</span>
+        </div>
+        <ul class="nut-list" id="list-${c}"></ul>
+        <div class="card-foot">
+          <span class="foot-count" id="count-${c}"><b>0</b> รายการ</span>
+          <button class="btn-clear" data-cat-clear="${c}">ลบทั้งหมด</button>
+        </div>
+      </div>
+    `).join("");
+
+    CATS.forEach(c => {
+      renderListByCat(c);
+      const clearBtn = document.querySelector(`.btn-clear[data-cat-clear="${c}"]`);
+      if(clearBtn) {
+        clearBtn.addEventListener("click", () => {
+          const items = load(c);
+          if(!items.length) return toast(`ไม่มีข้อมูลใน ${c}`, "error");
+          if(confirm(`⚠️ ลบข้อมูลน็อตทั้งหมดในหมวด ${c} (${items.length} รายการ) ?`)) {
+            save(c, []);
+            renderListByCat(c);
+            renderStatCards();
+            updateGlobalTotal();
+            toast(`🗑 ลบทั้งหมดใน ${c} แล้ว`, "");
+          }
+        });
+      }
+    });
+  }
+
+  // sidebar navigation dynamic
+  function buildSidebarNav() {
+    const navContainer = document.getElementById("sidebar-nav");
+    navContainer.innerHTML = CATS.map(c => `
+      <button class="nav-item" data-nav-cat="${c}">
+        <i>${ICONS[c]}</i> 
+        <span>${c} <span style="font-size:10px; opacity:0.7;">(${NICE_NAMES[c] || ''})</span></span>
+      </button>
+    `).join("");
+    document.querySelectorAll(".nav-item").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const cat = btn.dataset.navCat;
+        setActiveNav(cat);
+        const targetCard = document.getElementById(`card-${cat}`);
+        if(targetCard) targetCard.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+    setActiveNav(currentActiveCat);
+  }
+
+  function setActiveNav(cat) {
+    currentActiveCat = cat;
+    document.querySelectorAll(".nav-item").forEach(btn => {
+      if(btn.dataset.navCat === cat) btn.classList.add("active");
+      else btn.classList.remove("active");
+    });
+  }
+
+  // export full data
+  document.getElementById("btn-export").addEventListener("click", () => {
+    const exportData = {};
+    CATS.forEach(c => exportData[c] = load(c));
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], {type: "application/json"});
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `nut_system_${new Date().toISOString().slice(0,19)}.json`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+    toast("✅ Export JSON สำเร็จ");
   });
-}
 
-document.getElementById("btn-export").addEventListener("click",()=>{
-  const d={};CATS.forEach(c=>d[c]=load(c));
-  const b=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="nutbolt_export.json";a.click();
-  toast("✓ Export สำเร็จ");
-});
+  function init() {
+    initSampleData();
+    buildSidebarNav();
+    renderStatCards();
+    renderAllCards();
+    updateGlobalTotal();
+    // optional: เลือก active แรก
+    if(CATS.length) setActiveNav(CATS[0]);
+  }
 
-buildUI();
+  init();
 </script>
 </body>
 </html>
