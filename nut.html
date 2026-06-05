@@ -124,37 +124,152 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;height:400px;backgrou
 .btn-act.amber{color:var(--amber);border-color:rgba(245,158,11,0.3)}
 .btn-act.amber:hover{background:var(--amber-light);border-color:var(--amber)}
 
-/* ปุ่มพิเศษ 3 ปุ่ม */
+/* ===== ปุ่มพิเศษ 3 ปุ่ม (อัปเกรด) ===== */
 .special-buttons {
   display: flex;
   gap: 12px;
   margin-top: 10px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
 }
+
 .btn-special {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, var(--blue), var(--blue-mid));
-  color: white;
+  gap: 10px;
+  padding: 0 22px 0 10px;
+  height: 52px;
   border: none;
-  border-radius: 40px;
-  padding: 10px 20px;
-  font-family: var(--sans);
-  font-size: 13px;
-  font-weight: 600;
+  border-radius: 16px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(37,99,235,0.3);
-  transition: all 0.2s;
+  font-family: var(--sans);
+  overflow: hidden;
+  transition: transform 0.2s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s;
+  flex: 1;
+  min-width: 170px;
 }
-.btn-special:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(37,99,235,0.4);
-}
-.btn-special.orange { background: linear-gradient(135deg, #f59e0b, #f97316); }
-.btn-special.purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-.btn-special.teal { background: linear-gradient(135deg, #14b8a6, #0d9488); }
 
+/* shimmer sweep on hover */
+.btn-special::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -80%;
+  width: 60%; height: 100%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.28) 50%, transparent 100%);
+  transform: skewX(-15deg);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+.btn-special:hover::after { left: 130%; }
+.btn-special:hover { transform: translateY(-3px); }
+.btn-special:active { transform: scale(0.97) translateY(-1px); }
+
+.btn-special .sp-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  flex-shrink: 0;
+  transition: transform 0.28s cubic-bezier(.34,1.56,.64,1);
+  backdrop-filter: blur(4px);
+}
+.btn-special:hover .sp-icon { transform: rotate(-10deg) scale(1.18); }
+
+.btn-special .sp-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.2;
+  flex: 1;
+}
+.btn-special .sp-main {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.01em;
+}
+.btn-special .sp-sub {
+  font-size: 10px;
+  color: rgba(255,255,255,0.78);
+  margin-top: 2px;
+  letter-spacing: 0.02em;
+}
+
+.btn-special .sp-badge {
+  padding: 2px 9px;
+  border-radius: 99px;
+  font-size: 9px;
+  font-weight: 700;
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+/* ping dot (เฉพาะ NewModel) */
+.ping-dot {
+  position: absolute;
+  top: 9px; right: 9px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #fff;
+}
+.ping-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.7);
+  animation: pingAnim 1.8s ease-in-out infinite;
+}
+@keyframes pingAnim {
+  0%   { transform: scale(1); opacity: 1; }
+  70%  { transform: scale(2.4); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+/* ripple */
+@keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
+.ripple-el {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.32);
+  width: 60px; height: 60px;
+  margin-left: -30px; margin-top: -30px;
+  animation: rippleAnim 0.55s linear;
+  pointer-events: none;
+}
+
+/* สีแต่ละปุ่ม */
+.btn-special.orange {
+  background: linear-gradient(130deg, #d97706 0%, #f97316 55%, #fb923c 100%);
+  box-shadow: 0 4px 18px rgba(217,119,6,0.38), 0 1px 4px rgba(0,0,0,0.08);
+}
+.btn-special.orange:hover {
+  box-shadow: 0 8px 28px rgba(217,119,6,0.52), 0 2px 6px rgba(0,0,0,0.1);
+}
+.btn-special.purple {
+  background: linear-gradient(130deg, #6d28d9 0%, #7c3aed 55%, #a855f7 100%);
+  box-shadow: 0 4px 18px rgba(109,40,217,0.38), 0 1px 4px rgba(0,0,0,0.08);
+}
+.btn-special.purple:hover {
+  box-shadow: 0 8px 28px rgba(109,40,217,0.52), 0 2px 6px rgba(0,0,0,0.1);
+}
+.btn-special.teal {
+  background: linear-gradient(130deg, #0f766e 0%, #0d9488 55%, #2dd4bf 100%);
+  box-shadow: 0 4px 18px rgba(15,118,110,0.38), 0 1px 4px rgba(0,0,0,0.08);
+}
+.btn-special.teal:hover {
+  box-shadow: 0 8px 28px rgba(15,118,110,0.52), 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* ===== STATS ===== */
 .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm);transition:all 0.2s;cursor:pointer}
 .stat-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--border-mid)}
@@ -168,8 +283,6 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;height:400px;backgrou
 .table-cat-title{font-family:var(--sans);font-size:18px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:10px}
 .table-cat-pill{background:var(--blue-xlight);color:var(--blue);border:1px solid var(--blue-light);border-radius:99px;padding:3px 12px;font-family:var(--sans);font-size:11px;font-weight:600}
 .table-actions{display:flex;align-items:center;gap:8px}
-
-/* Search bar */
 .search-bar{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border-mid);border-radius:99px;padding:6px 14px}
 .search-bar input{border:none;background:transparent;outline:none;font-family:var(--sans);font-size:13px;color:var(--text);width:180px}
 
@@ -232,7 +345,7 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
 .bottom-info{margin-top:40px;padding-top:16px;border-top:1px solid var(--border-mid);display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);flex-wrap:wrap;gap:6px}
 
 @media(max-width:900px){.stat-row{grid-template-columns:repeat(2,1fr)}.topbar-sys-label{display:none}.form-grid{grid-template-columns:1fr}}
-@media(max-width:700px){.topbar-center{display:none}.topbar{padding:0 16px}.app-layout{flex-direction:column}.sidebar{width:100%;height:auto;position:relative;top:0}.sidebar-nav{flex-direction:row;flex-wrap:wrap;padding:10px}.nav-item{width:auto}.main-content{max-width:100%;padding:16px}.brand-title{font-size:20px}}
+@media(max-width:700px){.topbar-center{display:none}.topbar{padding:0 16px}.app-layout{flex-direction:column}.sidebar{width:100%;height:auto;position:relative;top:0}.sidebar-nav{flex-direction:row;flex-wrap:wrap;padding:10px}.nav-item{width:auto}.main-content{max-width:100%;padding:16px}.brand-title{font-size:20px}.special-buttons{flex-direction:column}.btn-special{min-width:100%}}
 </style>
 </head>
 <body>
@@ -321,12 +434,44 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
           <button class="btn-act red" id="resetBtn">🗑️ รีเซ็ตทั้งหมด</button>
         </div>
       </div>
-      <!-- ส่วนของปุ่มพิเศษ 3 ปุ่ม -->
+
+      <!-- ===== ปุ่มพิเศษ 3 ปุ่ม (อัปเกรดแล้ว) ===== -->
       <div class="special-buttons">
-        <button class="btn-special orange" id="newModelBtn">🆕 NewModel</button>
-        <button class="btn-special purple" id="bestSellerBtn">🏆 สินค้าขายดีน็อตล้อ</button>
-        <button class="btn-special teal" id="trackOrderBtn">📅 ติดตามกำหนดส่งน็อตล้อ</button>
+
+        <!-- NewModel -->
+        <button class="btn-special orange" id="newModelBtn" onclick="addRipple(event)">
+          <div class="sp-icon">🆕</div>
+          <div class="sp-text">
+            <span class="sp-main">NewModel</span>
+            <span class="sp-sub">รุ่นสินค้าใหม่ล่าสุด</span>
+          </div>
+          <span class="sp-badge">NEW</span>
+          <div class="ping-dot"></div>
+        </button>
+
+        <!-- Best Seller -->
+        <button class="btn-special purple" id="bestSellerBtn" onclick="addRipple(event)">
+          <div class="sp-icon">🏆</div>
+          <div class="sp-text">
+            <span class="sp-main">สินค้าขายดี</span>
+            <span class="sp-sub">น็อตล้อยอดนิยม</span>
+          </div>
+          <span class="sp-badge">TOP</span>
+        </button>
+
+        <!-- Track Order -->
+        <button class="btn-special teal" id="trackOrderBtn" onclick="addRipple(event)">
+          <div class="sp-icon">📅</div>
+          <div class="sp-text">
+            <span class="sp-main">ติดตามกำหนดส่ง</span>
+            <span class="sp-sub">ตรวจสอบการจัดส่ง</span>
+          </div>
+          <span class="sp-badge">TRACK</span>
+        </button>
+
       </div>
+      <!-- ===== จบปุ่มพิเศษ ===== -->
+
       <div class="stat-row" id="statRow"></div>
     </div>
 
@@ -668,10 +813,22 @@ function saveItem(){
   saveData(); renderAll(); closeModal();
 }
 
+/* --- RIPPLE EFFECT สำหรับปุ่มพิเศษ --- */
+function addRipple(e) {
+  const btn = e.currentTarget;
+  const old = btn.querySelector('.ripple-el');
+  if (old) old.remove();
+  const circle = document.createElement('span');
+  circle.className = 'ripple-el';
+  const rect = btn.getBoundingClientRect();
+  circle.style.left = (e.clientX - rect.left) + 'px';
+  circle.style.top  = (e.clientY - rect.top)  + 'px';
+  btn.appendChild(circle);
+  setTimeout(() => circle.remove(), 600);
+}
+
 /* --- ฟังก์ชันสำหรับ 3 ปุ่มพิเศษ (เปิดหน้าใหม่) --- */
 function openPage(pageName) {
-  // สร้างลิงก์ไปยังหน้าเป้าหมาย ตามชื่อไฟล์
-  // เช่น newmodel.html, bestseller.html, trackorder.html
   window.location.href = pageName;
 }
 
