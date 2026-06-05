@@ -2,8 +2,8 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NUT SYSTEM — ระบบจัดการน็อตล้อ (ไม่มีข้อมูลเริ่มต้น)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>NUT SYSTEM — ระบบจัดการน็อตล้อ | 4 หมวดหมู่หลัก</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -363,7 +363,7 @@
 
   .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 18px;
     margin-top: 32px;
   }
@@ -468,7 +468,7 @@
     font-size: 10px;
     font-weight: 600;
     color: var(--text-dim);
-    width: 18px;
+    width: 22px;
     flex-shrink: 0;
     text-align: center;
   }
@@ -490,8 +490,8 @@
   }
 
   .btn-del {
-    width: 22px; height: 22px;
-    border-radius: 50%;
+    width: 26px; height: 26px;
+    border-radius: 30px;
     border: none;
     background: none;
     cursor: pointer;
@@ -582,7 +582,43 @@
     justify-content: space-between;
     font-size: 12px;
     color: var(--text-muted);
+    flex-wrap: wrap;
   }
+
+  .add-area {
+    background: var(--surface);
+    border-radius: 60px;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border-mid);
+    box-shadow: var(--shadow-sm);
+  }
+  .add-input {
+    border: none;
+    padding: 8px 14px;
+    font-family: var(--sans);
+    font-size: 12px;
+    border-radius: 60px;
+    background: transparent;
+    outline: none;
+    width: 140px;
+  }
+  .add-input:focus { background: var(--blue-xlight); }
+  .add-btn {
+    background: var(--blue);
+    border: none;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 60px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .add-btn:hover { background: var(--blue-dark); }
 
   @media (max-width: 780px) {
     .sidebar { width: 220px; }
@@ -617,7 +653,7 @@
         <div class="mini-icon">⚙️</div>
         <div class="mini-title">NUT<span>SYSTEM</span></div>
       </div>
-      <div class="sidebar-sub">แสดงข้อมูลน็อตล้อ — หมวดหมู่ 4 กลุ่ม</div>
+      <div class="sidebar-sub">ระบบจัดการน็อตล้อ — 4 หมวดหมู่หลัก</div>
       <div class="stat-summary">
         <p>📊 สรุปทั้งหมด</p>
         <div class="total-badge">
@@ -628,12 +664,301 @@
     </div>
     <div class="sidebar-nav" id="sidebar-nav"></div>
     <div class="sidebar-footer">
-      <div>© Workshop Manager</div>
-      <div style="margin-top: 6px;">⚡ ข้อมูลถูกบันทึกใน LocalStorage</div>
+      <div>© Workshop Manager | NUT SYSTEM</div>
+      <div style="margin-top: 6px;">⚡ ข้อมูลถูกบันทึกใน LocalStorage | ไม่มีข้อมูลเริ่มต้น</div>
     </div>
   </aside>
 
   <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="header-area">
+      <div class="header-top">
+        <div class="brand">
+          <div class="brand-icon">🔩</div>
+          <div class="brand-text">
+            <div class="brand-eyebrow">NUT MANAGEMENT</div>
+            <div class="brand-title">NUT <span>SYSTEM</span></div>
+            <div class="brand-sub">ระบบจัดการน็อตล้อรถยนต์ 4 กลุ่มหลัก</div>
+          </div>
+        </div>
+        <div class="header-actions">
+          <div class="badge-live">LOCAL STORAGE</div>
+          <button class="btn-export" id="exportDataBtn">📎 ส่งออก JSON</button>
+        </div>
+      </div>
+      <div class="stat-row" id="statRow"></div>
+    </div>
 
+    <!-- Cards dynamic -->
+    <div id="cardsContainer" class="cards-grid"></div>
+
+    <!-- add section per category in UI? show quick add universal -->
+    <div class="bottom-info-bar">
+      <div>🔧 คลิกที่ปุ่ม + เพื่อเพิ่มน็อตในแต่ละหมวดหมู่</div>
+      <div>✨ ลบรายการ หรือเคลียร์ทั้งหมดได้ที่การ์ดแต่ละใบ</div>
+    </div>
+  </main>
+</div>
+<div id="toastMsg" class="toast"></div>
+
+<script>
+  // กำหนดหมวดหมู่ตามที่ระบุ: 3RHB, 3FHB, 3FHN, 3RHN (4 กลุ่ม)
+  const CATEGORIES = ["3RHB", "3FHB", "3FHN", "3RHN"];
+  
+  // โครงสร้างข้อมูล: แต่ละ category จะมี array ของสตริง (ชื่อน็อต/รหัส)
+  let nutsData = {};
+
+  // โหลดจาก LocalStorage หรือเริ่มต้น为空对象 (ไม่มีข้อมูลเริ่มต้น)
+  function loadData() {
+    const stored = localStorage.getItem("nutsystem_data");
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        // ตรวจสอบว่าเป็น object และมี keys ครบทั้ง 4 หมวด
+        CATEGORIES.forEach(cat => {
+          if (!parsed[cat] || !Array.isArray(parsed[cat])) parsed[cat] = [];
+          else parsed[cat] = parsed[cat].filter(item => item && typeof item === 'string' && item.trim() !== '');
+        });
+        nutsData = parsed;
+      } catch(e) { resetToEmpty(); }
+    } else {
+      resetToEmpty();
+    }
+    // กัน undefined
+    CATEGORIES.forEach(cat => { if (!nutsData[cat]) nutsData[cat] = []; });
+    saveToLocal();
+  }
+
+  function resetToEmpty() {
+    const empty = {};
+    CATEGORIES.forEach(cat => { empty[cat] = []; });
+    nutsData = empty;
+  }
+
+  function saveToLocal() {
+    localStorage.setItem("nutsystem_data", JSON.stringify(nutsData));
+  }
+
+  // helper อัปเดต UI ทุกส่วน
+  function renderAll() {
+    renderSidebarNav();
+    renderStatRow();
+    renderCards();
+    updateGlobalTotal();
+  }
+
+  function updateGlobalTotal() {
+    let total = 0;
+    CATEGORIES.forEach(cat => { total += nutsData[cat].length; });
+    document.getElementById("global-total-count").innerText = total;
+  }
+
+  function renderSidebarNav() {
+    const container = document.getElementById("sidebar-nav");
+    if (!container) return;
+    container.innerHTML = "";
+    CATEGORIES.forEach(cat => {
+      const btn = document.createElement("button");
+      btn.className = "nav-item";
+      btn.innerHTML = `<i>🔩</i> <span>${cat}</span>`;
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const targetCard = document.getElementById(`card-${cat}`);
+        if (targetCard) {
+          targetCard.scrollIntoView({ behavior: "smooth", block: "start" });
+          // เพิ่มไฮไลท์เล็กน้อย
+          targetCard.style.transition = "0.2s";
+          targetCard.style.boxShadow = "0 0 0 2px var(--blue), 0 8px 20px rgba(0,0,0,0.1)";
+          setTimeout(() => { targetCard.style.boxShadow = ""; }, 800);
+        }
+        showToast(`เลื่อนไปที่หมวด ${cat}`, 1200);
+      });
+      container.appendChild(btn);
+    });
+  }
+
+  function renderStatRow() {
+    const statRow = document.getElementById("statRow");
+    if (!statRow) return;
+    statRow.innerHTML = "";
+    CATEGORIES.forEach(cat => {
+      const count = nutsData[cat].length;
+      const cardStat = document.createElement("div");
+      cardStat.className = "stat-card";
+      cardStat.innerHTML = `
+        <div class="stat-icon">🔩</div>
+        <div class="stat-info">
+          <div class="stat-cat">${cat}</div>
+          <div class="stat-num">${count}</div>
+        </div>
+      `;
+      cardStat.addEventListener("click", () => {
+        const targetCard = document.getElementById(`card-${cat}`);
+        if (targetCard) targetCard.scrollIntoView({ behavior: "smooth", block: "center" });
+        showToast(`แสดง ${cat} — มี ${count} ชิ้น`, 1200);
+      });
+      statRow.appendChild(cardStat);
+    });
+  }
+
+  // สร้างการ์ดแต่ละหมวดพร้อมรายการ และฟังก์ชันเพิ่ม/ลบ/ล้าง
+  function renderCards() {
+    const container = document.getElementById("cardsContainer");
+    if (!container) return;
+    container.innerHTML = "";
+    CATEGORIES.forEach(cat => {
+      const items = nutsData[cat] || [];
+      const card = document.createElement("div");
+      card.className = "card";
+      card.id = `card-${cat}`;
+      
+      // header
+      const headerDiv = document.createElement("div");
+      headerDiv.className = "card-header";
+      headerDiv.innerHTML = `
+        <div class="cat-left">
+          <div class="cat-dot"></div>
+          <div class="cat-name">${cat}</div>
+        </div>
+        <div class="cat-pill">NUT GROUP</div>
+      `;
+      card.appendChild(headerDiv);
+      
+      // list area
+      const listUl = document.createElement("ul");
+      listUl.className = "nut-list";
+      if (items.length === 0) {
+        const emptyDiv = document.createElement("div");
+        emptyDiv.className = "empty-state";
+        emptyDiv.innerHTML = `<div class="empty-icon">📦</div><div class="empty-txt">ไม่มีน็อตในหมวดนี้</div>`;
+        listUl.appendChild(emptyDiv);
+      } else {
+        items.forEach((nutVal, idx) => {
+          const li = document.createElement("li");
+          li.className = "nut-item";
+          li.innerHTML = `
+            <span class="item-idx">${idx+1}</span>
+            <span class="item-dot-small"></span>
+            <span class="item-val">${escapeHtml(nutVal)}</span>
+            <button class="btn-del" data-cat="${cat}" data-index="${idx}">✕</button>
+          `;
+          const delBtn = li.querySelector(".btn-del");
+          delBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const catDel = delBtn.getAttribute("data-cat");
+            const idxDel = parseInt(delBtn.getAttribute("data-index"));
+            if (nutsData[catDel] && nutsData[catDel][idxDel]) {
+              nutsData[catDel].splice(idxDel, 1);
+              saveToLocal();
+              renderAll();
+              showToast(`ลบ "${nutsData[catDel]?.[idxDel] || 'น็อต'}" ออกจาก ${catDel}`, 1500);
+            }
+          });
+          listUl.appendChild(li);
+        });
+      }
+      card.appendChild(listUl);
+      
+      // footer + เพิ่มน็อต
+      const footerDiv = document.createElement("div");
+      footerDiv.className = "card-foot";
+      footerDiv.innerHTML = `
+        <div class="foot-count">จำนวน: <b>${items.length}</b> ชิ้น</div>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <div class="add-area" style="background:var(--blue-xlight);">
+            <input type="text" class="add-input" id="addInput-${cat}" placeholder="รหัส/ชื่อน็อต" autocomplete="off">
+            <button class="add-btn" data-cat="${cat}">+ เพิ่ม</button>
+          </div>
+          <button class="btn-clear" data-cat="${cat}">🗑️ ล้างทั้งหมด</button>
+        </div>
+      `;
+      card.appendChild(footerDiv);
+      
+      const addBtn = footerDiv.querySelector(`.add-btn`);
+      const inputField = footerDiv.querySelector(`.add-input`);
+      addBtn.addEventListener("click", () => {
+        const rawVal = inputField.value.trim();
+        if (rawVal === "") {
+          showToast("⚠️ กรุณากรอกรหัสน็อตหรือชื่อ", 1500);
+          return;
+        }
+        nutsData[cat].push(rawVal);
+        saveToLocal();
+        inputField.value = "";
+        renderAll();
+        showToast(`✅ เพิ่ม "${rawVal}" ใน ${cat}`, 1500);
+      });
+      // กด Enter
+      inputField.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          addBtn.click();
+        }
+      });
+      
+      const clearBtn = footerDiv.querySelector(".btn-clear");
+      clearBtn.addEventListener("click", () => {
+        if (nutsData[cat].length === 0) {
+          showToast(`⚠️ หมวด ${cat} ว่างอยู่แล้ว`, 1200);
+          return;
+        }
+        if (confirm(`คุณต้องการลบน็อตทั้งหมดในหมวด ${cat} ใช่หรือไม่?`)) {
+          nutsData[cat] = [];
+          saveToLocal();
+          renderAll();
+          showToast(`🧹 ล้างหมวด ${cat} เรียบร้อย`, 1500);
+        }
+      });
+      
+      container.appendChild(card);
+    });
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+      return c;
+    });
+  }
+
+  function showToast(msg, duration = 1800, isError = false) {
+    const toast = document.getElementById("toastMsg");
+    if (!toast) return;
+    toast.innerText = msg;
+    toast.classList.remove("error");
+    if (isError) toast.classList.add("error");
+    toast.classList.add("show");
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, duration);
+  }
+
+  function exportToJSON() {
+    const exportData = JSON.stringify(nutsData, null, 2);
+    const blob = new Blob([exportData], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `nutsystem_backup_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast("📁 ส่งออกข้อมูล JSON สำเร็จ", 1800);
+  }
+
+  // เริ่มต้นและผูก event
+  document.addEventListener("DOMContentLoaded", () => {
+    loadData();
+    renderAll();
+    const exportBtn = document.getElementById("exportDataBtn");
+    if (exportBtn) exportBtn.addEventListener("click", exportToJSON);
+  });
+</script>
 </body>
 </html>
