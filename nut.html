@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NUT SYSTEM — ระบบจัดการน็อตล้อ พร้อม Sidebar</title>
+<title>NUT SYSTEM — ระบบจัดการน็อตล้อ (ไม่มีข้อมูลเริ่มต้น)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -47,7 +47,6 @@
     overflow-x: hidden;
   }
 
-  /* Global background pattern */
   body::before {
     content: '';
     position: fixed;
@@ -68,7 +67,6 @@
     z-index: 0;
   }
 
-  /* LAYOUT ด้วย flex + sidebar จริงจัง */
   .app-layout {
     display: flex;
     min-height: 100vh;
@@ -76,7 +74,7 @@
     z-index: 2;
   }
 
-  /* ========= SIDEBAR (ทางซ้าย) ========= */
+  /* ========= SIDEBAR ========= */
   .sidebar {
     width: var(--sidebar-width);
     background: rgba(255, 255, 255, 0.92);
@@ -612,7 +610,7 @@
 </head>
 <body>
 <div class="app-layout">
-  <!-- SIDEBAR ทางซ้าย -->
+  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="mini-logo">
@@ -628,9 +626,7 @@
         </div>
       </div>
     </div>
-    <div class="sidebar-nav" id="sidebar-nav">
-      <!-- dynamic nav items will be injected -->
-    </div>
+    <div class="sidebar-nav" id="sidebar-nav"></div>
     <div class="sidebar-footer">
       <div>© Workshop Manager</div>
       <div style="margin-top: 6px;">⚡ ข้อมูลถูกบันทึกใน LocalStorage</div>
@@ -673,32 +669,18 @@
   const ICONS = { "3RHB":"🔩","3FHB":"⚙️","3RHN":"🔧","3FHN":"🛞" };
   const NICE_NAMES = { "3RHB":"Rear Right (B)","3FHB":"Front Right (B)","3RHN":"Rear Right (N)","3FHN":"Front Right (N)" };
 
-  // helper localstorage
+  // LocalStorage helpers
   function load(cat) {
     try { return JSON.parse(localStorage.getItem("nut_"+cat) || "[]"); } catch(e) { return []; }
   }
   function save(cat, arr) { localStorage.setItem("nut_"+cat, JSON.stringify(arr)); }
 
-  // initial mock data สำหรับโชว์ว่าระบบมีข้อมูล (ไม่มีการเพิ่มฟอร์มใดๆ) 
-  // แต่ถ้า localStorage ยังว่างเปล่าให้เพิ่ม demo data ไว้เป็นตัวอย่าง (ไม่สามารถเพิ่มเองได้)
-  function initSampleData() {
-    let changed = false;
-    CATS.forEach(c => {
-      const current = load(c);
-      if(current.length === 0) {
-        if(c === "3RHB") save(c, ["M12x1.25","M12x1.5","SW19"]);
-        else if(c === "3FHB") save(c, ["SW17 Zinc","SW19 Black","M14x1.5"]);
-        else if(c === "3RHN") save(c, ["Nickel Plated","Stainless M12"]);
-        else if(c === "3FHN") save(c, ["High Tensile","Flange Nut"]);
-        changed = true;
-      }
-    });
-    if(changed) toast("โหลดข้อมูลตัวอย่างเริ่มต้น ✓","");
-  }
+  // เริ่มต้นไม่มีข้อมูลใดๆ ทั้งสิ้น (ไม่มีการใส่ sample data)
+  // localStorage จะว่างเปล่าในทุกหมวดหมู่
 
   function esc(s) { return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
   
-  let currentActiveCat = CATS[0]; // default active for sidebar highlight
+  let currentActiveCat = CATS[0];
 
   function toast(msg, type="") {
     const t = document.getElementById("toast");
@@ -710,7 +692,8 @@
 
   function updateGlobalTotal() {
     const total = CATS.reduce((sum, c) => sum + load(c).length, 0);
-    document.getElementById("global-total-count").innerText = total;
+    const totalEl = document.getElementById("global-total-count");
+    if(totalEl) totalEl.innerText = total;
   }
 
   function renderStatCards() {
@@ -724,7 +707,6 @@
         </div>
       </div>
     `).join("");
-    // click on stat -> scroll to card? ดีงาม
     document.querySelectorAll(".stat-card").forEach(el => {
       el.addEventListener("click", () => {
         const cat = el.dataset.cat;
@@ -743,6 +725,7 @@
     if(!container) return;
     if(pillSpan) pillSpan.innerText = items.length;
     if(countSpan) countSpan.innerHTML = `<b>${items.length}</b> รายการ`;
+    
     if(items.length === 0) {
       container.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><div class="empty-txt">ไม่มีข้อมูลน็อตในหมวดนี้</div></div>`;
     } else {
@@ -760,18 +743,18 @@
           const idxDel = parseInt(btn.dataset.index);
           const arr = load(catDel);
           if(idxDel >= 0 && idxDel < arr.length) {
+            const deletedItem = arr[idxDel];
             arr.splice(idxDel, 1);
             save(catDel, arr);
             renderListByCat(catDel);
             renderStatCards();
             updateGlobalTotal();
             setActiveNav(catDel);
-            toast(`ลบ "${arr[idxDel]}" ออกจาก ${catDel}`, "");
+            toast(`ลบ "${deletedItem}" ออกจาก ${catDel}`, "");
           }
         });
       });
     }
-    // update stat number
     const statSpan = document.getElementById(`stat-${cat}`);
     if(statSpan) statSpan.innerText = items.length;
     updateGlobalTotal();
@@ -816,7 +799,6 @@
     });
   }
 
-  // sidebar navigation dynamic
   function buildSidebarNav() {
     const navContainer = document.getElementById("sidebar-nav");
     navContainer.innerHTML = CATS.map(c => `
@@ -844,7 +826,7 @@
     });
   }
 
-  // export full data
+  // Export data
   document.getElementById("btn-export").addEventListener("click", () => {
     const exportData = {};
     CATS.forEach(c => exportData[c] = load(c));
@@ -858,12 +840,11 @@
   });
 
   function init() {
-    initSampleData();
+    // ไม่มีการใส่ข้อมูลตัวอย่างใดๆ ทั้งสิ้น → localStorage จะว่างเปล่า
     buildSidebarNav();
     renderStatCards();
     renderAllCards();
     updateGlobalTotal();
-    // optional: เลือก active แรก
     if(CATS.length) setActiveNav(CATS[0]);
   }
 
