@@ -160,11 +160,23 @@
 
   .sidebar-nav {
     flex: 1;
-    padding: 24px 12px;
+    padding: 20px 12px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
+    overflow-y: auto;
   }
+
+  .nav-section-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 8px 14px 4px;
+  }
+
   .nav-item {
     display: flex;
     align-items: center;
@@ -189,6 +201,12 @@
     color: var(--blue-dark);
     font-weight: 600;
     box-shadow: inset 0 0 0 1px var(--surface);
+  }
+
+  .nav-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 8px 4px;
   }
 
   .sidebar-footer {
@@ -235,7 +253,6 @@
     flex-shrink: 0;
   }
 
-  .brand-text {}
   .brand-eyebrow {
     font-family: var(--sans);
     font-size: 11px;
@@ -354,7 +371,6 @@
     flex-shrink: 0;
   }
 
-  .stat-info {}
   .stat-cat {
     font-family: var(--sans);
     font-size: 11px;
@@ -388,7 +404,6 @@
     flex-direction: column;
     transition: all 0.25s;
   }
-
   .card:hover {
     box-shadow: var(--shadow-lg);
     transform: translateY(-3px);
@@ -656,14 +671,17 @@
 </head>
 <body>
 <div class="app-layout">
+
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="mini-logo">
         <div class="mini-icon">⚙️</div>
-        <div class="mini-title">NUT<span>SYSTEM</span></div>
+        <div>
+          <div class="mini-title">NUT<span>SYSTEM</span></div>
+          <div class="sidebar-sub">ระบบจัดการน็อตล้อ</div>
+        </div>
       </div>
-      <div class="sidebar-sub">ระบบจัดการน็อตล้อ — 4 หมวดหมู่หลัก</div>
       <div class="stat-summary">
         <p>📊 สรุปทั้งหมด</p>
         <div class="total-badge">
@@ -672,7 +690,28 @@
         </div>
       </div>
     </div>
-    <div class="sidebar-nav" id="sidebar-nav"></div>
+
+    <nav class="sidebar-nav">
+      <!-- หมวดหมู่ -->
+      <div class="nav-section-label">หมวดหมู่</div>
+
+      <button class="nav-item active" data-cat="3RHB" onclick="switchCat('3RHB', this)">
+        🔩 3RHB
+      </button>
+
+      <button class="nav-item" data-cat="3FHB" onclick="switchCat('3FHB', this)">
+        🔩 3FHB
+      </button>
+
+      <button class="nav-item" data-cat="3FHN" onclick="switchCat('3FHN', this)">
+        🔩 3FHN
+      </button>
+
+      <button class="nav-item" data-cat="3RHN" onclick="switchCat('3RHN', this)">
+        🔩 3RHN
+      </button>
+    </nav>
+
     <div class="sidebar-footer">
       <div>© Workshop Manager | NUT SYSTEM</div>
       <div style="margin-top: 6px;">⚡ ข้อมูลถูกบันทึกใน LocalStorage | ไม่มีข้อมูลเริ่มต้น</div>
@@ -697,9 +736,186 @@
           <button class="btn-reset-all" id="resetAllBtn">🗑️ รีเซ็ตทั้งหมด</button>
         </div>
       </div>
+
+      <!-- Stat row -->
       <div class="stat-row" id="statRow"></div>
     </div>
 
+    <!-- Cards grid — แสดงเฉพาะหมวดที่เลือก -->
+    <div class="cards-grid" id="cardsGrid"></div>
 
+    <div class="bottom-info-bar">
+      <span>NUT SYSTEM v1.0 — ข้อมูลบันทึกใน LocalStorage</span>
+      <span id="lastSaved"></span>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ====== CONFIG ====== */
+  const CATEGORIES = ['3RHB', '3FHB', '3FHN', '3RHN'];
+  const CAT_ICONS  = { '3RHB': '🔩', '3FHB': '🔧', '3FHN': '⚙️', '3RHN': '🔑' };
+  const STORAGE_KEY = 'nutSystem_v1';
+
+  /* ====== STATE ====== */
+  let data = {};          // { cat: [items...] }
+  let currentCat = '3RHB';
+
+  /* ====== STORAGE ====== */
+  function loadData() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      data = raw ? JSON.parse(raw) : {};
+    } catch(e) { data = {}; }
+    CATEGORIES.forEach(c => { if (!data[c]) data[c] = []; });
+  }
+
+  function saveData() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    const el = document.getElementById('lastSaved');
+    if (el) el.textContent = 'บันทึกล่าสุด: ' + new Date().toLocaleTimeString('th-TH');
+  }
+
+  /* ====== TOAST ====== */
+  let toastTimer;
+  function showToast(msg, isError = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (isError ? ' error' : '') + ' show';
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.className = 'toast', 2200);
+  }
+
+  /* ====== SWITCH CATEGORY (sidebar) ====== */
+  function switchCat(cat, el) {
+    currentCat = cat;
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    renderAll();
+  }
+
+  /* ====== RENDER STATS ====== */
+  function renderStats() {
+    const row = document.getElementById('statRow');
+    row.innerHTML = CATEGORIES.map(c => `
+      <div class="stat-card" onclick="switchCat('${c}', document.querySelector('[data-cat=${c}]'))">
+        <div class="stat-icon">${CAT_ICONS[c]}</div>
+        <div class="stat-info">
+          <div class="stat-cat">${c}</div>
+          <div class="stat-num">${data[c].length}</div>
+        </div>
+      </div>
+    `).join('');
+
+    const total = CATEGORIES.reduce((s, c) => s + data[c].length, 0);
+    document.getElementById('global-total-count').textContent = total;
+  }
+
+  /* ====== RENDER CARD (single category) ====== */
+  function renderCard(cat) {
+    const items = data[cat];
+    const listHtml = items.length === 0
+      ? `<div class="empty-state">
+           <div class="empty-icon">${CAT_ICONS[cat]}</div>
+           <div class="empty-txt">ยังไม่มีน็อตในหมวดนี้</div>
+         </div>`
+      : items.map((v, i) => `
+          <li class="nut-item">
+            <span class="item-idx">${i + 1}</span>
+            <span class="item-dot-small"></span>
+            <span class="item-val">${escHtml(v)}</span>
+            <button class="btn-del" title="ลบ" onclick="deleteItem('${cat}', ${i})">✕</button>
+          </li>`).join('');
+
+    return `
+      <div class="card" id="card-${cat}">
+        <div class="card-stripe"></div>
+        <div class="card-header">
+          <div class="cat-left">
+            <div class="cat-dot"></div>
+            <div class="cat-name">${CAT_ICONS[cat]} ${cat}</div>
+          </div>
+          <span class="cat-pill">${items.length} รายการ</span>
+        </div>
+        <ul class="nut-list">${listHtml}</ul>
+        <div class="card-foot">
+          <span class="foot-count">ทั้งหมด <b>${items.length}</b> รายการ</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="add-area">
+              <input class="add-input" id="inp-${cat}" placeholder="เพิ่มน็อต..." onkeydown="if(event.key==='Enter')addItem('${cat}')">
+              <button class="add-btn" onclick="addItem('${cat}')">+ เพิ่ม</button>
+            </div>
+            <button class="btn-clear" onclick="clearCat('${cat}')">ล้างทั้งหมด</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  /* ====== RENDER ALL ====== */
+  function renderAll() {
+    renderStats();
+    const grid = document.getElementById('cardsGrid');
+    // แสดงเฉพาะหมวดที่เลือกจาก sidebar
+    grid.innerHTML = renderCard(currentCat);
+  }
+
+  /* ====== ADD / DELETE / CLEAR ====== */
+  function addItem(cat) {
+    const inp = document.getElementById('inp-' + cat);
+    const val = inp.value.trim();
+    if (!val) { showToast('กรุณากรอกชื่อน็อต', true); return; }
+    data[cat].push(val);
+    inp.value = '';
+    saveData();
+    renderAll();
+    showToast(`เพิ่ม "${val}" ใน ${cat} แล้ว ✓`);
+  }
+
+  function deleteItem(cat, idx) {
+    const removed = data[cat].splice(idx, 1)[0];
+    saveData();
+    renderAll();
+    showToast(`ลบ "${removed}" ออกแล้ว`);
+  }
+
+  function clearCat(cat) {
+    if (!confirm(`ล้างน็อตทั้งหมดใน ${cat} ใช่หรือไม่?`)) return;
+    data[cat] = [];
+    saveData();
+    renderAll();
+    showToast(`ล้างหมวด ${cat} แล้ว`);
+  }
+
+  /* ====== EXPORT ====== */
+  document.getElementById('exportDataBtn').addEventListener('click', () => {
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = Object.assign(document.createElement('a'), { href: url, download: 'nut-system-data.json' });
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('ส่งออก JSON แล้ว ✓');
+  });
+
+  /* ====== RESET ALL ====== */
+  document.getElementById('resetAllBtn').addEventListener('click', () => {
+    if (!confirm('รีเซ็ตข้อมูลทั้งหมดหรือไม่?')) return;
+    CATEGORIES.forEach(c => data[c] = []);
+    saveData();
+    renderAll();
+    showToast('รีเซ็ตทั้งหมดแล้ว');
+  });
+
+  /* ====== HELPERS ====== */
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ====== INIT ====== */
+  loadData();
+  renderAll();
+</script>
 </body>
 </html>
