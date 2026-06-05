@@ -23,7 +23,7 @@ body{
 }
 
 .page-container{
-    max-width:1400px;
+    max-width:1600px;
     margin:auto;
 }
 
@@ -32,11 +32,12 @@ body{
 .page-header{
     background:#ffffff;
     border-radius:20px;
-    padding:30px 35px;
+    padding:30px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    box-shadow:0 5px 25px rgba(0,0,0,0.08);
+    box-shadow:0 5px 25px rgba(0,0,0,.08);
+    margin-bottom:25px;
 }
 
 .header-left{
@@ -53,26 +54,25 @@ body{
     display:flex;
     align-items:center;
     justify-content:center;
-    color:white;
+    color:#fff;
     font-size:30px;
 }
 
 .header-text h1{
     font-size:32px;
     color:#0f172a;
-    margin-bottom:5px;
 }
 
 .header-text p{
     color:#64748b;
-    font-size:15px;
+    margin-top:5px;
 }
 
 .header-right button{
     border:none;
     background:#2563eb;
-    color:white;
-    padding:14px 24px;
+    color:#fff;
+    padding:14px 25px;
     border-radius:12px;
     cursor:pointer;
     font-size:15px;
@@ -80,6 +80,127 @@ body{
 }
 
 .header-right button:hover{
+    background:#1d4ed8;
+}
+
+/* Table */
+
+.table-card{
+    background:#fff;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 5px 25px rgba(0,0,0,.08);
+}
+
+.table-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.table-title h2{
+    color:#0f172a;
+}
+
+.add-btn{
+    background:#16a34a;
+    color:#fff;
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.add-btn:hover{
+    background:#15803d;
+}
+
+.table-responsive{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1400px;
+}
+
+thead{
+    background:#2563eb;
+}
+
+thead th{
+    color:#fff;
+    padding:15px;
+    text-align:left;
+    font-size:14px;
+}
+
+tbody td{
+    padding:10px;
+    border-bottom:1px solid #e2e8f0;
+}
+
+input,
+select{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    outline:none;
+}
+
+input:focus,
+select:focus{
+    border-color:#2563eb;
+}
+
+.status-complete{
+    color:#16a34a;
+    font-weight:600;
+}
+
+.status-process{
+    color:#f59e0b;
+    font-weight:600;
+}
+
+.status-drawing{
+    color:#2563eb;
+    font-weight:600;
+}
+
+.action-btn{
+    border:none;
+    padding:10px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    color:white;
+}
+
+.delete-btn{
+    background:#dc2626;
+}
+
+.save-section{
+    margin-top:25px;
+    text-align:right;
+}
+
+.save-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:14px 30px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+}
+
+.save-btn:hover{
     background:#1d4ed8;
 }
 
@@ -91,11 +212,6 @@ body{
         align-items:flex-start;
     }
 
-    .header-left{
-        flex-direction:column;
-        align-items:flex-start;
-    }
-
 }
 
 </style>
@@ -103,6 +219,8 @@ body{
 <body>
 
 <div class="page-container">
+
+    <!-- Header -->
 
     <div class="page-header">
 
@@ -114,7 +232,7 @@ body{
 
             <div class="header-text">
                 <h1>NEW MODEL</h1>
-                <p>Create and manage new product models in the system.</p>
+                <p>ระบบจัดการข้อมูลสินค้าและโมเดลใหม่</p>
             </div>
 
         </div>
@@ -123,6 +241,88 @@ body{
             <button>
                 <i class="fa-solid fa-arrow-left"></i>
                 Back
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Table -->
+
+    <div class="table-card">
+
+        <div class="table-title">
+            <h2>รายการสินค้า</h2>
+
+            <button class="add-btn">
+                <i class="fa-solid fa-plus"></i>
+                เพิ่มรายการ
+            </button>
+        </div>
+
+        <div class="table-responsive">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>รหัสสินค้า</th>
+                        <th>บาร์โค้ด</th>
+                        <th>รายละเอียดสินค้า</th>
+                        <th>ยี่ห้อ</th>
+                        <th>ราคา</th>
+                        <th>จำนวน</th>
+                        <th>MOQ</th>
+                        <th>ซัพพลายเออร์</th>
+                        <th>สถานะ</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td><input type="text" placeholder="SKU001"></td>
+
+                        <td><input type="text" placeholder="885xxxxxxxx"></td>
+
+                        <td><input type="text" placeholder="รายละเอียดสินค้า"></td>
+
+                        <td><input type="text" placeholder="CJL"></td>
+
+                        <td><input type="number" placeholder="0.00"></td>
+
+                        <td><input type="number" placeholder="0"></td>
+
+                        <td><input type="number" placeholder="100"></td>
+
+                        <td><input type="text" placeholder="Supplier"></td>
+
+                        <td>
+                            <select>
+                                <option>เสร็จสมบูรณ์</option>
+                                <option>อยู่ในขั้นตอนผลิต</option>
+                                <option>ขั้นตอนวาด Drawing</option>
+                            </select>
+                        </td>
+
+                        <td>
+                            <button class="action-btn delete-btn">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="save-section">
+            <button class="save-btn">
+                <i class="fa-solid fa-floppy-disk"></i>
+                บันทึกข้อมูล
             </button>
         </div>
 
