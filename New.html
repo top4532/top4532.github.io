@@ -3,759 +3,89 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEW MODEL | ระบบจัดการโมเดลสินค้า</title>
-
+<title>NEW MODEL - แสดงข้อมูลทั้งหมด</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
-
-body{
-    background:linear-gradient(135deg,#eaf4ff,#f8fbff);
-    min-height:100vh;
-    padding:30px;
-}
-
-.container{
-    max-width:1700px;
-    margin:auto;
-}
-
-/* Header */
-
-.page-header{
-    background:#fff;
-    border-radius:24px;
-    padding:30px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap: wrap;
-    gap: 20px;
-    box-shadow:0 10px 35px rgba(37,99,235,.12);
-    border:1px solid #dbeafe;
-    margin-bottom:25px;
-}
-
-.header-left{
-    display:flex;
-    align-items:center;
-    gap:20px;
-}
-
-.logo-box{
-    width:80px;
-    height:80px;
-    border-radius:20px;
-    background:linear-gradient(135deg,#3b82f6,#2563eb);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    font-size:35px;
-    box-shadow:0 10px 25px rgba(37,99,235,.3);
-}
-
-.header-text h1{
-    color:#0f172a;
-    font-size:34px;
-    font-weight:700;
-}
-
-.header-text p{
-    color:#64748b;
-    margin-top:6px;
-}
-
-.header-actions {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
-.back-btn, .show-data-btn {
-    border: none;
-    padding: 14px 25px;
-    border-radius:14px;
-    cursor:pointer;
-    font-weight:600;
-    transition:.3s;
-    font-size: 15px;
-}
-
-.back-btn{
-    background:linear-gradient(135deg,#3b82f6,#2563eb);
-    color:white;
-}
-
-.show-data-btn {
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    box-shadow: 0 4px 10px rgba(16,185,129,0.2);
-}
-
-.back-btn:hover, .show-data-btn:hover {
-    transform:translateY(-2px);
-    filter: brightness(1.02);
-}
-
-/* Table Card */
-
-.table-card{
-    background:#fff;
-    border-radius:24px;
-    padding:25px;
-    border:1px solid #dbeafe;
-    box-shadow:0 10px 35px rgba(37,99,235,.08);
-    margin-bottom: 20px;
-}
-
-.card-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.card-header h2{
-    color:#0f172a;
-    font-size:24px;
-}
-
-.add-btn{
-    border:none;
-    background:linear-gradient(135deg,#3b82f6,#2563eb);
-    color:white;
-    padding:12px 20px;
-    border-radius:12px;
-    cursor:pointer;
-    font-weight:600;
-    transition: 0.2s;
-}
-
-.add-btn:hover {
-    transform: scale(0.97);
-    background: #2563eb;
-}
-
-.table-responsive{
-    overflow-x:auto;
-}
-
-table{
-    width:100%;
-    min-width:1600px;
-    border-collapse:collapse;
-}
-
-thead{
-    background:linear-gradient(90deg,#3b82f6,#2563eb);
-}
-
-thead th{
-    color:white;
-    padding:16px;
-    text-align:left;
-    font-size:14px;
-    font-weight:600;
-}
-
-thead th i{
-    margin-right:6px;
-}
-
-tbody tr:hover{
-    background:#f8fbff;
-}
-
-tbody td{
-    padding:10px;
-    border-bottom:1px solid #e2e8f0;
-    vertical-align: middle;
-}
-
-input,
-select{
-    width:100%;
-    padding:12px;
-    border:1px solid #cbd5e1;
-    border-radius:10px;
-    outline:none;
-    background:#f8fbff;
-    transition: 0.2s;
-}
-
-input:focus,
-select:focus{
-    border-color:#3b82f6;
-    box-shadow:0 0 0 4px rgba(59,130,246,.15);
-}
-
-.delete-btn{
-    width:42px;
-    height:42px;
-    border:none;
-    border-radius:10px;
-    background:#ef4444;
-    color:white;
-    cursor:pointer;
-    transition: 0.2s;
-}
-
-.delete-btn:hover {
-    background: #dc2626;
-    transform: scale(0.95);
-}
-
-.save-area{
-    margin-top:25px;
-    text-align:right;
-}
-
-.save-btn{
-    border:none;
-    background:linear-gradient(135deg,#3b82f6,#2563eb);
-    color:white;
-    padding:15px 30px;
-    border-radius:14px;
-    cursor:pointer;
-    font-size:15px;
-    font-weight:600;
-    transition: 0.2s;
-}
-
-.save-btn:hover{
-    transform:translateY(-2px);
-}
-
-/* toast message */
-.toast-msg {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: #0f172a;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 40px;
-    font-weight: 500;
-    z-index: 1000;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-}
-
-.toast-msg.show {
-    opacity: 1;
-}
-
-@media(max-width:768px){
-    .page-header {
-        flex-direction:column;
-        align-items:flex-start;
-    }
-    .header-actions {
-        width: 100%;
-        justify-content: flex-start;
-    }
-    .card-header {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .add-btn {
-        width: fit-content;
-    }
-}
-
+    *{ margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+    body{ background:linear-gradient(135deg,#eaf4ff,#f8fbff); padding:30px; }
+    .data-container{ max-width:1600px; margin:auto; background:white; border-radius:28px; padding:25px; box-shadow:0 20px 35px rgba(0,0,0,0.05); }
+    h1{ font-size:28px; margin-bottom:8px; color:#0f172a; }
+    .header-icon{ background:#3b82f6; width:50px; height:50px; border-radius:18px; display:inline-flex; align-items:center; justify-content:center; color:white; margin-right:15px; }
+    .title-flex{ display:flex; align-items:center; margin-bottom:20px; border-bottom:2px solid #e2e8f0; padding-bottom:15px; }
+    table{ width:100%; border-collapse:collapse; margin-top:20px; }
+    th{ background:#2563eb; color:white; padding:12px; text-align:left; }
+    td{ padding:10px; border-bottom:1px solid #cbd5e1; }
+    tr:hover{ background:#f1f5f9; }
+    .status-badge{ background:#e0f2fe; padding:6px 12px; border-radius:40px; font-size:13px; color:#0369a1; font-weight:500; display:inline-block; }
+    .back-btn{ background:#3b82f6; border:none; padding:10px 20px; border-radius:14px; color:white; font-weight:bold; cursor:pointer; margin-top:20px; transition:0.2s; }
+    .back-btn:hover{ background:#2563eb; transform:translateY(-2px); }
+    .count-info{ background:#f1f5f9; padding:8px 16px; border-radius:30px; font-size:14px; margin-bottom:15px; display:inline-block; }
+    .empty-msg{ text-align:center; padding:40px; color:#64748b; font-size:18px; }
 </style>
 </head>
 <body>
-
-<div class="container">
-
-    <div class="page-header">
-        <div class="header-left">
-            <div class="logo-box">
-                <i class="fa-solid fa-cubes-stacked"></i>
-            </div>
-            <div class="header-text">
-                <h1>
-                    <i class="fa-solid fa-cube"></i>
-                    NEW MODEL
-                </h1>
-                <p>ระบบจัดการโมเดลสินค้าใหม่ และติดตามสถานะการพัฒนา</p>
-            </div>
-        </div>
-        <div class="header-actions">
-            <button class="show-data-btn" id="showDataBtn">
-                <i class="fa-solid fa-chart-simple"></i>
-                แสดงข้อมูล NEW MODEL
-            </button>
-            <button class="back-btn" id="backHomeBtn">
-                <i class="fa-solid fa-arrow-left"></i>
-                กลับหน้าหลัก
-            </button>
-        </div>
+<div class="data-container">
+    <div class="title-flex">
+        <div class="header-icon"><i class="fa-solid fa-cubes"></i></div>
+        <div><h1><i class="fa-solid fa-database"></i> ข้อมูล NEW MODEL ทั้งหมด</h1><p>ระบบแสดงโมเดลสินค้าที่บันทึกไว้ (จาก localStorage)</p></div>
     </div>
-
-    <div class="table-card">
-        <div class="card-header">
-            <h2>
-                <i class="fa-solid fa-table"></i>
-                รายการสินค้า
-            </h2>
-            <button class="add-btn" id="addRowBtn">
-                <i class="fa-solid fa-plus"></i>
-                เพิ่มรายการ
-            </button>
-        </div>
-
-        <div class="table-responsive">
-            <table id="productTable">
-                <thead>
-                    <tr>
-                        <th><i class="fa-solid fa-box"></i> รหัสสินค้า</th>
-                        <th><i class="fa-solid fa-barcode"></i> บาร์โค้ด</th>
-                        <th><i class="fa-solid fa-file-lines"></i> รายละเอียดสินค้า</th>
-                        <th><i class="fa-solid fa-tags"></i> ยี่ห้อ</th>
-                        <th><i class="fa-solid fa-baht-sign"></i> ราคา</th>
-                        <th><i class="fa-solid fa-cubes"></i> จำนวน</th>
-                        <th><i class="fa-solid fa-layer-group"></i> MOQ</th>
-                        <th><i class="fa-solid fa-truck"></i> ซัพพลายเออร์</th>
-                        <th><i class="fa-solid fa-chart-line"></i> สถานะ</th>
-                        <th><i class="fa-solid fa-gear"></i> จัดการ</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <!-- ตัวอย่างแถวเริ่มต้น 1 แถว แต่จะโหลดจาก localStorage ถ้ามี -->
-                </tbody>
-            </table>
-        </div>
-
-        <div class="save-area">
-            <button class="save-btn" id="saveDataBtn">
-                <i class="fa-solid fa-floppy-disk"></i>
-                บันทึกข้อมูล
-            </button>
-        </div>
+    <div id="infoArea"></div>
+    <div style="overflow-x:auto;">
+        <table id="displayTable">
+            <thead>
+                <tr><th>รหัสสินค้า</th><th>บาร์โค้ด</th><th>รายละเอียด</th><th>ยี่ห้อ</th><th>ราคา (บาท)</th><th>จำนวน</th><th>MOQ</th><th>ซัพพลายเออร์</th><th>สถานะ</th></tr>
+            </thead>
+            <tbody id="tableBodyData"></tbody>
+        </table>
+    </div>
+    <div style="margin-top:25px; text-align:center;">
+        <button class="back-btn" onclick="window.close()"><i class="fa-solid fa-times"></i> ปิดหน้านี้</button>
     </div>
 </div>
-
-<div id="toastMsg" class="toast-msg">✅ บันทึกข้อมูลเรียบร้อย</div>
-
 <script>
-    // ---------- ตัวแปรหลัก ----------
-    const STORAGE_KEY = "new_model_products";   // key สำหรับเก็บข้อมูลทั้งหมด
-    let currentProducts = [];                   // เก็บ array ของ object แต่ละแถว (ไม่รวม DOM โดยตรง)
-
-    // สถานะ default สำหรับ dropdown
-    const STATUS_OPTIONS = ["เสร็จสมบูรณ์", "อยู่ในขั้นตอนผลิต", "ขั้นตอนวาด Drawing"];
-
-    // --- helper: สร้าง object สินค้าใหม่ (ค่าปริยาย) ---
-    function createEmptyProduct() {
-        return {
-            sku: "",
-            barcode: "",
-            description: "",
-            brand: "",
-            price: "",
-            quantity: "",
-            moq: "",
-            supplier: "",
-            status: "เสร็จสมบูรณ์"   // default
-        };
-    }
-
-    // --- โหลดข้อมูลจาก localStorage ---
-    function loadProductsFromStorage() {
+    const STORAGE_KEY = "new_model_products";
+    function escapeHtml(str) { if(!str) return "-"; return String(str).replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+    function loadAndDisplay() {
         const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-            try {
-                currentProducts = JSON.parse(stored);
-                // ตรวจสอบความสมบูรณ์ (ensure แต่ละตัวมีครบ field)
-                currentProducts = currentProducts.map(p => ({
-                    sku: p.sku || "",
-                    barcode: p.barcode || "",
-                    description: p.description || "",
-                    brand: p.brand || "",
-                    price: p.price !== undefined ? p.price : "",
-                    quantity: p.quantity !== undefined ? p.quantity : "",
-                    moq: p.moq !== undefined ? p.moq : "",
-                    supplier: p.supplier || "",
-                    status: STATUS_OPTIONS.includes(p.status) ? p.status : "เสร็จสมบูรณ์"
-                }));
-            } catch(e) { currentProducts = []; }
+        let products = [];
+        if(stored) {
+            try{ products = JSON.parse(stored); }catch(e){ products = []; }
         }
-        // ถ้าไม่มีข้อมูล หรือข้อมูล为空 ให้เริ่มต้นด้วย 1 แถวเปล่า (เพื่อแสดงตัวอย่าง)
-        if (!currentProducts || currentProducts.length === 0) {
-            currentProducts = [createEmptyProduct()];
-        }
-    }
-
-    // --- render ตารางทั้งหมดจาก currentProducts ---
-    function renderTable() {
-        const tbody = document.getElementById("tableBody");
-        if (!tbody) return;
+        const tbody = document.getElementById("tableBodyData");
+        const infoDiv = document.getElementById("infoArea");
+        if(!tbody) return;
         tbody.innerHTML = "";
-        
-        currentProducts.forEach((product, idx) => {
-            const row = tbody.insertRow();
-            
-            // รหัสสินค้า
-            const cellSku = row.insertCell(0);
-            const skuInput = document.createElement("input");
-            skuInput.type = "text";
-            skuInput.placeholder = "SKU001";
-            skuInput.value = product.sku;
-            skuInput.addEventListener("input", (e) => { currentProducts[idx].sku = e.target.value; });
-            cellSku.appendChild(skuInput);
-            
-            // บาร์โค้ด
-            const cellBarcode = row.insertCell(1);
-            const barcodeInput = document.createElement("input");
-            barcodeInput.type = "text";
-            barcodeInput.placeholder = "885xxxxxxxxxxxx";
-            barcodeInput.value = product.barcode;
-            barcodeInput.addEventListener("input", (e) => { currentProducts[idx].barcode = e.target.value; });
-            cellBarcode.appendChild(barcodeInput);
-            
-            // รายละเอียดสินค้า
-            const cellDesc = row.insertCell(2);
-            const descInput = document.createElement("input");
-            descInput.type = "text";
-            descInput.placeholder = "รายละเอียดสินค้า";
-            descInput.value = product.description;
-            descInput.addEventListener("input", (e) => { currentProducts[idx].description = e.target.value; });
-            cellDesc.appendChild(descInput);
-            
-            // ยี่ห้อ
-            const cellBrand = row.insertCell(3);
-            const brandInput = document.createElement("input");
-            brandInput.type = "text";
-            brandInput.placeholder = "Brand";
-            brandInput.value = product.brand;
-            brandInput.addEventListener("input", (e) => { currentProducts[idx].brand = e.target.value; });
-            cellBrand.appendChild(brandInput);
-            
-            // ราคา (number)
-            const cellPrice = row.insertCell(4);
-            const priceInput = document.createElement("input");
-            priceInput.type = "number";
-            priceInput.placeholder = "0.00";
-            priceInput.step = "0.01";
-            priceInput.value = product.price;
-            priceInput.addEventListener("input", (e) => { currentProducts[idx].price = e.target.value; });
-            cellPrice.appendChild(priceInput);
-            
-            // จำนวน
-            const cellQty = row.insertCell(5);
-            const qtyInput = document.createElement("input");
-            qtyInput.type = "number";
-            qtyInput.placeholder = "0";
-            qtyInput.value = product.quantity;
-            qtyInput.addEventListener("input", (e) => { currentProducts[idx].quantity = e.target.value; });
-            cellQty.appendChild(qtyInput);
-            
-            // MOQ
-            const cellMoq = row.insertCell(6);
-            const moqInput = document.createElement("input");
-            moqInput.type = "number";
-            moqInput.placeholder = "100";
-            moqInput.value = product.moq;
-            moqInput.addEventListener("input", (e) => { currentProducts[idx].moq = e.target.value; });
-            cellMoq.appendChild(moqInput);
-            
-            // ซัพพลายเออร์
-            const cellSupplier = row.insertCell(7);
-            const supplierInput = document.createElement("input");
-            supplierInput.type = "text";
-            supplierInput.placeholder = "Supplier";
-            supplierInput.value = product.supplier;
-            supplierInput.addEventListener("input", (e) => { currentProducts[idx].supplier = e.target.value; });
-            cellSupplier.appendChild(supplierInput);
-            
-            // สถานะ (dropdown)
-            const cellStatus = row.insertCell(8);
-            const statusSelect = document.createElement("select");
-            STATUS_OPTIONS.forEach(opt => {
-                const option = document.createElement("option");
-                option.value = opt;
-                option.textContent = opt;
-                if (product.status === opt) option.selected = true;
-                statusSelect.appendChild(option);
-            });
-            statusSelect.addEventListener("change", (e) => { currentProducts[idx].status = e.target.value; });
-            cellStatus.appendChild(statusSelect);
-            
-            // จัดการ (ปุ่มลบ)
-            const cellAction = row.insertCell(9);
-            const delBtn = document.createElement("button");
-            delBtn.className = "delete-btn";
-            delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
-            delBtn.addEventListener("click", () => {
-                if (currentProducts.length === 1) {
-                    showToast("⚠️ ต้องมีอย่างน้อย 1 รายการ ไม่สามารถลบแถวสุดท้ายได้", "warning");
-                    return;
-                }
-                currentProducts.splice(idx, 1);
-                renderTable();  // re-render ใหม่
-                showToast("🗑️ ลบรายการเรียบร้อย", "info");
-            });
-            cellAction.appendChild(delBtn);
-        });
-    }
-    
-    // --- บันทึกข้อมูลทั้งหมดลง localStorage ---
-    function saveToLocalStorage() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(currentProducts));
-        showToast("💾 บันทึกข้อมูลสำเร็จ!", "success");
-    }
-    
-    // ฟังก์ชันเพิ่มแถวใหม่ (เพิ่ม Object ว่างต่อท้าย)
-    function addNewRow() {
-        currentProducts.push(createEmptyProduct());
-        renderTable();
-        showToast("➕ เพิ่มรายการใหม่", "info");
-        // auto scroll เล็กน้อยไปด้านล่าง
-        const tableResp = document.querySelector(".table-responsive");
-        if (tableResp) {
-            tableResp.scrollTop = tableResp.scrollHeight;
-        }
-    }
-    
-    // ฟังก์ชันแสดง Toast แบบง่าย (รองรับหลายแบบ)
-    function showToast(message, type = "success") {
-        let toast = document.getElementById("toastMsg");
-        if (!toast) {
-            const div = document.createElement("div");
-            div.id = "toastMsg";
-            div.className = "toast-msg";
-            document.body.appendChild(div);
-            toast = div;
-        }
-        // ปรับสไตล์ตาม type
-        if (type === "warning") {
-            toast.style.backgroundColor = "#eab308";
-            toast.style.color = "#1e293b";
-        } else if (type === "error") {
-            toast.style.backgroundColor = "#ef4444";
-            toast.style.color = "white";
-        } else {
-            toast.style.backgroundColor = "#0f172a";
-            toast.style.color = "white";
-        }
-        toast.textContent = message;
-        toast.classList.add("show");
-        setTimeout(() => {
-            toast.classList.remove("show");
-            // รีเซ็ต background กลับ default สำหรับครั้งถัดไป
-            setTimeout(() => {
-                toast.style.backgroundColor = "#0f172a";
-                toast.style.color = "white";
-            }, 300);
-        }, 2000);
-    }
-    
-    // ---- ฟังก์ชันสำหรับปุ่ม "แสดงข้อมูล NEW MODEL" : เปิดหน้าใหม่ NEW1.html และส่งข้อมูลผ่าน query หรือ localStorage (ตามโจทย์: ให้เก็บข้อมูลได้ และกดไปอีกหน้า)
-    // เพื่อให้สามารถแสดงข้อมูลที่บันทึกไว้ในหน้าอื่นได้ เราใช้ localStorage ร่วมกัน -> กดปุ่มจะเปิด NEW1.html และหน้านั้นจะโหลดข้อมูลจาก localStorage เดียวกัน
-    function navigateToShowData() {
-        // ก่อนเปิดหน้าใหม่ ensure ข้อมูลปัจจุบันถูกบันทึกก่อนหรือไม่ ? ตาม UX ถ้าผู้ใช้ยังไม่กดบันทึก แต่ข้อมูลในตารางมีอยู่แล้ว currentProducts อัปเดตแบบ realtime ผ่าน input
-        // แต่เพื่อความปลอดภัยเราจะทำการเซฟข้อมูล currentProducts ลง localStorage ก่อนเสมอ (เพื่อให้หน้า NEW1 เห็นข้อมูลล่าสุด)
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(currentProducts));
-        showToast("📤 กำลังเปิดหน้าแสดงข้อมูล NEW MODEL", "info");
-        // เปิดหน้า NEW1.html ในแท็บใหม่ (ตามความต้องการ "เพิ่มปุ่มแสดงข้อมูล NEW MODEL ให้กดไปอีกหน้า NEW1.html")
-        // ใช้ _blank เพื่อเปิดอีกหน้า แต่ถ้าต้องการ在同一タブก็เปลี่ยน target ได้ ตามหลัก UX ให้เปิดแท็บใหม่ดีกว่า
-        window.open("NEW1.html", "_blank");
-    }
-    
-    // กลับหน้าหลัก (index หรือหน้าราก)
-    function goBackHome() {
-        // ถ้าต้องการกลับไปยังหน้าหลัก (สมมติ index.html หรือ '/' ) 
-        // แต่ในที่นี้ไม่มีหน้า home ที่กำหนดไว้จริง ๆ เราสามารถ alert หรือ redirect ไปที่ root
-        // แก้ให้เหมาะสม: ทำการย้อนกลับหน้าหรือไปที่หน้าแรกของระบบ
-        if (document.referrer && document.referrer !== "") {
-            window.history.back();
-        } else {
-            // Fallback: แสดงข้อความหรือ redirect ไปที่ current origin
-            window.location.href = "/";
-        }
-        // เพื่อความนุ่มนวลถ้าไม่สามารถกลับได้ให้ reload current? แต่ไม่จำเป็น
-    }
-    
-    // --- ฟังก์ชันเริ่มต้น ---
-    function init() {
-        // โหลดข้อมูลจาก Storage
-        loadProductsFromStorage();
-        // เรนเดอร์ตาราง
-        renderTable();
-        
-        // ปุ่มเพิ่มรายการ
-        const addBtn = document.getElementById("addRowBtn");
-        if (addBtn) addBtn.addEventListener("click", addNewRow);
-        
-        // ปุ่มบันทึกข้อมูล
-        const saveBtn = document.getElementById("saveDataBtn");
-        if (saveBtn) {
-            saveBtn.addEventListener("click", () => {
-                // ก่อนบันทึก ข้อมูลใน currentProducts อัพเดทอัตโนมัติผ่าน input events แล้ว
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(currentProducts));
-                showToast("💾 บันทึกข้อมูลลงในเครื่องเรียบร้อย", "success");
-            });
-        }
-        
-        // ปุ่มแสดงข้อมูล NEW MODEL -> เปิด NEW1.html
-        const showDataBtn = document.getElementById("showDataBtn");
-        if (showDataBtn) {
-            showDataBtn.addEventListener("click", navigateToShowData);
-        }
-        
-        // ปุ่มกลับหน้าหลัก
-        const backHomeBtn = document.getElementById("backHomeBtn");
-        if (backHomeBtn) {
-            backHomeBtn.addEventListener("click", goBackHome);
-        }
-        
-        // เพิ่ม event เมื่อปิดหน้าหรือออก? (ไม่จำเป็น)
-        window.addEventListener("beforeunload", () => {
-            // อัตโนมัติเซฟข้อมูลก่อนออก? แต่ผู้ใช้คาดหวังให้กดบันทึก แต่เราก็เซฟให้เงียบๆ เล็กน้อย (ทำให้ข้อมูลไม่หาย)
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(currentProducts));
-        });
-    }
-    
-    // เรียก init ทันที
-    init();
-</script>
-
-<!-- หมายเหตุ: หน้า NEW1.html จะถูกสร้างโดยอัตโนมัติผ่าน javascript หรือเราต้องสร้างไฟล์? 
-     แต่ตาม requirement ให้มีปุ่มกดไปอีกหน้า NEW1.html และให้เก็บข้อมูลได้ เราได้ implement ทั้งเก็บข้อมูล localStorage และเปิดหน้าใหม่
-     เพื่อความสมบูรณ์ เราจะสร้าง content สำหรับ NEW1.html แบบ dynamic โดยใช้ script สร้างถ้าหากไฟล์ไม่มี? แต่เนื่องจาก environment เป็น纯粹的 html เราจะ Inject การสร้าง default NEW1.html ผ่าน blob หรือไม่ 
-     อย่างไรก็ดีเพื่อให้ demo สมบูรณ์และไม่ต้องกังวล เราเตรียม内嵌 การตรวจสอบ: ถ้าหน้า NEW1.html ยังไม่มี หรือ 404 ให้สร้างเนื้อหาแสดงข้อมูลจาก localStorage ได้ 
-     แต่ทางที่ดีในโจทย์ไม่ได้บอกให้สร้าง NEW1.html โดยอัตโนมัติ แต่เพื่อ UX เราใช้เทคนิค: เมื่อกดปุ่ม "แสดงข้อมูล NEW MODEL" จะทำการเปิดหน้าต่างใหม่พร้อมสร้าง dynamic content หากไฟล์นั้นไม่มีอยู่?
-     แต่เนื่องจากผู้ใช้ต้องมีไฟล์ NEW1.html จริง ๆ เพื่อความสมบูรณ์ เราสามารถเพิ่ม code ที่ตรวจสอบและสร้าง iframe? ไม่เหมาะสม 
-     ทางออก: ในปุ่มแสดงข้อมูล ให้สร้างหน้าต่างใหม่ด้วย data URL หรือสร้างหน้าแบบ临时
-     แต่เพื่อให้เป็นไปตามสเปค (และไม่ error 404) เราจะ implement การสร้าง NEW1.html โดยอัตโนมัติเมื่อกดปุ่มโดยใช้ Blob URL และเปิด (หรือใช้ window open แล้วเขียน document)
-     แต่จะดีกว่าหากเราทำให้เดี๋ยวนี้: กดปุ่มจะเปิดแท็บใหม่ที่มีเนื้อหาสำหรับแสดงข้อมูลโมเดลทั้งหมดจาก localStorage
-     ดังนั้นเราจะเขียนฟังก์ชัน showDataInNewTab แทนการเปิด NEW1.html โดยตรง แต่ที่ปุ่มเดิมเรียก navigateToShowData เราเปลี่ยนเป็น createAndOpenDataPage()
-     เนื่องจากโจทย์ต้องการ "เพิ่มปุ่มแสดงข้อมูล NEW MODEL ให้กดไปอีกหน้า NEW1.html" แต่ถ้าไม่มี NEW1.html จริงผู้ใช้จะ error  ดังนั้นเพื่อให้สมบูรณ์แบบ เราจะสร้างหน้า NEW1.html แบบไดนามิกพร้อมแสดงข้อมูลทั้งหมดจาก localstorage 
-     และเปิดขึ้นมาโดยไม่ต้องพึ่งพาไฟล์จริง ในขณะเดียวกันก็ยังคง concept "NEW1.html" ในลักษณะ URL ชื่อนั้น แต่ใช้ data URI หรือ Blob? 
-     แต่เพื่อให้ตรงตามความคาดหวัง (สามารถเก็บข้อมูล และกดไปหน้า NEW1.html) วิธีที่ดี: เราใช้ window.open แล้วเขียน document ไปเลย ด้วย about:blank หรือ srcdoc
-     มาปรับปรุง navigateToShowData ให้เปิดหน้าใหม่ที่มีการแสดงข้อมูลจาก localStorage พร้อม UI ที่สวยงาม และยังมีชื่อหน้าเป็น NEW1 (fake history)
-    -->
-</script>
-
-<script>
-    // override navigateToShowData ให้สร้างหน้าแสดงข้อมูลแบบ dynamic แทนการเรียก NEW1.html เพื่อให้การทำงานสมบูรณ์ไม่ต้องพึ่งพาไฟล์ภายนอก
-    // แต่เราจะรักษาฟังก์ชันเดิมไว้ใหม่แบบสมบูรณ์: เปิดแท็บใหม่ที่แสดงข้อมูลจาก localStorage แบบตาราง 
-    function createDataPreviewWindow() {
-        // บันทึกข้อมูลปัจจุบันก่อน
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(currentProducts));
-        const productsData = currentProducts;
-        // สร้าง html content สำหรับแสดงข้อมูล NEW MODEL อย่างสวยงาม
-        const newWindow = window.open();
-        if (!newWindow) {
-            showToast("⚠️ เบราว์เซอร์ปิด Pop-up กรุณาอนุญาต", "warning");
+        if(!products || products.length === 0) {
+            infoDiv.innerHTML = `<div class="count-info"><i class="fa-regular fa-face-frown"></i> ไม่พบข้อมูล กรุณากลับไปหน้าแรกและบันทึกข้อมูลก่อน</div>`;
+            const emptyRow = tbody.insertRow();
+            const cell = emptyRow.insertCell(0);
+            cell.colSpan = 9;
+            cell.className = "empty-msg";
+            cell.innerHTML = '<i class="fa-solid fa-database"></i> ยังไม่มีข้อมูลโมเดล กดปุ่มบันทึกในหน้าแรก แล้วเปิดหน้านี้ใหม่';
             return;
         }
-        let rowsHtml = "";
-        productsData.forEach((item, idx) => {
-            rowsHtml += `
-                <tr>
-                    <td>${escapeHtml(item.sku) || "-"}</td>
-                    <td>${escapeHtml(item.barcode) || "-"}</td>
-                    <td>${escapeHtml(item.description) || "-"}</td>
-                    <td>${escapeHtml(item.brand) || "-"}</td>
-                    <td>${item.price ? parseFloat(item.price).toFixed(2) : "-"}</td>
-                    <td>${item.quantity || "0"}</td>
-                    <td>${item.moq || "-"}</td>
-                    <td>${escapeHtml(item.supplier) || "-"}</td>
-                    <td><span class="status-badge">${escapeHtml(item.status)}</span></td>
-                </tr>
-            `;
-        });
-        
-        const documentContent = `<!DOCTYPE html>
-        <html lang="th">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>NEW MODEL - ข้อมูลทั้งหมด</title>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-            <style>
-                *{ margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-                body{ background:linear-gradient(135deg,#eaf4ff,#f8fbff); padding:30px; }
-                .data-container{ max-width:1600px; margin:auto; background:white; border-radius:28px; padding:25px; box-shadow:0 20px 35px rgba(0,0,0,0.05); }
-                h1{ font-size:28px; margin-bottom:8px; color:#0f172a; }
-                .header-icon{ background:#3b82f6; width:50px; height:50px; border-radius:18px; display:inline-flex; align-items:center; justify-content:center; color:white; margin-right:15px; }
-                .title-flex{ display:flex; align-items:center; margin-bottom:20px; border-bottom:2px solid #e2e8f0; padding-bottom:15px; }
-                table{ width:100%; border-collapse:collapse; margin-top:20px; }
-                th{ background:#2563eb; color:white; padding:12px; text-align:left; }
-                td{ padding:10px; border-bottom:1px solid #cbd5e1; }
-                tr:hover{ background:#f1f5f9; }
-                .status-badge{ background:#e0f2fe; padding:6px 12px; border-radius:40px; font-size:13px; color:#0369a1; font-weight:500; display:inline-block; }
-                .back-btn{ background:#3b82f6; border:none; padding:10px 20px; border-radius:14px; color:white; font-weight:bold; cursor:pointer; margin-top:20px; }
-                .count-info{ background:#f1f5f9; padding:8px 16px; border-radius:30px; font-size:14px; margin-bottom:15px; display:inline-block; }
-            </style>
-        </head>
-        <body>
-        <div class="data-container">
-            <div class="title-flex">
-                <div class="header-icon"><i class="fa-solid fa-cubes"></i></div>
-                <div><h1><i class="fa-solid fa-database"></i> ข้อมูล NEW MODEL ทั้งหมด</h1><p>ระบบแสดงโมเดลสินค้าที่บันทึกไว้</p></div>
-            </div>
-            <div class="count-info"><i class="fa-regular fa-rectangle-list"></i> จำนวนรายการทั้งหมด: ${productsData.length} รายการ</div>
-            <div style="overflow-x:auto;">
-                <table>
-                    <thead>
-                        <tr><th>รหัสสินค้า</th><th>บาร์โค้ด</th><th>รายละเอียด</th><th>ยี่ห้อ</th><th>ราคา</th><th>จำนวน</th><th>MOQ</th><th>ซัพพลายเออร์</th><th>สถานะ</th></tr>
-                    </thead>
-                    <tbody>
-                        ${rowsHtml}
-                    </tbody>
-                </table>
-            </div>
-            <button class="back-btn" onclick="window.close()"><i class="fa-solid fa-times"></i> ปิดหน้านี้</button>
-        </div>
-        <script>
-            function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m;}); }
-            // ใช้ escapeHtml function ที่มีอยู่แล้วด้านบน? แต่เราส่งผ่าน template แล้วไม่ต้องเพิ่ม
-        <\/script>
-        </body>
-        </html>`;
-        
-        newWindow.document.write(documentContent);
-        newWindow.document.title = "NEW MODEL รายการทั้งหมด";
-        newWindow.focus();
-    }
-    
-    // แก้ไข event listener ของ showDataBtn ให้เรียก createDataPreviewWindow แทน เพื่อให้ทำงานได้ทันที (ไม่มี error 404)
-    const originalShowBtn = document.getElementById("showDataBtn");
-    if (originalShowBtn) {
-        // แทนที่ event listener (remove เก่า)
-        const newBtn = originalShowBtn.cloneNode(true);
-        originalShowBtn.parentNode.replaceChild(newBtn, originalShowBtn);
-        newBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            createDataPreviewWindow();
+        infoDiv.innerHTML = `<div class="count-info"><i class="fa-regular fa-rectangle-list"></i> จำนวนรายการทั้งหมด: ${products.length} รายการ</div>`;
+        products.forEach(prod => {
+            const row = tbody.insertRow();
+            row.insertCell(0).textContent = escapeHtml(prod.sku) || "-";
+            row.insertCell(1).textContent = escapeHtml(prod.barcode) || "-";
+            row.insertCell(2).textContent = escapeHtml(prod.description) || "-";
+            row.insertCell(3).textContent = escapeHtml(prod.brand) || "-";
+            const priceVal = (prod.price !== undefined && prod.price !== "") ? parseFloat(prod.price).toFixed(2) : "-";
+            row.insertCell(4).textContent = priceVal !== "-" ? priceVal : "-";
+            row.insertCell(5).textContent = (prod.quantity !== undefined && prod.quantity !== "") ? prod.quantity : "0";
+            row.insertCell(6).textContent = (prod.moq !== undefined && prod.moq !== "") ? prod.moq : "-";
+            row.insertCell(7).textContent = escapeHtml(prod.supplier) || "-";
+            const statusSpan = document.createElement("span");
+            statusSpan.className = "status-badge";
+            statusSpan.textContent = escapeHtml(prod.status) || "เสร็จสมบูรณ์";
+            const statusCell = row.insertCell(8);
+            statusCell.appendChild(statusSpan);
         });
     }
-    
-    // รีเซ็ตฟังก์ชัน backBtn เชื่อมโยงอีกครั้งให้เรียบร้อย (ยังคงใช้งาน backHome)
-    const backOriginal = document.getElementById("backHomeBtn");
-    if (backOriginal) {
-        const freshBack = backOriginal.cloneNode(true);
-        backOriginal.parentNode.replaceChild(freshBack, backOriginal);
-        freshBack.addEventListener("click", goBackHome);
-    }
-    // ปรับ addRow event หลังจาก init อาจมี event ซ้ำกัน? แต่ init จะถูกเรียกแล้ว ดังนั้นเราต้องป้องกันไม่ให้ซ้ำ, แต่วิธี clean ที่ดีที่สุดคือใช้ id และ replace แล้ว แต่ไม่เป็นไร เพราะ addRowBtn ยังคงเดิม
-    // จบการทำงานสมบูรณ์
+    loadAndDisplay();
+    // ถ้าต้องการโหลดใหม่เมื่อ focus (optional)
+    window.addEventListener("focus", loadAndDisplay);
 </script>
 </body>
 </html>
