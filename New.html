@@ -17,26 +17,27 @@
 }
 
 body{
-    background:#f1f5f9;
+    background:linear-gradient(135deg,#eaf4ff,#f8fbff);
     min-height:100vh;
     padding:30px;
 }
 
-.page-container{
-    max-width:1600px;
+.container{
+    max-width:1700px;
     margin:auto;
 }
 
 /* Header */
 
 .page-header{
-    background:#ffffff;
-    border-radius:20px;
+    background:#fff;
+    border-radius:24px;
     padding:30px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    box-shadow:0 5px 25px rgba(0,0,0,.08);
+    box-shadow:0 10px 35px rgba(37,99,235,.12);
+    border:1px solid #dbeafe;
     margin-bottom:25px;
 }
 
@@ -46,75 +47,75 @@ body{
     gap:20px;
 }
 
-.header-icon{
-    width:70px;
-    height:70px;
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
-    border-radius:18px;
+.logo-box{
+    width:80px;
+    height:80px;
+    border-radius:20px;
+    background:linear-gradient(135deg,#3b82f6,#2563eb);
     display:flex;
     align-items:center;
     justify-content:center;
     color:#fff;
-    font-size:30px;
+    font-size:35px;
+    box-shadow:0 10px 25px rgba(37,99,235,.3);
 }
 
 .header-text h1{
-    font-size:32px;
     color:#0f172a;
+    font-size:34px;
+    font-weight:700;
 }
 
 .header-text p{
     color:#64748b;
-    margin-top:5px;
+    margin-top:6px;
 }
 
-.header-right button{
+.back-btn{
     border:none;
-    background:#2563eb;
-    color:#fff;
+    background:linear-gradient(135deg,#3b82f6,#2563eb);
+    color:white;
     padding:14px 25px;
-    border-radius:12px;
+    border-radius:14px;
     cursor:pointer;
-    font-size:15px;
     font-weight:600;
+    transition:.3s;
 }
 
-.header-right button:hover{
-    background:#1d4ed8;
+.back-btn:hover{
+    transform:translateY(-2px);
 }
 
-/* Table */
+/* Table Card */
 
 .table-card{
     background:#fff;
-    border-radius:20px;
+    border-radius:24px;
     padding:25px;
-    box-shadow:0 5px 25px rgba(0,0,0,.08);
+    border:1px solid #dbeafe;
+    box-shadow:0 10px 35px rgba(37,99,235,.08);
 }
 
-.table-title{
+.card-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
     margin-bottom:20px;
 }
 
-.table-title h2{
+.card-header h2{
     color:#0f172a;
+    font-size:24px;
 }
 
 .add-btn{
-    background:#16a34a;
-    color:#fff;
     border:none;
+    background:linear-gradient(135deg,#3b82f6,#2563eb);
+    color:white;
     padding:12px 20px;
-    border-radius:10px;
+    border-radius:12px;
     cursor:pointer;
     font-weight:600;
-}
-
-.add-btn:hover{
-    background:#15803d;
 }
 
 .table-responsive{
@@ -123,19 +124,28 @@ body{
 
 table{
     width:100%;
+    min-width:1600px;
     border-collapse:collapse;
-    min-width:1400px;
 }
 
 thead{
-    background:#2563eb;
+    background:linear-gradient(90deg,#3b82f6,#2563eb);
 }
 
 thead th{
-    color:#fff;
-    padding:15px;
+    color:white;
+    padding:16px;
     text-align:left;
     font-size:14px;
+    font-weight:600;
+}
+
+thead th i{
+    margin-right:6px;
+}
+
+tbody tr:hover{
+    background:#f8fbff;
 }
 
 tbody td{
@@ -146,62 +156,47 @@ tbody td{
 input,
 select{
     width:100%;
-    padding:10px 12px;
+    padding:12px;
     border:1px solid #cbd5e1;
     border-radius:10px;
     outline:none;
+    background:#f8fbff;
 }
 
 input:focus,
 select:focus{
-    border-color:#2563eb;
-}
-
-.status-complete{
-    color:#16a34a;
-    font-weight:600;
-}
-
-.status-process{
-    color:#f59e0b;
-    font-weight:600;
-}
-
-.status-drawing{
-    color:#2563eb;
-    font-weight:600;
-}
-
-.action-btn{
-    border:none;
-    padding:10px 14px;
-    border-radius:8px;
-    cursor:pointer;
-    color:white;
+    border-color:#3b82f6;
+    box-shadow:0 0 0 4px rgba(59,130,246,.15);
 }
 
 .delete-btn{
-    background:#dc2626;
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:10px;
+    background:#ef4444;
+    color:white;
+    cursor:pointer;
 }
 
-.save-section{
+.save-area{
     margin-top:25px;
     text-align:right;
 }
 
 .save-btn{
-    background:#2563eb;
-    color:white;
     border:none;
-    padding:14px 30px;
-    border-radius:12px;
+    background:linear-gradient(135deg,#3b82f6,#2563eb);
+    color:white;
+    padding:15px 30px;
+    border-radius:14px;
     cursor:pointer;
     font-size:15px;
     font-weight:600;
 }
 
 .save-btn:hover{
-    background:#1d4ed8;
+    transform:translateY(-2px);
 }
 
 @media(max-width:768px){
@@ -218,45 +213,47 @@ select:focus{
 </head>
 <body>
 
-<div class="page-container">
-
-    <!-- Header -->
+<div class="container">
 
     <div class="page-header">
 
         <div class="header-left">
 
-            <div class="header-icon">
-                <i class="fa-solid fa-cube"></i>
+            <div class="logo-box">
+                <i class="fa-solid fa-cubes-stacked"></i>
             </div>
 
             <div class="header-text">
-                <h1>NEW MODEL</h1>
-                <p>ระบบจัดการข้อมูลสินค้าและโมเดลใหม่</p>
+                <h1>
+                    <i class="fa-solid fa-cube"></i>
+                    NEW MODEL
+                </h1>
+                <p>ระบบจัดการโมเดลสินค้าใหม่ และติดตามสถานะการพัฒนา</p>
             </div>
 
         </div>
 
-        <div class="header-right">
-            <button>
-                <i class="fa-solid fa-arrow-left"></i>
-                Back
-            </button>
-        </div>
+        <button class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            กลับหน้าหลัก
+        </button>
 
     </div>
 
-    <!-- Table -->
-
     <div class="table-card">
 
-        <div class="table-title">
-            <h2>รายการสินค้า</h2>
+        <div class="card-header">
+
+            <h2>
+                <i class="fa-solid fa-table"></i>
+                รายการสินค้า
+            </h2>
 
             <button class="add-btn">
                 <i class="fa-solid fa-plus"></i>
                 เพิ่มรายการ
             </button>
+
         </div>
 
         <div class="table-responsive">
@@ -265,37 +262,54 @@ select:focus{
 
                 <thead>
                     <tr>
-                        <th>รหัสสินค้า</th>
-                        <th>บาร์โค้ด</th>
-                        <th>รายละเอียดสินค้า</th>
-                        <th>ยี่ห้อ</th>
-                        <th>ราคา</th>
-                        <th>จำนวน</th>
-                        <th>MOQ</th>
-                        <th>ซัพพลายเออร์</th>
-                        <th>สถานะ</th>
-                        <th>จัดการ</th>
+                        <th><i class="fa-solid fa-box"></i> รหัสสินค้า</th>
+                        <th><i class="fa-solid fa-barcode"></i> บาร์โค้ด</th>
+                        <th><i class="fa-solid fa-file-lines"></i> รายละเอียดสินค้า</th>
+                        <th><i class="fa-solid fa-tags"></i> ยี่ห้อ</th>
+                        <th><i class="fa-solid fa-baht-sign"></i> ราคา</th>
+                        <th><i class="fa-solid fa-cubes"></i> จำนวน</th>
+                        <th><i class="fa-solid fa-layer-group"></i> MOQ</th>
+                        <th><i class="fa-solid fa-truck"></i> ซัพพลายเออร์</th>
+                        <th><i class="fa-solid fa-chart-line"></i> สถานะ</th>
+                        <th><i class="fa-solid fa-gear"></i> จัดการ</th>
                     </tr>
                 </thead>
 
                 <tbody>
 
                     <tr>
-                        <td><input type="text" placeholder="SKU001"></td>
 
-                        <td><input type="text" placeholder="885xxxxxxxx"></td>
+                        <td>
+                            <input type="text" placeholder="SKU001">
+                        </td>
 
-                        <td><input type="text" placeholder="รายละเอียดสินค้า"></td>
+                        <td>
+                            <input type="text" placeholder="885xxxxxxxxxxxx">
+                        </td>
 
-                        <td><input type="text" placeholder="CJL"></td>
+                        <td>
+                            <input type="text" placeholder="รายละเอียดสินค้า">
+                        </td>
 
-                        <td><input type="number" placeholder="0.00"></td>
+                        <td>
+                            <input type="text" placeholder="Brand">
+                        </td>
 
-                        <td><input type="number" placeholder="0"></td>
+                        <td>
+                            <input type="number" placeholder="0.00">
+                        </td>
 
-                        <td><input type="number" placeholder="100"></td>
+                        <td>
+                            <input type="number" placeholder="0">
+                        </td>
 
-                        <td><input type="text" placeholder="Supplier"></td>
+                        <td>
+                            <input type="number" placeholder="100">
+                        </td>
+
+                        <td>
+                            <input type="text" placeholder="Supplier">
+                        </td>
 
                         <td>
                             <select>
@@ -306,7 +320,7 @@ select:focus{
                         </td>
 
                         <td>
-                            <button class="action-btn delete-btn">
+                            <button class="delete-btn">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </td>
@@ -319,11 +333,13 @@ select:focus{
 
         </div>
 
-        <div class="save-section">
+        <div class="save-area">
+
             <button class="save-btn">
                 <i class="fa-solid fa-floppy-disk"></i>
                 บันทึกข้อมูล
             </button>
+
         </div>
 
     </div>
