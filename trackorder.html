@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Track Back Order - จัดการข้อมูล</title>
+    <title>Track Back Order - ระบบจัดการ Back Order</title>
     <style>
         * {
             margin: 0;
@@ -14,50 +14,97 @@
 
         body {
             background: #e0f2fe;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
         }
 
-        /* Split Layout */
+        /* ========= ส่วนหัวหลัก ========= */
+        .main-header {
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: white;
+            padding: 16px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-area h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .logo-area span {
+            background: #facc15;
+            color: #1e293b;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-3px);
+        }
+
+        /* ========= คอนเทนเนอร์หลัก ========= */
         .app-container {
             display: flex;
-            height: 100vh;
-            width: 100%;
+            height: calc(100vh - 80px);
+            padding: 20px;
+            gap: 20px;
         }
 
-        /* ========= ด้านซ้าย - ฟอร์มเพิ่มข้อมูล (สีฟ้าอ่อน) ========= */
+        /* ========= ด้านซ้าย - ฟอร์มเพิ่มข้อมูล ========= */
         .left-panel {
-            width: 45%;
+            width: 42%;
             background: #f0f9ff;
+            border-radius: 28px;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
-            border-right: 2px solid #bae6fd;
-            padding: 24px 28px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 24px;
         }
 
         .form-header {
-            margin-bottom: 28px;
-            padding-bottom: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
             border-bottom: 2px solid #7dd3fc;
         }
 
         .form-header h3 {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             color: #0369a1;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .form-header p {
-            font-size: 0.85rem;
-            color: #0c4a6e;
-            margin-top: 6px;
-        }
-
         .form-group {
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
         label {
@@ -189,7 +236,7 @@
         .form-actions {
             display: flex;
             gap: 12px;
-            margin-top: 28px;
+            margin-top: 20px;
             justify-content: flex-end;
             flex-wrap: wrap;
         }
@@ -197,7 +244,7 @@
         .btn-save {
             background: #0284c7;
             color: white;
-            padding: 12px 28px;
+            padding: 12px 24px;
             border: none;
             border-radius: 40px;
             font-weight: 600;
@@ -207,12 +254,13 @@
 
         .btn-save:hover {
             background: #0369a1;
+            transform: scale(1.02);
         }
 
         .btn-clear {
             background: #f1f5f9;
             border: 1px solid #cbd5e1;
-            padding: 12px 28px;
+            padding: 12px 24px;
             border-radius: 40px;
             font-weight: 500;
             cursor: pointer;
@@ -223,89 +271,130 @@
             background: #fee2e2;
             color: #b91c1c;
             border: none;
-            padding: 12px 24px;
+            padding: 12px 20px;
             border-radius: 40px;
             font-weight: 500;
             cursor: pointer;
         }
 
-        .btn-reset-all {
-            background: #fef3c7;
-            color: #92400e;
+        /* ========= ด้านขวา - ตารางแสดงข้อมูล ========= */
+        .right-panel {
+            width: 58%;
+            background: #ffffff;
+            border-radius: 28px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .right-header {
+            background: #f0f9ff;
+            padding: 18px 24px;
+            border-bottom: 2px solid #bae6fd;
+        }
+
+        .search-area {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input-wrapper input {
+            padding: 12px 16px 12px 44px;
+            border-radius: 40px;
+            border: 1px solid #cbd5e1;
+            width: 100%;
+        }
+
+        .search-input-wrapper::before {
+            content: "🔍";
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+        }
+
+        .search-btn {
+            background: #0284c7;
+            color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 0 28px;
             border-radius: 40px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 0.8rem;
+            transition: 0.2s;
         }
 
-        .btn-reset-all:hover {
-            background: #fde68a;
+        .search-btn:hover {
+            background: #0369a1;
+        }
+
+        .clear-search-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 0 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .badge-count {
+            background: #0284c7;
+            color: white;
+            padding: 5px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
         }
 
         .btn-sample {
             background: #dbeafe;
             color: #1e40af;
             border: none;
-            padding: 8px 16px;
+            padding: 6px 16px;
             border-radius: 40px;
             font-weight: 500;
             cursor: pointer;
             font-size: 0.8rem;
         }
 
-        .btn-sample:hover {
-            background: #bfdbfe;
-        }
-
-        .header-buttons {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        /* ========= ด้านขวา - ตารางแสดงข้อมูล (สีฟ้าขาว) ========= */
-        .right-panel {
-            width: 55%;
-            background: #ffffff;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: -4px 0 12px rgba(0,0,0,0.03);
-        }
-
-        .right-header {
-            background: #f0f9ff;
-            padding: 20px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #bae6fd;
-        }
-
-        .right-header h2 {
-            font-size: 1.4rem;
-            color: #0369a1;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .badge-count {
-            background: #0284c7;
-            color: white;
-            padding: 5px 14px;
+        .btn-reset-all {
+            background: #fef3c7;
+            color: #92400e;
+            border: none;
+            padding: 6px 16px;
             border-radius: 40px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.8rem;
         }
 
         .table-wrapper {
             flex: 1;
             overflow-y: auto;
             padding: 20px;
-            background: #ffffff;
         }
 
         .data-table {
@@ -314,7 +403,6 @@
             background: white;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 2px 12px rgba(2,132,199,0.08);
         }
 
         .data-table th {
@@ -358,415 +446,441 @@
         .item-detail-list {
             font-size: 0.7rem;
             color: #334155;
+            max-width: 200px;
         }
 
         .empty-table {
             text-align: center;
             padding: 50px;
-            color: #7dd3fc;
+            color: #94a3b8;
         }
 
         @media (max-width: 900px) {
             .app-container {
                 flex-direction: column;
+                height: auto;
             }
             .left-panel, .right-panel {
                 width: 100%;
-                height: 50%;
             }
             body {
                 overflow: auto;
+            }
+            .main-header {
+                position: sticky;
+                top: 0;
+                z-index: 100;
             }
         }
     </style>
 </head>
 <body>
-<div class="app-container">
-    <!-- ด้านซ้าย: ฟอร์มเพิ่ม/แก้ไขข้อมูล -->
-    <div class="left-panel">
-        <div class="form-header">
-            <h3>📝 เพิ่ม / แก้ไข Back Order</h3>
-            <p>💡 คลิกที่แถวในตารางด้านขวาเพื่อแก้ไขข้อมูล</p>
+    <!-- ส่วนหัวหลัก -->
+    <div class="main-header">
+        <div class="logo-area">
+            <h1>📦 Track Back Order</h1>
+            <span>ระบบจัดการ Back Order</span>
         </div>
+        <button class="back-btn" id="backButton">
+            ← ย้อนกลับ
+        </button>
+    </div>
 
-        <div class="form-group">
-            <label>📌 PRHQ (เลขที่ใบขอซื้อ)</label>
-            <input type="text" id="prhqInput" placeholder="เช่น PRHQ-2001" autocomplete="off">
-        </div>
-        <div class="form-group">
-            <label>📌 POHQ (เลขที่ใบสั่งซื้อ)</label>
-            <input type="text" id="pohqInput" placeholder="เช่น POHQ-7001" autocomplete="off">
-        </div>
-
-        <div class="items-section">
-            <div class="section-title">
-                <span>🧾 รายการสินค้า (บาร์โค้ด + จำนวน)</span>
-                <button type="button" id="addItemRowBtn" class="btn-icon btn-icon-plus" style="font-size:1.5rem;">➕</button>
+    <div class="app-container">
+        <!-- ด้านซ้าย: ฟอร์มเพิ่ม/แก้ไขข้อมูล -->
+        <div class="left-panel">
+            <div class="form-header">
+                <h3>📝 เพิ่ม / แก้ไข Back Order</h3>
+                <p style="font-size:0.8rem; color:#0c4a6e; margin-top:6px;">💡 คลิกที่แถวในตารางเพื่อแก้ไขข้อมูล</p>
             </div>
-            <table class="item-table" id="itemsDynamicTable">
-                <thead>
-                    <tr>
-                        <th style="width: 55%">📦 บาร์โค้ด</th>
-                        <th style="width: 30%">🔢 จำนวน</th>
-                        <th style="width: 15%"></th>
-                    </tr>
-                </thead>
-                <tbody id="itemsFormTbody">
-                    <!-- dynamic rows -->
-                </tbody>
-            </table>
-            <button type="button" id="addItemTextBtn" class="btn-add-item">
-                ➕ เพิ่มรายการสินค้า
-            </button>
+
+            <div class="form-group">
+                <label>📌 PRHQ (เลขที่ใบขอซื้อ)</label>
+                <input type="text" id="prhqInput" placeholder="เช่น PRHQ-2001" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>📌 POHQ (เลขที่ใบสั่งซื้อ)</label>
+                <input type="text" id="pohqInput" placeholder="เช่น POHQ-7001" autocomplete="off">
+            </div>
+
+            <div class="items-section">
+                <div class="section-title">
+                    <span>🧾 รายการสินค้า (บาร์โค้ด + จำนวน)</span>
+                    <button type="button" id="addItemRowBtn" class="btn-icon btn-icon-plus" style="font-size:1.5rem;">➕</button>
+                </div>
+                <table class="item-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 55%">📦 บาร์โค้ด</th>
+                            <th style="width: 30%">🔢 จำนวน</th>
+                            <th style="width: 15%"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsFormTbody"></tbody>
+                </table>
+                <button type="button" id="addItemTextBtn" class="btn-add-item">
+                    ➕ เพิ่มรายการสินค้า
+                </button>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" id="clearFormBtn" class="btn-clear">🗑️ ล้างฟอร์ม</button>
+                <button type="button" id="deleteOrderBtn" class="btn-delete-order">❌ ลบออเดอร์นี้</button>
+                <button type="button" id="saveOrderBtn" class="btn-save">💾 บันทึก / อัปเดต</button>
+            </div>
         </div>
 
-        <div class="form-actions">
-            <button type="button" id="clearFormBtn" class="btn-clear">🗑️ ล้างฟอร์ม</button>
-            <button type="button" id="deleteOrderBtn" class="btn-delete-order">❌ ลบออเดอร์นี้</button>
-            <button type="button" id="saveOrderBtn" class="btn-save">💾 บันทึก / อัปเดต</button>
+        <!-- ด้านขวา: ตารางแสดงข้อมูล -->
+        <div class="right-panel">
+            <div class="right-header">
+                <div class="search-area">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="searchInput" placeholder="ค้นหาด้วย PRHQ หรือ POHQ...">
+                    </div>
+                    <button id="searchBtn" class="search-btn">🔍 ค้นหา</button>
+                    <button id="clearSearchBtn" class="clear-search-btn">ยกเลิก</button>
+                </div>
+                <div class="stats-bar">
+                    <div class="badge-count" id="totalOrdersBadge">0 รายการ</div>
+                    <div class="header-buttons">
+                        <button type="button" id="addSampleDataBtn" class="btn-sample">📦 เพิ่มตัวอย่างข้อมูล</button>
+                        <button type="button" id="resetAllDataBtn" class="btn-reset-all">🗑️ ลบข้อมูลทั้งหมด</button>
+                    </div>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>PRHQ</th>
+                            <th>POHQ</th>
+                            <th>จำนวนรายการ</th>
+                            <th>บาร์โค้ดหลัก</th>
+                            <th>จำนวนรวม</th>
+                            <th>รายละเอียดสินค้า</th>
+                        </tr>
+                    </thead>
+                    <tbody id="backorderListBody">
+                        <tr><td colspan="6" class="empty-table">ยังไม่มีข้อมูล Back Order<br>👉 เพิ่มข้อมูลทางด้านซ้าย หรือกดปุ่ม "เพิ่มตัวอย่างข้อมูล"</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- ด้านขวา: ตารางแสดงข้อมูล Back Order -->
-    <div class="right-panel">
-        <div class="right-header">
-            <h2>📋 รายการ Back Order ทั้งหมด</h2>
-            <div class="header-buttons">
-                <button type="button" id="addSampleDataBtn" class="btn-sample">📦 เพิ่มตัวอย่างข้อมูล</button>
-                <button type="button" id="resetAllDataBtn" class="btn-reset-all">🗑️ ลบข้อมูลทั้งหมด</button>
-                <div class="badge-count" id="totalOrdersBadge">0 รายการ</div>
-            </div>
-        </div>
-        <div class="table-wrapper">
-            <table class="data-table" id="backorderListTable">
-                <thead>
-                    <tr>
-                        <th>PRHQ</th>
-                        <th>POHQ</th>
-                        <th>จำนวนรายการ</th>
-                        <th>บาร์โค้ดหลัก</th>
-                        <th>จำนวนรวม</th>
-                        <th>รายละเอียดสินค้า</th>
-                    </tr>
-                </thead>
-                <tbody id="backorderListBody">
-                    <tr><td colspan="6" class="empty-table">ยังไม่มีข้อมูล Back Order<br>👉 เพิ่มข้อมูลทางด้านซ้าย</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+    <script>
+        // ============ localStorage Management ============
+        const STORAGE_KEY = 'backorder_data';
 
-<script>
-    // ============ localStorage Management ============
-    const STORAGE_KEY = 'backorder_data';
-
-    // โหลดข้อมูลจาก localStorage (ไม่มีข้อมูลตัวอย่างอัตโนมัติ)
-    function loadBackOrdersFromStorage() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-            try {
-                return JSON.parse(stored);
-            } catch(e) {
-                console.error("Error parsing localStorage", e);
-                return [];
-            }
-        }
-        // ถ้าไม่มีข้อมูลใน localStorage ให้คืนค่าเป็น array ว่าง
-        return [];
-    }
-
-    // ข้อมูลตัวอย่าง (ใช้เมื่อกดปุ่มเพิ่มตัวอย่าง)
-    function getSampleData() {
-        return [
-            {
-                id: Date.now() + 1,
-                prhq: "PRHQ-1001",
-                pohq: "POHQ-5001",
-                items: [
-                    { barcode: "8851904123456", qty: 12 },
-                    { barcode: "8851904123457", qty: 5 }
-                ]
-            },
-            {
-                id: Date.now() + 2,
-                prhq: "PRHQ-1002",
-                pohq: "POHQ-5002",
-                items: [
-                    { barcode: "4901234567890", qty: 20 },
-                    { barcode: "4901234567891", qty: 15 },
-                    { barcode: "6934567890123", qty: 3 }
-                ]
-            },
-            {
-                id: Date.now() + 3,
-                prhq: "PRHQ-1003",
-                pohq: "POHQ-5003",
-                items: [
-                    { barcode: "1234567890123", qty: 8 }
-                ]
-            }
-        ];
-    }
-
-    // บันทึกข้อมูลลง localStorage
-    function saveBackOrdersToStorage(backOrders) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(backOrders));
-    }
-
-    // ============ Global Variables ============
-    let backOrders = [];
-    let currentEditId = null;
-    let currentFormItems = [{ barcode: "", qty: 1 }];
-
-    // Helper คำนวณสถิติ
-    function calculateOrderStats(order) {
-        const totalItems = order.items.length;
-        const totalQty = order.items.reduce((sum, it) => sum + (parseInt(it.qty) || 0), 0);
-        const firstBarcode = order.items.length > 0 ? order.items[0].barcode : "-";
-        return { totalItems, totalQty, firstBarcode };
-    }
-
-    // เรนเดอร์ตารางด้านขวา
-    function renderRightTable() {
-        const tbody = document.getElementById('backorderListBody');
-        const badge = document.getElementById('totalOrdersBadge');
-        badge.innerText = `${backOrders.length} รายการ`;
-
-        if (backOrders.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="empty-table">ยังไม่มีข้อมูล Back Order<br>👉 เพิ่มข้อมูลทางด้านซ้าย หรือกดปุ่ม "เพิ่มตัวอย่างข้อมูล"</td></tr>';
-            return;
-        }
-
-        tbody.innerHTML = '';
-        backOrders.forEach(order => {
-            const { totalItems, totalQty, firstBarcode } = calculateOrderStats(order);
-            const row = tbody.insertRow();
-            row.setAttribute('data-id', order.id);
-            if (currentEditId === order.id) {
-                row.classList.add('selected');
-            }
-            row.insertCell(0).innerText = order.prhq;
-            row.insertCell(1).innerText = order.pohq;
-            row.insertCell(2).innerText = `${totalItems} รายการ`;
-            row.insertCell(3).innerHTML = `<span class="barcode-mini">${escapeHtml(firstBarcode)}</span>`;
-            row.insertCell(4).innerText = totalQty;
-            let itemsShort = order.items.map(it => `${it.barcode}(${it.qty})`).join(', ');
-            if (itemsShort.length > 45) itemsShort = itemsShort.slice(0, 42) + '...';
-            row.insertCell(5).innerHTML = `<div class="item-detail-list">📦 ${escapeHtml(itemsShort) || '-'}</div>`;
-
-            row.addEventListener('click', (e) => {
-                e.stopPropagation();
-                loadOrderToForm(order.id);
-            });
-        });
-    }
-
-    // โหลดออเดอร์ไปฟอร์มซ้าย
-    function loadOrderToForm(orderId) {
-        const order = backOrders.find(o => o.id === orderId);
-        if (!order) return;
-        currentEditId = order.id;
-        document.getElementById('prhqInput').value = order.prhq;
-        document.getElementById('pohqInput').value = order.pohq;
-        currentFormItems = JSON.parse(JSON.stringify(order.items));
-        if (currentFormItems.length === 0) currentFormItems = [{ barcode: "", qty: 1 }];
-        renderFormItems();
-        renderRightTable();
-    }
-
-    // เรนเดอร์ฟอร์มรายการสินค้า
-    function renderFormItems() {
-        const tbody = document.getElementById('itemsFormTbody');
-        if (!tbody) return;
-        if (currentFormItems.length === 0) {
-            currentFormItems = [{ barcode: "", qty: 1 }];
-        }
-        tbody.innerHTML = '';
-        currentFormItems.forEach((item, idx) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><input type="text" class="form-barcode" data-idx="${idx}" value="${escapeHtml(item.barcode)}" placeholder="บาร์โค้ด เช่น 8851234567890"></td>
-                <td><input type="number" class="form-qty" data-idx="${idx}" value="${item.qty}" min="1" step="1"></td>
-                <td style="text-align:center;">
-                    <button type="button" class="btn-icon btn-icon-remove" data-removeidx="${idx}">❌</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        document.querySelectorAll('.form-barcode').forEach(inp => {
-            inp.addEventListener('change', function() {
-                const idx = parseInt(this.getAttribute('data-idx'));
-                if (!isNaN(idx) && currentFormItems[idx]) currentFormItems[idx].barcode = this.value;
-            });
-            inp.addEventListener('input', function() {
-                const idx = parseInt(this.getAttribute('data-idx'));
-                if (!isNaN(idx) && currentFormItems[idx]) currentFormItems[idx].barcode = this.value;
-            });
-        });
-        document.querySelectorAll('.form-qty').forEach(inp => {
-            inp.addEventListener('change', function() {
-                const idx = parseInt(this.getAttribute('data-idx'));
-                if (!isNaN(idx) && currentFormItems[idx]) currentFormItems[idx].qty = parseInt(this.value) || 1;
-            });
-            inp.addEventListener('input', function() {
-                const idx = parseInt(this.getAttribute('data-idx'));
-                if (!isNaN(idx) && currentFormItems[idx]) currentFormItems[idx].qty = parseInt(this.value) || 1;
-            });
-        });
-
-        document.querySelectorAll('.btn-icon-remove').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const idx = parseInt(btn.getAttribute('data-removeidx'));
-                if (currentFormItems.length > 1) {
-                    currentFormItems.splice(idx, 1);
-                    renderFormItems();
-                } else {
-                    alert("ต้องมีอย่างน้อย 1 รายการสินค้า");
+        function loadBackOrdersFromStorage() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    return JSON.parse(stored);
+                } catch(e) {
+                    return [];
                 }
+            }
+            return [];
+        }
+
+        function getSampleData() {
+            const now = Date.now();
+            return [
+                { id: now + 1, prhq: "PRHQ-1001", pohq: "POHQ-5001", items: [{ barcode: "8851904123456", qty: 12 }, { barcode: "8851904123457", qty: 5 }] },
+                { id: now + 2, prhq: "PRHQ-1002", pohq: "POHQ-5002", items: [{ barcode: "4901234567890", qty: 20 }, { barcode: "4901234567891", qty: 15 }, { barcode: "6934567890123", qty: 3 }] },
+                { id: now + 3, prhq: "PRHQ-1003", pohq: "POHQ-5003", items: [{ barcode: "1234567890123", qty: 8 }] }
+            ];
+        }
+
+        function saveBackOrdersToStorage(backOrders) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(backOrders));
+        }
+
+        // ============ Global Variables ============
+        let backOrders = [];
+        let filteredOrders = [];
+        let currentEditId = null;
+        let currentFormItems = [{ barcode: "", qty: "1" }];
+        let searchKeyword = "";
+
+        function calculateOrderStats(order) {
+            const totalItems = order.items.length;
+            const totalQty = order.items.reduce((sum, it) => sum + (parseInt(it.qty) || 0), 0);
+            const firstBarcode = order.items.length > 0 ? order.items[0].barcode : "-";
+            return { totalItems, totalQty, firstBarcode };
+        }
+
+        function getDisplayOrders() {
+            if (searchKeyword.trim() === "") return backOrders;
+            return backOrders.filter(order => 
+                order.prhq.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+                order.pohq.toLowerCase().includes(searchKeyword.toLowerCase())
+            );
+        }
+
+        function renderRightTable() {
+            const displayOrders = getDisplayOrders();
+            const tbody = document.getElementById('backorderListBody');
+            const badge = document.getElementById('totalOrdersBadge');
+            badge.innerText = `${displayOrders.length} รายการ`;
+
+            if (displayOrders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="empty-table">ไม่พบข้อมูล${searchKeyword ? ' ที่ค้นหา' : ''}<br>👉 เพิ่มข้อมูลทางด้านซ้าย</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            displayOrders.forEach(order => {
+                const { totalItems, totalQty, firstBarcode } = calculateOrderStats(order);
+                const row = tbody.insertRow();
+                row.setAttribute('data-id', order.id);
+                if (currentEditId === order.id) {
+                    row.classList.add('selected');
+                }
+                row.insertCell(0).innerText = order.prhq;
+                row.insertCell(1).innerText = order.pohq;
+                row.insertCell(2).innerText = `${totalItems} รายการ`;
+                row.insertCell(3).innerHTML = `<span class="barcode-mini">${escapeHtml(firstBarcode)}</span>`;
+                row.insertCell(4).innerText = totalQty;
+                let itemsShort = order.items.map(it => `${it.barcode}(${it.qty})`).join(', ');
+                if (itemsShort.length > 45) itemsShort = itemsShort.slice(0, 42) + '...';
+                row.insertCell(5).innerHTML = `<div class="item-detail-list">📦 ${escapeHtml(itemsShort) || '-'}</div>`;
+
+                row.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    loadOrderToForm(order.id);
+                });
             });
-        });
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-
-    // บันทึก (เพิ่ม/แก้ไข)
-    function saveOrder() {
-        const prhq = document.getElementById('prhqInput').value.trim();
-        const pohq = document.getElementById('pohqInput').value.trim();
-        if (!prhq || !pohq) {
-            alert("กรุณากรอก PRHQ และ POHQ");
-            return;
-        }
-        let validItems = currentFormItems.filter(it => it.barcode.trim() !== "" && it.qty > 0);
-        if (validItems.length === 0) {
-            alert("กรุณาเพิ่มสินค้าอย่างน้อย 1 รายการ (บาร์โค้ดต้องไม่ว่าง)");
-            return;
         }
 
-        const newOrder = {
-            id: currentEditId ? currentEditId : Date.now(),
-            prhq: prhq,
-            pohq: pohq,
-            items: validItems.map(it => ({ barcode: it.barcode, qty: parseInt(it.qty) }))
-        };
-
-        if (currentEditId) {
-            const index = backOrders.findIndex(o => o.id === currentEditId);
-            if (index !== -1) backOrders[index] = newOrder;
-            alert("✅ อัปเดต Back Order สำเร็จ");
-        } else {
-            backOrders.unshift(newOrder);
-            alert("✅ เพิ่ม Back Order ใหม่สำเร็จ");
-        }
-        
-        saveBackOrdersToStorage(backOrders);
-        resetFormToNew();
-        renderRightTable();
-    }
-
-    function deleteCurrentOrder() {
-        if (!currentEditId) {
-            alert("⚠️ ไม่มีออเดอร์ที่ถูกเลือก กรุณาคลิกเลือกที่ตารางด้านขวา");
-            return;
-        }
-        if (confirm("ยืนยันลบ Back Order นี้?")) {
-            backOrders = backOrders.filter(o => o.id !== currentEditId);
-            saveBackOrdersToStorage(backOrders);
-            resetFormToNew();
-            renderRightTable();
-            alert("🗑️ ลบเรียบร้อย");
-        }
-    }
-
-    function resetFormToNew() {
-        currentEditId = null;
-        document.getElementById('prhqInput').value = '';
-        document.getElementById('pohqInput').value = '';
-        currentFormItems = [{ barcode: "", qty: 1 }];
-        renderFormItems();
-        renderRightTable();
-    }
-
-    function clearFormOnly() {
-        if (confirm("ล้างข้อมูลที่กำลังกรอกในฟอร์ม?")) {
-            currentEditId = null;
-            document.getElementById('prhqInput').value = '';
-            document.getElementById('pohqInput').value = '';
-            currentFormItems = [{ barcode: "", qty: 1 }];
+        function loadOrderToForm(orderId) {
+            const order = backOrders.find(o => o.id === orderId);
+            if (!order) return;
+            currentEditId = order.id;
+            document.getElementById('prhqInput').value = order.prhq;
+            document.getElementById('pohqInput').value = order.pohq;
+            currentFormItems = JSON.parse(JSON.stringify(order.items));
+            if (currentFormItems.length === 0) currentFormItems = [{ barcode: "", qty: "1" }];
             renderFormItems();
             renderRightTable();
         }
-    }
 
-    function addNewItemRow() {
-        currentFormItems.push({ barcode: "", qty: 1 });
-        renderFormItems();
-    }
+        function renderFormItems() {
+            const tbody = document.getElementById('itemsFormTbody');
+            if (!tbody) return;
+            if (currentFormItems.length === 0) {
+                currentFormItems = [{ barcode: "", qty: "1" }];
+            }
+            tbody.innerHTML = '';
+            currentFormItems.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><input type="text" class="form-barcode" data-idx="${idx}" value="${escapeHtml(item.barcode)}" placeholder="บาร์โค้ด เช่น 8851234567890"></td>
+                    <td><input type="text" class="form-qty-text" data-idx="${idx}" value="${item.qty}" placeholder="จำนวน" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')"></td>
+                    <td style="text-align:center;">
+                        <button type="button" class="btn-icon btn-icon-remove" data-removeidx="${idx}">❌</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
 
-    // ลบข้อมูลทั้งหมด
-    function resetAllData() {
-        if (confirm("⚠️ คำเตือน! คุณต้องการลบข้อมูล Back Order ทั้งหมดใช่หรือไม่? (ไม่สามารถกู้คืนได้)")) {
-            backOrders = [];
+            document.querySelectorAll('.form-barcode').forEach(inp => {
+                inp.addEventListener('change', function() {
+                    const idx = parseInt(this.getAttribute('data-idx'));
+                    if (!isNaN(idx) && currentFormItems[idx]) currentFormItems[idx].barcode = this.value;
+                });
+                inp.addEventListener('input', function() {
+                    const idx = parseInt(this.getAttribute('data-idx'));
+                    if (!isNaN(idx) && currentFormItems[idx]) currentFormItems[idx].barcode = this.value;
+                });
+            });
+            document.querySelectorAll('.form-qty-text').forEach(inp => {
+                inp.addEventListener('change', function() {
+                    const idx = parseInt(this.getAttribute('data-idx'));
+                    if (!isNaN(idx) && currentFormItems[idx]) {
+                        let val = this.value.replace(/[^0-9]/g, '');
+                        if (val === "" || parseInt(val) <= 0) val = "1";
+                        currentFormItems[idx].qty = val;
+                        this.value = val;
+                    }
+                });
+                inp.addEventListener('input', function() {
+                    let val = this.value.replace(/[^0-9]/g, '');
+                    if (val === "") val = "1";
+                    const idx = parseInt(this.getAttribute('data-idx'));
+                    if (!isNaN(idx) && currentFormItems[idx]) currentFormItems[idx].qty = val;
+                    this.value = val;
+                });
+            });
+
+            document.querySelectorAll('.btn-icon-remove').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const idx = parseInt(btn.getAttribute('data-removeidx'));
+                    if (currentFormItems.length > 1) {
+                        currentFormItems.splice(idx, 1);
+                        renderFormItems();
+                    } else {
+                        alert("ต้องมีอย่างน้อย 1 รายการสินค้า");
+                    }
+                });
+            });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        function saveOrder() {
+            const prhq = document.getElementById('prhqInput').value.trim();
+            const pohq = document.getElementById('pohqInput').value.trim();
+            if (!prhq || !pohq) {
+                alert("กรุณากรอก PRHQ และ POHQ");
+                return;
+            }
+            let validItems = currentFormItems.filter(it => it.barcode.trim() !== "" && it.qty > 0);
+            if (validItems.length === 0) {
+                alert("กรุณาเพิ่มสินค้าอย่างน้อย 1 รายการ (บาร์โค้ดต้องไม่ว่าง)");
+                return;
+            }
+
+            const newOrder = {
+                id: currentEditId ? currentEditId : Date.now(),
+                prhq: prhq,
+                pohq: pohq,
+                items: validItems.map(it => ({ barcode: it.barcode, qty: parseInt(it.qty) || 1 }))
+            };
+
+            if (currentEditId) {
+                const index = backOrders.findIndex(o => o.id === currentEditId);
+                if (index !== -1) backOrders[index] = newOrder;
+                alert("✅ อัปเดต Back Order สำเร็จ");
+            } else {
+                backOrders.unshift(newOrder);
+                alert("✅ เพิ่ม Back Order ใหม่สำเร็จ");
+            }
+            
             saveBackOrdersToStorage(backOrders);
             resetFormToNew();
             renderRightTable();
-            alert("🗑️ ลบข้อมูลทั้งหมดเรียบร้อย");
         }
-    }
 
-    // เพิ่มข้อมูลตัวอย่าง
-    function addSampleData() {
-        if (backOrders.length > 0) {
-            if (!confirm("มีข้อมูลอยู่แล้ว การเพิ่มข้อมูลตัวอย่างจะเป็นการเพิ่มเข้าไป ไม่ได้ลบของเดิม ต้องการดำเนินการหรือไม่?")) {
+        function deleteCurrentOrder() {
+            if (!currentEditId) {
+                alert("⚠️ ไม่มีออเดอร์ที่ถูกเลือก กรุณาคลิกเลือกที่ตารางด้านขวา");
                 return;
             }
-        }
-        const sampleData = getSampleData();
-        // ป้องกัน id ซ้ำ
-        sampleData.forEach(sample => {
-            // ตรวจสอบว่า id ซ้ำไหม
-            const exists = backOrders.some(o => o.id === sample.id);
-            if (!exists) {
-                backOrders.push(sample);
-            } else {
-                sample.id = Date.now() + Math.random();
-                backOrders.push(sample);
+            if (confirm("ยืนยันลบ Back Order นี้?")) {
+                backOrders = backOrders.filter(o => o.id !== currentEditId);
+                saveBackOrdersToStorage(backOrders);
+                resetFormToNew();
+                renderRightTable();
+                alert("🗑️ ลบเรียบร้อย");
             }
+        }
+
+        function resetFormToNew() {
+            currentEditId = null;
+            document.getElementById('prhqInput').value = '';
+            document.getElementById('pohqInput').value = '';
+            currentFormItems = [{ barcode: "", qty: "1" }];
+            renderFormItems();
+            renderRightTable();
+        }
+
+        function clearFormOnly() {
+            if (confirm("ล้างข้อมูลที่กำลังกรอกในฟอร์ม?")) {
+                currentEditId = null;
+                document.getElementById('prhqInput').value = '';
+                document.getElementById('pohqInput').value = '';
+                currentFormItems = [{ barcode: "", qty: "1" }];
+                renderFormItems();
+                renderRightTable();
+            }
+        }
+
+        function addNewItemRow() {
+            currentFormItems.push({ barcode: "", qty: "1" });
+            renderFormItems();
+        }
+
+        function resetAllData() {
+            if (confirm("⚠️ คำเตือน! คุณต้องการลบข้อมูล Back Order ทั้งหมดใช่หรือไม่? (ไม่สามารถกู้คืนได้)")) {
+                backOrders = [];
+                saveBackOrdersToStorage(backOrders);
+                resetFormToNew();
+                renderRightTable();
+                alert("🗑️ ลบข้อมูลทั้งหมดเรียบร้อย");
+            }
+        }
+
+        function addSampleData() {
+            if (backOrders.length > 0) {
+                if (!confirm("มีข้อมูลอยู่แล้ว การเพิ่มข้อมูลตัวอย่างจะเป็นการเพิ่มเข้าไป ไม่ได้ลบของเดิม ต้องการดำเนินการหรือไม่?")) {
+                    return;
+                }
+            }
+            const sampleData = getSampleData();
+            sampleData.forEach(sample => {
+                const exists = backOrders.some(o => o.id === sample.id);
+                if (!exists) {
+                    backOrders.push(sample);
+                } else {
+                    sample.id = Date.now() + Math.random();
+                    backOrders.push(sample);
+                }
+            });
+            saveBackOrdersToStorage(backOrders);
+            resetFormToNew();
+            renderRightTable();
+            alert(`📦 เพิ่มข้อมูลตัวอย่าง ${sampleData.length} รายการเรียบร้อย`);
+        }
+
+        function performSearch() {
+            searchKeyword = document.getElementById('searchInput').value;
+            renderRightTable();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            searchKeyword = '';
+            renderRightTable();
+        }
+
+        function goBack() {
+            if (confirm("ต้องการย้อนกลับ? (ข้อมูลจะถูกบันทึกไว้)")) {
+                window.history.back();
+            }
+        }
+
+        function init() {
+            backOrders = loadBackOrdersFromStorage();
+            resetFormToNew();
+            renderRightTable();
+        }
+
+        // Event Listeners
+        document.getElementById('saveOrderBtn').addEventListener('click', saveOrder);
+        document.getElementById('clearFormBtn').addEventListener('click', clearFormOnly);
+        document.getElementById('deleteOrderBtn').addEventListener('click', deleteCurrentOrder);
+        document.getElementById('addItemRowBtn').addEventListener('click', addNewItemRow);
+        document.getElementById('addItemTextBtn').addEventListener('click', addNewItemRow);
+        document.getElementById('resetAllDataBtn').addEventListener('click', resetAllData);
+        document.getElementById('addSampleDataBtn').addEventListener('click', addSampleData);
+        document.getElementById('searchBtn').addEventListener('click', performSearch);
+        document.getElementById('clearSearchBtn').addEventListener('click', clearSearch);
+        document.getElementById('backButton').addEventListener('click', goBack);
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
         });
-        saveBackOrdersToStorage(backOrders);
-        resetFormToNew();
-        renderRightTable();
-        alert(`📦 เพิ่มข้อมูลตัวอย่าง ${sampleData.length} รายการเรียบร้อย`);
-    }
 
-    // โหลดข้อมูลเริ่มต้น (ไม่มีข้อมูลตัวอย่างอัตโนมัติ)
-    function init() {
-        backOrders = loadBackOrdersFromStorage();
-        resetFormToNew();
-        renderRightTable();
-    }
-
-    // Event Listeners
-    document.getElementById('saveOrderBtn').addEventListener('click', saveOrder);
-    document.getElementById('clearFormBtn').addEventListener('click', clearFormOnly);
-    document.getElementById('deleteOrderBtn').addEventListener('click', deleteCurrentOrder);
-    document.getElementById('addItemRowBtn').addEventListener('click', addNewItemRow);
-    document.getElementById('addItemTextBtn').addEventListener('click', addNewItemRow);
-    document.getElementById('resetAllDataBtn').addEventListener('click', resetAllData);
-    document.getElementById('addSampleDataBtn').addEventListener('click', addSampleData);
-
-    // เริ่มต้น
-    init();
-</script>
+        init();
+    </script>
 </body>
 </html>
