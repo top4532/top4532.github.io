@@ -229,6 +229,42 @@
             cursor: pointer;
         }
 
+        .btn-reset-all {
+            background: #fef3c7;
+            color: #92400e;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .btn-reset-all:hover {
+            background: #fde68a;
+        }
+
+        .btn-sample {
+            background: #dbeafe;
+            color: #1e40af;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .btn-sample:hover {
+            background: #bfdbfe;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
         /* ========= ด้านขวา - ตารางแสดงข้อมูล (สีฟ้าขาว) ========= */
         .right-panel {
             width: 55%;
@@ -395,7 +431,11 @@
     <div class="right-panel">
         <div class="right-header">
             <h2>📋 รายการ Back Order ทั้งหมด</h2>
-            <div class="badge-count" id="totalOrdersBadge">0 รายการ</div>
+            <div class="header-buttons">
+                <button type="button" id="addSampleDataBtn" class="btn-sample">📦 เพิ่มตัวอย่างข้อมูล</button>
+                <button type="button" id="resetAllDataBtn" class="btn-reset-all">🗑️ ลบข้อมูลทั้งหมด</button>
+                <div class="badge-count" id="totalOrdersBadge">0 รายการ</div>
+            </div>
         </div>
         <div class="table-wrapper">
             <table class="data-table" id="backorderListTable">
@@ -421,7 +461,7 @@
     // ============ localStorage Management ============
     const STORAGE_KEY = 'backorder_data';
 
-    // โหลดข้อมูลจาก localStorage
+    // โหลดข้อมูลจาก localStorage (ไม่มีข้อมูลตัวอย่างอัตโนมัติ)
     function loadBackOrdersFromStorage() {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
@@ -432,15 +472,15 @@
                 return [];
             }
         }
-        // ถ้าไม่มีข้อมูลใน localStorage ให้ใช้ตัวอย่างเริ่มต้น
-        return getDefaultData();
+        // ถ้าไม่มีข้อมูลใน localStorage ให้คืนค่าเป็น array ว่าง
+        return [];
     }
 
-    // ข้อมูลตัวอย่างเริ่มต้น (ถ้ายังไม่มีใน localStorage)
-    function getDefaultData() {
+    // ข้อมูลตัวอย่าง (ใช้เมื่อกดปุ่มเพิ่มตัวอย่าง)
+    function getSampleData() {
         return [
             {
-                id: 1001,
+                id: Date.now() + 1,
                 prhq: "PRHQ-1001",
                 pohq: "POHQ-5001",
                 items: [
@@ -449,7 +489,7 @@
                 ]
             },
             {
-                id: 1002,
+                id: Date.now() + 2,
                 prhq: "PRHQ-1002",
                 pohq: "POHQ-5002",
                 items: [
@@ -459,7 +499,7 @@
                 ]
             },
             {
-                id: 1003,
+                id: Date.now() + 3,
                 prhq: "PRHQ-1003",
                 pohq: "POHQ-5003",
                 items: [
@@ -494,7 +534,7 @@
         badge.innerText = `${backOrders.length} รายการ`;
 
         if (backOrders.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="empty-table">ยังไม่มีข้อมูล Back Order<br>👉 เพิ่มข้อมูลทางด้านซ้าย</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-table">ยังไม่มีข้อมูล Back Order<br>👉 เพิ่มข้อมูลทางด้านซ้าย หรือกดปุ่ม "เพิ่มตัวอย่างข้อมูล"</td></tr>';
             return;
         }
 
@@ -621,17 +661,14 @@
         };
 
         if (currentEditId) {
-            // อัปเดต
             const index = backOrders.findIndex(o => o.id === currentEditId);
             if (index !== -1) backOrders[index] = newOrder;
             alert("✅ อัปเดต Back Order สำเร็จ");
         } else {
-            // เพิ่มใหม่
             backOrders.unshift(newOrder);
             alert("✅ เพิ่ม Back Order ใหม่สำเร็จ");
         }
         
-        // บันทึกข้อมูลลง localStorage
         saveBackOrdersToStorage(backOrders);
         resetFormToNew();
         renderRightTable();
@@ -644,7 +681,6 @@
         }
         if (confirm("ยืนยันลบ Back Order นี้?")) {
             backOrders = backOrders.filter(o => o.id !== currentEditId);
-            // บันทึกข้อมูลลง localStorage
             saveBackOrdersToStorage(backOrders);
             resetFormToNew();
             renderRightTable();
@@ -677,14 +713,45 @@
         renderFormItems();
     }
 
-    // โหลดข้อมูลเริ่มต้น
+    // ลบข้อมูลทั้งหมด
+    function resetAllData() {
+        if (confirm("⚠️ คำเตือน! คุณต้องการลบข้อมูล Back Order ทั้งหมดใช่หรือไม่? (ไม่สามารถกู้คืนได้)")) {
+            backOrders = [];
+            saveBackOrdersToStorage(backOrders);
+            resetFormToNew();
+            renderRightTable();
+            alert("🗑️ ลบข้อมูลทั้งหมดเรียบร้อย");
+        }
+    }
+
+    // เพิ่มข้อมูลตัวอย่าง
+    function addSampleData() {
+        if (backOrders.length > 0) {
+            if (!confirm("มีข้อมูลอยู่แล้ว การเพิ่มข้อมูลตัวอย่างจะเป็นการเพิ่มเข้าไป ไม่ได้ลบของเดิม ต้องการดำเนินการหรือไม่?")) {
+                return;
+            }
+        }
+        const sampleData = getSampleData();
+        // ป้องกัน id ซ้ำ
+        sampleData.forEach(sample => {
+            // ตรวจสอบว่า id ซ้ำไหม
+            const exists = backOrders.some(o => o.id === sample.id);
+            if (!exists) {
+                backOrders.push(sample);
+            } else {
+                sample.id = Date.now() + Math.random();
+                backOrders.push(sample);
+            }
+        });
+        saveBackOrdersToStorage(backOrders);
+        resetFormToNew();
+        renderRightTable();
+        alert(`📦 เพิ่มข้อมูลตัวอย่าง ${sampleData.length} รายการเรียบร้อย`);
+    }
+
+    // โหลดข้อมูลเริ่มต้น (ไม่มีข้อมูลตัวอย่างอัตโนมัติ)
     function init() {
         backOrders = loadBackOrdersFromStorage();
-        // ตรวจสอบว่ามี id ซ้ำไหม (กัน error)
-        if (backOrders.length === 0) {
-            backOrders = getDefaultData();
-            saveBackOrdersToStorage(backOrders);
-        }
         resetFormToNew();
         renderRightTable();
     }
@@ -695,6 +762,8 @@
     document.getElementById('deleteOrderBtn').addEventListener('click', deleteCurrentOrder);
     document.getElementById('addItemRowBtn').addEventListener('click', addNewItemRow);
     document.getElementById('addItemTextBtn').addEventListener('click', addNewItemRow);
+    document.getElementById('resetAllDataBtn').addEventListener('click', resetAllData);
+    document.getElementById('addSampleDataBtn').addEventListener('click', addSampleData);
 
     // เริ่มต้น
     init();
