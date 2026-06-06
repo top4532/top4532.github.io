@@ -2,763 +2,428 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>NUT SYSTEM v2 — ระบบจัดการน็อตล้อ</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NUT2 | จัดการสินค้าทุกประเภท</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#1e6fdf',
+                    primaryDark: '#0f5bc2',
+                    navy: '#0a2b4e',
+                    nut: '#f59e0b',
+                    bushing: '#10b981',
+                    rubber: '#8b5cf6',
+                }
+            }
+        }
+    }
+</script>
 <style>
-:root {
-  --bg: #f0f5ff;
-  --surface: #ffffff;
-  --surface2: #f7f9ff;
-  --blue: #2563eb;
-  --blue-mid: #3b82f6;
-  --blue-light: #dbeafe;
-  --blue-xlight: #eff6ff;
-  --blue-dark: #1d4ed8;
-  --blue-deep: #1e3a8a;
-  --text: #0f172a;
-  --text-muted: #64748b;
-  --text-dim: #94a3b8;
-  --border: rgba(37,99,235,0.1);
-  --border-mid: rgba(37,99,235,0.2);
-  --shadow-sm: 0 1px 3px rgba(37,99,235,0.08),0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 16px rgba(37,99,235,0.12),0 2px 4px rgba(0,0,0,0.04);
-  --shadow-lg: 0 12px 40px rgba(37,99,235,0.18),0 4px 8px rgba(0,0,0,0.04);
-  --red: #ef4444; --red-light: #fee2e2;
-  --green: #10b981; --green-light: #d1fae5;
-  --amber: #f59e0b; --amber-light: #fef3c7;
-  --sans: 'Outfit',sans-serif;
-  --thai: 'IBM Plex Sans Thai',sans-serif;
-  --radius-lg: 16px; --radius-xl: 20px;
-  --sidebar-width: 260px;
-  --topbar-height: 60px;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:var(--thai);min-height:100vh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(37,99,235,0.07) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0}
-body::after{content:'';position:fixed;top:0;left:0;right:0;height:400px;background:linear-gradient(180deg,rgba(219,234,254,0.5) 0%,transparent 100%);pointer-events:none;z-index:0}
-
-/* ===== WELCOME ===== */
-.welcome-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.55);backdrop-filter:blur(6px);animation:overlayIn 0.4s ease forwards}
-.welcome-overlay.hide{animation:overlayOut 0.5s ease forwards}
-@keyframes overlayIn{from{opacity:0}to{opacity:1}}
-@keyframes overlayOut{from{opacity:1}to{opacity:0;pointer-events:none}}
-.welcome-card{background:var(--surface);border-radius:28px;padding:44px 48px 36px;text-align:center;box-shadow:0 32px 80px rgba(37,99,235,0.28),0 8px 24px rgba(0,0,0,0.12);border:1px solid var(--border-mid);max-width:420px;width:90%;animation:cardPop 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards}
-@keyframes cardPop{from{opacity:0;transform:scale(0.82) translateY(24px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.welcome-avatar{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#60a5fa);display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:700;font-size:24px;color:#fff;margin:0 auto 18px;box-shadow:0 8px 24px rgba(37,99,235,0.35);animation:avatarPulse 2s ease-in-out infinite}
-@keyframes avatarPulse{0%,100%{box-shadow:0 8px 24px rgba(37,99,235,0.35)}50%{box-shadow:0 8px 32px rgba(37,99,235,0.6)}}
-.welcome-greeting{font-family:var(--sans);font-size:12px;font-weight:500;color:var(--blue-mid);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px}
-.welcome-name{font-family:var(--sans);font-size:26px;font-weight:700;color:var(--text);margin-bottom:6px}
-.welcome-name span{color:var(--blue)}
-.welcome-role{display:inline-flex;align-items:center;gap:6px;background:var(--blue-xlight);border:1px solid var(--blue-light);border-radius:99px;padding:4px 14px;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--blue-dark);letter-spacing:0.08em;margin-bottom:20px}
-.welcome-role::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-.welcome-divider{height:1px;background:var(--border);margin:0 0 16px}
-.welcome-datetime{font-family:var(--thai);font-size:12px;color:var(--text-muted);margin-bottom:4px;display:flex;align-items:center;justify-content:center;gap:8px}
-.welcome-time-big{font-family:var(--sans);font-size:34px;font-weight:700;color:var(--blue);letter-spacing:0.06em;margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:10px}
-.welcome-time-big .clock-icon{font-size:26px;opacity:0.7}
-.welcome-btn{background:linear-gradient(135deg,#2563eb,#60a5fa);border:none;color:#fff;font-family:var(--sans);font-size:14px;font-weight:600;padding:13px 36px;border-radius:99px;cursor:pointer;box-shadow:0 4px 16px rgba(37,99,235,0.4);transition:all 0.2s;width:100%}
-.welcome-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,0.5)}
-.welcome-sub{font-family:var(--sans);font-size:11px;color:var(--text-dim);margin-top:10px}
-
-/* ===== TOP BAR ===== */
-.topbar{position:sticky;top:0;z-index:50;width:100%;height:var(--topbar-height);background:rgba(255,255,255,0.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--border-mid);box-shadow:0 2px 16px rgba(37,99,235,0.08);display:flex;align-items:center;justify-content:space-between;padding:0 28px;gap:20px}
-.topbar-left{display:flex;align-items:center;gap:12px;flex-shrink:0}
-.topbar-logo{width:36px;height:36px;background:linear-gradient(135deg,#2563eb,#60a5fa);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 2px 8px rgba(37,99,235,0.3)}
-.topbar-brand{font-family:var(--sans);font-weight:700;font-size:16px;color:var(--text)}
-.topbar-brand span{color:var(--blue)}
-.topbar-divider{width:1px;height:26px;background:var(--border-mid)}
-.topbar-sys-label{font-family:var(--sans);font-size:11px;color:var(--text-muted)}
-.topbar-center{flex:1;display:flex;align-items:center;justify-content:center}
-.datetime-row{display:flex;align-items:center;gap:14px;background:var(--blue-xlight);border:1px solid var(--blue-light);border-radius:99px;padding:7px 20px}
-.datetime-date-text{font-family:var(--thai);font-size:12px;font-weight:600;color:var(--text-muted);white-space:nowrap}
-.datetime-sep{width:4px;height:4px;border-radius:50%;background:var(--blue-mid);opacity:0.4}
-.datetime-time-row{display:flex;align-items:center;gap:6px}
-.clock-svg{width:16px;height:16px;color:var(--blue)}
-.datetime-time-text{font-family:var(--sans);font-size:15px;font-weight:700;color:var(--blue);letter-spacing:0.05em;white-space:nowrap}
-.topbar-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.badge-live{display:flex;align-items:center;gap:6px;background:#ecfdf5;border:1px solid #a7f3d0;color:var(--green);font-family:var(--sans);font-size:10px;font-weight:600;padding:4px 10px;border-radius:99px;letter-spacing:0.06em}
-.badge-live::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
-.admin-chip{display:flex;align-items:center;gap:9px;background:var(--blue-xlight);border:1px solid var(--blue-light);border-radius:99px;padding:5px 14px 5px 5px}
-.admin-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#60a5fa);display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:700;font-size:11px;color:#fff}
-.admin-name{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--blue-dark);line-height:1.2}
-.admin-role{font-family:var(--sans);font-size:9px;font-weight:600;color:var(--blue-mid);letter-spacing:0.08em;text-transform:uppercase}
-
-/* ===== LOGOUT BUTTON — NEW DESIGN ===== */
-.btn-logout {
-  display: inline-flex;
-  align-items: center;
-  gap: 0;
-  background: #ffffff;
-  border: 2px solid #1d4ed8;
-  border-radius: 12px;
-  padding: 0;
-  cursor: pointer;
-  font-family: var(--sans);
-  overflow: hidden;
-  transition: transform 0.22s cubic-bezier(0.34,1.2,0.64,1), box-shadow 0.22s, border-color 0.2s;
-  box-shadow: 0 2px 0 #1d4ed8, 0 4px 14px rgba(29,78,216,0.18);
-  position: relative;
-  user-select: none;
-  height: 38px;
-}
-.btn-logout:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 0 #1e40af, 0 8px 22px rgba(29,78,216,0.28);
-  border-color: #1e40af;
-}
-.btn-logout:active {
-  transform: translateY(1px);
-  box-shadow: 0 1px 0 #1d4ed8, 0 2px 6px rgba(29,78,216,0.15);
-}
-.btn-logout .lo-icon-box {
-  width: 34px;
-  height: 34px;
-  background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin: 0;
-  align-self: stretch;
-}
-.btn-logout .lo-icon-box i {
-  font-size: 17px;
-  color: #ffffff;
-  transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
-}
-.btn-logout:hover .lo-icon-box i {
-  transform: translateX(3px);
-}
-.btn-logout .lo-text-box {
-  padding: 0 13px 0 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
-.btn-logout .lo-main {
-  font-size: 12px;
-  font-weight: 700;
-  color: #0f172a;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-.btn-logout .lo-sub {
-  font-size: 9px;
-  font-weight: 600;
-  color: #1d4ed8;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  margin-top: 1px;
-}
-
-/* ===== LAYOUT ===== */
-.app-layout{display:flex;min-height:calc(100vh - var(--topbar-height));position:relative;z-index:2}
-
-/* ===== SIDEBAR ===== */
-.sidebar{width:var(--sidebar-width);background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-right:1px solid var(--border);box-shadow:4px 0 20px rgba(37,99,235,0.06);display:flex;flex-direction:column;position:sticky;top:var(--topbar-height);height:calc(100vh - var(--topbar-height));z-index:10;flex-shrink:0}
-.sidebar-header{padding:24px 20px 18px;border-bottom:1px solid var(--border)}
-.stat-summary{background:var(--blue-xlight);border-radius:20px;padding:14px}
-.stat-summary p{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--blue-dark);margin-bottom:10px}
-.total-badge{background:var(--surface);border-radius:14px;padding:8px 12px;display:flex;justify-content:space-between;align-items:baseline;font-family:var(--sans)}
-.total-label{font-size:12px;color:var(--text-muted)}
-.total-number{font-size:24px;font-weight:700;color:var(--blue)}
-.sidebar-nav{flex:1;padding:20px 12px;display:flex;flex-direction:column;gap:4px;overflow-y:auto}
-.nav-section-label{font-family:var(--sans);font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);padding:6px 14px}
-.nav-item{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:14px;font-family:var(--sans);font-weight:500;font-size:14px;color:var(--text-muted);transition:all 0.2s;cursor:pointer;background:transparent;border:none;width:100%;text-align:left}
-.nav-item:hover{background:var(--blue-xlight);color:var(--blue)}
-.nav-item.active{background:var(--blue-light);color:var(--blue-dark);font-weight:700}
-.nav-count{margin-left:auto;background:var(--blue);color:#fff;border-radius:99px;padding:1px 8px;font-size:10px;font-weight:700}
-.sidebar-footer{padding:14px 20px 24px;border-top:1px solid var(--border);font-size:10px;color:var(--text-dim);line-height:1.6}
-
-/* ===== MAIN ===== */
-.main-content{flex:1;padding:28px 28px 60px;max-width:calc(100% - var(--sidebar-width))}
-.header-area{margin-bottom:24px}
-.header-top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
-.brand{display:flex;align-items:center;gap:16px}
-.brand-icon{width:52px;height:52px;background:linear-gradient(135deg,#2563eb,#60a5fa);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(37,99,235,0.35);font-size:24px;flex-shrink:0}
-.brand-eyebrow{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:0.12em;color:var(--blue-mid);text-transform:uppercase;margin-bottom:3px}
-.brand-title{font-family:var(--sans);font-size:26px;font-weight:700;color:var(--text);line-height:1.1}
-.brand-title span{color:var(--blue)}
-.brand-sub{font-size:13px;color:var(--text-muted);margin-top:3px}
-.header-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.btn-act{display:flex;align-items:center;gap:6px;background:var(--surface);color:var(--blue);border:1px solid var(--border-mid);border-radius:99px;padding:7px 16px;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;box-shadow:var(--shadow-sm);transition:all 0.2s}
-.btn-act:hover{background:var(--blue-xlight);border-color:var(--blue);transform:translateY(-1px)}
-.btn-act.red{color:var(--red);border-color:rgba(239,68,68,0.3)}
-.btn-act.red:hover{background:var(--red-light);border-color:var(--red)}
-.btn-act.green{color:var(--green);border-color:rgba(16,185,129,0.3)}
-.btn-act.green:hover{background:var(--green-light);border-color:var(--green)}
-.btn-act.amber{color:var(--amber);border-color:rgba(245,158,11,0.3)}
-.btn-act.amber:hover{background:var(--amber-light);border-color:var(--amber)}
-
-/* ===== ปุ่มพิเศษ 3 ปุ่ม ===== */
-.special-buttons{display:flex;gap:12px;margin-top:10px;margin-bottom:20px;flex-wrap:wrap}
-.btn-special{position:relative;display:flex;align-items:center;gap:10px;padding:0 22px 0 10px;height:52px;border:none;border-radius:16px;cursor:pointer;font-family:var(--sans);overflow:hidden;transition:transform 0.2s cubic-bezier(.34,1.56,.64,1),box-shadow 0.2s;flex:1;min-width:170px}
-.btn-special::after{content:'';position:absolute;top:0;left:-80%;width:60%;height:100%;background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,0.28) 50%,transparent 100%);transform:skewX(-15deg);transition:left 0.5s ease;pointer-events:none}
-.btn-special:hover::after{left:130%}
-.btn-special:hover{transform:translateY(-3px)}
-.btn-special:active{transform:scale(0.97) translateY(-1px)}
-.btn-special .sp-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.22);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;transition:transform 0.28s cubic-bezier(.34,1.56,.64,1);backdrop-filter:blur(4px)}
-.btn-special:hover .sp-icon{transform:rotate(-10deg) scale(1.18)}
-.btn-special .sp-text{display:flex;flex-direction:column;align-items:flex-start;line-height:1.2;flex:1}
-.btn-special .sp-main{font-size:13px;font-weight:700;color:#fff;letter-spacing:0.01em}
-.btn-special .sp-sub{font-size:10px;color:rgba(255,255,255,0.78);margin-top:2px;letter-spacing:0.02em}
-.btn-special .sp-badge{padding:2px 9px;border-radius:99px;font-size:9px;font-weight:700;background:rgba(255,255,255,0.25);color:#fff;letter-spacing:0.06em;white-space:nowrap;border:1px solid rgba(255,255,255,0.3)}
-.ping-dot{position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:50%;background:#fff}
-.ping-dot::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.7);animation:pingAnim 1.8s ease-in-out infinite}
-@keyframes pingAnim{0%{transform:scale(1);opacity:1}70%{transform:scale(2.4);opacity:0}100%{transform:scale(1);opacity:0}}
-@keyframes rippleAnim{to{transform:scale(4);opacity:0}}
-.ripple-el{position:absolute;border-radius:50%;background:rgba(255,255,255,0.32);width:60px;height:60px;margin-left:-30px;margin-top:-30px;animation:rippleAnim 0.55s linear;pointer-events:none}
-.btn-special.orange{background:linear-gradient(130deg,#d97706 0%,#f97316 55%,#fb923c 100%);box-shadow:0 4px 18px rgba(217,119,6,0.38),0 1px 4px rgba(0,0,0,0.08)}
-.btn-special.orange:hover{box-shadow:0 8px 28px rgba(217,119,6,0.52),0 2px 6px rgba(0,0,0,0.1)}
-.btn-special.purple{background:linear-gradient(130deg,#6d28d9 0%,#7c3aed 55%,#a855f7 100%);box-shadow:0 4px 18px rgba(109,40,217,0.38),0 1px 4px rgba(0,0,0,0.08)}
-.btn-special.purple:hover{box-shadow:0 8px 28px rgba(109,40,217,0.52),0 2px 6px rgba(0,0,0,0.1)}
-.btn-special.teal{background:linear-gradient(130deg,#0f766e 0%,#0d9488 55%,#2dd4bf 100%);box-shadow:0 4px 18px rgba(15,118,110,0.38),0 1px 4px rgba(0,0,0,0.08)}
-.btn-special.teal:hover{box-shadow:0 8px 28px rgba(15,118,110,0.52),0 2px 6px rgba(0,0,0,0.1)}
-
-/* ===== STATS ===== */
-.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm);transition:all 0.2s;cursor:pointer}
-.stat-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--border-mid)}
-.stat-icon{width:38px;height:38px;background:var(--blue-xlight);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.stat-cat{font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase}
-.stat-num{font-family:var(--sans);font-size:22px;font-weight:700;color:var(--blue);line-height:1.1}
-
-/* ===== TABLE ===== */
-.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);box-shadow:var(--shadow-md);overflow:hidden;margin-top:24px}
-.table-header{padding:18px 22px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:12px}
-.table-cat-title{font-family:var(--sans);font-size:18px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:10px}
-.table-cat-pill{background:var(--blue-xlight);color:var(--blue);border:1px solid var(--blue-light);border-radius:99px;padding:3px 12px;font-family:var(--sans);font-size:11px;font-weight:600}
-.table-actions{display:flex;align-items:center;gap:8px}
-.search-bar{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border-mid);border-radius:99px;padding:6px 14px}
-.search-bar input{border:none;background:transparent;outline:none;font-family:var(--sans);font-size:13px;color:var(--text);width:180px}
-table{width:100%;border-collapse:collapse;font-family:var(--sans)}
-thead tr{background:var(--blue-xlight)}
-thead th{padding:11px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--blue-dark);text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid var(--blue-light);white-space:nowrap}
-tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s}
-tbody tr:hover{background:var(--blue-xlight)}
-tbody tr:last-child{border-bottom:none}
-tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middle}
-.td-code{font-family:var(--sans);font-weight:700;color:var(--blue-dark)}
-.td-barcode{font-family:'Courier New',monospace;font-size:12px;color:var(--text-muted);background:var(--surface2);padding:3px 8px;border-radius:6px;border:1px solid var(--border)}
-.td-desc{color:var(--text-muted);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.td-qty{font-weight:600;color:var(--text);text-align:center}
-.td-price{font-weight:700;color:var(--green);text-align:right}
-.td-sup{font-size:12px;color:var(--text-muted)}
-.td-owner{display:inline-flex;align-items:center;gap:6px}
-.owner-dot{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#60a5fa);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
-.td-actions{display:flex;align-items:center;gap:6px}
-.btn-edit{width:28px;height:28px;border-radius:8px;border:1px solid var(--border-mid);background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.15s;color:var(--blue)}
-.btn-edit:hover{background:var(--blue-xlight);border-color:var(--blue)}
-.btn-del-row{width:28px;height:28px;border-radius:8px;border:1px solid rgba(239,68,68,0.2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.15s;color:var(--red)}
-.btn-del-row:hover{background:var(--red-light);border-color:var(--red)}
-.empty-row td{text-align:center;padding:48px;color:var(--text-dim);font-size:14px}
-
-/* ===== MODAL ===== */
-.modal-backdrop{position:fixed;inset:0;z-index:9000;background:rgba(15,23,42,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.25s}
-.modal-backdrop.open{opacity:1;pointer-events:all}
-.modal{background:var(--surface);border-radius:24px;padding:32px;width:100%;max-width:580px;box-shadow:0 24px 64px rgba(37,99,235,0.2);border:1px solid var(--border-mid);transform:scale(0.9) translateY(20px);transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);max-height:90vh;overflow-y:auto}
-.modal-backdrop.open .modal{transform:scale(1) translateY(0)}
-.modal-title{font-family:var(--sans);font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:10px}
-.modal-sub{font-family:var(--sans);font-size:13px;color:var(--text-muted);margin-bottom:24px}
-.modal-divider{height:1px;background:var(--border);margin:20px 0}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-full{grid-column:1/-1}
-.form-group{display:flex;flex-direction:column;gap:6px}
-.form-label{font-family:var(--sans);font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;display:flex;align-items:center;gap:4px}
-.form-label .req{color:var(--red);font-size:14px}
-.form-input,.form-select,.form-textarea{font-family:var(--sans);font-size:13px;color:var(--text);background:var(--surface2);border:1px solid var(--border-mid);border-radius:10px;padding:9px 12px;outline:none;transition:all 0.2s;width:100%}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--blue);background:var(--blue-xlight);box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
-.form-textarea{resize:vertical;min-height:70px}
-.form-hint{font-size:11px;color:var(--text-dim)}
-.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}
-.btn-modal-cancel{background:transparent;border:1px solid var(--border-mid);color:var(--text-muted);font-family:var(--sans);font-size:13px;font-weight:600;padding:9px 20px;border-radius:99px;cursor:pointer;transition:all 0.2s}
-.btn-modal-cancel:hover{background:var(--surface2)}
-.btn-modal-save{background:linear-gradient(135deg,#2563eb,#60a5fa);border:none;color:#fff;font-family:var(--sans);font-size:13px;font-weight:600;padding:9px 24px;border-radius:99px;cursor:pointer;box-shadow:0 4px 12px rgba(37,99,235,0.3);transition:all 0.2s}
-.btn-modal-save:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(37,99,235,0.4)}
-
-/* ===== TABLE FOOTER ===== */
-.table-foot{padding:12px 20px;border-top:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.foot-info{font-family:var(--sans);font-size:12px;color:var(--text-muted)}
-.foot-info b{color:var(--blue)}
-
-/* ===== TOAST ===== */
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--blue-deep);color:#fff;border-radius:99px;padding:10px 22px;font-family:var(--sans);font-size:13px;font-weight:500;opacity:0;pointer-events:none;transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);z-index:9999;box-shadow:0 8px 28px rgba(30,58,138,0.4);white-space:nowrap}
-.toast.error{background:var(--red)}
-.toast.success{background:#059669}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-.bottom-info{margin-top:40px;padding-top:16px;border-top:1px solid var(--border-mid);display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);flex-wrap:wrap;gap:6px}
-
-@media(max-width:900px){.stat-row{grid-template-columns:repeat(2,1fr)}.topbar-sys-label{display:none}.form-grid{grid-template-columns:1fr}}
-@media(max-width:700px){.topbar-center{display:none}.topbar{padding:0 16px}.app-layout{flex-direction:column}.sidebar{width:100%;height:auto;position:relative;top:0}.sidebar-nav{flex-direction:row;flex-wrap:wrap;padding:10px}.nav-item{width:auto}.main-content{max-width:100%;padding:16px}.brand-title{font-size:20px}.special-buttons{flex-direction:column}.btn-special{min-width:100%}.btn-logout .lo-sub{display:none}}
+    body {
+        background: linear-gradient(135deg, #e6f0ff, #f0f7ff);
+    }
+    .card-hover:hover {
+        transform: translateY(-5px);
+        transition: all 0.3s ease;
+    }
+    .category-tab {
+        transition: all 0.2s ease;
+    }
+    .category-tab.active {
+        background: linear-gradient(135deg, #1e6fdf, #0f5bc2);
+        color: white;
+        box-shadow: 0 4px 12px rgba(30,111,223,0.3);
+    }
 </style>
 </head>
-<body>
+<body class="min-h-screen p-5 md:p-8">
 
-<!-- WELCOME -->
-<div class="welcome-overlay" id="welcomeOverlay">
-  <div class="welcome-card">
-    <div class="welcome-avatar">PW</div>
-    <div class="welcome-greeting">ยินดีต้อนรับเข้าสู่ระบบ</div>
-    <div class="welcome-name">PATIWAT <span>ADMIN</span></div>
-    <div class="welcome-role">ADMINISTRATOR</div>
-    <div class="welcome-divider"></div>
-    <div class="welcome-datetime" id="wDate">—</div>
-    <div class="welcome-time-big"><span class="clock-icon">🕐</span><span id="wTime">00:00:00</span></div>
-    <button class="welcome-btn" onclick="closeWelcome()">🔩 เข้าสู่ระบบ NUT SYSTEM</button>
-    <div class="welcome-sub">ระบบจัดการน็อตล้อรถยนต์ — Workshop Manager</div>
-  </div>
+<div class="max-w-[1500px] mx-auto">
+    <!-- Header -->
+    <div class="bg-white rounded-3xl p-5 md:p-6 flex flex-wrap justify-between items-center gap-4 shadow-md border border-blue-100 mb-6">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl flex items-center justify-center text-white text-xl">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <div>
+                <h2 class="text-xl md:text-2xl font-bold text-navy">
+                    <i class="fa-solid fa-database text-emerald-500 mr-2"></i>
+                    NUT2 - คลังสินค้าอะไหล่รถยนต์
+                </h2>
+                <p class="text-gray-500 text-sm">น็อตล้อ | บูชปีกนก | ยางกันฝุ่น</p>
+            </div>
+        </div>
+        <button onclick="window.location.href='New.html';" 
+                class="bg-primary hover:bg-primaryDark text-white font-semibold px-5 py-2 rounded-full transition flex items-center gap-2 shadow-md">
+            <i class="fa-solid fa-arrow-right"></i>
+            ไปที่ NEW MODEL
+        </button>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="bg-white rounded-2xl p-3 shadow-md border border-blue-100 mb-6">
+        <div class="flex flex-wrap gap-3">
+            <button data-category="all" class="category-tab active px-6 py-2.5 rounded-xl font-semibold transition flex items-center gap-2 bg-gradient-to-r from-primary to-primaryDark text-white shadow-md">
+                <i class="fa-solid fa-border-all"></i> ทั้งหมด
+            </button>
+            <button data-category="น็อตล้อ" class="category-tab px-6 py-2.5 rounded-xl font-semibold transition bg-gray-100 text-gray-700 hover:bg-nut/20 hover:text-nut">
+                <i class="fa-solid fa-circle-nut"></i> น็อตล้อ
+            </button>
+            <button data-category="บูชปีกนก" class="category-tab px-6 py-2.5 rounded-xl font-semibold transition bg-gray-100 text-gray-700 hover:bg-bushing/20 hover:text-bushing">
+                <i class="fa-solid fa-car-side"></i> บูชปีกนก
+            </button>
+            <button data-category="ยางกันฝุ่น" class="category-tab px-6 py-2.5 rounded-xl font-semibold transition bg-gray-100 text-gray-700 hover:bg-rubber/20 hover:text-rubber">
+                <i class="fa-solid fa-circle"></i> ยางกันฝุ่น
+            </button>
+        </div>
+    </div>
+
+    <!-- สถิติ Card แยกตามประเภท -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-6">
+        <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-5 shadow-md border-l-4 border-nut card-hover">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-orange-700 text-sm font-semibold">📦 น็อตล้อ</p>
+                    <p id="statNut" class="text-3xl font-bold text-orange-800">0</p>
+                </div>
+                <i class="fa-solid fa-circle-nut text-5xl text-orange-300"></i>
+            </div>
+        </div>
+        <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-5 shadow-md border-l-4 border-bushing card-hover">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-green-700 text-sm font-semibold">🔧 บูชปีกนก</p>
+                    <p id="statBushing" class="text-3xl font-bold text-green-800">0</p>
+                </div>
+                <i class="fa-solid fa-car-side text-5xl text-green-300"></i>
+            </div>
+        </div>
+        <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-5 shadow-md border-l-4 border-rubber card-hover">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-purple-700 text-sm font-semibold">🛞 ยางกันฝุ่น</p>
+                    <p id="statRubber" class="text-3xl font-bold text-purple-800">0</p>
+                </div>
+                <i class="fa-solid fa-circle text-5xl text-purple-300"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-2xl p-5 shadow-md border-l-4 border-blue-500 card-hover">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm">💰 มูลค่ารวมสินค้า</p>
+                    <p id="totalValue" class="text-2xl font-bold text-navy">0</p>
+                </div>
+                <i class="fa-solid fa-coins text-4xl text-blue-200"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search & Refresh -->
+    <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+        <div class="relative flex-1 max-w-md">
+            <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input type="text" id="searchInput" placeholder="ค้นหาด้วย รหัสสินค้า หรือ รายละเอียด..." 
+                   class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition">
+        </div>
+        <button id="refreshBtn" class="bg-gray-100 hover:bg-gray-200 text-navy font-semibold px-5 py-2.5 rounded-xl transition flex items-center gap-2">
+            <i class="fa-solid fa-rotate-right"></i> รีเฟรช
+        </button>
+    </div>
+
+    <!-- Table Card -->
+    <div class="bg-white rounded-3xl p-5 md:p-6 shadow-md border border-blue-100">
+        <div class="flex flex-wrap justify-between items-center mb-5 gap-3">
+            <h3 class="text-lg font-bold text-navy">
+                <i class="fa-solid fa-table text-primary mr-2"></i>
+                <span id="categoryTitle">รายการสินค้าทั้งหมด</span>
+            </h3>
+            <span class="text-sm text-gray-400 bg-gray-100 px-3 py-1 rounded-full">
+                <i class="fa-regular fa-clock"></i> <span id="lastUpdate">-</span>
+            </span>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-[1000px] border-collapse">
+                <thead class="bg-blue-50">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">ประเภท</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">รหัสสินค้า</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">บาร์โค้ด</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">รายละเอียด</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">ยี่ห้อ</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">ราคา</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">จำนวน</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">MOQ</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">ซัพพลายเออร์</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">สถานะ</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-<!-- TOP BAR -->
-<header class="topbar">
-  <div class="topbar-left">
-    <div class="topbar-logo">⚙️</div>
-    <div class="topbar-brand">NUT<span>SYSTEM</span></div>
-    <div class="topbar-divider"></div>
-    <span class="topbar-sys-label">ระบบจัดการน็อตล้อ</span>
-  </div>
-  <div class="topbar-center">
-    <div class="datetime-row">
-      <span class="datetime-date-text" id="tb-date">—</span>
-      <div class="datetime-sep"></div>
-      <div class="datetime-time-row">
-        <svg class="clock-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span class="datetime-time-text" id="tb-time">00:00:00</span>
-      </div>
-    </div>
-  </div>
-  <div class="topbar-right">
-    <div class="badge-live">LIVE</div>
-    <div class="admin-chip">
-      <div class="admin-avatar">PW</div>
-      <div><div class="admin-name">PATIWAT</div><div class="admin-role">ADMIN</div></div>
-    </div>
-    <!-- ปุ่ม Logout — NEW DESIGN -->
-    <button class="btn-logout" id="logoutButton" onclick="handleLogout()">
-      <div class="lo-icon-box">
-        <i class="ti ti-logout"></i>
-      </div>
-      <div class="lo-text-box">
-        <span class="lo-main">ออกจากระบบ</span>
-        <span class="lo-sub">SIGN OUT</span>
-      </div>
-    </button>
-  </div>
-</header>
-
-<div class="app-layout">
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <div class="stat-summary">
-        <p>📊 สรุปทั้งหมด</p>
-        <div class="total-badge">
-          <span class="total-label">รายการทั้งหมด</span>
-          <span class="total-number" id="global-total">0</span>
-        </div>
-      </div>
-    </div>
-    <nav class="sidebar-nav">
-      <div class="nav-section-label">หมวดหมู่</div>
-      <button class="nav-item active" data-cat="3RHB" onclick="switchCat('3RHB',this)">🔩 3RHB<span class="nav-count" id="nc-3RHB">0</span></button>
-      <button class="nav-item" data-cat="3FHB" onclick="switchCat('3FHB',this)">🔧 3FHB<span class="nav-count" id="nc-3FHB">0</span></button>
-      <button class="nav-item" data-cat="3FHN" onclick="switchCat('3FHN',this)">⚙️ 3FHN<span class="nav-count" id="nc-3FHN">0</span></button>
-      <button class="nav-item" data-cat="3RHN" onclick="switchCat('3RHN',this)">🔑 3RHN<span class="nav-count" id="nc-3RHN">0</span></button>
-    </nav>
-    <div class="sidebar-footer">
-      <div>© Workshop Manager | NUT SYSTEM v2</div>
-      <div style="margin-top:4px;">⚡ ข้อมูลบันทึกใน LocalStorage</div>
-    </div>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main-content">
-    <div class="header-area">
-      <div class="header-top">
-        <div class="brand">
-          <div class="brand-icon">🔩</div>
-          <div>
-            <div class="brand-eyebrow">NUT MANAGEMENT</div>
-            <div class="brand-title">NUT <span>SYSTEM</span></div>
-            <div class="brand-sub">ระบบจัดการน็อตล้อรถยนต์ 4 กลุ่มหลัก</div>
-          </div>
-        </div>
-        <div class="header-actions">
-          <button class="btn-act green" onclick="openAddModal()">➕ เพิ่มรายการ</button>
-          <button class="btn-act red" id="resetBtn">🗑️ รีเซ็ตทั้งหมด</button>
-        </div>
-      </div>
-
-      <!-- ปุ่มพิเศษ 3 ปุ่ม -->
-      <div class="special-buttons">
-        <button class="btn-special orange" id="newModelBtn" onclick="addRipple(event)">
-          <div class="sp-icon">🆕</div>
-          <div class="sp-text">
-            <span class="sp-main">NewModel</span>
-            <span class="sp-sub">รุ่นสินค้าใหม่ล่าสุด</span>
-          </div>
-          <span class="sp-badge">NEW</span>
-          <div class="ping-dot"></div>
-        </button>
-        <button class="btn-special purple" id="bestSellerBtn" onclick="addRipple(event)">
-          <div class="sp-icon">🏆</div>
-          <div class="sp-text">
-            <span class="sp-main">สินค้าขายดี</span>
-            <span class="sp-sub">น็อตล้อยอดนิยม</span>
-          </div>
-          <span class="sp-badge">TOP</span>
-        </button>
-        <button class="btn-special teal" id="trackOrderBtn" onclick="addRipple(event)">
-          <div class="sp-icon">📅</div>
-          <div class="sp-text">
-            <span class="sp-main">ติดตามกำหนดส่ง</span>
-            <span class="sp-sub">ตรวจสอบการจัดส่ง</span>
-          </div>
-          <span class="sp-badge">TRACK</span>
-        </button>
-      </div>
-
-      <div class="stat-row" id="statRow"></div>
-    </div>
-
-    <!-- TABLE -->
-    <div class="table-wrap">
-      <div class="table-header">
-        <div class="table-cat-title">
-          <span id="tbl-icon">🔩</span>
-          <span id="tbl-title">3RHB</span>
-          <span class="table-cat-pill" id="tbl-count">0 รายการ</span>
-        </div>
-        <div class="table-actions">
-          <div class="search-bar">
-            <span>🔍</span>
-            <input type="text" id="searchInput" placeholder="ค้นหา รหัส/บาร์โค้ด/ซัพ..." oninput="renderTable()">
-          </div>
-        </div>
-      </div>
-      <div style="overflow-x:auto">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>รหัสสินค้า</th>
-              <th>บาร์โค้ด</th>
-              <th>รายละเอียด</th>
-              <th style="text-align:center">จำนวน/กล่อง</th>
-              <th style="text-align:right">ราคา (บาท)</th>
-              <th>ซัพพลายเออร์</th>
-              <th>ผู้ดูแล</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="tblBody"></tbody>
-        </table>
-      </div>
-      <div class="table-foot">
-        <span class="foot-info">หมวด: <b id="ft-cat">—</b> | แสดง <b id="ft-shown">0</b> / <b id="ft-total">0</b> รายการ</span>
-        <span class="foot-info" id="ft-saved"></span>
-      </div>
-    </div>
-
-    <div class="bottom-info">
-      <span>NUT SYSTEM v2.0 — ข้อมูลบันทึกใน LocalStorage</span>
-      <span id="lastSaved"></span>
-    </div>
-  </main>
+<!-- Toast -->
+<div id="toastMsg" class="fixed bottom-5 right-5 bg-navy text-white px-5 py-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 z-50 pointer-events-none">
+    ✅ อัปเดตข้อมูลแล้ว
 </div>
-
-<!-- MODAL -->
-<div class="modal-backdrop" id="modalBackdrop">
-  <div class="modal">
-    <div class="modal-title" id="modal-title-text">➕ เพิ่มรายการใหม่</div>
-    <div class="modal-sub" id="modal-sub-text">กรอกข้อมูลน็อตล้อในหมวดที่เลือก</div>
-    <div class="modal-divider"></div>
-    <div class="form-grid">
-      <div class="form-group">
-        <label class="form-label">รหัสสินค้า <span class="req">*</span></label>
-        <input class="form-input" id="f-code" placeholder="เช่น NUT-001">
-        <span class="form-hint">รหัสเฉพาะของสินค้า</span>
-      </div>
-      <div class="form-group">
-        <label class="form-label">บาร์โค้ด</label>
-        <input class="form-input" id="f-barcode" placeholder="เช่น 8851234567890">
-        <span class="form-hint">13 หลัก หรือ EAN</span>
-      </div>
-      <div class="form-group form-full">
-        <label class="form-label">รายละเอียด <span class="req">*</span></label>
-        <textarea class="form-textarea" id="f-desc" placeholder="ระบุรายละเอียดสินค้า ขนาด วัสดุ ฯลฯ"></textarea>
-      </div>
-      <div class="form-group">
-        <label class="form-label">จำนวนต่อกล่อง <span class="req">*</span></label>
-        <input class="form-input" id="f-qty" type="number" min="1" placeholder="เช่น 20">
-        <span class="form-hint">หน่วย: ชิ้น/กล่อง</span>
-      </div>
-      <div class="form-group">
-        <label class="form-label">ราคา (บาท) <span class="req">*</span></label>
-        <input class="form-input" id="f-price" type="number" min="0" step="0.01" placeholder="เช่น 350.00">
-        <span class="form-hint">ราคาต่อหน่วย</span>
-      </div>
-      <div class="form-group">
-        <label class="form-label">ซัพพลายเออร์</label>
-        <input class="form-input" id="f-sup" placeholder="เช่น บริษัท A จำกัด">
-      </div>
-      <div class="form-group">
-        <label class="form-label">ผู้ดูแล</label>
-        <input class="form-input" id="f-owner" placeholder="เช่น PATIWAT">
-      </div>
-      <div class="form-group">
-        <label class="form-label">หมวดหมู่ <span class="req">*</span></label>
-        <select class="form-select" id="f-cat">
-          <option value="3RHB">🔩 3RHB</option>
-          <option value="3FHB">🔧 3FHB</option>
-          <option value="3FHN">⚙️ 3FHN</option>
-          <option value="3RHN">🔑 3RHN</option>
-        </select>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-modal-cancel" onclick="closeModal()">ยกเลิก</button>
-      <button class="btn-modal-save" onclick="saveItem()">💾 บันทึก</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
 
 <script>
-const CATEGORIES = ['3RHB','3FHB','3FHN','3RHN'];
-const CAT_ICONS  = {'3RHB':'🔩','3FHB':'🔧','3FHN':'⚙️','3RHN':'🔑'};
-const STORAGE_KEY = 'nutSystem_v2';
+    const STORAGE_KEY = "new_model_products";
+    let currentProducts = [];
+    let currentCategory = "all";
+    let searchKeyword = "";
 
-let data = {};
-let currentCat = '3RHB';
-let editIndex = null;
-
-const THAI_MONTHS = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
-const THAI_DAYS   = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
-function pad(n){return String(n).padStart(2,'0')}
-function getThaiDateStr(now){return `วัน${THAI_DAYS[now.getDay()]}ที่ ${now.getDate()} ${THAI_MONTHS[now.getMonth()]} พ.ศ. ${now.getFullYear()+543}`}
-function getTimeStr(now){return `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`}
-function updateClock(){
-  const now = new Date();
-  const ds = getThaiDateStr(now), ts = getTimeStr(now);
-  document.getElementById('tb-date').textContent = ds;
-  document.getElementById('tb-time').textContent = ts;
-  const wd = document.getElementById('wDate'), wt = document.getElementById('wTime');
-  if(wd) wd.textContent = ds;
-  if(wt) wt.textContent = ts;
-}
-updateClock(); setInterval(updateClock,1000);
-
-function closeWelcome(){
-  const ov = document.getElementById('welcomeOverlay');
-  ov.classList.add('hide');
-  setTimeout(()=>ov.remove(),500);
-}
-setTimeout(()=>{const ov=document.getElementById('welcomeOverlay');if(ov)closeWelcome()},8000);
-
-function loadData(){
-  try{const r=localStorage.getItem(STORAGE_KEY);data=r?JSON.parse(r):{};}
-  catch(e){data={};}
-  CATEGORIES.forEach(c=>{if(!data[c])data[c]=[];});
-}
-function saveData(){
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
-  const ts=new Date().toLocaleTimeString('th-TH');
-  const el=document.getElementById('lastSaved');if(el)el.textContent='บันทึกล่าสุด: '+ts;
-  const ft=document.getElementById('ft-saved');if(ft)ft.textContent='อัปเดต: '+ts;
-}
-
-let toastTimer;
-function showToast(msg,type=''){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.className='toast'+(type?' '+type:'')+' show';
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.className='toast',2400);
-}
-
-function switchCat(cat,el){
-  currentCat=cat;
-  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('searchInput').value='';
-  renderAll();
-}
-
-function renderStats(){
-  document.getElementById('statRow').innerHTML=CATEGORIES.map(c=>`
-    <div class="stat-card" onclick="switchCat('${c}',document.querySelector('[data-cat=\\'${c}\\']'))">
-      <div class="stat-icon">${CAT_ICONS[c]}</div>
-      <div><div class="stat-cat">${c}</div><div class="stat-num">${data[c].length}</div></div>
-    </div>`).join('');
-  const total=CATEGORIES.reduce((s,c)=>s+data[c].length,0);
-  document.getElementById('global-total').textContent=total;
-  CATEGORIES.forEach(c=>{const el=document.getElementById('nc-'+c);if(el)el.textContent=data[c].length;});
-}
-
-function escHtml(s){if(!s)return '—';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function formatPrice(v){if(v===null||v===undefined||v==='')return '—';return Number(v).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function initials(name){if(!name)return '?';return name.trim().split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)||name[0].toUpperCase();}
-
-function renderTable(){
-  const items=data[currentCat];
-  const q=(document.getElementById('searchInput').value||'').toLowerCase().trim();
-  const filtered=q?items.filter(it=>(
-    (it.code||'').toLowerCase().includes(q)||(it.barcode||'').toLowerCase().includes(q)||
-    (it.sup||'').toLowerCase().includes(q)||(it.owner||'').toLowerCase().includes(q)||
-    (it.desc||'').toLowerCase().includes(q)
-  )):items;
-  document.getElementById('tbl-icon').textContent=CAT_ICONS[currentCat];
-  document.getElementById('tbl-title').textContent=currentCat;
-  document.getElementById('tbl-count').textContent=items.length+' รายการ';
-  document.getElementById('ft-cat').textContent=currentCat;
-  document.getElementById('ft-shown').textContent=filtered.length;
-  document.getElementById('ft-total').textContent=items.length;
-  const body=document.getElementById('tblBody');
-  if(filtered.length===0){
-    body.innerHTML=`<tr class="empty-row"><td colspan="9">📦 ไม่มีข้อมูลในหมวด ${currentCat}${q?' (ไม่พบผลการค้นหา)':''}</td></tr>`;
-    return;
-  }
-  body.innerHTML=filtered.map((it,i)=>{
-    const realIdx=items.indexOf(it);
-    return `<tr>
-      <td style="color:var(--text-dim);font-size:12px;font-family:var(--sans)">${i+1}</td>
-      <td><span class="td-code">${escHtml(it.code)}</span></td>
-      <td><span class="td-barcode">${escHtml(it.barcode)}</span></td>
-      <td><span class="td-desc" title="${escHtml(it.desc)}">${escHtml(it.desc)}</span></td>
-      <td class="td-qty">${it.qty||'—'}</td>
-      <td class="td-price">${formatPrice(it.price)}</td>
-      <td class="td-sup">${escHtml(it.sup)}</td>
-      <td><div class="td-owner"><div class="owner-dot">${initials(it.owner)}</div><span style="font-size:12px">${escHtml(it.owner)}</span></div></td>
-      <td><div class="td-actions">
-        <button class="btn-edit" onclick="openEditModal(${realIdx})" title="แก้ไข">✏️</button>
-        <button class="btn-del-row" onclick="deleteItem(${realIdx})" title="ลบ">🗑️</button>
-      </div></td>
-    </tr>`;
-  }).join('');
-}
-
-function renderAll(){renderStats();renderTable();}
-
-function deleteItem(idx){
-  const it=data[currentCat][idx];
-  if(!confirm(`ลบรายการ "${it.code}" ออกหรือไม่?`))return;
-  data[currentCat].splice(idx,1);
-  saveData();renderAll();
-  showToast(`ลบ "${it.code}" แล้ว`,'error');
-}
-
-function openAddModal(){
-  editIndex=null;
-  document.getElementById('modal-title-text').textContent='➕ เพิ่มรายการใหม่';
-  document.getElementById('modal-sub-text').textContent='กรอกข้อมูลน็อตล้อในหมวดที่เลือก';
-  clearForm();
-  document.getElementById('f-cat').value=currentCat;
-  document.getElementById('modalBackdrop').classList.add('open');
-}
-function openEditModal(idx){
-  editIndex=idx;
-  const it=data[currentCat][idx];
-  document.getElementById('modal-title-text').textContent='✏️ แก้ไขรายการ';
-  document.getElementById('modal-sub-text').textContent=`แก้ไขรายการ: ${it.code||''}`;
-  document.getElementById('f-code').value=it.code||'';
-  document.getElementById('f-barcode').value=it.barcode||'';
-  document.getElementById('f-desc').value=it.desc||'';
-  document.getElementById('f-qty').value=it.qty||'';
-  document.getElementById('f-price').value=it.price||'';
-  document.getElementById('f-sup').value=it.sup||'';
-  document.getElementById('f-owner').value=it.owner||'';
-  document.getElementById('f-cat').value=currentCat;
-  document.getElementById('modalBackdrop').classList.add('open');
-}
-function closeModal(){
-  document.getElementById('modalBackdrop').classList.remove('open');
-  clearForm();editIndex=null;
-}
-function clearForm(){
-  ['f-code','f-barcode','f-desc','f-qty','f-price','f-sup','f-owner'].forEach(id=>{document.getElementById(id).value='';});
-}
-function saveItem(){
-  const code=document.getElementById('f-code').value.trim();
-  const desc=document.getElementById('f-desc').value.trim();
-  const qty=document.getElementById('f-qty').value.trim();
-  const price=document.getElementById('f-price').value.trim();
-  const cat=document.getElementById('f-cat').value;
-  if(!code){showToast('กรุณากรอกรหัสสินค้า','error');return;}
-  if(!desc){showToast('กรุณากรอกรายละเอียด','error');return;}
-  if(!qty||isNaN(qty)||Number(qty)<1){showToast('กรุณากรอกจำนวนต่อกล่อง','error');return;}
-  if(!price||isNaN(price)||Number(price)<0){showToast('กรุณากรอกราคา','error');return;}
-  const item={
-    code,barcode:document.getElementById('f-barcode').value.trim(),desc,
-    qty:Number(qty),price:Number(price),
-    sup:document.getElementById('f-sup').value.trim(),
-    owner:document.getElementById('f-owner').value.trim(),
-    addedAt:new Date().toISOString()
-  };
-  if(editIndex!==null){
-    item.addedAt=data[currentCat][editIndex].addedAt;
-    data[currentCat][editIndex]=item;
-    showToast(`อัปเดต "${code}" แล้ว ✓`,'success');
-  } else {
-    if(data[cat].some(it=>it.code.toLowerCase()===code.toLowerCase())){
-      showToast(`รหัส "${code}" มีอยู่แล้วในหมวด ${cat}`,'error');return;
+    // ฟังก์ชันกำหนดหมวดหมู่จาก SKU หรือ Description
+    function detectCategory(product) {
+        const sku = (product.sku || "").toLowerCase();
+        const desc = (product.description || "").toLowerCase();
+        
+        if(sku.includes("nut") || desc.includes("น็อต") || desc.includes("น็อตล้อ")) {
+            return "น็อตล้อ";
+        }
+        if(sku.includes("bush") || desc.includes("บูช") || desc.includes("ปีกนก")) {
+            return "บูชปีกนก";
+        }
+        if(sku.includes("rubber") || desc.includes("ยาง") || desc.includes("กันฝุ่น") || desc.includes("dust cover")) {
+            return "ยางกันฝุ่น";
+        }
+        return "อื่นๆ";
     }
-    if(cat!==currentCat){
-      currentCat=cat;
-      document.querySelectorAll('.nav-item').forEach(b=>{b.classList.toggle('active',b.dataset.cat===cat);});
+
+    function showToast(msg, type = "success") {
+        const toast = document.getElementById("toastMsg");
+        toast.classList.remove("bg-navy", "bg-amber-500");
+        toast.classList.add(type === "warning" ? "bg-amber-500" : "bg-navy");
+        toast.textContent = msg;
+        toast.classList.remove("opacity-0");
+        toast.classList.add("opacity-100");
+        setTimeout(() => {
+            toast.classList.remove("opacity-100");
+            toast.classList.add("opacity-0");
+        }, 2000);
     }
-    data[currentCat].push(item);
-    showToast(`เพิ่ม "${code}" ใน ${cat} แล้ว ✓`,'success');
-  }
-  saveData();renderAll();closeModal();
-}
 
-function addRipple(e){
-  const btn=e.currentTarget;
-  const old=btn.querySelector('.ripple-el');if(old)old.remove();
-  const circle=document.createElement('span');
-  circle.className='ripple-el';
-  const rect=btn.getBoundingClientRect();
-  circle.style.left=(e.clientX-rect.left)+'px';
-  circle.style.top=(e.clientY-rect.top)+'px';
-  btn.appendChild(circle);
-  setTimeout(()=>circle.remove(),600);
-}
-
-function openPage(pageName){window.location.href=pageName;}
-
-function handleLogout(){
-  if(confirm('คุณต้องการออกจากระบบใช่หรือไม่?\nข้อมูลทั้งหมดจะถูกบันทึกไว้ในอุปกรณ์ของคุณ')){
-    showToast('ออกจากระบบเรียบร้อยแล้ว 👋','success');
-    setTimeout(()=>location.reload(),700);
-  }
-}
-
-document.getElementById('resetBtn').addEventListener('click',()=>{
-  if(!confirm('รีเซ็ตข้อมูลทั้งหมดหรือไม่? การกระทำนี้ไม่สามารถกู้คืนได้'))return;
-  CATEGORIES.forEach(c=>data[c]=[]);
-  saveData();renderAll();
-  showToast('รีเซ็ตข้อมูลทั้งหมดสำเร็จ','error');
-});
-
-document.getElementById('modalBackdrop').addEventListener('click',function(e){if(e.target===this)closeModal();});
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape')closeModal();
-  if(e.key==='n'&&(e.ctrlKey||e.metaKey)){e.preventDefault();openAddModal();}
-});
-
-document.getElementById('newModelBtn').addEventListener('click',()=>openPage('New.html'));
-document.getElementById('bestSellerBtn').addEventListener('click',()=>openPage('bestseller.html'));
-document.getElementById('trackOrderBtn').addEventListener('click',()=>openPage('trackorder.html'));
-
-loadData();
-renderAll();
+    function loadProducts() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if(stored) {
+            try { 
+                currentProducts = JSON.parse(stored);
+                // เพิ่ม category property ให้แต่ละสินค้า
+                currentProducts.forEach(prod => {
+                    prod.category = detectCategory(prod);
+                });
+            } catch(e) { 
+                currentProducts = [];
+                showToast("⚠️ ข้อมูลเสียหาย", "warning");
+            }
+        } else {
+            currentProducts = [];
+        }
+        
+        const now = new Date();
+        document.getElementById("lastUpdate").innerHTML = now.toLocaleTimeString('th-TH');
+        
+        updateStatistics();
+        renderTable();
+    }
+    
+    function updateStatistics() {
+        let nutCount = 0;
+        let bushingCount = 0;
+        let rubberCount = 0;
+        let totalValue = 0;
+        
+        currentProducts.forEach(prod => {
+            const price = parseFloat(prod.price) || 0;
+            const qty = parseFloat(prod.quantity) || 0;
+            totalValue += price * qty;
+            
+            const cat = prod.category;
+            if(cat === "น็อตล้อ") nutCount++;
+            else if(cat === "บูชปีกนก") bushingCount++;
+            else if(cat === "ยางกันฝุ่น") rubberCount++;
+        });
+        
+        document.getElementById("statNut").innerHTML = nutCount;
+        document.getElementById("statBushing").innerHTML = bushingCount;
+        document.getElementById("statRubber").innerHTML = rubberCount;
+        document.getElementById("totalValue").innerHTML = "฿ " + totalValue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    
+    function getFilteredProducts() {
+        let filtered = [...currentProducts];
+        
+        // กรองตามหมวดหมู่
+        if(currentCategory !== "all") {
+            filtered = filtered.filter(prod => prod.category === currentCategory);
+        }
+        
+        // กรองตามคำค้นหา
+        if(searchKeyword.trim() !== "") {
+            const keyword = searchKeyword.toLowerCase().trim();
+            filtered = filtered.filter(prod => 
+                (prod.sku && prod.sku.toLowerCase().includes(keyword)) ||
+                (prod.description && prod.description.toLowerCase().includes(keyword)) ||
+                (prod.barcode && prod.barcode.toLowerCase().includes(keyword))
+            );
+        }
+        
+        return filtered;
+    }
+    
+    function escapeHtml(str) {
+        if(!str) return "-";
+        return String(str).replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    function formatPrice(price) {
+        if(price === "" || price === undefined || price === null) return "-";
+        const num = parseFloat(price);
+        if(isNaN(num)) return "-";
+        return `฿ ${num.toFixed(2)}`;
+    }
+    
+    function getCategoryBadge(category) {
+        let colorClass = "bg-gray-100 text-gray-700";
+        let icon = "fa-tag";
+        
+        if(category === "น็อตล้อ") {
+            colorClass = "bg-orange-100 text-orange-700";
+            icon = "fa-circle-nut";
+        } else if(category === "บูชปีกนก") {
+            colorClass = "bg-green-100 text-green-700";
+            icon = "fa-car-side";
+        } else if(category === "ยางกันฝุ่น") {
+            colorClass = "bg-purple-100 text-purple-700";
+            icon = "fa-circle";
+        }
+        
+        return `<span class="${colorClass} px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 w-fit">
+                    <i class="fa-solid ${icon}"></i> ${escapeHtml(category)}
+                </span>`;
+    }
+    
+    function getStatusBadge(status) {
+        let colorClass = "bg-blue-100 text-blue-700";
+        if(status === "เสร็จสมบูรณ์") colorClass = "bg-green-100 text-green-700";
+        else if(status === "อยู่ในขั้นตอนผลิต") colorClass = "bg-yellow-100 text-yellow-700";
+        else if(status === "ขั้นตอนวาด Drawing") colorClass = "bg-purple-100 text-purple-700";
+        
+        return `<span class="${colorClass} px-3 py-1 rounded-full text-xs font-medium">${escapeHtml(status)}</span>`;
+    }
+    
+    function renderTable() {
+        const tbody = document.getElementById("tableBody");
+        if(!tbody) return;
+        tbody.innerHTML = "";
+        
+        const filtered = getFilteredProducts();
+        
+        // อัปเดตหัวข้อตามหมวดหมู่
+        const titleMap = {
+            "all": "รายการสินค้าทั้งหมด",
+            "น็อตล้อ": "📦 รายการสินค้า น็อตล้อ",
+            "บูชปีกนก": "🔧 รายการสินค้า บูชปีกนก",
+            "ยางกันฝุ่น": "🛞 รายการสินค้า ยางกันฝุ่น"
+        };
+        document.getElementById("categoryTitle").innerHTML = titleMap[currentCategory] || titleMap["all"];
+        
+        if(filtered.length === 0) {
+            const row = tbody.insertRow();
+            const cell = row.insertCell(0);
+            cell.colSpan = 10;
+            cell.textContent = currentCategory !== "all" ? 
+                `⚠️ ไม่พบสินค้าในหมวด "${currentCategory}"` : 
+                "⚠️ ไม่มีข้อมูลสินค้า กรุณาไปเพิ่มที่หน้า NEW MODEL";
+            cell.className = "text-center py-10 text-gray-400";
+            return;
+        }
+        
+        filtered.forEach((prod) => {
+            const row = tbody.insertRow();
+            row.className = "border-b border-gray-100 hover:bg-blue-50/50 transition";
+            
+            row.insertCell(0).innerHTML = `<div class="px-4 py-3">${getCategoryBadge(prod.category)}</div>`;
+            row.insertCell(1).innerHTML = `<div class="px-4 py-3 font-medium">${escapeHtml(prod.sku) || "-"}</div>`;
+            row.insertCell(2).innerHTML = `<div class="px-4 py-3">${escapeHtml(prod.barcode) || "-"}</div>`;
+            row.insertCell(3).innerHTML = `<div class="px-4 py-3">${escapeHtml(prod.description) || "-"}</div>`;
+            row.insertCell(4).innerHTML = `<div class="px-4 py-3">${escapeHtml(prod.brand) || "-"}</div>`;
+            row.insertCell(5).innerHTML = `<div class="px-4 py-3 font-mono">${formatPrice(prod.price)}</div>`;
+            row.insertCell(6).innerHTML = `<div class="px-4 py-3 text-right">${(prod.quantity !== "" && prod.quantity !== undefined) ? parseInt(prod.quantity).toLocaleString() : "0"}</div>`;
+            row.insertCell(7).innerHTML = `<div class="px-4 py-3 text-right">${(prod.moq !== "" && prod.moq !== undefined) ? parseInt(prod.moq).toLocaleString() : "-"}</div>`;
+            row.insertCell(8).innerHTML = `<div class="px-4 py-3">${escapeHtml(prod.supplier) || "-"}</div>`;
+            row.insertCell(9).innerHTML = `<div class="px-4 py-3">${getStatusBadge(prod.status)}</div>`;
+        });
+    }
+    
+    function refreshData() {
+        loadProducts();
+        showToast("🔄 รีเฟรชข้อมูลสำเร็จ");
+    }
+    
+    // Event handlers
+    let autoRefreshInterval = null;
+    
+    function startAutoRefresh() {
+        if(autoRefreshInterval) clearInterval(autoRefreshInterval);
+        autoRefreshInterval = setInterval(() => {
+            loadProducts();
+            console.log("Auto-refresh: โหลดข้อมูลล่าสุด");
+        }, 10000);
+    }
+    
+    function stopAutoRefresh() {
+        if(autoRefreshInterval) {
+            clearInterval(autoRefreshInterval);
+            autoRefreshInterval = null;
+        }
+    }
+    
+    // จัดการ Category Tabs
+    document.querySelectorAll(".category-tab").forEach(tab => {
+        tab.addEventListener("click", function() {
+            document.querySelectorAll(".category-tab").forEach(t => {
+                t.classList.remove("active");
+                t.classList.add("bg-gray-100", "text-gray-700");
+                t.classList.remove("bg-gradient-to-r", "from-primary", "to-primaryDark", "text-white", "shadow-md");
+            });
+            this.classList.remove("bg-gray-100", "text-gray-700");
+            this.classList.add("active", "bg-gradient-to-r", "from-primary", "to-primaryDark", "text-white", "shadow-md");
+            
+            currentCategory = this.getAttribute("data-category");
+            renderTable();
+        });
+    });
+    
+    // Search input
+    document.getElementById("searchInput").addEventListener("input", function(e) {
+        searchKeyword = e.target.value;
+        renderTable();
+    });
+    
+    // เริ่มต้น
+    loadProducts();
+    startAutoRefresh();
+    document.getElementById("refreshBtn").addEventListener("click", refreshData);
+    
+    window.addEventListener("beforeunload", function() {
+        stopAutoRefresh();
+    });
+    
+    console.log("✅ nut2.html พร้อมทำงาน | รองรับหมวดหมู่: น็อตล้อ, บูชปีกนก, ยางกันฝุ่น");
 </script>
 </body>
 </html>
