@@ -1,1 +1,302 @@
 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NUT2 | แสดงข้อมูลจาก NEW MODEL</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    primary: '#1e6fdf',
+                    primaryDark: '#0f5bc2',
+                    navy: '#0a2b4e',
+                }
+            }
+        }
+    }
+</script>
+<style>
+    body {
+        background: linear-gradient(135deg, #e6f0ff, #f0f7ff);
+    }
+    .card-hover:hover {
+        transform: translateY(-5px);
+        transition: all 0.3s ease;
+    }
+</style>
+</head>
+<body class="min-h-screen p-5 md:p-8">
+
+<div class="max-w-[1500px] mx-auto">
+    <!-- Header -->
+    <div class="bg-white rounded-3xl p-5 md:p-6 flex flex-wrap justify-between items-center gap-4 shadow-md border border-blue-100 mb-6">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl flex items-center justify-center text-white text-xl">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <div>
+                <h2 class="text-xl md:text-2xl font-bold text-navy">
+                    <i class="fa-solid fa-database text-emerald-500 mr-2"></i>
+                    NUT2 - ข้อมูลจาก NEW MODEL
+                </h2>
+                <p class="text-gray-500 text-sm">ดึงข้อมูลจาก localStorage: new_model_products</p>
+            </div>
+        </div>
+        <button onclick="window.location.href='New.html';" 
+                class="bg-primary hover:bg-primaryDark text-white font-semibold px-5 py-2 rounded-full transition flex items-center gap-2 shadow-md">
+            <i class="fa-solid fa-arrow-right"></i>
+            ไปที่ NEW MODEL
+        </button>
+    </div>
+
+    <!-- สถิติ Card -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-6">
+        <div class="bg-white rounded-2xl p-5 shadow-md border-l-4 border-emerald-500 card-hover">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm">สินค้าทั้งหมด</p>
+                    <p id="totalProducts" class="text-3xl font-bold text-navy">0</p>
+                </div>
+                <i class="fa-solid fa-cubes text-4xl text-emerald-200"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-2xl p-5 shadow-md border-l-4 border-blue-500 card-hover">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm">มูลค่ารวม (บาท)</p>
+                    <p id="totalValue" class="text-3xl font-bold text-navy">0</p>
+                </div>
+                <i class="fa-solid fa-coins text-4xl text-blue-200"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-2xl p-5 shadow-md border-l-4 border-purple-500 card-hover">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm">จำนวนคงคลังรวม</p>
+                    <p id="totalQuantity" class="text-3xl font-bold text-navy">0</p>
+                </div>
+                <i class="fa-solid fa-boxes text-4xl text-purple-200"></i>
+            </div>
+        </div>
+        <div class="bg-white rounded-2xl p-5 shadow-md border-l-4 border-orange-500 card-hover">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm">สถานะเสร็จสมบูรณ์</p>
+                    <p id="completedCount" class="text-3xl font-bold text-navy">0</p>
+                </div>
+                <i class="fa-solid fa-circle-check text-4xl text-orange-200"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- ปุ่มรีเฟรช -->
+    <div class="flex justify-end mb-4">
+        <button id="refreshBtn" class="bg-gray-100 hover:bg-gray-200 text-navy font-semibold px-5 py-2 rounded-full transition flex items-center gap-2">
+            <i class="fa-solid fa-rotate-right"></i> รีเฟรชข้อมูล
+        </button>
+    </div>
+
+    <!-- Table Card -->
+    <div class="bg-white rounded-3xl p-5 md:p-6 shadow-md border border-blue-100">
+        <div class="flex flex-wrap justify-between items-center mb-5 gap-3">
+            <h3 class="text-lg font-bold text-navy">
+                <i class="fa-solid fa-table text-primary mr-2"></i>
+                รายการสินค้าทั้งหมด (จาก NEW MODEL)
+            </h3>
+            <span class="text-sm text-gray-400 bg-gray-100 px-3 py-1 rounded-full">
+                <i class="fa-regular fa-clock"></i> <span id="lastUpdate">-</span>
+            </span>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full min-w-[1000px] border-collapse">
+                <thead class="bg-blue-50">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">รหัสสินค้า</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">บาร์โค้ด</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">รายละเอียด</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">ยี่ห้อ</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">ราคา</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">จำนวน</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">MOQ</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">ซัพพลายเออร์</th>
+                        <th class="px-4 py-3 text-left text-navy font-semibold">สถานะ</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toastMsg" class="fixed bottom-5 right-5 bg-navy text-white px-5 py-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 z-50 pointer-events-none">
+    ✅ อัปเดตข้อมูลแล้ว
+</div>
+
+<script>
+    const STORAGE_KEY = "new_model_products";
+    let currentProducts = [];
+
+    function showToast(msg, type = "success") {
+        const toast = document.getElementById("toastMsg");
+        if(type === "warning") {
+            toast.classList.remove("bg-navy");
+            toast.classList.add("bg-amber-500");
+        } else {
+            toast.classList.remove("bg-amber-500");
+            toast.classList.add("bg-navy");
+        }
+        toast.textContent = msg;
+        toast.classList.remove("opacity-0");
+        toast.classList.add("opacity-100");
+        setTimeout(() => {
+            toast.classList.remove("opacity-100");
+            toast.classList.add("opacity-0");
+        }, 2000);
+    }
+
+    function loadProducts() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if(stored) {
+            try { 
+                currentProducts = JSON.parse(stored); 
+            } catch(e) { 
+                currentProducts = [];
+                showToast("⚠️ ข้อมูลเสียหาย", "warning");
+            }
+        } else {
+            currentProducts = [];
+        }
+        
+        // อัปเดตเวลาล่าสุด
+        const now = new Date();
+        document.getElementById("lastUpdate").innerHTML = now.toLocaleTimeString('th-TH');
+        
+        updateStatistics();
+        renderTable();
+    }
+    
+    function updateStatistics() {
+        const total = currentProducts.length;
+        let totalValue = 0;
+        let totalQuantity = 0;
+        let completed = 0;
+        
+        currentProducts.forEach(prod => {
+            const price = parseFloat(prod.price) || 0;
+            const qty = parseFloat(prod.quantity) || 0;
+            totalValue += price * qty;
+            totalQuantity += qty;
+            if(prod.status === "เสร็จสมบูรณ์") completed++;
+        });
+        
+        document.getElementById("totalProducts").innerHTML = total;
+        document.getElementById("totalValue").innerHTML = "฿ " + totalValue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        document.getElementById("totalQuantity").innerHTML = totalQuantity.toLocaleString();
+        document.getElementById("completedCount").innerHTML = completed;
+    }
+    
+    function escapeHtml(str) {
+        if(!str) return "-";
+        return String(str).replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    function formatPrice(price) {
+        if(price === "" || price === undefined || price === null) return "-";
+        const num = parseFloat(price);
+        if(isNaN(num)) return "-";
+        return `฿ ${num.toFixed(2)}`;
+    }
+    
+    function getStatusBadge(status) {
+        let colorClass = "bg-blue-100 text-blue-700";
+        if(status === "เสร็จสมบูรณ์") colorClass = "bg-green-100 text-green-700";
+        else if(status === "อยู่ในขั้นตอนผลิต") colorClass = "bg-yellow-100 text-yellow-700";
+        else if(status === "ขั้นตอนวาด Drawing") colorClass = "bg-purple-100 text-purple-700";
+        
+        return `<span class="${colorClass} px-3 py-1 rounded-full text-xs font-medium">${escapeHtml(status)}</span>`;
+    }
+    
+    function renderTable() {
+        const tbody = document.getElementById("tableBody");
+        if(!tbody) return;
+        tbody.innerHTML = "";
+        
+        if(currentProducts.length === 0) {
+            const row = tbody.insertRow();
+            const cell = row.insertCell(0);
+            cell.colSpan = 9;
+            cell.textContent = "⚠️ ไม่มีข้อมูลสินค้า กรุณาไปเพิ่มที่หน้า NEW MODEL";
+            cell.className = "text-center py-10 text-gray-400";
+            return;
+        }
+        
+        currentProducts.forEach((prod, idx) => {
+            const row = tbody.insertRow();
+            row.className = "border-b border-gray-100 hover:bg-blue-50/50 transition";
+            
+            row.insertCell(0).innerHTML = `<div class="px-4 py-3 font-medium">${escapeHtml(prod.sku) || "-"}</div>`;
+            row.insertCell(1).innerHTML = `<div class="px-4 py-3">${escapeHtml(prod.barcode) || "-"}</div>`;
+            row.insertCell(2).innerHTML = `<div class="px-4 py-3">${escapeHtml(prod.description) || "-"}</div>`;
+            row.insertCell(3).innerHTML = `<div class="px-4 py-3">${escapeHtml(prod.brand) || "-"}</div>`;
+            row.insertCell(4).innerHTML = `<div class="px-4 py-3 font-mono">${formatPrice(prod.price)}</div>`;
+            row.insertCell(5).innerHTML = `<div class="px-4 py-3 text-right">${(prod.quantity !== "" && prod.quantity !== undefined) ? parseInt(prod.quantity).toLocaleString() : "0"}</div>`;
+            row.insertCell(6).innerHTML = `<div class="px-4 py-3 text-right">${(prod.moq !== "" && prod.moq !== undefined) ? parseInt(prod.moq).toLocaleString() : "-"}</div>`;
+            row.insertCell(7).innerHTML = `<div class="px-4 py-3">${escapeHtml(prod.supplier) || "-"}</div>`;
+            row.insertCell(8).innerHTML = `<div class="px-4 py-3">${getStatusBadge(prod.status)}</div>`;
+        });
+    }
+    
+    function refreshData() {
+        loadProducts();
+        showToast("🔄 รีเฟรชข้อมูลสำเร็จ");
+    }
+    
+    // ฟังก์ชันสำหรับ auto-refresh (ทุก 10 วินาที)
+    let autoRefreshInterval = null;
+    
+    function startAutoRefresh() {
+        if(autoRefreshInterval) clearInterval(autoRefreshInterval);
+        autoRefreshInterval = setInterval(() => {
+            loadProducts();
+            console.log("Auto-refresh: โหลดข้อมูลล่าสุดจาก NEW MODEL");
+        }, 10000); // ทุก 10 วินาที
+    }
+    
+    function stopAutoRefresh() {
+        if(autoRefreshInterval) {
+            clearInterval(autoRefreshInterval);
+            autoRefreshInterval = null;
+        }
+    }
+    
+    // เริ่มต้น
+    loadProducts();
+    startAutoRefresh();
+    
+    // ปุ่มรีเฟรช
+    document.getElementById("refreshBtn").addEventListener("click", refreshData);
+    
+    // เมื่อปิดหน้าให้หยุด auto-refresh
+    window.addEventListener("beforeunload", function() {
+        stopAutoRefresh();
+    });
+    
+    // แสดงสถานะ auto-refresh บน console
+    console.log("✅ nut2.html พร้อมทำงาน | auto-refresh ทุก 10 วินาที");
+</script>
+</body>
+</html>
