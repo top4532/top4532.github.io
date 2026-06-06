@@ -1,886 +1,961 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Track Back Order - ระบบจัดการ Back Order</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: system-ui, 'Segoe UI', 'Prompt', sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Back Order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue-50: #E6F1FB;
+  --blue-100: #B5D4F4;
+  --blue-200: #85B7EB;
+  --blue-400: #378ADD;
+  --blue-600: #185FA5;
+  --blue-800: #0C447C;
+  --blue-900: #042C53;
+  --gray-50: #F1EFE8;
+  --gray-100: #D3D1C7;
+  --gray-400: #888780;
+  --gray-600: #5F5E5A;
+  --teal-50: #E1F5EE;
+  --teal-400: #1D9E75;
+  --teal-600: #0F6E56;
+  --red-50: #FCEBEB;
+  --red-400: #E24B4A;
+  --red-600: #A32D2D;
+  --amber-50: #FAEEDA;
+  --amber-400: #BA7517;
+  --font-main: 'IBM Plex Sans Thai', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
 
-        body {
-            background: #e0f2fe;
-            min-height: 100vh;
-        }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* ========= ส่วนหัวหลัก ========= */
-        .main-header {
-            background: linear-gradient(135deg, #0284c7, #0369a1);
-            color: white;
-            padding: 16px 28px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
+body {
+  font-family: var(--font-main);
+  background: var(--blue-50);
+  color: var(--blue-900);
+  min-height: 100vh;
+  font-size: 14px;
+}
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+/* ─── HEADER ─── */
+.header {
+  background: var(--blue-900);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 32px;
+  height: 58px;
+  gap: 16px;
+}
 
-        .logo-area h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-        .logo-area span {
-            background: #facc15;
-            color: #1e293b;
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
+.brand-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--blue-400);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-        .back-btn {
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.4);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+.brand-icon svg { width: 18px; height: 18px; fill: white; }
 
-        .back-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateX(-3px);
-        }
+.brand-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 0.01em;
+}
 
-        /* ========= คอนเทนเนอร์หลัก ========= */
-        .app-container {
-            display: flex;
-            height: calc(100vh - 80px);
-            padding: 20px;
-            gap: 20px;
-        }
+.brand-tag {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--blue-200);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
-        /* ========= ด้านซ้าย - ฟอร์มเพิ่มข้อมูล ========= */
-        .left-panel {
-            width: 42%;
-            background: #f0f9ff;
-            border-radius: 28px;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            padding: 24px;
-        }
+.header-back {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.8);
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 0.15s, color 0.15s;
+}
 
-        .form-header {
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid #7dd3fc;
-        }
+.header-back:hover { border-color: rgba(255,255,255,0.5); color: white; }
 
-        .form-header h3 {
-            font-size: 1.4rem;
-            color: #0369a1;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+/* ─── LAYOUT ─── */
+.app {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 20px;
+  padding: 20px;
+  height: calc(100vh - 58px);
+}
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+/* ─── PANEL BASE ─── */
+.panel {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid var(--blue-100);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
 
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #075985;
-            font-size: 0.9rem;
-        }
+/* ─── LEFT PANEL ─── */
+.left-panel {
+  overflow-y: auto;
+}
 
-        input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #bae6fd;
-            border-radius: 16px;
-            font-size: 0.95rem;
-            background: white;
-            color: #1e293b;
-            transition: 0.2s;
-        }
+.left-panel-inner {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-        input:focus {
-            outline: none;
-            border-color: #0ea5e9;
-            box-shadow: 0 0 0 3px rgba(14,165,233,0.2);
-        }
+.panel-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--blue-50);
+}
 
-        /* สินค้า dynamic */
-        .items-section {
-            margin: 20px 0;
-            background: #ffffffcc;
-            border-radius: 20px;
-            padding: 20px 16px;
-            border: 1px solid #bae6fd;
-        }
+.panel-heading-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--blue-50);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-        .section-title {
-            font-weight: 700;
-            margin-bottom: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #0369a1;
-        }
+.panel-heading-icon svg { width: 18px; height: 18px; stroke: var(--blue-600); fill: none; stroke-width: 1.8; }
 
-        .item-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-        }
+.panel-heading h2 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--blue-900);
+}
 
-        .item-table th {
-            background: #e0f2fe;
-            padding: 12px 10px;
-            font-size: 0.85rem;
-            text-align: left;
-            color: #075985;
-            font-weight: 600;
-        }
+.panel-heading p {
+  font-size: 11px;
+  color: var(--gray-400);
+  margin-top: 1px;
+}
 
-        .item-table td {
-            padding: 10px 10px;
-            border-bottom: 1px solid #e0f2fe;
-            background: white;
-        }
+/* ─── FIELD ─── */
+.field { display: flex; flex-direction: column; gap: 6px; }
 
-        .item-table input {
-            width: 100%;
-            padding: 8px 12px;
-            border-radius: 12px;
-            border: 1px solid #cbd5e1;
-            font-size: 0.85rem;
-        }
+.field label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--blue-800);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
 
-        .btn-icon {
-            background: none;
-            border: none;
-            font-size: 1.3rem;
-            cursor: pointer;
-            width: 34px;
-            height: 34px;
-            border-radius: 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-        }
+.field input {
+  border: 1px solid var(--blue-100);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-family: var(--font-main);
+  font-size: 14px;
+  color: var(--blue-900);
+  background: var(--blue-50);
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  outline: none;
+  width: 100%;
+}
 
-        .btn-icon-plus {
-            color: #0284c7;
-            background: #e0f2fe;
-        }
+.field input:focus {
+  border-color: var(--blue-400);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(55,138,221,0.12);
+}
 
-        .btn-icon-plus:hover {
-            background: #bae6fd;
-            transform: scale(1.05);
-        }
+/* ─── ITEMS TABLE ─── */
+.items-box {
+  border: 1px solid var(--blue-100);
+  border-radius: 12px;
+  overflow: hidden;
+}
 
-        .btn-icon-remove {
-            color: #dc2626;
-        }
+.items-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--blue-50);
+  border-bottom: 1px solid var(--blue-100);
+}
 
-        .btn-icon-remove:hover {
-            background: #fee2e2;
-        }
+.items-box-header span {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--blue-800);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
 
-        .btn-add-item {
-            margin-top: 14px;
-            background: #e0f2fe;
-            border: 1px dashed #0284c7;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            color: #0369a1;
-            transition: 0.2s;
-        }
+.btn-icon-add {
+  width: 28px;
+  height: 28px;
+  background: var(--blue-400);
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
 
-        .btn-add-item:hover {
-            background: #bae6fd;
-        }
+.btn-icon-add:hover { background: var(--blue-600); }
+.btn-icon-add svg { width: 14px; height: 14px; stroke: white; fill: none; stroke-width: 2.5; }
 
-        .form-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-            justify-content: flex-end;
-            flex-wrap: wrap;
-        }
+.items-table { width: 100%; border-collapse: collapse; }
 
-        .btn-save {
-            background: #0284c7;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+.items-table thead tr {
+  background: var(--blue-50);
+}
 
-        .btn-save:hover {
-            background: #0369a1;
-            transform: scale(1.02);
-        }
+.items-table th {
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  text-align: left;
+  color: var(--blue-600);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--blue-100);
+}
 
-        .btn-clear {
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            padding: 12px 24px;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-            color: #334155;
-        }
+.items-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--blue-50);
+  vertical-align: middle;
+}
 
-        .btn-delete-order {
-            background: #fee2e2;
-            color: #b91c1c;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-        }
+.items-table tr:last-child td { border-bottom: none; }
 
-        /* ========= ด้านขวา - ตารางแสดงข้อมูล ========= */
-        .right-panel {
-            width: 58%;
-            background: #ffffff;
-            border-radius: 28px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        }
+.items-table input {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--blue-900);
+  background: transparent;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
 
-        .right-header {
-            background: #f0f9ff;
-            padding: 18px 24px;
-            border-bottom: 2px solid #bae6fd;
-        }
+.items-table input:focus {
+  border-color: var(--blue-200);
+  background: var(--blue-50);
+}
 
-        .search-area {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
+.btn-rm {
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-400);
+  transition: background 0.15s, color 0.15s;
+}
 
-        .search-input-wrapper {
-            flex: 1;
-            position: relative;
-        }
+.btn-rm:hover { background: var(--red-50); color: var(--red-400); }
+.btn-rm svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
 
-        .search-input-wrapper input {
-            padding: 12px 16px 12px 44px;
-            border-radius: 40px;
-            border: 1px solid #cbd5e1;
-            width: 100%;
-        }
+/* ─── FORM ACTIONS ─── */
+.form-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 
-        .search-input-wrapper::before {
-            content: "🔍";
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1rem;
-        }
+.btn {
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 16px;
+  transition: opacity 0.15s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
-        .search-btn {
-            background: #0284c7;
-            color: white;
-            border: none;
-            padding: 0 28px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+.btn:active { transform: scale(0.97); }
+.btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; flex-shrink: 0; }
 
-        .search-btn:hover {
-            background: #0369a1;
-        }
+.btn-primary { background: var(--blue-800); color: white; margin-left: auto; }
+.btn-primary:hover { opacity: 0.88; }
 
-        .clear-search-btn {
-            background: #e2e8f0;
-            border: none;
-            padding: 0 24px;
-            border-radius: 40px;
-            cursor: pointer;
-            color: #475569;
-            font-weight: 500;
-        }
+.btn-ghost { background: var(--blue-50); color: var(--blue-800); border: 1px solid var(--blue-100); }
+.btn-ghost:hover { background: var(--blue-100); }
 
-        .stats-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
+.btn-danger { background: var(--red-50); color: var(--red-600); }
+.btn-danger:hover { background: #fdd; }
 
-        .badge-count {
-            background: #0284c7;
-            color: white;
-            padding: 5px 16px;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
+/* ─── RIGHT PANEL ─── */
+.right-panel { overflow: hidden; }
 
-        .header-buttons {
-            display: flex;
-            gap: 10px;
-        }
+.right-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--blue-100);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
-        .btn-sample {
-            background: #dbeafe;
-            color: #1e40af;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
+.search-row {
+  display: flex;
+  gap: 8px;
+}
 
-        .btn-reset-all {
-            background: #fef3c7;
-            color: #92400e;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 40px;
-            font-weight: 500;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
+.search-wrap {
+  flex: 1;
+  position: relative;
+}
 
-        .table-wrapper {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
+.search-wrap svg {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  stroke: var(--gray-400);
+  fill: none;
+  stroke-width: 2;
+}
 
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-        }
+.search-wrap input {
+  width: 100%;
+  padding: 8px 12px 8px 32px;
+  border: 1px solid var(--blue-100);
+  border-radius: 8px;
+  font-family: var(--font-main);
+  font-size: 13px;
+  color: var(--blue-900);
+  background: var(--blue-50);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
 
-        .data-table th {
-            background: #e0f2fe;
-            padding: 14px 12px;
-            text-align: left;
-            font-weight: 700;
-            color: #075985;
-            font-size: 0.85rem;
-            position: sticky;
-            top: 0;
-        }
+.search-wrap input:focus {
+  border-color: var(--blue-400);
+  box-shadow: 0 0 0 3px rgba(55,138,221,0.12);
+  background: white;
+}
 
-        .data-table td {
-            padding: 12px;
-            border-bottom: 1px solid #e2e8f0;
-            vertical-align: top;
-            font-size: 0.85rem;
-            color: #1e293b;
-        }
+.btn-search { background: var(--blue-800); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: var(--font-main); font-size: 13px; font-weight: 500; transition: opacity 0.15s; }
+.btn-search:hover { opacity: 0.88; }
 
-        .data-table tr:hover {
-            background: #f0f9ff;
-            cursor: pointer;
-        }
+.btn-clear-search { background: var(--blue-50); border: 1px solid var(--blue-100); color: var(--blue-800); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-family: var(--font-main); font-size: 13px; font-weight: 500; transition: background 0.15s; }
+.btn-clear-search:hover { background: var(--blue-100); }
 
-        .data-table tr.selected {
-            background: #e0f2fe;
-            border-left: 4px solid #0284c7;
-        }
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
-        .barcode-mini {
-            font-family: monospace;
-            background: #e0f2fe;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            color: #0369a1;
-        }
+.count-badge {
+  background: var(--blue-900);
+  color: white;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.03em;
+}
 
-        .item-detail-list {
-            font-size: 0.7rem;
-            color: #334155;
-            max-width: 200px;
-        }
+.header-btns { display: flex; gap: 8px; }
 
-        .empty-table {
-            text-align: center;
-            padding: 50px;
-            color: #94a3b8;
-        }
+.btn-sm {
+  font-size: 11px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  transition: opacity 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
 
-        @media (max-width: 900px) {
-            .app-container {
-                flex-direction: column;
-                height: auto;
-            }
-            .left-panel, .right-panel {
-                width: 100%;
-            }
-            body {
-                overflow: auto;
-            }
-            .main-header {
-                position: sticky;
-                top: 0;
-                z-index: 100;
-            }
-        }
-    </style>
+.btn-sm:hover { opacity: 0.78; }
+.btn-sm svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+.btn-sample-sm { background: var(--blue-50); color: var(--blue-800); border: 1px solid var(--blue-100); }
+.btn-reset-sm { background: var(--amber-50); color: var(--amber-400); }
+
+/* ─── TABLE ─── */
+.table-wrap {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table thead th {
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--blue-600);
+  border-bottom: 2px solid var(--blue-100);
+  white-space: nowrap;
+}
+
+.data-table tbody tr {
+  cursor: pointer;
+  border-bottom: 1px solid var(--blue-50);
+  transition: background 0.12s;
+}
+
+.data-table tbody tr:hover { background: var(--blue-50); }
+
+.data-table tbody tr.selected {
+  background: var(--blue-50);
+  border-left: 3px solid var(--blue-400);
+}
+
+.data-table td {
+  padding: 12px;
+  font-size: 13px;
+  color: var(--blue-900);
+  vertical-align: top;
+}
+
+.mono { font-family: var(--font-mono); font-size: 12px; }
+
+.barcode-pill {
+  display: inline-block;
+  background: var(--blue-50);
+  color: var(--blue-800);
+  border: 1px solid var(--blue-100);
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.item-detail {
+  font-size: 11px;
+  color: var(--gray-600);
+  line-height: 1.6;
+  max-width: 200px;
+  word-break: break-all;
+}
+
+.qty-badge {
+  display: inline-block;
+  background: var(--blue-800);
+  color: white;
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--gray-400);
+  font-size: 13px;
+  line-height: 2;
+}
+
+.empty-state strong { display: block; font-size: 15px; color: var(--blue-200); margin-bottom: 8px; }
+
+/* ─── TOAST / POPUP ─── */
+.toast-container {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--blue-900);
+  color: white;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 8px 32px rgba(4,44,83,0.28);
+  pointer-events: all;
+  transform: translateY(16px);
+  opacity: 0;
+  animation: toastIn 0.3s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  min-width: 260px;
+}
+
+.toast.toast-success .toast-icon-wrap { background: var(--teal-400); }
+.toast.toast-error .toast-icon-wrap { background: var(--red-400); }
+.toast.toast-info .toast-icon-wrap { background: var(--blue-400); }
+
+.toast-icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.toast-icon-wrap svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2.5; }
+
+.toast-text { flex: 1; line-height: 1.4; }
+.toast-title { font-weight: 600; font-size: 13px; }
+.toast-sub { font-size: 11px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+
+.toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 0 0 12px 12px;
+  animation: toastProgress 3s linear forwards;
+}
+
+.toast { position: relative; overflow: hidden; }
+
+.toast.hiding { animation: toastOut 0.25s ease-in forwards; }
+
+@keyframes toastIn {
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes toastOut {
+  to { transform: translateY(16px); opacity: 0; }
+}
+@keyframes toastProgress {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; height: auto; overflow: visible; }
+  .right-panel { height: 60vh; }
+  body { overflow: auto; }
+}
+</style>
 </head>
 <body>
-    <!-- ส่วนหัวหลัก -->
-    <div class="main-header">
-        <div class="logo-area">
-            <h1>📦 Track Back Order</h1>
-            <span>ระบบจัดการ Back Order</span>
+
+<header class="header">
+  <div class="header-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 7H4c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM4 5h16M9 5V3M15 5V3"/></svg>
+    </div>
+    <div>
+      <div class="brand-name">Track Back Order</div>
+      <div class="brand-tag">ระบบจัดการ Back Order</div>
+    </div>
+  </div>
+  <button class="header-back" id="backButton">
+    <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    ย้อนกลับ
+  </button>
+</header>
+
+<div class="app">
+  <!-- LEFT -->
+  <div class="panel left-panel">
+    <div class="left-panel-inner">
+      <div class="panel-heading">
+        <div class="panel-heading-icon">
+          <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </div>
-        <button class="back-btn" id="backButton">
-            ← ย้อนกลับ
+        <div>
+          <h2>เพิ่ม / แก้ไข Back Order</h2>
+          <p>คลิกที่แถวในตารางด้านขวาเพื่อแก้ไขข้อมูล</p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>PRHQ — เลขที่ใบขอซื้อ</label>
+        <input type="text" id="prhqInput" placeholder="เช่น PRHQ-2001" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label>POHQ — เลขที่ใบสั่งซื้อ</label>
+        <input type="text" id="pohqInput" placeholder="เช่น POHQ-7001" autocomplete="off">
+      </div>
+
+      <div class="items-box">
+        <div class="items-box-header">
+          <span>รายการสินค้า (บาร์โค้ด + จำนวน)</span>
+          <button class="btn-icon-add" id="addItemBtn" type="button" title="เพิ่มรายการ">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </div>
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th style="width:58%">บาร์โค้ด</th>
+              <th style="width:28%">จำนวน</th>
+              <th style="width:14%"></th>
+            </tr>
+          </thead>
+          <tbody id="itemsTbody"></tbody>
+        </table>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-ghost" id="clearFormBtn" type="button">
+          <svg viewBox="0 0 24 24"><path d="M3 6h18M19 6l-1 14H6L5 6M9 6V4h6v2"/></svg>
+          ล้างฟอร์ม
         </button>
+        <button class="btn btn-danger" id="deleteOrderBtn" type="button">
+          <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          ลบออเดอร์
+        </button>
+        <button class="btn btn-primary" id="saveOrderBtn" type="button">
+          <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+          บันทึก / อัปเดต
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="panel right-panel">
+    <div class="right-header">
+      <div class="search-row">
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="searchInput" placeholder="ค้นหาด้วย PRHQ หรือ POHQ…">
+        </div>
+        <button class="btn-search" id="searchBtn">ค้นหา</button>
+        <button class="btn-clear-search" id="clearSearchBtn">ยกเลิก</button>
+      </div>
+      <div class="stats-row">
+        <span class="count-badge" id="countBadge">0 รายการ</span>
+        <div class="header-btns">
+          <button class="btn-sm btn-sample-sm" id="addSampleBtn" type="button">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            เพิ่มตัวอย่าง
+          </button>
+          <button class="btn-sm btn-reset-sm" id="resetAllBtn" type="button">
+            <svg viewBox="0 0 24 24"><path d="M3 6h18M19 6l-1 14H6L5 6M9 6V4h6v2"/></svg>
+            ลบทั้งหมด
+          </button>
+        </div>
+      </div>
     </div>
 
-    <div class="app-container">
-        <!-- ด้านซ้าย: ฟอร์มเพิ่ม/แก้ไขข้อมูล -->
-        <div class="left-panel">
-            <div class="form-header">
-                <h3>📝 เพิ่ม / แก้ไข Back Order</h3>
-                <p style="font-size:0.8rem; color:#0c4a6e; margin-top:6px;">💡 คลิกที่แถวในตารางเพื่อแก้ไขข้อมูล</p>
-            </div>
-
-            <div class="form-group">
-                <label>📌 PRHQ (เลขที่ใบขอซื้อ)</label>
-                <input type="text" id="prhqInput" placeholder="เช่น PRHQ-2001" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label>📌 POHQ (เลขที่ใบสั่งซื้อ)</label>
-                <input type="text" id="pohqInput" placeholder="เช่น POHQ-7001" autocomplete="off">
-            </div>
-
-            <div class="items-section">
-                <div class="section-title">
-                    <span>🧾 รายการสินค้า (บาร์โค้ด + จำนวน)</span>
-                    <button type="button" id="addItemRowBtn" class="btn-icon btn-icon-plus" style="font-size:1.5rem;">➕</button>
-                </div>
-                <table class="item-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 55%">📦 บาร์โค้ด</th>
-                            <th style="width: 30%">🔢 จำนวน</th>
-                            <th style="width: 15%"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="itemsFormTbody"></tbody>
-                </table>
-                <button type="button" id="addItemTextBtn" class="btn-add-item">
-                    ➕ เพิ่มรายการสินค้า
-                </button>
-            </div>
-
-            <div class="form-actions">
-                <button type="button" id="clearFormBtn" class="btn-clear">🗑️ ล้างฟอร์ม</button>
-                <button type="button" id="deleteOrderBtn" class="btn-delete-order">❌ ลบออเดอร์นี้</button>
-                <button type="button" id="saveOrderBtn" class="btn-save">💾 บันทึก / อัปเดต</button>
-            </div>
-        </div>
-
-        <!-- ด้านขวา: ตารางแสดงข้อมูล -->
-        <div class="right-panel">
-            <div class="right-header">
-                <div class="search-area">
-                    <div class="search-input-wrapper">
-                        <input type="text" id="searchInput" placeholder="ค้นหาด้วย PRHQ หรือ POHQ...">
-                    </div>
-                    <button id="searchBtn" class="search-btn">🔍 ค้นหา</button>
-                    <button id="clearSearchBtn" class="clear-search-btn">ยกเลิก</button>
-                </div>
-                <div class="stats-bar">
-                    <div class="badge-count" id="totalOrdersBadge">0 รายการ</div>
-                    <div class="header-buttons">
-                        <button type="button" id="addSampleDataBtn" class="btn-sample">📦 เพิ่มตัวอย่างข้อมูล</button>
-                        <button type="button" id="resetAllDataBtn" class="btn-reset-all">🗑️ ลบข้อมูลทั้งหมด</button>
-                    </div>
-                </div>
-            </div>
-            <div class="table-wrapper">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>PRHQ</th>
-                            <th>POHQ</th>
-                            <th>จำนวนรายการ</th>
-                            <th>บาร์โค้ดหลัก</th>
-                            <th>จำนวนรวม</th>
-                            <th>รายละเอียดสินค้า</th>
-                        </tr>
-                    </thead>
-                    <tbody id="backorderListBody">
-                        <tr><td colspan="6" class="empty-table">ยังไม่มีข้อมูล Back Order<br>👉 เพิ่มข้อมูลทางด้านซ้าย หรือกดปุ่ม "เพิ่มตัวอย่างข้อมูล"</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>PRHQ</th>
+            <th>POHQ</th>
+            <th>รายการ</th>
+            <th>บาร์โค้ดหลัก</th>
+            <th>รวม</th>
+            <th>รายละเอียด</th>
+          </tr>
+        </thead>
+        <tbody id="ordersTbody"></tbody>
+      </table>
     </div>
+  </div>
+</div>
 
-    <script>
-        // ============ localStorage Management ============
-        const STORAGE_KEY = 'backorder_data';
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
 
-        function loadBackOrdersFromStorage() {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            if (stored) {
-                try {
-                    return JSON.parse(stored);
-                } catch(e) {
-                    return [];
-                }
-            }
-            return [];
-        }
+<script>
+const STORAGE_KEY = 'backorder_data_v2';
 
-        function getSampleData() {
-            const now = Date.now();
-            return [
-                { id: now + 1, prhq: "PRHQ-1001", pohq: "POHQ-5001", items: [{ barcode: "8851904123456", qty: 12 }, { barcode: "8851904123457", qty: 5 }] },
-                { id: now + 2, prhq: "PRHQ-1002", pohq: "POHQ-5002", items: [{ barcode: "4901234567890", qty: 20 }, { barcode: "4901234567891", qty: 15 }, { barcode: "6934567890123", qty: 3 }] },
-                { id: now + 3, prhq: "PRHQ-1003", pohq: "POHQ-5003", items: [{ barcode: "1234567890123", qty: 8 }] }
-            ];
-        }
+function load() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
+}
+function save(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
-        function saveBackOrdersToStorage(backOrders) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(backOrders));
-        }
+let backOrders = load();
+let currentEditId = null;
+let currentItems = [{barcode:'', qty:'1'}];
+let searchKw = '';
 
-        // ============ Global Variables ============
-        let backOrders = [];
-        let filteredOrders = [];
-        let currentEditId = null;
-        let currentFormItems = [{ barcode: "", qty: "1" }];
-        let searchKeyword = "";
+// ─── TOAST ───
+function showToast(type, title, sub) {
+  const container = document.getElementById('toastContainer');
+  const icons = {
+    success: '<path d="M20 6L9 17l-5-5"/>',
+    error:   '<path d="M18 6L6 18M6 6l12 12"/>',
+    info:    '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>'
+  };
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.innerHTML = `
+    <div class="toast-icon-wrap">
+      <svg viewBox="0 0 24 24">${icons[type]}</svg>
+    </div>
+    <div class="toast-text">
+      <div class="toast-title">${title}</div>
+      ${sub ? `<div class="toast-sub">${sub}</div>` : ''}
+    </div>
+    <div class="toast-progress"></div>
+  `;
+  container.appendChild(el);
+  setTimeout(() => {
+    el.classList.add('hiding');
+    setTimeout(() => el.remove(), 300);
+  }, 3000);
+}
 
-        function calculateOrderStats(order) {
-            const totalItems = order.items.length;
-            const totalQty = order.items.reduce((sum, it) => sum + (parseInt(it.qty) || 0), 0);
-            const firstBarcode = order.items.length > 0 ? order.items[0].barcode : "-";
-            return { totalItems, totalQty, firstBarcode };
-        }
+// ─── FORM ITEMS ───
+function renderFormItems() {
+  const tbody = document.getElementById('itemsTbody');
+  tbody.innerHTML = '';
+  if (!currentItems.length) currentItems = [{barcode:'', qty:'1'}];
+  currentItems.forEach((item, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input class="f-bc" data-i="${i}" value="${esc(item.barcode)}" placeholder="8851234…" spellcheck="false"></td>
+      <td><input class="f-qty" data-i="${i}" value="${item.qty}" inputmode="numeric" pattern="[0-9]*" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></td>
+      <td style="text-align:center">
+        <button class="btn-rm" data-ri="${i}" type="button" title="ลบ">
+          <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
 
-        function getDisplayOrders() {
-            if (searchKeyword.trim() === "") return backOrders;
-            return backOrders.filter(order => 
-                order.prhq.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-                order.pohq.toLowerCase().includes(searchKeyword.toLowerCase())
-            );
-        }
+  tbody.querySelectorAll('.f-bc').forEach(inp => {
+    inp.addEventListener('input', function() {
+      const i = +this.dataset.i;
+      if (currentItems[i]) currentItems[i].barcode = this.value;
+    });
+  });
+  tbody.querySelectorAll('.f-qty').forEach(inp => {
+    inp.addEventListener('input', function() {
+      const i = +this.dataset.i;
+      let v = this.value.replace(/[^0-9]/g,'') || '1';
+      if (currentItems[i]) currentItems[i].qty = v;
+      this.value = v;
+    });
+    inp.addEventListener('blur', function() {
+      let v = parseInt(this.value) || 1;
+      if (v < 1) v = 1;
+      const i = +this.dataset.i;
+      if (currentItems[i]) currentItems[i].qty = String(v);
+      this.value = v;
+    });
+  });
+  tbody.querySelectorAll('.btn-rm').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const i = +this.dataset.ri;
+      if (currentItems.length <= 1) {
+        showToast('error', 'ต้องมีอย่างน้อย 1 รายการ');
+        return;
+      }
+      currentItems.splice(i, 1);
+      renderFormItems();
+    });
+  });
+}
 
-        function renderRightTable() {
-            const displayOrders = getDisplayOrders();
-            const tbody = document.getElementById('backorderListBody');
-            const badge = document.getElementById('totalOrdersBadge');
-            badge.innerText = `${displayOrders.length} รายการ`;
+// ─── MAIN TABLE ───
+function getDisplayOrders() {
+  if (!searchKw.trim()) return backOrders;
+  const kw = searchKw.toLowerCase();
+  return backOrders.filter(o => o.prhq.toLowerCase().includes(kw) || o.pohq.toLowerCase().includes(kw));
+}
 
-            if (displayOrders.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="empty-table">ไม่พบข้อมูล${searchKeyword ? ' ที่ค้นหา' : ''}<br>👉 เพิ่มข้อมูลทางด้านซ้าย</td></tr>`;
-                return;
-            }
+function renderTable() {
+  const orders = getDisplayOrders();
+  const badge = document.getElementById('countBadge');
+  badge.textContent = `${orders.length} รายการ`;
 
-            tbody.innerHTML = '';
-            displayOrders.forEach(order => {
-                const { totalItems, totalQty, firstBarcode } = calculateOrderStats(order);
-                const row = tbody.insertRow();
-                row.setAttribute('data-id', order.id);
-                if (currentEditId === order.id) {
-                    row.classList.add('selected');
-                }
-                row.insertCell(0).innerText = order.prhq;
-                row.insertCell(1).innerText = order.pohq;
-                row.insertCell(2).innerText = `${totalItems} รายการ`;
-                row.insertCell(3).innerHTML = `<span class="barcode-mini">${escapeHtml(firstBarcode)}</span>`;
-                row.insertCell(4).innerText = totalQty;
-                let itemsShort = order.items.map(it => `${it.barcode}(${it.qty})`).join(', ');
-                if (itemsShort.length > 45) itemsShort = itemsShort.slice(0, 42) + '...';
-                row.insertCell(5).innerHTML = `<div class="item-detail-list">📦 ${escapeHtml(itemsShort) || '-'}</div>`;
+  const tbody = document.getElementById('ordersTbody');
+  if (!orders.length) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">
+      <strong>ยังไม่มีข้อมูล</strong>
+      เพิ่มข้อมูลจากฟอร์มด้านซ้าย หรือกดปุ่ม "เพิ่มตัวอย่าง"
+    </div></td></tr>`;
+    return;
+  }
 
-                row.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    loadOrderToForm(order.id);
-                });
-            });
-        }
+  tbody.innerHTML = '';
+  orders.forEach(order => {
+    const total = order.items.reduce((s,it) => s + (parseInt(it.qty)||0), 0);
+    const first = order.items[0]?.barcode || '-';
+    const detail = order.items.map(it=>`${it.barcode}(${it.qty})`).join(', ');
+    const shortDetail = detail.length > 50 ? detail.slice(0,47)+'…' : detail;
 
-        function loadOrderToForm(orderId) {
-            const order = backOrders.find(o => o.id === orderId);
-            if (!order) return;
-            currentEditId = order.id;
-            document.getElementById('prhqInput').value = order.prhq;
-            document.getElementById('pohqInput').value = order.pohq;
-            currentFormItems = JSON.parse(JSON.stringify(order.items));
-            if (currentFormItems.length === 0) currentFormItems = [{ barcode: "", qty: "1" }];
-            renderFormItems();
-            renderRightTable();
-        }
+    const tr = document.createElement('tr');
+    if (currentEditId === order.id) tr.classList.add('selected');
+    tr.dataset.id = order.id;
+    tr.innerHTML = `
+      <td class="mono">${esc(order.prhq)}</td>
+      <td class="mono">${esc(order.pohq)}</td>
+      <td style="text-align:center">${order.items.length}</td>
+      <td><span class="barcode-pill">${esc(first)}</span></td>
+      <td style="text-align:center"><span class="qty-badge">${total}</span></td>
+      <td><div class="item-detail">${esc(shortDetail)}</div></td>
+    `;
+    tr.addEventListener('click', () => loadToForm(order.id));
+    tbody.appendChild(tr);
+  });
+}
 
-        function renderFormItems() {
-            const tbody = document.getElementById('itemsFormTbody');
-            if (!tbody) return;
-            if (currentFormItems.length === 0) {
-                currentFormItems = [{ barcode: "", qty: "1" }];
-            }
-            tbody.innerHTML = '';
-            currentFormItems.forEach((item, idx) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><input type="text" class="form-barcode" data-idx="${idx}" value="${escapeHtml(item.barcode)}" placeholder="บาร์โค้ด เช่น 8851234567890"></td>
-                    <td><input type="text" class="form-qty-text" data-idx="${idx}" value="${item.qty}" placeholder="จำนวน" inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')"></td>
-                    <td style="text-align:center;">
-                        <button type="button" class="btn-icon btn-icon-remove" data-removeidx="${idx}">❌</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+function loadToForm(id) {
+  const o = backOrders.find(x => x.id === id);
+  if (!o) return;
+  currentEditId = o.id;
+  document.getElementById('prhqInput').value = o.prhq;
+  document.getElementById('pohqInput').value = o.pohq;
+  currentItems = JSON.parse(JSON.stringify(o.items.length ? o.items : [{barcode:'',qty:'1'}]));
+  renderFormItems();
+  renderTable();
+}
 
-            document.querySelectorAll('.form-barcode').forEach(inp => {
-                inp.addEventListener('change', function() {
-                    const idx = parseInt(this.getAttribute('data-idx'));
-                    if (!isNaN(idx) && currentFormItems[idx]) currentFormItems[idx].barcode = this.value;
-                });
-                inp.addEventListener('input', function() {
-                    const idx = parseInt(this.getAttribute('data-idx'));
-                    if (!isNaN(idx) && currentFormItems[idx]) currentFormItems[idx].barcode = this.value;
-                });
-            });
-            document.querySelectorAll('.form-qty-text').forEach(inp => {
-                inp.addEventListener('change', function() {
-                    const idx = parseInt(this.getAttribute('data-idx'));
-                    if (!isNaN(idx) && currentFormItems[idx]) {
-                        let val = this.value.replace(/[^0-9]/g, '');
-                        if (val === "" || parseInt(val) <= 0) val = "1";
-                        currentFormItems[idx].qty = val;
-                        this.value = val;
-                    }
-                });
-                inp.addEventListener('input', function() {
-                    let val = this.value.replace(/[^0-9]/g, '');
-                    if (val === "") val = "1";
-                    const idx = parseInt(this.getAttribute('data-idx'));
-                    if (!isNaN(idx) && currentFormItems[idx]) currentFormItems[idx].qty = val;
-                    this.value = val;
-                });
-            });
+function resetForm() {
+  currentEditId = null;
+  document.getElementById('prhqInput').value = '';
+  document.getElementById('pohqInput').value = '';
+  currentItems = [{barcode:'', qty:'1'}];
+  renderFormItems();
+  renderTable();
+}
 
-            document.querySelectorAll('.btn-icon-remove').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const idx = parseInt(btn.getAttribute('data-removeidx'));
-                    if (currentFormItems.length > 1) {
-                        currentFormItems.splice(idx, 1);
-                        renderFormItems();
-                    } else {
-                        alert("ต้องมีอย่างน้อย 1 รายการสินค้า");
-                    }
-                });
-            });
-        }
+// ─── SAVE ───
+function saveOrder() {
+  const prhq = document.getElementById('prhqInput').value.trim();
+  const pohq = document.getElementById('pohqInput').value.trim();
+  if (!prhq || !pohq) { showToast('error', 'กรุณากรอก PRHQ และ POHQ'); return; }
+  const validItems = currentItems.filter(it => it.barcode.trim() && parseInt(it.qty) > 0);
+  if (!validItems.length) { showToast('error', 'กรุณาเพิ่มสินค้าอย่างน้อย 1 รายการ', 'บาร์โค้ดต้องไม่ว่างเปล่า'); return; }
 
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str).replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-        }
+  const order = {
+    id: currentEditId || Date.now(),
+    prhq, pohq,
+    items: validItems.map(it => ({barcode: it.barcode.trim(), qty: parseInt(it.qty)||1}))
+  };
 
-        function saveOrder() {
-            const prhq = document.getElementById('prhqInput').value.trim();
-            const pohq = document.getElementById('pohqInput').value.trim();
-            if (!prhq || !pohq) {
-                alert("กรุณากรอก PRHQ และ POHQ");
-                return;
-            }
-            let validItems = currentFormItems.filter(it => it.barcode.trim() !== "" && it.qty > 0);
-            if (validItems.length === 0) {
-                alert("กรุณาเพิ่มสินค้าอย่างน้อย 1 รายการ (บาร์โค้ดต้องไม่ว่าง)");
-                return;
-            }
+  if (currentEditId) {
+    const idx = backOrders.findIndex(o => o.id === currentEditId);
+    if (idx !== -1) backOrders[idx] = order;
+    showToast('success', 'อัปเดต Back Order สำเร็จ', `${prhq} → ${pohq}`);
+  } else {
+    backOrders.unshift(order);
+    showToast('success', 'เพิ่ม Back Order ใหม่สำเร็จ', `${prhq} → ${pohq} (${validItems.length} รายการ)`);
+  }
 
-            const newOrder = {
-                id: currentEditId ? currentEditId : Date.now(),
-                prhq: prhq,
-                pohq: pohq,
-                items: validItems.map(it => ({ barcode: it.barcode, qty: parseInt(it.qty) || 1 }))
-            };
+  save(backOrders);
+  resetForm();
+}
 
-            if (currentEditId) {
-                const index = backOrders.findIndex(o => o.id === currentEditId);
-                if (index !== -1) backOrders[index] = newOrder;
-                alert("✅ อัปเดต Back Order สำเร็จ");
-            } else {
-                backOrders.unshift(newOrder);
-                alert("✅ เพิ่ม Back Order ใหม่สำเร็จ");
-            }
-            
-            saveBackOrdersToStorage(backOrders);
-            resetFormToNew();
-            renderRightTable();
-        }
+function deleteOrder() {
+  if (!currentEditId) { showToast('info', 'ยังไม่ได้เลือกออเดอร์', 'คลิกที่แถวในตารางเพื่อเลือก'); return; }
+  const o = backOrders.find(x => x.id === currentEditId);
+  if (!confirm(`ยืนยันลบ "${o?.prhq}" ?`)) return;
+  backOrders = backOrders.filter(x => x.id !== currentEditId);
+  save(backOrders);
+  resetForm();
+  showToast('info', 'ลบออเดอร์เรียบร้อย');
+}
 
-        function deleteCurrentOrder() {
-            if (!currentEditId) {
-                alert("⚠️ ไม่มีออเดอร์ที่ถูกเลือก กรุณาคลิกเลือกที่ตารางด้านขวา");
-                return;
-            }
-            if (confirm("ยืนยันลบ Back Order นี้?")) {
-                backOrders = backOrders.filter(o => o.id !== currentEditId);
-                saveBackOrdersToStorage(backOrders);
-                resetFormToNew();
-                renderRightTable();
-                alert("🗑️ ลบเรียบร้อย");
-            }
-        }
+function esc(s) {
+  return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 
-        function resetFormToNew() {
-            currentEditId = null;
-            document.getElementById('prhqInput').value = '';
-            document.getElementById('pohqInput').value = '';
-            currentFormItems = [{ barcode: "", qty: "1" }];
-            renderFormItems();
-            renderRightTable();
-        }
+// ─── SAMPLE DATA ───
+function addSample() {
+  if (backOrders.length && !confirm('มีข้อมูลอยู่แล้ว จะเพิ่มตัวอย่างเข้าไปด้วย ดำเนินการหรือไม่?')) return;
+  const n = Date.now();
+  const samples = [
+    {id:n+1, prhq:'PRHQ-1001', pohq:'POHQ-5001', items:[{barcode:'8851904123456',qty:12},{barcode:'8851904123457',qty:5}]},
+    {id:n+2, prhq:'PRHQ-1002', pohq:'POHQ-5002', items:[{barcode:'4901234567890',qty:20},{barcode:'4901234567891',qty:15},{barcode:'6934567890123',qty:3}]},
+    {id:n+3, prhq:'PRHQ-1003', pohq:'POHQ-5003', items:[{barcode:'1234567890123',qty:8}]}
+  ];
+  samples.forEach(s => backOrders.push(s));
+  save(backOrders);
+  resetForm();
+  showToast('success', `เพิ่มตัวอย่าง ${samples.length} รายการสำเร็จ`);
+}
 
-        function clearFormOnly() {
-            if (confirm("ล้างข้อมูลที่กำลังกรอกในฟอร์ม?")) {
-                currentEditId = null;
-                document.getElementById('prhqInput').value = '';
-                document.getElementById('pohqInput').value = '';
-                currentFormItems = [{ barcode: "", qty: "1" }];
-                renderFormItems();
-                renderRightTable();
-            }
-        }
+function resetAll() {
+  if (!confirm('⚠️ ลบข้อมูลทั้งหมด? ไม่สามารถกู้คืนได้')) return;
+  backOrders = [];
+  save(backOrders);
+  resetForm();
+  showToast('info', 'ลบข้อมูลทั้งหมดเรียบร้อย');
+}
 
-        function addNewItemRow() {
-            currentFormItems.push({ barcode: "", qty: "1" });
-            renderFormItems();
-        }
+// ─── EVENTS ───
+document.getElementById('saveOrderBtn').addEventListener('click', saveOrder);
+document.getElementById('clearFormBtn').addEventListener('click', () => { if(confirm('ล้างฟอร์ม?')) resetForm(); });
+document.getElementById('deleteOrderBtn').addEventListener('click', deleteOrder);
+document.getElementById('addItemBtn').addEventListener('click', () => { currentItems.push({barcode:'',qty:'1'}); renderFormItems(); });
+document.getElementById('addSampleBtn').addEventListener('click', addSample);
+document.getElementById('resetAllBtn').addEventListener('click', resetAll);
+document.getElementById('backButton').addEventListener('click', () => { if(confirm('ย้อนกลับ? (ข้อมูลจะถูกบันทึกไว้)')) window.history.back(); });
+document.getElementById('searchBtn').addEventListener('click', () => { searchKw = document.getElementById('searchInput').value; renderTable(); });
+document.getElementById('clearSearchBtn').addEventListener('click', () => { document.getElementById('searchInput').value = ''; searchKw = ''; renderTable(); });
+document.getElementById('searchInput').addEventListener('keypress', e => { if(e.key==='Enter') { searchKw = e.target.value; renderTable(); } });
 
-        function resetAllData() {
-            if (confirm("⚠️ คำเตือน! คุณต้องการลบข้อมูล Back Order ทั้งหมดใช่หรือไม่? (ไม่สามารถกู้คืนได้)")) {
-                backOrders = [];
-                saveBackOrdersToStorage(backOrders);
-                resetFormToNew();
-                renderRightTable();
-                alert("🗑️ ลบข้อมูลทั้งหมดเรียบร้อย");
-            }
-        }
-
-        function addSampleData() {
-            if (backOrders.length > 0) {
-                if (!confirm("มีข้อมูลอยู่แล้ว การเพิ่มข้อมูลตัวอย่างจะเป็นการเพิ่มเข้าไป ไม่ได้ลบของเดิม ต้องการดำเนินการหรือไม่?")) {
-                    return;
-                }
-            }
-            const sampleData = getSampleData();
-            sampleData.forEach(sample => {
-                const exists = backOrders.some(o => o.id === sample.id);
-                if (!exists) {
-                    backOrders.push(sample);
-                } else {
-                    sample.id = Date.now() + Math.random();
-                    backOrders.push(sample);
-                }
-            });
-            saveBackOrdersToStorage(backOrders);
-            resetFormToNew();
-            renderRightTable();
-            alert(`📦 เพิ่มข้อมูลตัวอย่าง ${sampleData.length} รายการเรียบร้อย`);
-        }
-
-        function performSearch() {
-            searchKeyword = document.getElementById('searchInput').value;
-            renderRightTable();
-        }
-
-        function clearSearch() {
-            document.getElementById('searchInput').value = '';
-            searchKeyword = '';
-            renderRightTable();
-        }
-
-        function goBack() {
-            if (confirm("ต้องการย้อนกลับ? (ข้อมูลจะถูกบันทึกไว้)")) {
-                window.history.back();
-            }
-        }
-
-        function init() {
-            backOrders = loadBackOrdersFromStorage();
-            resetFormToNew();
-            renderRightTable();
-        }
-
-        // Event Listeners
-        document.getElementById('saveOrderBtn').addEventListener('click', saveOrder);
-        document.getElementById('clearFormBtn').addEventListener('click', clearFormOnly);
-        document.getElementById('deleteOrderBtn').addEventListener('click', deleteCurrentOrder);
-        document.getElementById('addItemRowBtn').addEventListener('click', addNewItemRow);
-        document.getElementById('addItemTextBtn').addEventListener('click', addNewItemRow);
-        document.getElementById('resetAllDataBtn').addEventListener('click', resetAllData);
-        document.getElementById('addSampleDataBtn').addEventListener('click', addSampleData);
-        document.getElementById('searchBtn').addEventListener('click', performSearch);
-        document.getElementById('clearSearchBtn').addEventListener('click', clearSearch);
-        document.getElementById('backButton').addEventListener('click', goBack);
-        document.getElementById('searchInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') performSearch();
-        });
-
-        init();
-    </script>
+// ─── INIT ───
+renderFormItems();
+renderTable();
+</script>
 </body>
 </html>
