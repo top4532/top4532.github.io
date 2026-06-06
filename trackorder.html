@@ -1,1 +1,450 @@
 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Track Back Order</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', 'Prompt', sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .page-header {
+            background: white;
+            padding: 16px 24px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #1e3c72, #2b4c8a);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .badge-back {
+            background: #dc2626;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* ตารางหลัก */
+        .order-table {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 16px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #1e293b;
+            border-bottom: 2px solid #e2e8f0;
+            font-size: 0.9rem;
+        }
+
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #edf2f7;
+            vertical-align: middle;
+            background-color: white;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* คอลัมน์ไอคอน + */
+        .expand-cell {
+            text-align: center;
+            width: 50px;
+        }
+
+        .expand-btn {
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: #3b82f6;
+            transition: 0.2s;
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 40px;
+        }
+
+        .expand-btn:hover {
+            background: #eef2ff;
+            transform: scale(1.05);
+        }
+
+        /* รายละเอียดเพิ่มเติม (child row) */
+        .detail-row {
+            background: #f9fafb;
+        }
+
+        .detail-cell {
+            padding: 0 !important;
+        }
+
+        .detail-content {
+            padding: 16px 24px;
+            background: #fefce8;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .items-list {
+            margin-top: 8px;
+        }
+
+        .sub-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .sub-table th {
+            background: #f1f5f9;
+            font-size: 0.8rem;
+            padding: 10px 8px;
+            color: #334155;
+        }
+
+        .sub-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e9eef3;
+            font-size: 0.85rem;
+        }
+
+        .barcode-highlight {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            background: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 12px;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+
+        .qty-badge {
+            background: #e0f2fe;
+            color: #0369a1;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .prhq, .pohq {
+            font-weight: 600;
+        }
+
+        .prhq {
+            color: #0f3b5f;
+        }
+
+        .pohq {
+            color: #b45309;
+        }
+
+        /* responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            th, td {
+                padding: 10px 6px;
+                font-size: 0.8rem;
+            }
+            .expand-btn {
+                font-size: 1.3rem;
+            }
+            .detail-content {
+                padding: 12px;
+            }
+            .sub-table th, .sub-table td {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* สถานะ summary */
+        .summary-stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 12px 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #64748b;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.2;
+        }
+
+        hr {
+            margin: 16px 0;
+            border-color: #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="page-header">
+        <h1>📦 Track Back Order</h1>
+        <div class="badge-back">⚠️ BACK ORDER ทั้งหมด</div>
+    </div>
+
+    <div class="summary-stats" id="summaryStats">
+        <!-- สรุปข้อมูลจะถูกเติมผ่าน JS -->
+    </div>
+
+    <div class="order-table">
+        <table id="backorderTable">
+            <thead>
+                <tr>
+                    <th class="expand-cell"></th>
+                    <th>PRHQ</th>
+                    <th>POHQ</th>
+                    <th>จำนวนรายการ</th>
+                    <th>บาร์โค้ดหลัก</th>
+                    <th>จำนวนรวม (Qty)</th>
+                </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Dynamic rows -->
+                </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // ---------- ข้อมูลจำลอง (Mock Data) สำหรับแสดง Back Order ----------
+    // แต่ละออเดอร์มี PRHQ, POHQ, รายการสินค้า (items) พร้อมบาร์โค้ดและจำนวน
+    const backOrders = [
+        {
+            prhq: "PRHQ-1001",
+            pohq: "POHQ-5001",
+            items: [
+                { barcode: "8851904123456", productName: "สินค้า A", qty: 12 },
+                { barcode: "8851904123457", productName: "สินค้า B", qty: 5 },
+                { barcode: "8851904123458", productName: "สินค้า C", qty: 8 }
+            ]
+        },
+        {
+            prhq: "PRHQ-1002",
+            pohq: "POHQ-5002",
+            items: [
+                { barcode: "4901234567890", productName: "สินค้า X", qty: 20 },
+                { barcode: "4901234567891", productName: "สินค้า Y", qty: 15 }
+            ]
+        },
+        {
+            prhq: "PRHQ-1003",
+            pohq: "POHQ-5003",
+            items: [
+                { barcode: "6934567890123", productName: "สินค้า M", qty: 3 },
+                { barcode: "6934567890124", productName: "สินค้า N", qty: 7 },
+                { barcode: "6934567890125", productName: "สินค้า O", qty: 10 },
+                { barcode: "6934567890126", productName: "สินค้า P", qty: 2 }
+            ]
+        },
+        {
+            prhq: "PRHQ-1004",
+            pohq: "POHQ-5004",
+            items: [
+                { barcode: "1234567890123", productName: "สินค้า Back 1", qty: 50 }
+            ]
+        }
+    ];
+
+    // ฟังก์ชันคำนวณจำนวนรายการ และจำนวนรวมทั้งหมด (สำหรับแสดงใน summary)
+    function computeTotals() {
+        let totalPrhq = backOrders.length;
+        let totalItemsCount = 0;
+        let totalQtySum = 0;
+        backOrders.forEach(order => {
+            totalItemsCount += order.items.length;
+            order.items.forEach(item => {
+                totalQtySum += item.qty;
+            });
+        });
+        return { totalPrhq, totalItemsCount, totalQtySum };
+    }
+
+    // สร้าง barcode แรกของออเดอร์ (เอามาแสดงใน main table)
+    function getFirstBarcode(order) {
+        if (order.items.length === 0) return "-";
+        return order.items[0].barcode;
+    }
+
+    // รวมจำนวนสินค้าทั้งหมดในออเดอร์
+    function getTotalOrderQty(order) {
+        return order.items.reduce((sum, item) => sum + item.qty, 0);
+    }
+
+    // สร้าง HTML สำหรับ sub-table ของรายการสินค้า
+    function renderDetailItems(items) {
+        if (!items || items.length === 0) return "<p>ไม่มีรายการสินค้า</p>";
+        let html = `
+            <table class="sub-table">
+                <thead>
+                    <tr><th>บาร์โค้ด</th><th>ชื่อสินค้า</th><th>จำนวน (Qty)</th></tr>
+                </thead>
+                <tbody>
+        `;
+        items.forEach(item => {
+            html += `
+                <tr>
+                    <td><span class="barcode-highlight">${item.barcode}</span></td>
+                    <td>${item.productName}</td>
+                    <td><span class="qty-badge">${item.qty}</span></td>
+                 </tr>
+            `;
+        });
+        html += `</tbody></table>`;
+        return html;
+    }
+
+    // จัดการ UI: สร้างแถวหลัก และเตรียม detail row
+    function renderTable() {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        
+        // สร้าง summary stats
+        const totals = computeTotals();
+        const summaryDiv = document.getElementById('summaryStats');
+        summaryDiv.innerHTML = `
+            <div class="stat-card"><div class="stat-label">📄 จำนวน PRHQ ทั้งหมด</div><div class="stat-number">${totals.totalPrhq}</div></div>
+            <div class="stat-card"><div class="stat-label">📦 จำนวนรายการรวม (Items)</div><div class="stat-number">${totals.totalItemsCount}</div></div>
+            <div class="stat-card"><div class="stat-label">🔢 จำนวนรวมทั้งหมด (Qty)</div><div class="stat-number">${totals.totalQtySum}</div></div>
+        `;
+
+        // สร้างแถวแต่ละ order
+        backOrders.forEach((order, idx) => {
+            const rowId = `row-${idx}`;
+            const detailRowId = `detail-${idx}`;
+            const totalQty = getTotalOrderQty(order);
+            const firstBarcode = getFirstBarcode(order);
+            const itemCount = order.items.length;
+
+            // main row
+            const mainRow = document.createElement('tr');
+            mainRow.id = rowId;
+            mainRow.innerHTML = `
+                <td class="expand-cell">
+                    <button class="expand-btn" data-target="${detailRowId}" data-main="${rowId}">➕</button>
+                </td>
+                <td class="prhq">${order.prhq}</td>
+                <td class="pohq">${order.pohq}</td>
+                <td>${itemCount} รายการ</td>
+                <td><span class="barcode-highlight">${firstBarcode}</span></td>
+                <td><span class="qty-badge">${totalQty}</span></td>
+            `;
+            tbody.appendChild(mainRow);
+
+            // detail row (ซ่อนอยู่)
+            const detailRow = document.createElement('tr');
+            detailRow.id = detailRowId;
+            detailRow.className = 'detail-row';
+            detailRow.style.display = 'none';  // ซ่อนเริ่มต้น
+            detailRow.innerHTML = `
+                <td class="detail-cell" colspan="6">
+                    <div class="detail-content">
+                        <strong>📋 รายละเอียด Back Order</strong> 
+                        <span style="margin-left: 12px; font-size:0.8rem;">PRHQ: ${order.prhq} | POHQ: ${order.pohq}</span>
+                        <hr>
+                        <div class="items-list">
+                            ${renderDetailItems(order.items)}
+                        </div>
+                        <div style="margin-top: 12px; font-size:0.8rem; color:#475569;">✔️ รวมทั้งสิ้น ${itemCount} รายการ | จำนวนรวม ${totalQty} ชิ้น</div>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(detailRow);
+        });
+
+        // เพิ่ม Event Listeners สำหรับปุ่ม +
+        document.querySelectorAll('.expand-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const targetDetailId = btn.getAttribute('data-target');
+                const detailRow = document.getElementById(targetDetailId);
+                if (!detailRow) return;
+                
+                const isVisible = detailRow.style.display !== 'none';
+                if (isVisible) {
+                    detailRow.style.display = 'none';
+                    btn.innerHTML = '➕';
+                    btn.style.color = '#3b82f6';
+                } else {
+                    detailRow.style.display = 'table-row';
+                    btn.innerHTML = '➖';
+                    btn.style.color = '#dc2626';
+                }
+            });
+        });
+    }
+
+    // เริ่มต้นโหลดหน้า
+    renderTable();
+</script>
+</body>
+</html>
