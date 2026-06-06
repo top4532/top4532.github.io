@@ -85,6 +85,35 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;height:400px;backgrou
 .admin-name{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--blue-dark);line-height:1.2}
 .admin-role{font-family:var(--sans);font-size:9px;font-weight:600;color:var(--blue-mid);letter-spacing:0.08em;text-transform:uppercase}
 
+/* ===== LOGOUT BUTTON (เพิ่มใหม่) ===== */
+.btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 99px;
+  padding: 5px 14px 5px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--red);
+}
+.btn-logout:hover {
+  background: var(--red-light);
+  border-color: var(--red);
+  transform: scale(0.97);
+}
+.btn-logout .logout-icon {
+  font-size: 14px;
+  transition: transform 0.2s;
+}
+.btn-logout:hover .logout-icon {
+  transform: translateX(2px);
+}
+
 /* ===== LAYOUT ===== */
 .app-layout{display:flex;min-height:calc(100vh - var(--topbar-height));position:relative;z-index:2}
 
@@ -365,7 +394,7 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
   </div>
 </div>
 
-<!-- TOP BAR -->
+<!-- TOP BAR (เพิ่มปุ่ม Logout ในส่วน topbar-right) -->
 <header class="topbar">
   <div class="topbar-left">
     <div class="topbar-logo">⚙️</div>
@@ -389,6 +418,11 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
       <div class="admin-avatar">PW</div>
       <div><div class="admin-name">PATIWAT</div><div class="admin-role">ADMIN</div></div>
     </div>
+    <!-- ปุ่ม Logout (เพิ่มใหม่) -->
+    <button class="btn-logout" id="logoutButton" onclick="handleLogout()">
+      <span class="logout-icon">🚪</span>
+      <span>ออกจากระบบ</span>
+    </button>
   </div>
 </header>
 
@@ -832,12 +866,27 @@ function openPage(pageName) {
   window.location.href = pageName;
 }
 
+/* --- LOGOUT HANDLER (เพิ่มใหม่) --- */
+function handleLogout() {
+  // แสดงข้อความยืนยันก่อนออกจากระบบ
+  if(confirm('คุณต้องการออกจากระบบใช่หรือไม่? ข้อมูลทั้งหมดจะถูกบันทึกไว้ในอุปกรณ์ของคุณ')) {
+    // แสดง toast แจ้งเตือน
+    showToast('ออกจากระบบเรียบร้อยแล้ว 👋', 'success');
+    // รอสักครู่เพื่อให้ toast แสดงแล้วค่อย reload หรือปิด welcome แล้วรีเซ็ต session
+    setTimeout(() => {
+      // จำลองการ logout: ทำการ refresh หน้าและแสดง welcome overlay อีกครั้ง
+      // เพื่อประสบการณ์เหมือน logout จริงๆ จะ reload หน้าและแสดง welcome card ใหม่
+      location.reload();
+    }, 600);
+  }
+}
+
 /* --- RESET --- */
 document.getElementById('resetBtn').addEventListener('click', ()=>{
-  if(!confirm('รีเซ็ตข้อมูลทั้งหมดหรือไม่?')) return;
+  if(!confirm('รีเซ็ตข้อมูลทั้งหมดหรือไม่? การกระทำนี้ไม่สามารถกู้คืนได้')) return;
   CATEGORIES.forEach(c=>data[c]=[]);
   saveData(); renderAll();
-  showToast('รีเซ็ตทั้งหมดแล้ว', 'error');
+  showToast('รีเซ็ตข้อมูลทั้งหมดสำเร็จ', 'error');
 });
 
 /* close modal on backdrop click */
