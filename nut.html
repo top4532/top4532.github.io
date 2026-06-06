@@ -6,6 +6,7 @@
 <title>NUT SYSTEM v2 — ระบบจัดการน็อตล้อ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
 <style>
 :root {
   --bg: #f0f5ff;
@@ -85,33 +86,73 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;height:400px;backgrou
 .admin-name{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--blue-dark);line-height:1.2}
 .admin-role{font-family:var(--sans);font-size:9px;font-weight:600;color:var(--blue-mid);letter-spacing:0.08em;text-transform:uppercase}
 
-/* ===== LOGOUT BUTTON (เพิ่มใหม่) ===== */
+/* ===== LOGOUT BUTTON — NEW DESIGN ===== */
 .btn-logout {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(239,68,68,0.08);
-  border: 1px solid rgba(239,68,68,0.25);
-  border-radius: 99px;
-  padding: 5px 14px 5px 12px;
+  gap: 0;
+  background: #ffffff;
+  border: 2px solid #1d4ed8;
+  border-radius: 12px;
+  padding: 0;
   cursor: pointer;
-  transition: all 0.2s ease;
   font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--red);
+  overflow: hidden;
+  transition: transform 0.22s cubic-bezier(0.34,1.2,0.64,1), box-shadow 0.22s, border-color 0.2s;
+  box-shadow: 0 2px 0 #1d4ed8, 0 4px 14px rgba(29,78,216,0.18);
+  position: relative;
+  user-select: none;
+  height: 38px;
 }
 .btn-logout:hover {
-  background: var(--red-light);
-  border-color: var(--red);
-  transform: scale(0.97);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 #1e40af, 0 8px 22px rgba(29,78,216,0.28);
+  border-color: #1e40af;
 }
-.btn-logout .logout-icon {
-  font-size: 14px;
-  transition: transform 0.2s;
+.btn-logout:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 #1d4ed8, 0 2px 6px rgba(29,78,216,0.15);
 }
-.btn-logout:hover .logout-icon {
-  transform: translateX(2px);
+.btn-logout .lo-icon-box {
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin: 0;
+  align-self: stretch;
+}
+.btn-logout .lo-icon-box i {
+  font-size: 17px;
+  color: #ffffff;
+  transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+}
+.btn-logout:hover .lo-icon-box i {
+  transform: translateX(3px);
+}
+.btn-logout .lo-text-box {
+  padding: 0 13px 0 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.btn-logout .lo-main {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.btn-logout .lo-sub {
+  font-size: 9px;
+  font-weight: 600;
+  color: #1d4ed8;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 1px;
 }
 
 /* ===== LAYOUT ===== */
@@ -153,150 +194,30 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;height:400px;backgrou
 .btn-act.amber{color:var(--amber);border-color:rgba(245,158,11,0.3)}
 .btn-act.amber:hover{background:var(--amber-light);border-color:var(--amber)}
 
-/* ===== ปุ่มพิเศษ 3 ปุ่ม (อัปเกรด) ===== */
-.special-buttons {
-  display: flex;
-  gap: 12px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-.btn-special {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 22px 0 10px;
-  height: 52px;
-  border: none;
-  border-radius: 16px;
-  cursor: pointer;
-  font-family: var(--sans);
-  overflow: hidden;
-  transition: transform 0.2s cubic-bezier(.34,1.56,.64,1), box-shadow 0.2s;
-  flex: 1;
-  min-width: 170px;
-}
-
-/* shimmer sweep on hover */
-.btn-special::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -80%;
-  width: 60%; height: 100%;
-  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.28) 50%, transparent 100%);
-  transform: skewX(-15deg);
-  transition: left 0.5s ease;
-  pointer-events: none;
-}
-.btn-special:hover::after { left: 130%; }
-.btn-special:hover { transform: translateY(-3px); }
-.btn-special:active { transform: scale(0.97) translateY(-1px); }
-
-.btn-special .sp-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.22);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 17px;
-  flex-shrink: 0;
-  transition: transform 0.28s cubic-bezier(.34,1.56,.64,1);
-  backdrop-filter: blur(4px);
-}
-.btn-special:hover .sp-icon { transform: rotate(-10deg) scale(1.18); }
-
-.btn-special .sp-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  line-height: 1.2;
-  flex: 1;
-}
-.btn-special .sp-main {
-  font-size: 13px;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.01em;
-}
-.btn-special .sp-sub {
-  font-size: 10px;
-  color: rgba(255,255,255,0.78);
-  margin-top: 2px;
-  letter-spacing: 0.02em;
-}
-
-.btn-special .sp-badge {
-  padding: 2px 9px;
-  border-radius: 99px;
-  font-size: 9px;
-  font-weight: 700;
-  background: rgba(255,255,255,0.25);
-  color: #fff;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-  border: 1px solid rgba(255,255,255,0.3);
-}
-
-/* ping dot (เฉพาะ NewModel) */
-.ping-dot {
-  position: absolute;
-  top: 9px; right: 9px;
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: #fff;
-}
-.ping-dot::after {
-  content: '';
-  position: absolute;
-  inset: -3px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,0.7);
-  animation: pingAnim 1.8s ease-in-out infinite;
-}
-@keyframes pingAnim {
-  0%   { transform: scale(1); opacity: 1; }
-  70%  { transform: scale(2.4); opacity: 0; }
-  100% { transform: scale(1); opacity: 0; }
-}
-
-/* ripple */
-@keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
-.ripple-el {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.32);
-  width: 60px; height: 60px;
-  margin-left: -30px; margin-top: -30px;
-  animation: rippleAnim 0.55s linear;
-  pointer-events: none;
-}
-
-/* สีแต่ละปุ่ม */
-.btn-special.orange {
-  background: linear-gradient(130deg, #d97706 0%, #f97316 55%, #fb923c 100%);
-  box-shadow: 0 4px 18px rgba(217,119,6,0.38), 0 1px 4px rgba(0,0,0,0.08);
-}
-.btn-special.orange:hover {
-  box-shadow: 0 8px 28px rgba(217,119,6,0.52), 0 2px 6px rgba(0,0,0,0.1);
-}
-.btn-special.purple {
-  background: linear-gradient(130deg, #6d28d9 0%, #7c3aed 55%, #a855f7 100%);
-  box-shadow: 0 4px 18px rgba(109,40,217,0.38), 0 1px 4px rgba(0,0,0,0.08);
-}
-.btn-special.purple:hover {
-  box-shadow: 0 8px 28px rgba(109,40,217,0.52), 0 2px 6px rgba(0,0,0,0.1);
-}
-.btn-special.teal {
-  background: linear-gradient(130deg, #0f766e 0%, #0d9488 55%, #2dd4bf 100%);
-  box-shadow: 0 4px 18px rgba(15,118,110,0.38), 0 1px 4px rgba(0,0,0,0.08);
-}
-.btn-special.teal:hover {
-  box-shadow: 0 8px 28px rgba(15,118,110,0.52), 0 2px 6px rgba(0,0,0,0.1);
-}
+/* ===== ปุ่มพิเศษ 3 ปุ่ม ===== */
+.special-buttons{display:flex;gap:12px;margin-top:10px;margin-bottom:20px;flex-wrap:wrap}
+.btn-special{position:relative;display:flex;align-items:center;gap:10px;padding:0 22px 0 10px;height:52px;border:none;border-radius:16px;cursor:pointer;font-family:var(--sans);overflow:hidden;transition:transform 0.2s cubic-bezier(.34,1.56,.64,1),box-shadow 0.2s;flex:1;min-width:170px}
+.btn-special::after{content:'';position:absolute;top:0;left:-80%;width:60%;height:100%;background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,0.28) 50%,transparent 100%);transform:skewX(-15deg);transition:left 0.5s ease;pointer-events:none}
+.btn-special:hover::after{left:130%}
+.btn-special:hover{transform:translateY(-3px)}
+.btn-special:active{transform:scale(0.97) translateY(-1px)}
+.btn-special .sp-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.22);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;transition:transform 0.28s cubic-bezier(.34,1.56,.64,1);backdrop-filter:blur(4px)}
+.btn-special:hover .sp-icon{transform:rotate(-10deg) scale(1.18)}
+.btn-special .sp-text{display:flex;flex-direction:column;align-items:flex-start;line-height:1.2;flex:1}
+.btn-special .sp-main{font-size:13px;font-weight:700;color:#fff;letter-spacing:0.01em}
+.btn-special .sp-sub{font-size:10px;color:rgba(255,255,255,0.78);margin-top:2px;letter-spacing:0.02em}
+.btn-special .sp-badge{padding:2px 9px;border-radius:99px;font-size:9px;font-weight:700;background:rgba(255,255,255,0.25);color:#fff;letter-spacing:0.06em;white-space:nowrap;border:1px solid rgba(255,255,255,0.3)}
+.ping-dot{position:absolute;top:9px;right:9px;width:8px;height:8px;border-radius:50%;background:#fff}
+.ping-dot::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.7);animation:pingAnim 1.8s ease-in-out infinite}
+@keyframes pingAnim{0%{transform:scale(1);opacity:1}70%{transform:scale(2.4);opacity:0}100%{transform:scale(1);opacity:0}}
+@keyframes rippleAnim{to{transform:scale(4);opacity:0}}
+.ripple-el{position:absolute;border-radius:50%;background:rgba(255,255,255,0.32);width:60px;height:60px;margin-left:-30px;margin-top:-30px;animation:rippleAnim 0.55s linear;pointer-events:none}
+.btn-special.orange{background:linear-gradient(130deg,#d97706 0%,#f97316 55%,#fb923c 100%);box-shadow:0 4px 18px rgba(217,119,6,0.38),0 1px 4px rgba(0,0,0,0.08)}
+.btn-special.orange:hover{box-shadow:0 8px 28px rgba(217,119,6,0.52),0 2px 6px rgba(0,0,0,0.1)}
+.btn-special.purple{background:linear-gradient(130deg,#6d28d9 0%,#7c3aed 55%,#a855f7 100%);box-shadow:0 4px 18px rgba(109,40,217,0.38),0 1px 4px rgba(0,0,0,0.08)}
+.btn-special.purple:hover{box-shadow:0 8px 28px rgba(109,40,217,0.52),0 2px 6px rgba(0,0,0,0.1)}
+.btn-special.teal{background:linear-gradient(130deg,#0f766e 0%,#0d9488 55%,#2dd4bf 100%);box-shadow:0 4px 18px rgba(15,118,110,0.38),0 1px 4px rgba(0,0,0,0.08)}
+.btn-special.teal:hover{box-shadow:0 8px 28px rgba(15,118,110,0.52),0 2px 6px rgba(0,0,0,0.1)}
 
 /* ===== STATS ===== */
 .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
@@ -306,7 +227,7 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;height:400px;backgrou
 .stat-cat{font-family:var(--sans);font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase}
 .stat-num{font-family:var(--sans);font-size:22px;font-weight:700;color:var(--blue);line-height:1.1}
 
-/* ===== TABLE VIEW ===== */
+/* ===== TABLE ===== */
 .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);box-shadow:var(--shadow-md);overflow:hidden;margin-top:24px}
 .table-header{padding:18px 22px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:12px}
 .table-cat-title{font-family:var(--sans);font-size:18px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:10px}
@@ -314,7 +235,6 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;height:400px;backgrou
 .table-actions{display:flex;align-items:center;gap:8px}
 .search-bar{display:flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--border-mid);border-radius:99px;padding:6px 14px}
 .search-bar input{border:none;background:transparent;outline:none;font-family:var(--sans);font-size:13px;color:var(--text);width:180px}
-
 table{width:100%;border-collapse:collapse;font-family:var(--sans)}
 thead tr{background:var(--blue-xlight)}
 thead th{padding:11px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--blue-dark);text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid var(--blue-light);white-space:nowrap}
@@ -374,7 +294,7 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
 .bottom-info{margin-top:40px;padding-top:16px;border-top:1px solid var(--border-mid);display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);flex-wrap:wrap;gap:6px}
 
 @media(max-width:900px){.stat-row{grid-template-columns:repeat(2,1fr)}.topbar-sys-label{display:none}.form-grid{grid-template-columns:1fr}}
-@media(max-width:700px){.topbar-center{display:none}.topbar{padding:0 16px}.app-layout{flex-direction:column}.sidebar{width:100%;height:auto;position:relative;top:0}.sidebar-nav{flex-direction:row;flex-wrap:wrap;padding:10px}.nav-item{width:auto}.main-content{max-width:100%;padding:16px}.brand-title{font-size:20px}.special-buttons{flex-direction:column}.btn-special{min-width:100%}}
+@media(max-width:700px){.topbar-center{display:none}.topbar{padding:0 16px}.app-layout{flex-direction:column}.sidebar{width:100%;height:auto;position:relative;top:0}.sidebar-nav{flex-direction:row;flex-wrap:wrap;padding:10px}.nav-item{width:auto}.main-content{max-width:100%;padding:16px}.brand-title{font-size:20px}.special-buttons{flex-direction:column}.btn-special{min-width:100%}.btn-logout .lo-sub{display:none}}
 </style>
 </head>
 <body>
@@ -394,7 +314,7 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
   </div>
 </div>
 
-<!-- TOP BAR (เพิ่มปุ่ม Logout ในส่วน topbar-right) -->
+<!-- TOP BAR -->
 <header class="topbar">
   <div class="topbar-left">
     <div class="topbar-logo">⚙️</div>
@@ -418,10 +338,15 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
       <div class="admin-avatar">PW</div>
       <div><div class="admin-name">PATIWAT</div><div class="admin-role">ADMIN</div></div>
     </div>
-    <!-- ปุ่ม Logout (เพิ่มใหม่) -->
+    <!-- ปุ่ม Logout — NEW DESIGN -->
     <button class="btn-logout" id="logoutButton" onclick="handleLogout()">
-      <span class="logout-icon">🚪</span>
-      <span>ออกจากระบบ</span>
+      <div class="lo-icon-box">
+        <i class="ti ti-logout"></i>
+      </div>
+      <div class="lo-text-box">
+        <span class="lo-main">ออกจากระบบ</span>
+        <span class="lo-sub">SIGN OUT</span>
+      </div>
     </button>
   </div>
 </header>
@@ -469,10 +394,8 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
         </div>
       </div>
 
-      <!-- ===== ปุ่มพิเศษ 3 ปุ่ม (อัปเกรดแล้ว) ===== -->
+      <!-- ปุ่มพิเศษ 3 ปุ่ม -->
       <div class="special-buttons">
-
-        <!-- NewModel -->
         <button class="btn-special orange" id="newModelBtn" onclick="addRipple(event)">
           <div class="sp-icon">🆕</div>
           <div class="sp-text">
@@ -482,8 +405,6 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
           <span class="sp-badge">NEW</span>
           <div class="ping-dot"></div>
         </button>
-
-        <!-- Best Seller -->
         <button class="btn-special purple" id="bestSellerBtn" onclick="addRipple(event)">
           <div class="sp-icon">🏆</div>
           <div class="sp-text">
@@ -492,8 +413,6 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
           </div>
           <span class="sp-badge">TOP</span>
         </button>
-
-        <!-- Track Order -->
         <button class="btn-special teal" id="trackOrderBtn" onclick="addRipple(event)">
           <div class="sp-icon">📅</div>
           <div class="sp-text">
@@ -502,9 +421,7 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
           </div>
           <span class="sp-badge">TRACK</span>
         </button>
-
       </div>
-      <!-- ===== จบปุ่มพิเศษ ===== -->
 
       <div class="stat-row" id="statRow"></div>
     </div>
@@ -555,7 +472,7 @@ tbody td{padding:11px 14px;font-size:13px;color:var(--text);vertical-align:middl
   </main>
 </div>
 
-<!-- ADD / EDIT MODAL -->
+<!-- MODAL -->
 <div class="modal-backdrop" id="modalBackdrop">
   <div class="modal">
     <div class="modal-title" id="modal-title-text">➕ เพิ่มรายการใหม่</div>
@@ -622,7 +539,6 @@ let data = {};
 let currentCat = '3RHB';
 let editIndex = null;
 
-/* --- DATE/TIME --- */
 const THAI_MONTHS = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
 const THAI_DAYS   = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
 function pad(n){return String(n).padStart(2,'0')}
@@ -637,102 +553,80 @@ function updateClock(){
   if(wd) wd.textContent = ds;
   if(wt) wt.textContent = ts;
 }
-updateClock(); setInterval(updateClock, 1000);
+updateClock(); setInterval(updateClock,1000);
 
-/* --- WELCOME --- */
 function closeWelcome(){
   const ov = document.getElementById('welcomeOverlay');
   ov.classList.add('hide');
-  setTimeout(()=>ov.remove(), 500);
+  setTimeout(()=>ov.remove(),500);
 }
-setTimeout(()=>{const ov=document.getElementById('welcomeOverlay');if(ov)closeWelcome()}, 8000);
+setTimeout(()=>{const ov=document.getElementById('welcomeOverlay');if(ov)closeWelcome()},8000);
 
-/* --- STORAGE --- */
 function loadData(){
-  try{ const r = localStorage.getItem(STORAGE_KEY); data = r ? JSON.parse(r) : {}; }
-  catch(e){ data = {}; }
-  CATEGORIES.forEach(c=>{ if(!data[c]) data[c] = []; });
+  try{const r=localStorage.getItem(STORAGE_KEY);data=r?JSON.parse(r):{};}
+  catch(e){data={};}
+  CATEGORIES.forEach(c=>{if(!data[c])data[c]=[];});
 }
 function saveData(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  const ts = new Date().toLocaleTimeString('th-TH');
-  const el = document.getElementById('lastSaved');
-  if(el) el.textContent = 'บันทึกล่าสุด: ' + ts;
-  const ft = document.getElementById('ft-saved');
-  if(ft) ft.textContent = 'อัปเดต: ' + ts;
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+  const ts=new Date().toLocaleTimeString('th-TH');
+  const el=document.getElementById('lastSaved');if(el)el.textContent='บันทึกล่าสุด: '+ts;
+  const ft=document.getElementById('ft-saved');if(ft)ft.textContent='อัปเดต: '+ts;
 }
 
-/* --- TOAST --- */
 let toastTimer;
-function showToast(msg, type=''){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast' + (type ? ' '+type : '') + ' show';
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast'+(type?' '+type:'')+' show';
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>t.className='toast', 2400);
+  toastTimer=setTimeout(()=>t.className='toast',2400);
 }
 
-/* --- NAV --- */
-function switchCat(cat, el){
-  currentCat = cat;
+function switchCat(cat,el){
+  currentCat=cat;
   document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('searchInput').value = '';
+  document.getElementById('searchInput').value='';
   renderAll();
 }
 
-/* --- STATS --- */
 function renderStats(){
-  document.getElementById('statRow').innerHTML = CATEGORIES.map(c=>`
+  document.getElementById('statRow').innerHTML=CATEGORIES.map(c=>`
     <div class="stat-card" onclick="switchCat('${c}',document.querySelector('[data-cat=\\'${c}\\']'))">
       <div class="stat-icon">${CAT_ICONS[c]}</div>
       <div><div class="stat-cat">${c}</div><div class="stat-num">${data[c].length}</div></div>
     </div>`).join('');
-  const total = CATEGORIES.reduce((s,c)=>s+data[c].length,0);
-  document.getElementById('global-total').textContent = total;
-  CATEGORIES.forEach(c=>{ const el = document.getElementById('nc-'+c); if(el) el.textContent = data[c].length; });
+  const total=CATEGORIES.reduce((s,c)=>s+data[c].length,0);
+  document.getElementById('global-total').textContent=total;
+  CATEGORIES.forEach(c=>{const el=document.getElementById('nc-'+c);if(el)el.textContent=data[c].length;});
 }
 
-/* --- TABLE --- */
-function escHtml(s){
-  if(!s) return '—';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function formatPrice(v){
-  if(v===null||v===undefined||v==='') return '—';
-  return Number(v).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});
-}
-function initials(name){
-  if(!name) return '?';
-  return name.trim().split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2) || name[0].toUpperCase();
-}
+function escHtml(s){if(!s)return '—';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function formatPrice(v){if(v===null||v===undefined||v==='')return '—';return Number(v).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function initials(name){if(!name)return '?';return name.trim().split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)||name[0].toUpperCase();}
 
 function renderTable(){
-  const items = data[currentCat];
-  const q = (document.getElementById('searchInput').value||'').toLowerCase().trim();
-  const filtered = q ? items.filter(it=>(
-    (it.code||'').toLowerCase().includes(q)||
-    (it.barcode||'').toLowerCase().includes(q)||
-    (it.sup||'').toLowerCase().includes(q)||
-    (it.owner||'').toLowerCase().includes(q)||
+  const items=data[currentCat];
+  const q=(document.getElementById('searchInput').value||'').toLowerCase().trim();
+  const filtered=q?items.filter(it=>(
+    (it.code||'').toLowerCase().includes(q)||(it.barcode||'').toLowerCase().includes(q)||
+    (it.sup||'').toLowerCase().includes(q)||(it.owner||'').toLowerCase().includes(q)||
     (it.desc||'').toLowerCase().includes(q)
-  )) : items;
-
-  document.getElementById('tbl-icon').textContent = CAT_ICONS[currentCat];
-  document.getElementById('tbl-title').textContent = currentCat;
-  document.getElementById('tbl-count').textContent = items.length + ' รายการ';
-  document.getElementById('ft-cat').textContent = currentCat;
-  document.getElementById('ft-shown').textContent = filtered.length;
-  document.getElementById('ft-total').textContent = items.length;
-
-  const body = document.getElementById('tblBody');
-  if(filtered.length === 0){
-    body.innerHTML = `<tr class="empty-row"><td colspan="9">📦 ไม่มีข้อมูลในหมวด ${currentCat}${q?' (ไม่พบผลการค้นหา)':''}</td></tr>`;
+  )):items;
+  document.getElementById('tbl-icon').textContent=CAT_ICONS[currentCat];
+  document.getElementById('tbl-title').textContent=currentCat;
+  document.getElementById('tbl-count').textContent=items.length+' รายการ';
+  document.getElementById('ft-cat').textContent=currentCat;
+  document.getElementById('ft-shown').textContent=filtered.length;
+  document.getElementById('ft-total').textContent=items.length;
+  const body=document.getElementById('tblBody');
+  if(filtered.length===0){
+    body.innerHTML=`<tr class="empty-row"><td colspan="9">📦 ไม่มีข้อมูลในหมวด ${currentCat}${q?' (ไม่พบผลการค้นหา)':''}</td></tr>`;
     return;
   }
-
-  body.innerHTML = filtered.map((it, i)=>{
-    const realIdx = items.indexOf(it);
+  body.innerHTML=filtered.map((it,i)=>{
+    const realIdx=items.indexOf(it);
     return `<tr>
       <td style="color:var(--text-dim);font-size:12px;font-family:var(--sans)">${i+1}</td>
       <td><span class="td-code">${escHtml(it.code)}</span></td>
@@ -750,162 +644,119 @@ function renderTable(){
   }).join('');
 }
 
-function renderAll(){
-  renderStats();
-  renderTable();
-}
+function renderAll(){renderStats();renderTable();}
 
-/* --- CRUD --- */
 function deleteItem(idx){
-  const it = data[currentCat][idx];
-  if(!confirm(`ลบรายการ "${it.code}" ออกหรือไม่?`)) return;
+  const it=data[currentCat][idx];
+  if(!confirm(`ลบรายการ "${it.code}" ออกหรือไม่?`))return;
   data[currentCat].splice(idx,1);
-  saveData(); renderAll();
-  showToast(`ลบ "${it.code}" แล้ว`, 'error');
+  saveData();renderAll();
+  showToast(`ลบ "${it.code}" แล้ว`,'error');
 }
 
-/* --- MODAL --- */
 function openAddModal(){
-  editIndex = null;
-  document.getElementById('modal-title-text').textContent = '➕ เพิ่มรายการใหม่';
-  document.getElementById('modal-sub-text').textContent = 'กรอกข้อมูลน็อตล้อในหมวดที่เลือก';
+  editIndex=null;
+  document.getElementById('modal-title-text').textContent='➕ เพิ่มรายการใหม่';
+  document.getElementById('modal-sub-text').textContent='กรอกข้อมูลน็อตล้อในหมวดที่เลือก';
   clearForm();
-  document.getElementById('f-cat').value = currentCat;
+  document.getElementById('f-cat').value=currentCat;
   document.getElementById('modalBackdrop').classList.add('open');
 }
-
 function openEditModal(idx){
-  editIndex = idx;
-  const it = data[currentCat][idx];
-  document.getElementById('modal-title-text').textContent = '✏️ แก้ไขรายการ';
-  document.getElementById('modal-sub-text').textContent = `แก้ไขรายการ: ${it.code||''}`;
-  document.getElementById('f-code').value    = it.code    || '';
-  document.getElementById('f-barcode').value = it.barcode || '';
-  document.getElementById('f-desc').value    = it.desc    || '';
-  document.getElementById('f-qty').value     = it.qty     || '';
-  document.getElementById('f-price').value   = it.price   || '';
-  document.getElementById('f-sup').value     = it.sup     || '';
-  document.getElementById('f-owner').value   = it.owner   || '';
-  document.getElementById('f-cat').value     = currentCat;
+  editIndex=idx;
+  const it=data[currentCat][idx];
+  document.getElementById('modal-title-text').textContent='✏️ แก้ไขรายการ';
+  document.getElementById('modal-sub-text').textContent=`แก้ไขรายการ: ${it.code||''}`;
+  document.getElementById('f-code').value=it.code||'';
+  document.getElementById('f-barcode').value=it.barcode||'';
+  document.getElementById('f-desc').value=it.desc||'';
+  document.getElementById('f-qty').value=it.qty||'';
+  document.getElementById('f-price').value=it.price||'';
+  document.getElementById('f-sup').value=it.sup||'';
+  document.getElementById('f-owner').value=it.owner||'';
+  document.getElementById('f-cat').value=currentCat;
   document.getElementById('modalBackdrop').classList.add('open');
 }
-
 function closeModal(){
   document.getElementById('modalBackdrop').classList.remove('open');
-  clearForm();
-  editIndex = null;
+  clearForm();editIndex=null;
 }
-
 function clearForm(){
-  ['f-code','f-barcode','f-desc','f-qty','f-price','f-sup','f-owner'].forEach(id=>{
-    document.getElementById(id).value='';
-  });
+  ['f-code','f-barcode','f-desc','f-qty','f-price','f-sup','f-owner'].forEach(id=>{document.getElementById(id).value='';});
 }
-
 function saveItem(){
-  const code  = document.getElementById('f-code').value.trim();
-  const desc  = document.getElementById('f-desc').value.trim();
-  const qty   = document.getElementById('f-qty').value.trim();
-  const price = document.getElementById('f-price').value.trim();
-  const cat   = document.getElementById('f-cat').value;
-
-  if(!code){ showToast('กรุณากรอกรหัสสินค้า','error'); return; }
-  if(!desc){ showToast('กรุณากรอกรายละเอียด','error'); return; }
-  if(!qty||isNaN(qty)||Number(qty)<1){ showToast('กรุณากรอกจำนวนต่อกล่อง','error'); return; }
-  if(!price||isNaN(price)||Number(price)<0){ showToast('กรุณากรอกราคา','error'); return; }
-
-  const item = {
-    code,
-    barcode: document.getElementById('f-barcode').value.trim(),
-    desc,
-    qty:   Number(qty),
-    price: Number(price),
-    sup:   document.getElementById('f-sup').value.trim(),
-    owner: document.getElementById('f-owner').value.trim(),
-    addedAt: new Date().toISOString()
+  const code=document.getElementById('f-code').value.trim();
+  const desc=document.getElementById('f-desc').value.trim();
+  const qty=document.getElementById('f-qty').value.trim();
+  const price=document.getElementById('f-price').value.trim();
+  const cat=document.getElementById('f-cat').value;
+  if(!code){showToast('กรุณากรอกรหัสสินค้า','error');return;}
+  if(!desc){showToast('กรุณากรอกรายละเอียด','error');return;}
+  if(!qty||isNaN(qty)||Number(qty)<1){showToast('กรุณากรอกจำนวนต่อกล่อง','error');return;}
+  if(!price||isNaN(price)||Number(price)<0){showToast('กรุณากรอกราคา','error');return;}
+  const item={
+    code,barcode:document.getElementById('f-barcode').value.trim(),desc,
+    qty:Number(qty),price:Number(price),
+    sup:document.getElementById('f-sup').value.trim(),
+    owner:document.getElementById('f-owner').value.trim(),
+    addedAt:new Date().toISOString()
   };
-
-  if(editIndex !== null){
-    item.addedAt = data[currentCat][editIndex].addedAt;
-    data[currentCat][editIndex] = item;
-    showToast(`อัปเดต "${code}" แล้ว ✓`, 'success');
+  if(editIndex!==null){
+    item.addedAt=data[currentCat][editIndex].addedAt;
+    data[currentCat][editIndex]=item;
+    showToast(`อัปเดต "${code}" แล้ว ✓`,'success');
   } else {
     if(data[cat].some(it=>it.code.toLowerCase()===code.toLowerCase())){
-      showToast(`รหัส "${code}" มีอยู่แล้วในหมวด ${cat}`, 'error');
-      return;
+      showToast(`รหัส "${code}" มีอยู่แล้วในหมวด ${cat}`,'error');return;
     }
-    if(cat !== currentCat){
-      currentCat = cat;
-      document.querySelectorAll('.nav-item').forEach(b=>{
-        b.classList.toggle('active', b.dataset.cat===cat);
-      });
+    if(cat!==currentCat){
+      currentCat=cat;
+      document.querySelectorAll('.nav-item').forEach(b=>{b.classList.toggle('active',b.dataset.cat===cat);});
     }
     data[currentCat].push(item);
-    showToast(`เพิ่ม "${code}" ใน ${cat} แล้ว ✓`, 'success');
+    showToast(`เพิ่ม "${code}" ใน ${cat} แล้ว ✓`,'success');
   }
-
-  saveData(); renderAll(); closeModal();
+  saveData();renderAll();closeModal();
 }
 
-/* --- RIPPLE EFFECT สำหรับปุ่มพิเศษ --- */
-function addRipple(e) {
-  const btn = e.currentTarget;
-  const old = btn.querySelector('.ripple-el');
-  if (old) old.remove();
-  const circle = document.createElement('span');
-  circle.className = 'ripple-el';
-  const rect = btn.getBoundingClientRect();
-  circle.style.left = (e.clientX - rect.left) + 'px';
-  circle.style.top  = (e.clientY - rect.top)  + 'px';
+function addRipple(e){
+  const btn=e.currentTarget;
+  const old=btn.querySelector('.ripple-el');if(old)old.remove();
+  const circle=document.createElement('span');
+  circle.className='ripple-el';
+  const rect=btn.getBoundingClientRect();
+  circle.style.left=(e.clientX-rect.left)+'px';
+  circle.style.top=(e.clientY-rect.top)+'px';
   btn.appendChild(circle);
-  setTimeout(() => circle.remove(), 600);
+  setTimeout(()=>circle.remove(),600);
 }
 
-/* --- ฟังก์ชันสำหรับ 3 ปุ่มพิเศษ (เปิดหน้าใหม่) --- */
-function openPage(pageName) {
-  window.location.href = pageName;
-}
+function openPage(pageName){window.location.href=pageName;}
 
-/* --- LOGOUT HANDLER (เพิ่มใหม่) --- */
-function handleLogout() {
-  // แสดงข้อความยืนยันก่อนออกจากระบบ
-  if(confirm('คุณต้องการออกจากระบบใช่หรือไม่? ข้อมูลทั้งหมดจะถูกบันทึกไว้ในอุปกรณ์ของคุณ')) {
-    // แสดง toast แจ้งเตือน
-    showToast('ออกจากระบบเรียบร้อยแล้ว 👋', 'success');
-    // รอสักครู่เพื่อให้ toast แสดงแล้วค่อย reload หรือปิด welcome แล้วรีเซ็ต session
-    setTimeout(() => {
-      // จำลองการ logout: ทำการ refresh หน้าและแสดง welcome overlay อีกครั้ง
-      // เพื่อประสบการณ์เหมือน logout จริงๆ จะ reload หน้าและแสดง welcome card ใหม่
-      location.reload();
-    }, 600);
+function handleLogout(){
+  if(confirm('คุณต้องการออกจากระบบใช่หรือไม่?\nข้อมูลทั้งหมดจะถูกบันทึกไว้ในอุปกรณ์ของคุณ')){
+    showToast('ออกจากระบบเรียบร้อยแล้ว 👋','success');
+    setTimeout(()=>location.reload(),700);
   }
 }
 
-/* --- RESET --- */
-document.getElementById('resetBtn').addEventListener('click', ()=>{
-  if(!confirm('รีเซ็ตข้อมูลทั้งหมดหรือไม่? การกระทำนี้ไม่สามารถกู้คืนได้')) return;
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  if(!confirm('รีเซ็ตข้อมูลทั้งหมดหรือไม่? การกระทำนี้ไม่สามารถกู้คืนได้'))return;
   CATEGORIES.forEach(c=>data[c]=[]);
-  saveData(); renderAll();
-  showToast('รีเซ็ตข้อมูลทั้งหมดสำเร็จ', 'error');
+  saveData();renderAll();
+  showToast('รีเซ็ตข้อมูลทั้งหมดสำเร็จ','error');
 });
 
-/* close modal on backdrop click */
-document.getElementById('modalBackdrop').addEventListener('click', function(e){
-  if(e.target===this) closeModal();
+document.getElementById('modalBackdrop').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeModal();
+  if(e.key==='n'&&(e.ctrlKey||e.metaKey)){e.preventDefault();openAddModal();}
 });
 
-/* keyboard shortcut */
-document.addEventListener('keydown', e=>{
-  if(e.key==='Escape') closeModal();
-  if(e.key==='n'&&(e.ctrlKey||e.metaKey)){ e.preventDefault(); openAddModal(); }
-});
+document.getElementById('newModelBtn').addEventListener('click',()=>openPage('New.html'));
+document.getElementById('bestSellerBtn').addEventListener('click',()=>openPage('bestseller.html'));
+document.getElementById('trackOrderBtn').addEventListener('click',()=>openPage('trackorder.html'));
 
-/* --- กำหนดให้ปุ่มทั้ง 3 เปิดหน้าเป้าหมาย --- */
-document.getElementById('newModelBtn').addEventListener('click', () => openPage('New.html'));
-document.getElementById('bestSellerBtn').addEventListener('click', () => openPage('bestseller.html'));
-document.getElementById('trackOrderBtn').addEventListener('click', () => openPage('trackorder.html'));
-
-/* --- INIT --- */
 loadData();
 renderAll();
 </script>
