@@ -418,7 +418,63 @@
 </div>
 
 <script>
-    // ---------- โครงสร้างข้อมูล ----------
+    // ============ localStorage Management ============
+    const STORAGE_KEY = 'backorder_data';
+
+    // โหลดข้อมูลจาก localStorage
+    function loadBackOrdersFromStorage() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            try {
+                return JSON.parse(stored);
+            } catch(e) {
+                console.error("Error parsing localStorage", e);
+                return [];
+            }
+        }
+        // ถ้าไม่มีข้อมูลใน localStorage ให้ใช้ตัวอย่างเริ่มต้น
+        return getDefaultData();
+    }
+
+    // ข้อมูลตัวอย่างเริ่มต้น (ถ้ายังไม่มีใน localStorage)
+    function getDefaultData() {
+        return [
+            {
+                id: 1001,
+                prhq: "PRHQ-1001",
+                pohq: "POHQ-5001",
+                items: [
+                    { barcode: "8851904123456", qty: 12 },
+                    { barcode: "8851904123457", qty: 5 }
+                ]
+            },
+            {
+                id: 1002,
+                prhq: "PRHQ-1002",
+                pohq: "POHQ-5002",
+                items: [
+                    { barcode: "4901234567890", qty: 20 },
+                    { barcode: "4901234567891", qty: 15 },
+                    { barcode: "6934567890123", qty: 3 }
+                ]
+            },
+            {
+                id: 1003,
+                prhq: "PRHQ-1003",
+                pohq: "POHQ-5003",
+                items: [
+                    { barcode: "1234567890123", qty: 8 }
+                ]
+            }
+        ];
+    }
+
+    // บันทึกข้อมูลลง localStorage
+    function saveBackOrdersToStorage(backOrders) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(backOrders));
+    }
+
+    // ============ Global Variables ============
     let backOrders = [];
     let currentEditId = null;
     let currentFormItems = [{ barcode: "", qty: 1 }];
@@ -453,11 +509,11 @@
             row.insertCell(0).innerText = order.prhq;
             row.insertCell(1).innerText = order.pohq;
             row.insertCell(2).innerText = `${totalItems} รายการ`;
-            row.insertCell(3).innerHTML = `<span class="barcode-mini">${firstBarcode}</span>`;
+            row.insertCell(3).innerHTML = `<span class="barcode-mini">${escapeHtml(firstBarcode)}</span>`;
             row.insertCell(4).innerText = totalQty;
             let itemsShort = order.items.map(it => `${it.barcode}(${it.qty})`).join(', ');
             if (itemsShort.length > 45) itemsShort = itemsShort.slice(0, 42) + '...';
-            row.insertCell(5).innerHTML = `<div class="item-detail-list">📦 ${itemsShort || '-'}</div>`;
+            row.insertCell(5).innerHTML = `<div class="item-detail-list">📦 ${escapeHtml(itemsShort) || '-'}</div>`;
 
             row.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -543,7 +599,7 @@
         });
     }
 
-    // บันทึก
+    // บันทึก (เพิ่ม/แก้ไข)
     function saveOrder() {
         const prhq = document.getElementById('prhqInput').value.trim();
         const pohq = document.getElementById('pohqInput').value.trim();
@@ -565,13 +621,18 @@
         };
 
         if (currentEditId) {
+            // อัปเดต
             const index = backOrders.findIndex(o => o.id === currentEditId);
             if (index !== -1) backOrders[index] = newOrder;
             alert("✅ อัปเดต Back Order สำเร็จ");
         } else {
+            // เพิ่มใหม่
             backOrders.unshift(newOrder);
             alert("✅ เพิ่ม Back Order ใหม่สำเร็จ");
         }
+        
+        // บันทึกข้อมูลลง localStorage
+        saveBackOrdersToStorage(backOrders);
         resetFormToNew();
         renderRightTable();
     }
@@ -583,6 +644,8 @@
         }
         if (confirm("ยืนยันลบ Back Order นี้?")) {
             backOrders = backOrders.filter(o => o.id !== currentEditId);
+            // บันทึกข้อมูลลง localStorage
+            saveBackOrdersToStorage(backOrders);
             resetFormToNew();
             renderRightTable();
             alert("🗑️ ลบเรียบร้อย");
@@ -614,28 +677,14 @@
         renderFormItems();
     }
 
-    // ข้อมูลตัวอย่างเริ่มต้น
-    function loadMockData() {
-        backOrders = [
-            {
-                id: 1001,
-                prhq: "PRHQ-1001",
-                pohq: "POHQ-5001",
-                items: [{ barcode: "8851904123456", qty: 12 }, { barcode: "8851904123457", qty: 5 }]
-            },
-            {
-                id: 1002,
-                prhq: "PRHQ-1002",
-                pohq: "POHQ-5002",
-                items: [{ barcode: "4901234567890", qty: 20 }, { barcode: "4901234567891", qty: 15 }, { barcode: "6934567890123", qty: 3 }]
-            },
-            {
-                id: 1003,
-                prhq: "PRHQ-1003",
-                pohq: "POHQ-5003",
-                items: [{ barcode: "1234567890123", qty: 8 }]
-            }
-        ];
+    // โหลดข้อมูลเริ่มต้น
+    function init() {
+        backOrders = loadBackOrdersFromStorage();
+        // ตรวจสอบว่ามี id ซ้ำไหม (กัน error)
+        if (backOrders.length === 0) {
+            backOrders = getDefaultData();
+            saveBackOrdersToStorage(backOrders);
+        }
         resetFormToNew();
         renderRightTable();
     }
@@ -648,7 +697,7 @@
     document.getElementById('addItemTextBtn').addEventListener('click', addNewItemRow);
 
     // เริ่มต้น
-    loadMockData();
+    init();
 </script>
 </body>
 </html>
