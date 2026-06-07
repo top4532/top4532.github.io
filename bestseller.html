@@ -179,7 +179,7 @@ input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:
   <div class="sb-profile">
     <div class="sb-profile-inner">
       <div class="sb-avatar"><i class="fas fa-user-tie"></i></div>
-      <div class="sb-pinfo"><div class="sb-pname">คุณสมศักดิ์ รักล้อ</div><div class="sb-prole">ผู้จัดการฝ่ายขาย</div></div>
+      <div class="sb-pinfo"><div class="sb-pname">PATIWAT</div><div class="sb-prole">Admin</div></div>
       <button class="sb-logout" onclick="logout()" title="ออกจากระบบ"><i class="fas fa-sign-out-alt"></i></button>
     </div>
   </div>
@@ -206,7 +206,7 @@ input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:
       <div class="hd-phone" onclick="callPhone()"><i class="fas fa-phone"></i><span>02-123-4567</span></div>
       <div class="hd-user" onclick="showProfile()">
         <div class="hd-user-av"><i class="fas fa-user-tie"></i></div>
-        <div><div class="hd-user-name">สมศักดิ์ ร.</div><div class="hd-user-role">Admin</div></div>
+        <div><div class="hd-user-name">PATIWAT</div><div class="hd-user-role">Admin</div></div>
         <i class="fas fa-chevron-down"></i>
       </div>
     </div>
@@ -256,11 +256,11 @@ input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:
               <th class="th-total">ยอดรวม 5 เดือน</th>
               <th class="th-avg">เฉลี่ย/เดือน</th>
               <th></th>
-            </tr>
+             </tr>
           </thead>
           <tbody id="tbody"></tbody>
           <tfoot id="tfoot"></tfoot>
-        </table>
+         </table>
       </div>
     </div>
   </div>
@@ -326,21 +326,21 @@ function render(){
       <td class="td-l">
         <input class="cell-in" type="text" value="${escapeHtml(r.barcode)}" placeholder="ใส่ Barcode"
           onchange="updateRow(${ri}, 'barcode', this.value)">
-       </td>
+        </td>
       <td class="td-l">
         <span class="chip chip-moq">
           <i class="fas fa-layer-group" style="font-size:.65rem"></i>
           ${moqLots ? moqLots + ' Lot' : '—'}
         </span>
-       </td>
+        </td>
       <td class="td-l">
         <input class="cell-in" type="number" value="${r.stock||''}" placeholder="จำนวน" min="0"
           onchange="updateRow(${ri}, 'stock', +this.value||0)" style="min-width:80px;text-align:right">
-       </td>
+        </td>
       ${months.map(m=>`<td>
         <input class="cell-in" type="number" value="${r[m]||''}" placeholder="—" min="0"
           onchange="updateRow(${ri}, '${m}', +this.value||0)">
-       </td>`).join('')}
+        </td>`).join('')}
       <td class="td-total">${total ? fmtStat(total) : '—'}</td>
       <td class="td-avg">${avg ? fmtStat(avg) : '—'}</td>
       <td><div class="actions"><button class="btn-del" onclick="delRow(${ri})" title="ลบ"><i class="fas fa-trash-alt"></i></button></div></td>
