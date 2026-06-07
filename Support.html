@@ -3,278 +3,436 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>ติดต่อผู้ดูแลระบบ | ศูนย์ช่วยเหลือ</title>
+    <title>ติดต่อผู้ดูแลระบบ | Modern Support Center</title>
     <!-- TailwindCSS + Font Awesome 6 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!-- ปรับแต่ง Tailwind เพิ่มเติม -->
+    <!-- Google Fonts (Prompt & Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ซ่อน scrollbar แต่ยังใช้งานได้ (optional aesthetic) */
-        .custom-scroll::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scroll::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-        }
-        .custom-scroll::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.4);
-            border-radius: 10px;
+        * {
+            font-family: 'Inter', 'Prompt', system-ui, sans-serif;
         }
         body {
-            background: linear-gradient(135deg, #1e3a8a, #4f46e5, #7c3aed);
+            background: radial-gradient(circle at 10% 30%, #0f172a, #0f172a 40%, #1e1b4b);
             background-attachment: fixed;
+            position: relative;
         }
-        /* glass morphism หลัก */
-        .glass-card {
-            backdrop-filter: blur(16px);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.3);
+        /* animated grain texture */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjYiIG51bU9jdGF2ZXM9IjMiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZikiIG9wYWNpdHk9IjAuMDMiLz48L3N2Zz4=');
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 0;
         }
-        /* input สีขาวแตะ focus effect */
-        .input-white {
-            background-color: rgba(255,255,255,0.95);
-            transition: all 0.2s ease;
+        /* floating orbs */
+        .orb-1, .orb-2, .orb-3 {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+            animation: float 20s infinite alternate ease-in-out;
         }
-        .input-white:focus {
-            background-color: white;
-            box-shadow: 0 0 0 3px rgba(34,197,94,0.3);
-            transform: scale(1.01);
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: #3b82f6;
+            top: -150px;
+            left: -150px;
         }
-        /* ปุ่ม line กดแล้ว ripple effect เล็กน้อย */
-        .btn-line {
-            transition: 0.2s;
-            background: #06C755;
+        .orb-2 {
+            width: 600px;
+            height: 600px;
+            background: #a855f7;
+            bottom: -200px;
+            right: -150px;
+            animation-duration: 25s;
         }
-        .btn-line:hover {
-            background: #05a848;
-            transform: translateY(-2px);
-            box-shadow: 0 12px 20px -10px rgba(6,199,85,0.5);
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: #06b6d4;
+            top: 40%;
+            right: 20%;
+            animation-duration: 18s;
+            opacity: 0.3;
         }
-        /* animate สำหรับการแจ้งเตือนเล็กๆ */
-        .toast-notify {
-            animation: fadeUp 0.3s ease forwards;
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -30px) scale(1.1); }
         }
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* glass morphism premium */
+        .glass-premium {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+        .card-white {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(2px);
+        }
+        /* modern input design */
+        .input-modern {
+            background: rgba(255,255,255,0.9);
+            border: 1px solid #e2e8f0;
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.4, 1);
+        }
+        .input-modern:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+            background: white;
+            transform: translateY(-1px);
+        }
+        .btn-gradient {
+            background: linear-gradient(105deg, #10b981 0%, #059669 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px -6px rgba(16, 185, 129, 0.4);
+        }
+        .btn-gradient:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 30px -12px rgba(16, 185, 129, 0.5);
+            filter: brightness(1.05);
+        }
+        /* floating animation for icons */
+        .hover-lift {
+            transition: transform 0.2s ease, box-shadow 0.2s;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+        }
+        /* custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 20px;
+        }
+        /* เอฟเฟกต์ shine บน card */
+        .shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .shine::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(25deg);
+            opacity: 0;
+            transition: opacity 0.6s;
+            pointer-events: none;
+        }
+        .shine:hover::after {
+            opacity: 0.6;
+        }
+        /* typing indicator ripple */
+        .ripple-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        .ripple-btn:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.4s, height 0.4s;
+        }
+        .ripple-btn:active:after {
+            width: 300px;
+            height: 300px;
+            opacity: 0;
         }
     </style>
 </head>
-<body class="font-sans antialiased">
+<body class="relative overflow-x-hidden">
 
-    <div class="min-h-screen flex items-center justify-center p-4 md:p-6">
-        <div class="w-full max-w-5xl grid lg:grid-cols-2 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-sm">
-            
-            <!-- ด้านซ้าย: ข้อมูลติดต่อ (พื้นขาว) -->
-            <div class="bg-white p-8 md:p-10 flex flex-col justify-between">
-                <div>
-                    <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center text-white text-4xl mb-6 shadow-lg">
-                        <i class="fa-brands fa-line"></i>
-                    </div>
-                    <h1 class="text-3xl md:text-4xl font-extrabold text-slate-800 mb-4 tracking-tight">
-                        ติดต่อผู้ดูแลระบบ
-                    </h1>
-                    <p class="text-slate-500 leading-relaxed mb-6 border-l-4 border-green-400 pl-4">
-                        หากพบปัญหาในการใช้งานระบบ สามารถติดต่อผ่าน LINE ได้ทันที<br>
-                        ทีมงานพร้อมให้ความช่วยเหลือ 24 ชม.
-                    </p>
-                    
-                    <div class="space-y-5 mt-8">
-                        <!-- รายการติดต่อแบบมีไอคอน -->
-                        <div class="flex items-center gap-5 group">
-                            <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-2xl group-hover:bg-blue-200 transition">
-                                📧
+    <!-- Floating Orbs Background -->
+    <div class="orb-1"></div>
+    <div class="orb-2"></div>
+    <div class="orb-3"></div>
+
+    <div class="relative z-10 min-h-screen flex items-center justify-center p-5 md:p-8">
+        <div class="w-full max-w-6xl mx-auto">
+            <!-- หัวข้อหลักแถวบนสุด (สำหรับดีไซน์สวย) -->
+            <div class="text-center mb-8 animate-fade-in-down">
+                <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-5 py-2 border border-white/20 shadow-lg">
+                    <i class="fa-regular fa-headset text-emerald-300"></i>
+                    <span class="text-white/90 text-sm font-medium">SUPPORT CENTER · พร้อมช่วยเหลือคุณ 24/7</span>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                
+                <!-- LEFT SIDE :: พร้อมเอฟเฟกต์การ์ดสวย -->
+                <div class="card-white rounded-3xl shadow-2xl overflow-hidden transition-all duration-500 hover:shadow-emerald-100/20 hover:shadow-xl shine">
+                    <div class="relative p-8 md:p-10">
+                        <!-- decoration line -->
+                        <div class="absolute top-0 left-8 w-24 h-1 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full"></div>
+                        
+                        <div class="flex items-center gap-4 mb-8">
+                            <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center text-white text-4xl shadow-xl rotate-3 hover:rotate-0 transition-transform duration-300">
+                                <i class="fa-brands fa-line"></i>
                             </div>
                             <div>
-                                <p class="font-bold text-slate-700">อีเมลแอดมิน</p>
-                                <p class="text-slate-500 text-sm md:text-base">admin@helpsupport.com</p>
+                                <span class="text-emerald-600 text-sm font-semibold tracking-wide">CHANNEL OFFICIAL</span>
+                                <h1 class="text-3xl md:text-4xl font-extrabold text-slate-800 leading-tight">ติดต่อผู้ดูแล<br>ระบบโดยตรง</h1>
                             </div>
                         </div>
-                        <div class="flex items-center gap-5 group">
-                            <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center text-2xl group-hover:bg-green-200 transition">
-                                📱
+                        
+                        <p class="text-slate-600 leading-relaxed mb-8 border-l-4 border-emerald-400 pl-5 text-base">
+                            ทีมงานมืออาชีพพร้อมรับฟังและแก้ไขปัญหาของคุณอย่างรวดเร็ว <br>
+                            กดปุ่มด้านล่าง หรือแอดไลน์ @helpsupport
+                        </p>
+                        
+                        <div class="space-y-6">
+                            <!-- Card รายละเอียด -->
+                            <div class="flex items-center gap-5 p-3 rounded-xl bg-slate-50/80 hover:bg-white transition shadow-sm">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white text-xl shadow-md">
+                                    <i class="fa-regular fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800">อีเมลฝ่ายสนับสนุน</p>
+                                    <p class="text-slate-500 text-sm">support@linemanager.com</p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="font-bold text-slate-700">LINE Official</p>
-                                <p class="text-slate-500 text-sm md:text-base">@helpsupport หรือคลิกปุ่มด้านล่าง</p>
+                            <div class="flex items-center gap-5 p-3 rounded-xl bg-slate-50/80 hover:bg-white transition shadow-sm">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white text-xl shadow-md">
+                                    <i class="fa-brands fa-line"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800">LINE ID ทางการ</p>
+                                    <p class="text-slate-500 text-sm">@helpsupport (คลิกปุ่มล่าง)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-5 p-3 rounded-xl bg-slate-50/80 hover:bg-white transition shadow-sm">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white text-xl shadow-md">
+                                    <i class="fa-regular fa-clock"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800">เวลาตอบกลับเฉลี่ย</p>
+                                    <p class="text-slate-500 text-sm">ภายใน 1-2 ชั่วโมง (จันทร์-ศุกร์)</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex items-center gap-5 group">
-                            <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center text-2xl group-hover:bg-amber-200 transition">
-                                🕒
-                            </div>
-                            <div>
-                                <p class="font-bold text-slate-700">เวลาทำการ</p>
-                                <p class="text-slate-500 text-sm md:text-base">จันทร์ - ศุกร์ 09:00 - 18:00 น.</p>
-                            </div>
+                        
+                        <!-- จำนวนผู้ช่วยเหลือ badge -->
+                        <div class="mt-10 flex items-center gap-3 text-sm text-slate-500 bg-slate-100 rounded-full w-fit px-4 py-2">
+                            <i class="fa-regular fa-face-smile-wink text-emerald-500"></i>
+                            <span>ทีมงานที่ปรึกษาพร้อมช่วยเหลือคุณแล้วกว่า 10,000+ เคส</span>
                         </div>
                     </div>
                 </div>
                 
-                <!-- เพิ่ม footer น่ารักๆ ซ้ายมือ -->
-                <div class="mt-10 pt-4 border-t border-gray-200 text-xs text-slate-400">
-                    <i class="fa-regular fa-message"></i> ทีมงานพร้อมตอบกลับภายใน 2-3 ชั่วโมง
+                <!-- RIGHT SIDE :: ฟอร์มสุดพรีเมียม GLASS เอฟเฟกต์ล้ำ -->
+                <div class="glass-premium rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/10 backdrop-blur-xl">
+                    <div class="p-8 md:p-10 text-white">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                                <i class="fa-regular fa-pen-to-square text-emerald-300"></i>
+                            </div>
+                            <h2 class="text-3xl md:text-4xl font-bold tracking-tight">ส่งข้อความ</h2>
+                        </div>
+                        <p class="text-white/70 mb-8 pl-1 border-l-2 border-emerald-400 pl-3">กรอกรายละเอียดให้ครบถ้วน เพื่อการช่วยเหลือที่รวดเร็ว</p>
+                        
+                        <div class="space-y-5">
+                            <!-- ชื่อ + ไอคอน -->
+                            <div class="relative group">
+                                <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-base z-10 group-focus-within:text-emerald-500 transition"></i>
+                                <input type="text" id="name" placeholder="ชื่อ-นามสกุล / ชื่อผู้ใช้" 
+                                       class="w-full h-14 pl-11 pr-5 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern font-medium">
+                            </div>
+                            
+                            <div class="relative group">
+                                <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-emerald-500 transition"></i>
+                                <input type="email" id="email" placeholder="อีเมลติดต่อกลับ (example@domain.com)" 
+                                       class="w-full h-14 pl-11 pr-5 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern">
+                            </div>
+                            
+                            <!-- เพิ่มหัวข้อเรื่องเพื่อความสวยงาม -->
+                            <div class="relative group">
+                                <i class="fa-regular fa-message absolute left-4 top-5 text-slate-500 group-focus-within:text-emerald-500"></i>
+                                <textarea id="message" rows="5" placeholder="รายละเอียดปัญหา ข้อเสนอแนะ หรือสิ่งที่ต้องการแจ้ง..." 
+                                       class="w-full p-5 pl-11 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern resize-none"></textarea>
+                            </div>
+                            
+                            <!-- ปุ่มส่งพร้อมอนิเมชัน ripple และไอคอน -->
+                            <button onclick="sendLine()" 
+                                    class="ripple-btn btn-gradient w-full h-14 rounded-2xl font-bold text-lg text-white flex items-center justify-center gap-3 shadow-xl transition-all duration-300 relative overflow-hidden">
+                                <i class="fa-brands fa-line text-xl"></i> 
+                                ส่งข้อความผ่าน LINE
+                                <i class="fa-regular fa-paper-plane text-sm opacity-80"></i>
+                            </button>
+                            
+                            <div class="flex items-center justify-between text-xs text-white/50 pt-2">
+                                <span><i class="fa-regular fa-shield-check"></i> ข้อมูลปลอดภัย 100%</span>
+                                <span><i class="fa-regular fa-clock"></i> ตอบกลับไวภายใน 1-2 ชม.</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <!-- ด้านขวา: ฟอร์มส่งข้อความแบบ GLASS -->
-            <div class="glass-card p-8 md:p-10 text-white flex flex-col">
-                <div class="mb-2">
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-wide flex items-center gap-2">
-                        <i class="fa-regular fa-paper-plane text-green-300"></i> ส่งข้อความ
-                    </h2>
-                    <p class="text-white/80 mt-2 text-base border-b border-white/20 pb-3 inline-block">
-                        กรอกข้อมูลเพื่อแจ้งปัญหาหรือสอบถาม
-                    </p>
+            <!-- ส่วนแสดงรีวิว หรือแถบสถิติเล็กๆ -->
+            <div class="flex flex-wrap justify-center gap-6 mt-12 text-white/80 text-sm">
+                <div class="flex items-center gap-2 bg-white/5 backdrop-blur-sm px-5 py-2 rounded-full border border-white/10">
+                    <i class="fa-solid fa-face-smile text-emerald-300"></i>
+                    <span>ความพึงพอใจ 98%</span>
                 </div>
-                
-                <div class="mt-6 space-y-5 flex-1">
-                    <!-- ช่องชื่อ -->
-                    <div class="relative">
-                        <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <input type="text" id="name" placeholder="ชื่อ-นามสกุล หรือชื่อเล่น" 
-                               class="input-white w-full h-14 pl-11 pr-5 rounded-xl text-slate-800 outline-none border border-transparent focus:border-green-400 transition-all">
-                    </div>
-                    
-                    <!-- อีเมล -->
-                    <div class="relative">
-                        <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <input type="email" id="email" placeholder="อีเมลของคุณ (สำหรับตอบกลับ)" 
-                               class="input-white w-full h-14 pl-11 pr-5 rounded-xl text-slate-800 outline-none focus:border-green-400">
-                    </div>
-                    
-                    <!-- หัวข้อ / สาระ (เพิ่มเติม) -->
-                    <div class="relative">
-                        <i class="fa-regular fa-pen-to-square absolute left-4 top-5 text-slate-400 text-sm"></i>
-                        <textarea id="message" rows="5" placeholder="รายละเอียดปัญหา / ข้อเสนอแนะ / สอบถาม ..." 
-                               class="input-white w-full p-5 pl-11 rounded-xl text-slate-800 outline-none resize-none focus:border-green-400"></textarea>
-                    </div>
-                    
-                    <!-- ปุ่มหลัก: ส่งผ่าน LINE -->
-                    <button onclick="sendLine()" 
-                            class="btn-line w-full h-14 rounded-xl font-bold text-lg text-white shadow-lg flex items-center justify-center gap-2 transition-all">
-                        <i class="fa-brands fa-line text-xl"></i> 
-                        ส่งข้อความผ่าน LINE
-                    </button>
-                    
-                    <p class="text-xs text-white/60 text-center mt-2">
-                        * ข้อมูลของคุณจะถูกส่งไปยังแชท LINE ของแอดมินโดยตรง
-                    </p>
+                <div class="flex items-center gap-2 bg-white/5 backdrop-blur-sm px-5 py-2 rounded-full border border-white/10">
+                    <i class="fa-regular fa-clock text-emerald-300"></i>
+                    <span>ตอบกลับเฉลี่ย 1.5 ชม.</span>
                 </div>
-                
-                <!-- ข้อความแจ้งเตือนสำเร็จแบบ popup แบบสั้นๆ (Toast) -->
-                <div id="toastMsg" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 hidden transition-all duration-300 pointer-events-none"></div>
+                <div class="flex items-center gap-2 bg-white/5 backdrop-blur-sm px-5 py-2 rounded-full border border-white/10">
+                    <i class="fa-regular fa-message text-emerald-300"></i>
+                    <span>แอดมินออนไลน์ 24 ชม.</span>
+                </div>
             </div>
         </div>
     </div>
     
-    <!-- ปุ่มลอย LINE ตรงมุมขวาล่าง -->
+    <!-- Floating Button LINE พร้อมเอฟเฟกต์ระเบิดแสง -->
     <a href="https://line.me/ti/p/ULdepZcKfF" target="_blank" rel="noopener noreferrer"
-       class="fixed bottom-6 right-6 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 w-16 h-16 rounded-full flex items-center justify-center text-white text-3xl shadow-2xl transition-all hover:scale-110 hover:rotate-3 z-40 border border-white/30">
-        <i class="fa-brands fa-line"></i>
+       class="fixed bottom-6 right-6 z-50 group">
+        <div class="relative">
+            <div class="absolute inset-0 bg-green-500 rounded-full blur-xl opacity-60 group-hover:opacity-100 transition duration-500 animate-pulse"></div>
+            <div class="relative w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center text-white text-3xl shadow-2xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 cursor-pointer border border-white/30">
+                <i class="fa-brands fa-line"></i>
+            </div>
+        </div>
+        <span class="absolute bottom-20 right-2 text-xs bg-slate-900/80 backdrop-blur px-3 py-1 rounded-full text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">แอด LINE @helpsupport</span>
     </a>
+    
+    <!-- Toast Notify แบบเท่ๆ -->
+    <div id="toastMsg" class="fixed bottom-28 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 pointer-events-none"></div>
 
     <script>
-        // ฟังก์ชันหลัก: ส่งข้อความไป LINE (เปิด custom message)
-        function sendLine(){
-            // ดึงค่าจากฟอร์ม
-            let name = document.getElementById("name").value.trim();
-            let email = document.getElementById("email").value.trim();
-            let message = document.getElementById("message").value.trim();
-            
-            // ตรวจสอบข้อมูลเบื้องต้น (ไม่บังคับชื่อ แต่ถ้าไม่มีให้เตือน)
-            if(name === ""){
-                showToast("⚠️ กรุณากรอกชื่อผู้ติดต่อ", "warning");
-                document.getElementById("name").focus();
-                return;
-            }
-            if(email === ""){
-                showToast("📧 กรุณากรอกอีเมลเพื่อให้ทีมงานติดต่อกลับ", "warning");
-                document.getElementById("email").focus();
-                return;
-            }
-            // ตรวจสอบรูปแบบอีเมลแบบง่าย
-            const emailPattern = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
-            if(!emailPattern.test(email)){
-                showToast("❌ รูปแบบอีเมลไม่ถูกต้อง (เช่น name@domain.com)", "error");
-                document.getElementById("email").focus();
-                return;
-            }
-            if(message === ""){
-                showToast("📝 กรุณาใส่รายละเอียดปัญหา หรือข้อความติดต่อ", "warning");
-                document.getElementById("message").focus();
-                return;
-            }
-            
-            // สร้างข้อความที่สวยงาม สำหรับส่งไป LINE (ขึ้นบรรทัดใหม่ให้อ่านง่าย)
-            let fullText = `📢 **แจ้งปัญหาจากระบบงาน**\n\n👤 ชื่อ: ${name}\n📧 อีเมล: ${email}\n📝 รายละเอียด:\n${message}\n\n⏱️ ส่งเมื่อ: ${new Date().toLocaleString('th-TH')}\n🙏 ขอบคุณที่ติดต่อทีมงาน - ผู้ดูแลระบบ`;
-            
-            // encodeURIComponent สำหรับ line.me/R/msg/text/
-            let lineUrl = "https://line.me/R/msg/text/?" + encodeURIComponent(fullText);
-            
-            // เปิดหน้าต่างใหม่หรือ redirect ไปยัง LINE (เปิดแอพ LINE ถ้ามี หรือหน้าเว็บ)
-            window.open(lineUrl, "_blank");
-            
-            // แจ้งเตือน success + เลือก้ข้อมูลฟอร์มหรือไม่ ? 
-            showToast("✅ กำลังเปิด LINE สนทนากับแอดมินแล้ว! กรุณาส่งข้อความ", "success");
-            
-            // เสริม: ตัวเลือก เคลียร์ฟอร์มหรือไม่ ? (แต่เพื่อ UX ไม่เคลียร์ทันที เผื่อต้องการคัดลอก)
-            // แต่ถ้าต้องการให้ผู้ใช้รู้สึกว่าส่งแล้ว เราสามารถเน้น clear ได้ หรือไม่ทำก็ได้
-            // โค้ดนี้เลือกที่จะไม่เคลียร์ แต่สามารถเพิ่มปุ่มล้างได้ แต่ความสะดวกคือให้ user ยืนยันอีกทีตอน LINE เอง
-        }
-        
-        // ฟังก์ชันแสดง Toast แจ้งเตือนแบบลอย (UI เก๋ๆ)
-        function showToast(message, type = "info"){
+        // แสดง Toast แจ้งเตือนสวยงาม
+        function showToast(message, type = "info") {
             let toastDiv = document.getElementById("toastMsg");
-            if(!toastDiv) return;
-            
-            // กำหนดสีพื้นหลังตาม type
-            let bgColor = "";
+            if (!toastDiv) return;
             let icon = "";
-            if(type === "success"){
-                bgColor = "bg-gradient-to-r from-green-600 to-emerald-600";
-                icon = "<i class='fa-regular fa-circle-check mr-2'></i>";
-            } else if(type === "warning"){
-                bgColor = "bg-gradient-to-r from-amber-500 to-orange-500";
-                icon = "<i class='fa-solid fa-triangle-exclamation mr-2'></i>";
-            } else if(type === "error"){
-                bgColor = "bg-gradient-to-r from-red-500 to-rose-600";
-                icon = "<i class='fa-regular fa-bell mr-2'></i>";
+            let bgStyle = "";
+            if (type === "success") {
+                icon = "<i class='fa-regular fa-circle-check mr-2 text-xl'></i>";
+                bgStyle = "bg-gradient-to-r from-emerald-600 to-teal-600 shadow-emerald-500/30";
+            } else if (type === "warning") {
+                icon = "<i class='fa-solid fa-triangle-exclamation mr-2 text-xl'></i>";
+                bgStyle = "bg-gradient-to-r from-amber-500 to-orange-500 shadow-orange-500/30";
+            } else if (type === "error") {
+                icon = "<i class='fa-regular fa-bell mr-2 text-xl'></i>";
+                bgStyle = "bg-gradient-to-r from-rose-500 to-red-600 shadow-red-500/30";
             } else {
-                bgColor = "bg-blue-600";
                 icon = "<i class='fa-regular fa-comment-dots mr-2'></i>";
+                bgStyle = "bg-slate-800";
             }
-            
-            // HTML สำหรับ toast
             toastDiv.innerHTML = `
-                <div class="toast-notify ${bgColor} text-white px-5 py-3 rounded-full shadow-2xl flex items-center gap-2 text-sm md:text-base font-medium backdrop-blur-sm border border-white/30">
+                <div class="transform transition-all duration-300 animate-bounce-slight ${bgStyle} backdrop-blur-md text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-2 text-sm md:text-base font-medium border border-white/20">
                     ${icon} ${message}
                 </div>
             `;
             toastDiv.classList.remove("hidden");
-            
-            // ซ่อนหลังจาก 3.5 วินาที
             setTimeout(() => {
-                toastDiv.classList.add("hidden");
                 toastDiv.innerHTML = "";
+                toastDiv.classList.add("hidden");
             }, 3500);
         }
+
+        // ฟังก์ชันหลักส่ง LINE
+        function sendLine() {
+            let name = document.getElementById("name").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let message = document.getElementById("message").value.trim();
+            
+            if (name === "") {
+                showToast("กรุณากรอกชื่อหรือชื่อเล่นของคุณ", "warning");
+                document.getElementById("name").focus();
+                return;
+            }
+            if (email === "") {
+                showToast("กรุณากรอกอีเมลเพื่อให้ทีมงานติดต่อกลับ", "warning");
+                document.getElementById("email").focus();
+                return;
+            }
+            const emailRegex = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
+            if (!emailRegex.test(email)) {
+                showToast("รูปแบบอีเมลไม่ถูกต้อง (example@domain.com)", "error");
+                document.getElementById("email").focus();
+                return;
+            }
+            if (message === "") {
+                showToast("กรุณาใส่รายละเอียดปัญหา หรือข้อความที่ต้องการแจ้ง", "warning");
+                document.getElementById("message").focus();
+                return;
+            }
+            
+            // ข้อความสวยงามแบบ Markdown friendly บน LINE
+            let currentDate = new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' });
+            let fullMsg = `📞 **แจ้งจากระบบสนับสนุน**\n\n👤 ชื่อ: ${name}\n📧 อีเมล: ${email}\n📝 รายละเอียด:\n${message}\n\n⏱️ เวลาที่ส่ง: ${currentDate}\n💡 ทีมงานจะติดต่อกลับโดยเร็วที่สุด ขอบคุณครับ`;
+            
+            let lineUrl = "https://line.me/R/msg/text/?" + encodeURIComponent(fullMsg);
+            window.open(lineUrl, "_blank");
+            showToast("เปิดไลน์เรียบร้อย! กดส่งข้อความถึงแอดมินได้เลย", "success");
+            
+            // เพิ่มเอฟเฟกต์ ripple เพิ่มเติม (ค่อยๆ เคลียร์ฟอร์มหรือไม่? ไม่เคลียร์เพื่อความยืดหยุ่น)
+            // optional: ถ้าต้องการให้ฟิลด์สวยๆ เล่น animation สั้นๆ
+            let btn = document.querySelector('.btn-gradient');
+            if(btn) {
+                btn.style.transform = "scale(0.98)";
+                setTimeout(() => { if(btn) btn.style.transform = ""; }, 150);
+            }
+        }
         
-        // ปรับปรุง UX: กด Enter ใน input name/email ไม่ส่งฟอร์มโดยตรง (แต่กดปุ่ม)
-        // สามารถเพิ่ม event จับ keypress ใน textarea? แต่ไม่จำเป็น
+        // เพิ่ม keypress effect เล็กๆ
+        document.querySelectorAll('.input-modern').forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if(e.key === 'Enter' && (e.target.id === 'email' || e.target.id === 'name')) {
+                    e.preventDefault();
+                    let nextInput = e.target.id === 'name' ? document.getElementById('email') : document.getElementById('message');
+                    if(nextInput) nextInput.focus();
+                }
+            });
+        });
         
-        // เพิ่มฟังก์ชันสำหรับการโฟกัส และแสดงตัวอย่างกรณี LINE ID พร้อมปุ่มลอยก็ดี
-        // และเพื่อความสมบูรณ์ optional: ปรับปรุงตรวจสอบในส่วน contact line id ตรงปุ่มล่าง
-        console.log("ระบบติดต่อพร้อมใช้งาน | Design by Modern HTML5");
+        // custom animation bounce for toast
+        const styleSheet = document.createElement("style");
+        styleSheet.textContent = `
+            @keyframes bounce-slight {
+                0%, 100% { transform: translateY(0); opacity: 0.9; }
+                50% { transform: translateY(-8px); opacity: 1; }
+            }
+            .animate-bounce-slight {
+                animation: bounce-slight 0.35s ease-out forwards;
+            }
+            @keyframes fade-in-down {
+                from { opacity: 0; transform: translateY(-20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in-down {
+                animation: fade-in-down 0.6s ease-out;
+            }
+        `;
+        document.head.appendChild(styleSheet);
     </script>
-    <!-- เพิ่ม meta description และความเข้ากันได้ดี -->
 </body>
 </html>
