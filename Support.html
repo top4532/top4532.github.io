@@ -1,1 +1,70 @@
 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ติดต่อเรา</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="bg-slate-100 flex items-center justify-center min-h-screen p-5">
+
+<div class="bg-white w-full max-w-lg rounded-3xl shadow-xl p-8">
+
+    <h1 class="text-3xl font-bold text-center mb-2">
+        ติดต่อผู้ดูแลระบบ
+    </h1>
+
+    <p class="text-center text-gray-500 mb-8">
+        ส่งข้อความหาเราได้ทันที
+    </p>
+
+    <input
+        type="text"
+        id="name"
+        placeholder="ชื่อ"
+        class="w-full border rounded-xl p-4 mb-4">
+
+    <textarea
+        id="message"
+        placeholder="พิมพ์ข้อความ..."
+        rows="5"
+        class="w-full border rounded-xl p-4 mb-6"></textarea>
+
+    <button
+        onclick="sendLine()"
+        class="w-full bg-green-500 hover:bg-green-600 text-white py-4 rounded-xl font-bold">
+
+        ส่งข้อความผ่าน LINE
+    </button>
+
+</div>
+
+<script>
+
+function sendLine(){
+
+    let name = document.getElementById('name').value;
+    let message = document.getElementById('message').value;
+
+    let text =
+`แจ้งปัญหาจากเว็บไซต์
+
+ชื่อ : ${name}
+
+ข้อความ :
+${message}`;
+
+    let url =
+    "https://line.me/R/msg/text/?" +
+    encodeURIComponent(text);
+
+    window.open(url,'_blank');
+}
+
+</script>
+
+</body>
+</html>
