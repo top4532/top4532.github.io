@@ -1,67 +1,163 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ติดต่อเรา</title>
+<title>ติดต่อผู้ดูแลระบบ</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+
+body{
+    background:
+    linear-gradient(135deg,#2563eb,#4f46e5);
+}
+
+.glass{
+    backdrop-filter:blur(20px);
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.2);
+}
+
+</style>
+
 </head>
-<body class="bg-slate-100 flex items-center justify-center min-h-screen p-5">
+<body>
 
-<div class="bg-white w-full max-w-lg rounded-3xl shadow-xl p-8">
+<div class="min-h-screen flex items-center justify-center p-5">
 
-    <h1 class="text-3xl font-bold text-center mb-2">
-        ติดต่อผู้ดูแลระบบ
-    </h1>
+    <div class="w-full max-w-5xl grid lg:grid-cols-2 overflow-hidden rounded-3xl shadow-2xl">
 
-    <p class="text-center text-gray-500 mb-8">
-        ส่งข้อความหาเราได้ทันที
-    </p>
+        <!-- LEFT -->
 
-    <input
-        type="text"
-        id="name"
-        placeholder="ชื่อ"
-        class="w-full border rounded-xl p-4 mb-4">
+        <div class="bg-white p-10">
 
-    <textarea
-        id="message"
-        placeholder="พิมพ์ข้อความ..."
-        rows="5"
-        class="w-full border rounded-xl p-4 mb-6"></textarea>
+            <div class="w-20 h-20 bg-green-500 rounded-3xl flex items-center justify-center text-white text-4xl mb-6">
+                <i class="fa-brands fa-line"></i>
+            </div>
 
-    <button
-        onclick="sendLine()"
-        class="w-full bg-green-500 hover:bg-green-600 text-white py-4 rounded-xl font-bold">
+            <h1 class="text-4xl font-bold text-slate-800 mb-4">
+                ติดต่อผู้ดูแลระบบ
+            </h1>
 
-        ส่งข้อความผ่าน LINE
-    </button>
+            <p class="text-slate-500 leading-relaxed mb-8">
+                หากพบปัญหาในการใช้งานระบบ สามารถติดต่อผ่าน LINE ได้ทันที
+                ทีมงานพร้อมให้ความช่วยเหลือ
+            </p>
+
+            <div class="space-y-4">
+
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                        📧
+                    </div>
+                    <div>
+                        <p class="font-semibold">Email</p>
+                        <p class="text-slate-500">support@company.com</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                        📱
+                    </div>
+                    <div>
+                        <p class="font-semibold">LINE Support</p>
+                        <p class="text-slate-500">คลิกปุ่มด้านล่าง</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+
+        <div class="glass p-10 text-white">
+
+            <h2 class="text-3xl font-bold mb-2">
+                ส่งข้อความ
+            </h2>
+
+            <p class="text-white/80 mb-8">
+                กรอกข้อมูลเพื่อแจ้งปัญหาหรือสอบถาม
+            </p>
+
+            <div class="space-y-5">
+
+                <input
+                type="text"
+                id="name"
+                placeholder="ชื่อของคุณ"
+                class="w-full h-14 px-5 rounded-xl text-slate-800 outline-none">
+
+                <input
+                type="email"
+                id="email"
+                placeholder="อีเมล"
+                class="w-full h-14 px-5 rounded-xl text-slate-800 outline-none">
+
+                <textarea
+                id="message"
+                rows="6"
+                placeholder="รายละเอียด..."
+                class="w-full p-5 rounded-xl text-slate-800 outline-none"></textarea>
+
+                <button
+                onclick="sendLine()"
+                class="w-full h-14 bg-green-500 hover:bg-green-600 rounded-xl font-bold text-lg transition">
+
+                    <i class="fa-brands fa-line mr-2"></i>
+                    ติดต่อผ่าน LINE
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
+
+<!-- ปุ่มลอย -->
+
+<a
+href="https://line.me/ti/p/ULdepZcKfF"
+target="_blank"
+class="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 w-16 h-16 rounded-full flex items-center justify-center text-white text-3xl shadow-2xl">
+
+<i class="fa-brands fa-line"></i>
+
+</a>
 
 <script>
 
 function sendLine(){
 
-    let name = document.getElementById('name').value;
-    let message = document.getElementById('message').value;
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let message = document.getElementById("message").value;
 
     let text =
-`แจ้งปัญหาจากเว็บไซต์
+`📢 แจ้งปัญหาจากเว็บไซต์
 
-ชื่อ : ${name}
+👤 ชื่อ : ${name}
 
-ข้อความ :
+📧 Email : ${email}
+
+📝 รายละเอียด :
 ${message}`;
 
-    let url =
-    "https://line.me/R/msg/text/?" +
-    encodeURIComponent(text);
-
-    window.open(url,'_blank');
+    window.open(
+        "https://line.me/R/msg/text/?" +
+        encodeURIComponent(text),
+        "_blank"
+    );
 }
 
 </script>
