@@ -138,7 +138,7 @@ tfoot tr td{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);font-weight:700;f
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.7);backdrop-filter:blur(6px);align-items:center;justify-content:center;z-index:1000}
 .modal-bg.show{display:flex;animation:fadeIn .2s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal{background:#fff;border-radius:28px;width:550px;max-width:95vw;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.35);transform:scale(0.95);transition:transform .2s ease}
+.modal{background:#fff;border-radius:28px;width:600px;max-width:95vw;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.35);transform:scale(0.95);transition:transform .2s ease}
 .modal-bg.show .modal{transform:scale(1)}
 .modal-header{padding:22px 26px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff}
 .modal-header h3{font-size:1.1rem;font-weight:700;display:flex;align-items:center;gap:10px}
@@ -198,9 +198,10 @@ tfoot tr td{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);font-weight:700;f
         <label><i class="fas fa-barcode"></i> รหัสสินค้า (Barcode)</label>
         <input type="text" id="editBarcode" placeholder="เช่น NUT-3R001">
       </div>
-      <div class="form-group">
-        <label><i class="fas fa-cubes"></i> Stock คงเหลือ (หน่วย)</label>
-        <input type="number" id="editStock" placeholder="0" value="0">
+      <div class="form-row-3">
+        <div class="form-group"><label><i class="fas fa-cubes"></i> Stock</label><input type="number" id="editStock" placeholder="0" value="0"></div>
+        <div class="form-group"><label><i class="fas fa-arrow-up"></i> Max Lot</label><input type="number" id="editMaxLot" placeholder="0" value="0"></div>
+        <div class="form-group"><label><i class="fas fa-arrow-down"></i> Min Lot</label><input type="number" id="editMinLot" placeholder="0" value="0"></div>
       </div>
       <div class="form-row-3">
         <div class="form-group"><label>📅 ม.ค.</label><input type="number" id="editJan" placeholder="0" value="0"></div>
@@ -210,7 +211,7 @@ tfoot tr td{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);font-weight:700;f
         <div class="form-group"><label>📅 พ.ค.</label><input type="number" id="editMay" placeholder="0" value="0"></div>
       </div>
       <div class="info-box">
-        <p><i class="fas fa-chart-line"></i> <strong>ข้อมูลอัตโนมัติ:</strong> Max Lot และ Min Lot จะถูกคำนวณจากค่าสูงสุด/ต่ำสุดของ Stock ที่เคยบันทึก</p>
+        <p><i class="fas fa-info-circle"></i> <strong>คำแนะนำ:</strong> Max Lot คือสต็อกสูงสุดที่เคยมี, Min Lot คือสต็อกต่ำสุดที่เคยมี สามารถแก้ไขได้เอง</p>
       </div>
     </div>
     <div class="modal-footer">
@@ -352,7 +353,7 @@ let pendingDeleteIndex = null;
 let editModeIndex = null;
 
 function loadData() {
-  const saved = localStorage.getItem('3rhb_lotstock');
+  const saved = localStorage.getItem('3rhb_lotstock_v2');
   if(saved) {
     try {
       rows = JSON.parse(saved);
@@ -371,19 +372,12 @@ function loadData() {
 }
 
 function saveData() {
-  localStorage.setItem('3rhb_lotstock', JSON.stringify(rows));
+  localStorage.setItem('3rhb_lotstock_v2', JSON.stringify(rows));
 }
 
 const fmtStat = n => (+n||0).toLocaleString();
 
 function calcTotal(r){ return months.reduce((s,m)=>s+(+r[m]||0), 0); }
-
-function updateMaxMin(row) {
-  if(!row.maxLot) row.maxLot = row.stock;
-  if(!row.minLot) row.minLot = row.stock;
-  if(row.stock > row.maxLot) row.maxLot = row.stock;
-  if(row.stock < row.minLot) row.minLot = row.stock;
-}
 
 function render(){
   const filtered = filterText
@@ -405,14 +399,15 @@ function render(){
     const total = calcTotal(r);
     const avg = total ? Math.round(total/5) : 0;
     const moqLots = r.stock ? Math.ceil(r.stock / MOQ) : 0;
-    updateMaxMin(r);
     return `<tr>
       <td>${i+1}</td>
       <td class="td-l">
-        <span class="chip chip-moq" style="background:#e0f2fe;cursor:pointer" onclick="openViewModal(${ri})">
-          <i class="fas fa-microchip"></i> ${escapeHtml(r.barcode)}
+        <span style="cursor:pointer;display:inline-block;" onclick="openEditModal(${ri})">
+          <span class="chip chip-moq" style="background:#e0f2fe;">
+            <i class="fas fa-microchip"></i> ${escapeHtml(r.barcode)}
+          </span>
         </span>
-        <td>
+        </td>
       <td class="td-l">
         <span class="chip chip-moq">
           <i class="fas fa-layer-group"></i> ${moqLots ? moqLots + ' Lot' : '—'}
@@ -422,8 +417,14 @@ function render(){
         <input class="cell-in" type="number" value="${r.stock||''}" placeholder="0" min="0"
           onchange="updateRow(${ri}, 'stock', +this.value||0)" style="min-width:80px;text-align:right">
         </td>
-      <td><span class="chip chip-minmax"><i class="fas fa-arrow-up"></i> ${fmtStat(r.maxLot||r.stock)}</span></td>
-      <td><span class="chip chip-minmax"><i class="fas fa-arrow-down"></i> ${fmtStat(r.minLot||r.stock)}</span></td>
+      <td class="td-l">
+        <input class="cell-in" type="number" value="${r.maxLot||r.stock||0}" placeholder="0" min="0"
+          onchange="updateRow(${ri}, 'maxLot', +this.value||0)" style="min-width:80px;text-align:right">
+        </td>
+      <td class="td-l">
+        <input class="cell-in" type="number" value="${r.minLot||r.stock||0}" placeholder="0" min="0"
+          onchange="updateRow(${ri}, 'minLot', +this.value||0)" style="min-width:80px;text-align:right">
+        </td>
       ${months.map(m=>`<td>
         <input class="cell-in" type="number" value="${r[m]||''}" placeholder="0" min="0"
           onchange="updateRow(${ri}, '${m}', +this.value||0)">
@@ -442,8 +443,8 @@ function render(){
   const grandAvg = grand ? Math.round(grand/5) : 0;
   const grandStock = filtered.reduce((s,r)=>s+(+r.stock||0),0);
   const grandMoq = grandStock ? Math.ceil(grandStock/MOQ) : 0;
-  const grandMax = filtered.reduce((s,r)=>s+(+r.maxLot||r.stock),0);
-  const grandMin = filtered.reduce((s,r)=>s+(+r.minLot||r.stock),0);
+  const grandMax = filtered.reduce((s,r)=>s+(+r.maxLot||r.stock||0),0);
+  const grandMin = filtered.reduce((s,r)=>s+(+r.minLot||r.stock||0),0);
   
   tfoot.innerHTML=`<tr>
     <td colspan="2" class="td-l" style="color:var(--muted)"><i class="fas fa-sigma"></i> รวมทั้งหมด</td>
@@ -463,13 +464,14 @@ function render(){
 function updateRow(index, field, value) {
   if(rows[index]) {
     rows[index][field] = value;
-    if(field === 'stock') {
-      updateMaxMin(rows[index]);
+    // ตรวจสอบว่า minLot ไม่มากกว่า maxLot และไม่น้อยกว่า 0
+    if(rows[index].minLot > rows[index].maxLot) {
+      rows[index].minLot = rows[index].maxLot;
     }
     saveData();
     render();
     toast('บันทึกข้อมูลสำเร็จ', 'ok');
-    if(field !== 'barcode' && rows[index].stock < MOQ) {
+    if(field === 'stock' && rows[index].stock < MOQ) {
       toast(`⚠️ ${rows[index].barcode} คงเหลือ (${rows[index].stock}) ต่ำกว่า MOQ (${MOQ})`, 'warning');
     }
   }
@@ -489,6 +491,8 @@ function openAddModal() {
   document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> เพิ่มข้อมูลน็อตล้อใหม่';
   document.getElementById('editBarcode').value = `NUT-3R${String(nextId).padStart(3,'0')}`;
   document.getElementById('editStock').value = 0;
+  document.getElementById('editMaxLot').value = 0;
+  document.getElementById('editMinLot').value = 0;
   document.getElementById('editJan').value = 0;
   document.getElementById('editFeb').value = 0;
   document.getElementById('editMar').value = 0;
@@ -503,6 +507,8 @@ function openEditModal(index) {
   document.getElementById('modalTitle').innerHTML = '<i class="fas fa-pen"></i> แก้ไขข้อมูลน็อตล้อ';
   document.getElementById('editBarcode').value = row.barcode;
   document.getElementById('editStock').value = row.stock;
+  document.getElementById('editMaxLot').value = row.maxLot || row.stock || 0;
+  document.getElementById('editMinLot').value = row.minLot || row.stock || 0;
   document.getElementById('editJan').value = row.jan || 0;
   document.getElementById('editFeb').value = row.feb || 0;
   document.getElementById('editMar').value = row.mar || 0;
@@ -523,13 +529,21 @@ function confirmEditRow() {
     return;
   }
   
+  const maxLotVal = +document.getElementById('editMaxLot').value || 0;
+  const minLotVal = +document.getElementById('editMinLot').value || 0;
+  
+  if(minLotVal > maxLotVal) {
+    toast('ค่า Min Lot ต้องไม่มากกว่า Max Lot', 'warning');
+    return;
+  }
+  
   if(editModeIndex === null) {
     const newRow = {
       id: nextId++,
       barcode: barcode,
       stock: +document.getElementById('editStock').value || 0,
-      maxLot: +document.getElementById('editStock').value || 0,
-      minLot: +document.getElementById('editStock').value || 0,
+      maxLot: maxLotVal,
+      minLot: minLotVal,
       jan: +document.getElementById('editJan').value || 0,
       feb: +document.getElementById('editFeb').value || 0,
       mar: +document.getElementById('editMar').value || 0,
@@ -542,12 +556,13 @@ function confirmEditRow() {
     const row = rows[editModeIndex];
     row.barcode = barcode;
     row.stock = +document.getElementById('editStock').value || 0;
+    row.maxLot = maxLotVal;
+    row.minLot = minLotVal;
     row.jan = +document.getElementById('editJan').value || 0;
     row.feb = +document.getElementById('editFeb').value || 0;
     row.mar = +document.getElementById('editMar').value || 0;
     row.apr = +document.getElementById('editApr').value || 0;
     row.may = +document.getElementById('editMay').value || 0;
-    updateMaxMin(row);
     toast('แก้ไขข้อมูลสำเร็จ', 'ok');
   }
   saveData();
@@ -584,7 +599,6 @@ function exportData() {
   rows.forEach(r => { 
     const total = calcTotal(r); 
     const avg = total ? Math.round(total/5) : 0; 
-    updateMaxMin(r);
     csv += `"${r.barcode}",${r.stock},${r.maxLot||r.stock},${r.minLot||r.stock},${r.jan||0},${r.feb||0},${r.mar||0},${r.apr||0},${r.may||0},${total},${avg}\n`; 
   });
   const blob = new Blob(["\uFEFF" + csv], {type: "text/csv;charset=utf-8;"});
