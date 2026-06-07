@@ -3,57 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WheelPro – ยอดขาย B/L</title>
+<title>WheelPro – Lot Stock</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root {
-  --sb-w: 280px; --sb-col: 72px; --hd-h: 64px;
-  --blue: #1d4ed8; --blue-dark: #1e3a8a; --blue-light: #eff6ff;
-  --border: #e2e8f0; --text: #0f172a; --muted: #64748b; --bg: #f1f5f9;
-}
+:root{--sb-w:280px;--sb-col:72px;--hd-h:64px;--blue:#1d4ed8;--blue-dark:#1e3a8a;--blue-light:#eff6ff;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--bg:#f1f5f9}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Kanit',sans-serif;background:var(--bg);min-height:100vh;overflow-x:hidden}
 
-/* OVERLAY */
-#overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(3px);z-index:45;opacity:0;pointer-events:none;transition:opacity .3s ease}
+#overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(3px);z-index:45;opacity:0;pointer-events:none;transition:opacity .3s}
 #overlay.show{opacity:1;pointer-events:auto}
 
-/* SIDEBAR */
 #sidebar{position:fixed;top:0;left:0;width:var(--sb-w);height:100vh;background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:50;overflow:hidden;transition:width .32s cubic-bezier(.4,0,.2,1),transform .32s cubic-bezier(.4,0,.2,1);box-shadow:2px 0 20px rgba(30,64,175,.07)}
 #sidebar.collapsed{width:var(--sb-col)}
 @media(max-width:1023px){#sidebar{transform:translateX(-100%);width:var(--sb-w)!important}#sidebar.open{transform:translateX(0)}}
-
 .sb-logo{height:var(--hd-h);display:flex;align-items:center;gap:12px;padding:0 18px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));flex-shrink:0;overflow:hidden}
 .sb-logo-icon{width:36px;height:36px;flex-shrink:0;background:rgba(255,255,255,.18);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#93c5fd;font-size:1rem}
 .sb-logo-text{color:#fff;font-size:1.15rem;font-weight:800;letter-spacing:-.4px;white-space:nowrap;transition:opacity .2s,width .3s}
 .sb-logo-text span{color:#93c5fd}
 #sidebar.collapsed .sb-logo-text{opacity:0;width:0;overflow:hidden}
-
 .sb-nav{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 10px}
 .sb-nav::-webkit-scrollbar{width:3px}
 .sb-nav::-webkit-scrollbar-thumb{background:#bfdbfe;border-radius:10px}
-
 .sb-label{font-size:9.5px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:1.4px;padding:0 10px;margin:18px 0 6px;white-space:nowrap;transition:opacity .2s}
 #sidebar.collapsed .sb-label{opacity:0}
-
 .sb-item{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:12px;text-decoration:none;color:#475569;font-size:.875rem;font-weight:500;white-space:nowrap;overflow:hidden;transition:background .18s,color .18s,box-shadow .18s;position:relative}
 .sb-item:hover{background:var(--blue-light);color:var(--blue)}
 .sb-item.active{background:linear-gradient(135deg,var(--blue),#3b82f6);color:#fff;box-shadow:0 4px 14px rgba(29,78,216,.28)}
 .sb-icon{width:20px;text-align:center;flex-shrink:0;font-size:.95rem}
 .sb-text{transition:opacity .18s}
 #sidebar.collapsed .sb-text{opacity:0;width:0}
-
 .sb-badge{margin-left:auto;font-size:9.5px;font-weight:800;padding:2px 8px;border-radius:20px;flex-shrink:0;transition:opacity .18s}
 #sidebar.collapsed .sb-badge{opacity:0;width:0;overflow:hidden}
-.sb-badge.red{background:#fee2e2;color:#dc2626}
-.sb-badge.green{background:#dcfce7;color:#15803d}
-.sb-badge.gray{background:#f1f5f9;color:#64748b}
-.sb-badge.blue{background:#dbeafe;color:#1d4ed8}
-
+.sb-badge.red{background:#fee2e2;color:#dc2626}.sb-badge.green{background:#dcfce7;color:#15803d}.sb-badge.gray{background:#f1f5f9;color:#64748b}.sb-badge.blue{background:#dbeafe;color:#1d4ed8}
 #sidebar.collapsed .sb-item::after{content:attr(data-tip);position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%);background:#0f172a;color:#fff;font-size:.75rem;font-weight:600;padding:5px 10px;border-radius:8px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:99}
 #sidebar.collapsed .sb-item:hover::after{opacity:1}
-
 .sb-profile{border-top:1px solid #f1f5f9;padding:10px;flex-shrink:0}
 .sb-profile-inner{display:flex;align-items:center;gap:10px;padding:8px;border-radius:12px;background:#f8fafc}
 .sb-avatar{width:34px;height:34px;flex-shrink:0;background:linear-gradient(135deg,var(--blue-dark),var(--blue));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem}
@@ -65,12 +49,10 @@ body{font-family:'Kanit',sans-serif;background:var(--bg);min-height:100vh;overfl
 .sb-logout:hover{color:#dc2626;background:#fef2f2}
 #sidebar.collapsed .sb-logout{display:none}
 
-/* MAIN */
 #main{margin-left:var(--sb-w);min-height:100vh;display:flex;flex-direction:column;transition:margin-left .32s cubic-bezier(.4,0,.2,1)}
 #main.sb-col{margin-left:var(--sb-col)}
 @media(max-width:1023px){#main{margin-left:0!important}}
 
-/* HEADER */
 #header{height:var(--hd-h);background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:40;display:flex;align-items:center;padding:0 20px;gap:12px;box-shadow:0 1px 10px rgba(15,23,42,.05)}
 .hd-burger{width:38px;height:38px;flex-shrink:0;border-radius:10px;border:1.5px solid var(--border);background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#475569;font-size:.95rem;transition:all .2s}
 .hd-burger:hover{background:var(--blue-light);color:var(--blue);border-color:#bfdbfe}
@@ -103,54 +85,59 @@ body{font-family:'Kanit',sans-serif;background:var(--bg);min-height:100vh;overfl
 @media(max-width:640px){.hd-phone{display:none}.hd-breadcrumb{display:none}.hd-search{max-width:none}}
 @media(max-width:480px){.hd-user-name,.hd-user-role,.hd-user i{display:none}.hd-user{padding:4px}}
 
-/* CONTENT */
 .content{flex:1;padding:28px 24px;display:flex;flex-direction:column;gap:20px}
 
-/* STAT CARDS */
 .stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
 .stat-card{background:#fff;border-radius:16px;border:1px solid var(--border);padding:18px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(15,23,42,.04);transition:box-shadow .2s,transform .2s}
 .stat-card:hover{box-shadow:0 6px 20px rgba(15,23,42,.09);transform:translateY(-2px)}
 .stat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
-.stat-info{flex:1;min-width:0}
 .stat-label{font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
 .stat-val{font-size:1.25rem;font-weight:800;color:var(--text)}
 .stat-sub{font-size:.68rem;color:#22c55e;font-weight:600;margin-top:2px}
 
-/* TABLE SECTION */
 .section-card{background:#fff;border-radius:16px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(15,23,42,.04);overflow:hidden}
 .section-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border);gap:12px;flex-wrap:wrap}
 .section-title{font-size:.95rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
 .section-title i{color:var(--blue);font-size:1rem}
-
-.btn-add{display:flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;border:1.5px solid var(--blue);background:var(--blue);color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Kanit',sans-serif;letter-spacing:.2px}
+.btn-add{display:flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;border:1.5px solid var(--blue);background:var(--blue);color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Kanit',sans-serif}
 .btn-add:hover{background:var(--blue-dark);border-color:var(--blue-dark);box-shadow:0 4px 14px rgba(29,78,216,.3)}
 
 .tbl-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.82rem}
 thead tr{background:#f8fafc}
-th{padding:11px 14px;text-align:right;font-weight:700;font-size:.72rem;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;letter-spacing:.3px}
-th:first-child,th:nth-child(2){text-align:left}
-th:first-child{width:48px}
-th:nth-child(2){width:160px}
+th{padding:11px 12px;text-align:right;font-weight:700;font-size:.72rem;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;letter-spacing:.3px}
+th:first-child{text-align:left;width:44px}
+th.th-barcode{text-align:left;width:140px}
+th.th-lot{text-align:left;width:130px}
+th.th-stock{text-align:left;width:120px}
 .th-total{color:#1d4ed8}
 .th-avg{color:#15803d}
-td{padding:11px 14px;text-align:right;border-bottom:1px solid #f1f5f9;color:var(--text);vertical-align:middle}
-td:first-child,td:nth-child(2){text-align:left}
-td:first-child{color:var(--muted);font-size:.75rem}
+
+td{padding:11px 12px;text-align:right;border-bottom:1px solid #f1f5f9;color:var(--text);vertical-align:middle}
+td:first-child{text-align:left;color:var(--muted);font-size:.75rem}
+td.td-left{text-align:left}
 tbody tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:#f8fafc}
 .td-total{font-weight:700;color:#1d4ed8}
 .td-avg{font-weight:700;color:#15803d}
-.td-bl{font-family:monospace;font-size:.78rem;font-weight:600;background:#f1f5f9;color:#334155;padding:3px 9px;border-radius:6px;display:inline-block;letter-spacing:.6px;border:1px solid #e2e8f0}
+
+.chip{display:inline-block;font-size:.75rem;font-weight:600;padding:3px 9px;border-radius:6px;letter-spacing:.4px;white-space:nowrap}
+.chip-barcode{font-family:monospace;background:#f1f5f9;color:#334155;border:1px solid #e2e8f0}
+.chip-lot{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+.chip-stock{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+
 .td-num input{width:100%;text-align:right;background:transparent;border:none;outline:none;font-size:.82rem;font-family:'Kanit',sans-serif;color:var(--text);padding:0}
 .td-num input:focus{background:#eff6ff;border-radius:6px;padding:2px 6px;color:var(--blue)}
+.td-edit{background:transparent;border:1px solid transparent;border-radius:6px;font-family:'Kanit',sans-serif;font-size:.82rem;color:var(--text);padding:2px 6px;width:100%;outline:none;cursor:text}
+.td-edit:focus{border-color:#93c5fd;background:#fff;box-shadow:0 0 0 2px rgba(147,197,253,.2)}
+
 .actions{display:flex;gap:4px;justify-content:flex-end}
 .btn-del{background:none;border:none;cursor:pointer;color:#cbd5e1;padding:4px 6px;border-radius:6px;font-size:.85rem;transition:all .15s}
 .btn-del:hover{color:#dc2626;background:#fef2f2}
-tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:700;font-size:.82rem;border-top:2px solid var(--border)}
-tfoot td:first-child,tfoot td:nth-child(2){color:var(--muted)}
 
-/* EMPTY */
+tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:700;font-size:.82rem;border-top:2px solid var(--border)}
+tfoot td.td-left{color:var(--muted)}
+
 .empty-state{padding:48px 24px;text-align:center;color:#cbd5e1}
 .empty-state i{font-size:2.5rem;margin-bottom:12px;display:block;color:#e2e8f0}
 .empty-state p{font-size:.85rem;font-weight:500}
@@ -158,13 +145,17 @@ tfoot td:first-child,tfoot td:nth-child(2){color:var(--muted)}
 /* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;z-index:999}
 .modal-bg.show{display:flex}
-.modal{background:#fff;border-radius:20px;border:1px solid var(--border);padding:0;width:500px;max-width:95vw;box-shadow:0 20px 60px rgba(15,23,42,.2);overflow:hidden}
+.modal{background:#fff;border-radius:20px;border:1px solid var(--border);width:520px;max-width:95vw;box-shadow:0 20px 60px rgba(15,23,42,.2);overflow:hidden}
 .modal-header{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:20px 24px;display:flex;align-items:center;gap:10px}
 .modal-header i{color:#93c5fd;font-size:1.1rem}
 .modal-header h3{font-size:.95rem;font-weight:700;color:#fff;margin:0}
 .modal-body{padding:22px 24px}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
 .form-grid .full{grid-column:1/-1}
+.form-grid .third{grid-column:span 1}
+.form-sep{grid-column:1/-1;border:none;border-top:1px dashed var(--border);margin:4px 0}
+.form-section-label{grid-column:1/-1;font-size:.7rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:6px}
+.form-section-label i{font-size:.8rem}
 label{display:block;font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
 input[type=text],input[type=number]{width:100%;padding:9px 12px;border-radius:10px;border:1.5px solid var(--border);background:#f8fafc;color:var(--text);font-size:.85rem;font-family:'Kanit',sans-serif;outline:none;transition:all .2s}
 input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:#fff;box-shadow:0 0 0 3px rgba(147,197,253,.2)}
@@ -174,7 +165,6 @@ input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:
 .btn-save{padding:9px 22px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Kanit',sans-serif;box-shadow:0 4px 14px rgba(29,78,216,.3);transition:all .2s}
 .btn-save:hover{box-shadow:0 6px 20px rgba(29,78,216,.4);transform:translateY(-1px)}
 
-/* TOAST */
 #toasts{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px}
 .toast{background:#0f172a;color:#fff;padding:11px 16px;border-radius:12px;font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 6px 24px rgba(15,23,42,.25);transform:translateX(110%);transition:transform .35s cubic-bezier(.34,1.56,.64,1);border-left:3px solid #3b82f6;min-width:200px}
 .toast.show{transform:translateX(0)}
@@ -186,7 +176,6 @@ input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:
 <div id="toasts"></div>
 <div id="overlay" onclick="closeSidebar()"></div>
 
-<!-- SIDEBAR -->
 <aside id="sidebar">
   <div class="sb-logo">
     <div class="sb-logo-icon"><i class="fas fa-truck-monster"></i></div>
@@ -199,7 +188,7 @@ input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:
     <a class="sb-item" href="#" data-tip="โปรโมชั่น"><i class="fas fa-tags sb-icon"></i><span class="sb-text">โปรโมชั่น</span><span class="sb-badge green">ลด 30%</span></a>
     <a class="sb-item" href="#" data-tip="สินค้าแนะนำ"><i class="fas fa-star sb-icon"></i><span class="sb-text">สินค้าแนะนำ</span></a>
     <a class="sb-item" href="#" data-tip="สินค้าพรีเมียม"><i class="fas fa-crown sb-icon"></i><span class="sb-text">สินค้าพรีเมียม</span></a>
-    <a class="sb-item active" href="#" data-tip="รายการสั่งซื้อ"><i class="fas fa-box-open sb-icon"></i><span class="sb-text">รายการสั่งซื้อ</span><span class="sb-badge blue">5</span></a>
+    <a class="sb-item active" href="#" data-tip="Lot Stock"><i class="fas fa-boxes-stacked sb-icon"></i><span class="sb-text">Lot Stock</span><span class="sb-badge blue">New</span></a>
     <div class="sb-label">ประเภทล้อ</div>
     <a class="sb-item" href="#" data-tip="ล้อทั้งหมด"><i class="fas fa-circle-dot sb-icon"></i><span class="sb-text">ล้อทั้งหมด</span><span class="sb-badge gray">456</span></a>
     <a class="sb-item" href="#" data-tip="ล้อบรรทุก 10 ล้อ"><i class="fas fa-truck sb-icon"></i><span class="sb-text">ล้อบรรทุก 10 ล้อ</span></a>
@@ -215,48 +204,31 @@ input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:
   <div class="sb-profile">
     <div class="sb-profile-inner">
       <div class="sb-avatar"><i class="fas fa-user-tie"></i></div>
-      <div class="sb-pinfo">
-        <div class="sb-pname">คุณสมศักดิ์ รักล้อ</div>
-        <div class="sb-prole">ผู้จัดการฝ่ายขาย</div>
-      </div>
+      <div class="sb-pinfo"><div class="sb-pname">คุณสมศักดิ์ รักล้อ</div><div class="sb-prole">ผู้จัดการฝ่ายขาย</div></div>
       <button class="sb-logout" onclick="toast('ออกจากระบบแล้ว')" title="ออกจากระบบ"><i class="fas fa-sign-out-alt"></i></button>
     </div>
   </div>
 </aside>
 
-<!-- MAIN -->
 <div id="main">
-
-  <!-- HEADER -->
   <header id="header">
-    <button class="hd-burger" onclick="toggleSidebar()" title="เปิด/ปิด Sidebar"><i class="fas fa-bars"></i></button>
+    <button class="hd-burger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
     <nav class="hd-breadcrumb">
       <i class="fas fa-house" style="color:#94a3b8;font-size:.75rem"></i>
-      <span class="sep">/</span><span>ยอดขาย</span>
-      <span class="sep">/</span><span class="current">รายงาน B/L</span>
+      <span class="sep">/</span><span>คลังสินค้า</span>
+      <span class="sep">/</span><span class="current">Lot Stock</span>
     </nav>
     <div class="hd-search">
       <i class="fas fa-search si"></i>
-      <input id="searchInput" type="text" placeholder="ค้นหา B/L..." oninput="filterTable(this.value)">
+      <input id="searchInput" type="text" placeholder="ค้นหา Barcode / Lot / Stock..." oninput="filterTable(this.value)">
       <button class="sc" onclick="clearSearch()"><i class="fas fa-xmark"></i></button>
     </div>
     <div class="hd-actions">
-      <div class="hd-btn" onclick="toast('ไม่มีการแจ้งเตือนใหม่')" title="การแจ้งเตือน">
-        <i class="fas fa-bell"></i>
-        <span class="hd-dot" style="background:#f97316"></span>
-      </div>
-      <div class="hd-btn" onclick="toast('รายการโปรด: 3 รายการ')" title="รายการโปรด">
-        <i class="fas fa-heart" style="color:#dc2626"></i>
-        <span class="hd-badge" style="background:#dc2626;color:#fff">3</span>
-      </div>
-      <div class="hd-btn" onclick="toast('ตะกร้าสินค้า: 5 รายการ')" title="ตะกร้าสินค้า" style="color:var(--blue)">
-        <i class="fas fa-shopping-cart"></i>
-        <span class="hd-badge" style="background:#dc2626;color:#fff">5</span>
-      </div>
+      <div class="hd-btn" onclick="toast('ไม่มีการแจ้งเตือนใหม่')"><i class="fas fa-bell"></i><span class="hd-dot" style="background:#f97316"></span></div>
+      <div class="hd-btn" onclick="toast('รายการโปรด: 3 รายการ')"><i class="fas fa-heart" style="color:#dc2626"></i><span class="hd-badge" style="background:#dc2626;color:#fff">3</span></div>
+      <div class="hd-btn" onclick="toast('ตะกร้าสินค้า: 5 รายการ')" style="color:var(--blue)"><i class="fas fa-shopping-cart"></i><span class="hd-badge" style="background:#dc2626;color:#fff">5</span></div>
       <div class="hd-div"></div>
-      <div class="hd-phone" onclick="toast('กำลังโทร 02-123-4567...')">
-        <i class="fas fa-phone"></i><span>02-123-4567</span>
-      </div>
+      <div class="hd-phone" onclick="toast('กำลังโทร 02-123-4567...')"><i class="fas fa-phone"></i><span>02-123-4567</span></div>
       <div class="hd-user" onclick="toast('เปิดโปรไฟล์')">
         <div class="hd-user-av"><i class="fas fa-user-tie"></i></div>
         <div><div class="hd-user-name">สมศักดิ์ ร.</div><div class="hd-user-role">Admin</div></div>
@@ -265,62 +237,42 @@ input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:
     </div>
   </header>
 
-  <!-- CONTENT -->
   <div class="content">
 
     <!-- STAT CARDS -->
-    <div class="stat-row" id="statRow">
+    <div class="stat-row">
       <div class="stat-card">
         <div class="stat-icon" style="background:#eff6ff"><i class="fas fa-barcode" style="color:#1d4ed8"></i></div>
-        <div class="stat-info">
-          <div class="stat-label">จำนวน B/L</div>
-          <div class="stat-val" id="stat-count">0</div>
-          <div class="stat-sub">รายการ</div>
-        </div>
+        <div><div class="stat-label">จำนวน Lot</div><div class="stat-val" id="stat-count">0</div><div class="stat-sub">รายการ</div></div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="background:#f0fdf4"><i class="fas fa-chart-bar" style="color:#15803d"></i></div>
-        <div class="stat-info">
-          <div class="stat-label">ยอดรวมทั้งหมด</div>
-          <div class="stat-val" id="stat-total">0</div>
-          <div class="stat-sub">หน่วย</div>
-        </div>
+        <div class="stat-icon" style="background:#f0fdf4"><i class="fas fa-cubes" style="color:#15803d"></i></div>
+        <div><div class="stat-label">Stock รวม</div><div class="stat-val" id="stat-stock">0</div><div class="stat-sub">หน่วย</div></div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="background:#fff7ed"><i class="fas fa-calculator" style="color:#c2410c"></i></div>
-        <div class="stat-info">
-          <div class="stat-label">เฉลี่ยต่อ B/L</div>
-          <div class="stat-val" id="stat-avg-bl">0</div>
-          <div class="stat-sub">หน่วย / B/L</div>
-        </div>
+        <div class="stat-icon" style="background:#fff7ed"><i class="fas fa-chart-bar" style="color:#c2410c"></i></div>
+        <div><div class="stat-label">ยอดขายรวม</div><div class="stat-val" id="stat-total">0</div><div class="stat-sub">5 เดือน</div></div>
       </div>
       <div class="stat-card">
         <div class="stat-icon" style="background:#fdf4ff"><i class="fas fa-calendar-check" style="color:#7e22ce"></i></div>
-        <div class="stat-info">
-          <div class="stat-label">เฉลี่ยต่อเดือน</div>
-          <div class="stat-val" id="stat-avg-mo">0</div>
-          <div class="stat-sub">หน่วย / เดือน</div>
-        </div>
+        <div><div class="stat-label">เฉลี่ย/เดือน</div><div class="stat-val" id="stat-avg">0</div><div class="stat-sub">หน่วย</div></div>
       </div>
     </div>
 
-    <!-- TABLE SECTION -->
+    <!-- TABLE -->
     <div class="section-card">
       <div class="section-head">
-        <div class="section-title">
-          <i class="fas fa-table-list"></i>
-          ยอดขายตาม B/L รายเดือน
-        </div>
-        <button class="btn-add" onclick="openModal()">
-          <i class="fas fa-plus"></i> เพิ่มข้อมูล
-        </button>
+        <div class="section-title"><i class="fas fa-boxes-stacked"></i>ข้อมูล Lot Stock</div>
+        <button class="btn-add" onclick="openModal()"><i class="fas fa-plus"></i> เพิ่มข้อมูล</button>
       </div>
       <div class="tbl-wrap">
         <table>
           <thead>
             <tr>
               <th>#</th>
-              <th>บาร์โค้ด B/L</th>
+              <th class="th-barcode">Barcode</th>
+              <th class="th-lot">Lot</th>
+              <th class="th-stock">Stock</th>
               <th>ม.ค.</th>
               <th>ก.พ.</th>
               <th>มี.ค.</th>
@@ -345,14 +297,25 @@ input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:
   <div class="modal">
     <div class="modal-header">
       <i class="fas fa-plus-circle"></i>
-      <h3>เพิ่มข้อมูลยอดขาย</h3>
+      <h3>เพิ่มข้อมูล Lot Stock</h3>
     </div>
     <div class="modal-body">
       <div class="form-grid">
+        <div class="form-section-label"><i class="fas fa-tag"></i> ข้อมูลสินค้า</div>
         <div class="full">
-          <label>บาร์โค้ด B/L</label>
-          <input type="text" id="f-bl" placeholder="เช่น BL-2024-001">
+          <label>Barcode</label>
+          <input type="text" id="f-barcode" placeholder="เช่น 8850999001234">
         </div>
+        <div>
+          <label>Lot</label>
+          <input type="text" id="f-lot" placeholder="เช่น LOT-2024-A1">
+        </div>
+        <div>
+          <label>Stock (จำนวนคงเหลือ)</label>
+          <input type="number" id="f-stock" placeholder="0" min="0">
+        </div>
+        <hr class="form-sep">
+        <div class="form-section-label"><i class="fas fa-chart-line"></i> ยอดขายรายเดือน</div>
         <div><label>ม.ค. (มกราคม)</label><input type="number" id="f-jan" placeholder="0" min="0"></div>
         <div><label>ก.พ. (กุมภาพันธ์)</label><input type="number" id="f-feb" placeholder="0" min="0"></div>
         <div><label>มี.ค. (มีนาคม)</label><input type="number" id="f-mar" placeholder="0" min="0"></div>
@@ -368,47 +331,53 @@ input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:
 </div>
 
 <script>
-/* ---- DATA ---- */
 let rows = [
-  {bl:'BL-2024-001',jan:120,feb:98,mar:145,apr:132,may:160},
-  {bl:'BL-2024-002',jan:85,feb:110,mar:92,apr:78,may:105},
-  {bl:'BL-2024-003',jan:200,feb:185,mar:220,apr:195,may:210},
+  {barcode:'8850999001001', lot:'LOT-2024-A1', stock:320, jan:120, feb:98,  mar:145, apr:132, may:160},
+  {barcode:'8850999001002', lot:'LOT-2024-A2', stock:180, jan:85,  feb:110, mar:92,  apr:78,  may:105},
+  {barcode:'8850999001003', lot:'LOT-2024-B1', stock:540, jan:200, feb:185, mar:220, apr:195, may:210},
 ];
-let filterText = '';
 const months = ['jan','feb','mar','apr','may'];
-const fmt = n => (+n).toLocaleString();
+let filterText = '';
+const fmt = n => (+n||0).toLocaleString();
 
-/* ---- RENDER ---- */
 function render(){
-  const filtered = rows.filter(r => r.bl.toLowerCase().includes(filterText.toLowerCase()));
+  const filtered = rows.filter(r =>
+    r.barcode.toLowerCase().includes(filterText) ||
+    r.lot.toLowerCase().includes(filterText) ||
+    r.stock.toString().includes(filterText)
+  );
   const tbody = document.getElementById('tbody');
   const tfoot = document.getElementById('tfoot');
 
-  if(filtered.length === 0){
-    tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><i class="fas fa-inbox"></i><p>ไม่พบข้อมูล</p></div></td></tr>`;
-    tfoot.innerHTML = ''; updateStats(); return;
+  if(!filtered.length){
+    tbody.innerHTML=`<tr><td colspan="12"><div class="empty-state"><i class="fas fa-inbox"></i><p>ไม่พบข้อมูล</p></div></td></tr>`;
+    tfoot.innerHTML=''; updateStats(); return;
   }
 
-  tbody.innerHTML = filtered.map((r, i) => {
-    const total = months.reduce((s,m) => s + (+r[m]||0), 0);
-    const avg = Math.round(total / 5);
+  tbody.innerHTML = filtered.map((r,i)=>{
     const ri = rows.indexOf(r);
+    const total = months.reduce((s,m)=>s+(+r[m]||0),0);
+    const avg = Math.round(total/5);
     return `<tr>
       <td>${i+1}</td>
-      <td><span class="td-bl">${r.bl}</span></td>
-      ${months.map(m => `<td class="td-num"><input type="number" value="${r[m]}" min="0" onchange="updateCell(${ri},'${m}',this.value)"></td>`).join('')}
+      <td class="td-left"><span class="chip chip-barcode">${r.barcode}</span></td>
+      <td class="td-left"><span class="chip chip-lot">${r.lot}</span></td>
+      <td class="td-left"><span class="chip chip-stock"><i class="fas fa-cube" style="margin-right:4px;font-size:.7rem"></i>${fmt(r.stock)}</span></td>
+      ${months.map(m=>`<td class="td-num"><input type="number" value="${r[m]}" min="0" onchange="updateCell(${ri},'${m}',this.value)"></td>`).join('')}
       <td class="td-total">${fmt(total)}</td>
       <td class="td-avg">${fmt(avg)}</td>
       <td><div class="actions"><button class="btn-del" onclick="delRow(${ri})" title="ลบ"><i class="fas fa-trash-alt"></i></button></div></td>
     </tr>`;
   }).join('');
 
-  const totals = months.map(m => filtered.reduce((s,r) => s + (+r[m]||0), 0));
-  const grand = totals.reduce((a,b) => a+b, 0);
-  const grandAvg = Math.round(grand / 5);
-  tfoot.innerHTML = `<tr>
-    <td colspan="2"><i class="fas fa-sigma" style="margin-right:6px;color:var(--muted)"></i>รวมทั้งหมด</td>
-    ${totals.map(t => `<td>${fmt(t)}</td>`).join('')}
+  const totals = months.map(m=>filtered.reduce((s,r)=>s+(+r[m]||0),0));
+  const grand = totals.reduce((a,b)=>a+b,0);
+  const grandAvg = Math.round(grand/5);
+  const grandStock = filtered.reduce((s,r)=>s+(+r.stock||0),0);
+  tfoot.innerHTML=`<tr>
+    <td colspan="3" class="td-left" style="color:var(--muted);font-weight:700"><i class="fas fa-sigma" style="margin-right:6px"></i>รวมทั้งหมด</td>
+    <td class="td-left"><span class="chip chip-stock"><i class="fas fa-cube" style="margin-right:4px;font-size:.7rem"></i>${fmt(grandStock)}</span></td>
+    ${totals.map(t=>`<td>${fmt(t)}</td>`).join('')}
     <td class="td-total">${fmt(grand)}</td>
     <td class="td-avg">${fmt(grandAvg)}</td>
     <td></td>
@@ -418,71 +387,69 @@ function render(){
 }
 
 function updateStats(){
-  const grand = rows.reduce((s,r) => s + months.reduce((ss,m) => ss + (+r[m]||0), 0), 0);
+  const grand = rows.reduce((s,r)=>s+months.reduce((ss,m)=>ss+(+r[m]||0),0),0);
+  const totalStock = rows.reduce((s,r)=>s+(+r.stock||0),0);
   document.getElementById('stat-count').textContent = rows.length;
+  document.getElementById('stat-stock').textContent = fmt(totalStock);
   document.getElementById('stat-total').textContent = fmt(grand);
-  document.getElementById('stat-avg-bl').textContent = rows.length ? fmt(Math.round(grand / rows.length)) : 0;
-  document.getElementById('stat-avg-mo').textContent = rows.length ? fmt(Math.round(grand / 5)) : 0;
+  document.getElementById('stat-avg').textContent = rows.length ? fmt(Math.round(grand/5)) : 0;
 }
 
-function updateCell(i, m, v){ rows[i][m] = +v||0; render(); }
+function updateCell(i,m,v){rows[i][m]=+v||0;render()}
 function delRow(i){
-  if(!confirm(`ลบ ${rows[i].bl} ?`)) return;
-  rows.splice(i, 1); render();
-  toast('ลบข้อมูลแล้ว', 'ok');
+  if(!confirm(`ลบ ${rows[i].barcode} (${rows[i].lot}) ?`))return;
+  rows.splice(i,1);render();
+  toast('ลบข้อมูลแล้ว','ok');
 }
 
-/* ---- SEARCH ---- */
-function filterTable(v){ filterText = v; render(); }
-function clearSearch(){ document.getElementById('searchInput').value=''; filterText=''; render(); }
+function filterTable(v){filterText=v.toLowerCase();render()}
+function clearSearch(){document.getElementById('searchInput').value='';filterText='';render()}
 
-/* ---- MODAL ---- */
 function openModal(){
-  ['bl','jan','feb','mar','apr','may'].forEach(f => document.getElementById('f-'+f).value='');
+  ['barcode','lot','stock','jan','feb','mar','apr','may'].forEach(f=>document.getElementById('f-'+f).value='');
   document.getElementById('modal').classList.add('show');
-  setTimeout(() => document.getElementById('f-bl').focus(), 100);
+  setTimeout(()=>document.getElementById('f-barcode').focus(),100);
 }
-function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+function closeModal(){document.getElementById('modal').classList.remove('show')}
 function saveRow(){
-  const bl = document.getElementById('f-bl').value.trim();
-  if(!bl){ document.getElementById('f-bl').focus(); return; }
-  rows.push({ bl, jan:+document.getElementById('f-jan').value||0, feb:+document.getElementById('f-feb').value||0, mar:+document.getElementById('f-mar').value||0, apr:+document.getElementById('f-apr').value||0, may:+document.getElementById('f-may').value||0 });
-  closeModal(); render();
-  toast('เพิ่มข้อมูลแล้ว', 'ok');
-}
-document.getElementById('modal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
-document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
-
-/* ---- SIDEBAR ---- */
-let sbOpen = window.innerWidth >= 1024, sbCollapsed = false;
-function toggleSidebar(){
-  const sb=document.getElementById('sidebar'), main=document.getElementById('main'), ov=document.getElementById('overlay');
-  if(window.innerWidth < 1024){ sbOpen=!sbOpen; sb.classList.toggle('open',sbOpen); ov.classList.toggle('show',sbOpen); }
-  else { sbCollapsed=!sbCollapsed; sb.classList.toggle('collapsed',sbCollapsed); main.classList.toggle('sb-col',sbCollapsed); }
-}
-function closeSidebar(){
-  if(window.innerWidth < 1024){ sbOpen=false; document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
-}
-window.addEventListener('resize', () => {
-  if(window.innerWidth >= 1024){ document.getElementById('overlay').classList.remove('show'); document.getElementById('sidebar').classList.remove('open'); }
-});
-document.querySelectorAll('.sb-item').forEach(item => {
-  item.addEventListener('click', function(e){
-    e.preventDefault();
-    document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
-    this.classList.add('active');
-    if(window.innerWidth < 1024) closeSidebar();
+  const barcode=document.getElementById('f-barcode').value.trim();
+  const lot=document.getElementById('f-lot').value.trim();
+  if(!barcode){document.getElementById('f-barcode').focus();return}
+  if(!lot){document.getElementById('f-lot').focus();return}
+  rows.push({
+    barcode, lot,
+    stock:+document.getElementById('f-stock').value||0,
+    jan:+document.getElementById('f-jan').value||0,
+    feb:+document.getElementById('f-feb').value||0,
+    mar:+document.getElementById('f-mar').value||0,
+    apr:+document.getElementById('f-apr').value||0,
+    may:+document.getElementById('f-may').value||0,
   });
-});
+  closeModal();render();
+  toast('เพิ่มข้อมูลแล้ว','ok');
+}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 
-/* ---- TOAST ---- */
-function toast(msg, type=''){
-  const c=document.getElementById('toasts'), t=document.createElement('div');
+/* SIDEBAR */
+let sbOpen=window.innerWidth>=1024,sbCollapsed=false;
+function toggleSidebar(){
+  const sb=document.getElementById('sidebar'),main=document.getElementById('main'),ov=document.getElementById('overlay');
+  if(window.innerWidth<1024){sbOpen=!sbOpen;sb.classList.toggle('open',sbOpen);ov.classList.toggle('show',sbOpen)}
+  else{sbCollapsed=!sbCollapsed;sb.classList.toggle('collapsed',sbCollapsed);main.classList.toggle('sb-col',sbCollapsed)}
+}
+function closeSidebar(){if(window.innerWidth<1024){sbOpen=false;document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show')}}
+window.addEventListener('resize',()=>{if(window.innerWidth>=1024){document.getElementById('overlay').classList.remove('show');document.getElementById('sidebar').classList.remove('open')}});
+document.querySelectorAll('.sb-item').forEach(item=>item.addEventListener('click',function(e){e.preventDefault();document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));this.classList.add('active');if(window.innerWidth<1024)closeSidebar()}));
+
+/* TOAST */
+function toast(msg,type=''){
+  const c=document.getElementById('toasts'),t=document.createElement('div');
   t.className='toast '+type;
   t.innerHTML=`<i class="fas fa-circle-check" style="color:#22c55e"></i> ${msg}`;
   c.appendChild(t);
-  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
-  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 2800);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),400)},2800);
 }
 
 render();
