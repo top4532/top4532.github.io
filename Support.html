@@ -434,5 +434,45 @@
         `;
         document.head.appendChild(styleSheet);
     </script>
+    <script>
+
+// =======================
+// LINE TOKEN (ใส่เองทีหลัง)
+// =======================
+const LINE_TOKEN = "agqvqN4HDyuFHDAfbnqTHpiUmHNZIgVl+Xiv5vuGrpg0uo9ZVJRZxiOtrhFr8+t1u8KZ+ag3vwTbvUDICdszCh63TLsYqFiAXnnLjIaUBVPuWLhQAZtYC31xSXv3OAVRe+OD3lfnno+TgEPVdI/SuwdB04t89/1O/w1cDnyilFU=";
+
+// =======================
+// ส่งข้อความเข้า LINE API
+// =======================
+async function sendToLine(message) {
+
+    if (LINE_TOKEN === "agqvqN4HDyuFHDAfbnqTHpiUmHNZIgVl+Xiv5vuGrpg0uo9ZVJRZxiOtrhFr8+t1u8KZ+ag3vwTbvUDICdszCh63TLsYqFiAXnnLjIaUBVPuWLhQAZtYC31xSXv3OAVRe+OD3lfnno+TgEPVdI/SuwdB04t89/1O/w1cDnyilFU=") {
+        showToast("กรุณาใส่ LINE TOKEN ก่อนใช้งาน", "warning");
+        return;
+    }
+
+    try {
+        const response = await fetch("https://notify-api.line.me/api/notify", {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + LINE_TOKEN,
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "message=" + encodeURIComponent(message)
+        });
+
+        if (response.ok) {
+            showToast("ส่งข้อความสำเร็จ", "success");
+        } else {
+            showToast("ส่งข้อความไม่สำเร็จ", "error");
+        }
+
+    } catch (error) {
+        console.error(error);
+        showToast("เกิดข้อผิดพลาด", "error");
+    }
+}
+
+</script>
 </body>
 </html>
