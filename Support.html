@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>ติดต่อผู้ดูแลระบบ | Support Center</title>
+    <title>ติดต่อผู้ดูแลระบบ | RMUTSB Support Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -101,6 +101,18 @@
             pointer-events: none;
         }
         .shine:hover::after { opacity: 0.6; }
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="relative overflow-x-hidden">
@@ -177,7 +189,7 @@
                     </div>
                 </div>
                 
-                <!-- RIGHT SIDE :: ฟอร์มส่งอีเมล -->
+                <!-- RIGHT SIDE :: ฟอร์มส่งอีเมล (ใช้ Formspree) -->
                 <div class="glass-premium rounded-3xl overflow-hidden">
                     <div class="p-8 md:p-10 text-white">
                         <div class="flex items-center gap-3 mb-2">
@@ -186,39 +198,44 @@
                             </div>
                             <h2 class="text-3xl md:text-4xl font-bold tracking-tight">ส่งข้อความ</h2>
                         </div>
-                        <p class="text-white/70 mb-8 pl-1 border-l-2 border-emerald-400 pl-3">กรอกรายละเอียดให้ครบถ้วน เพื่อการช่วยเหลือที่รวดเร็ว</p>
+                        <p class="text-white/70 mb-8 pl-1 border-l-2 border-emerald-400 pl-3">กรอกรายละเอียดให้ครบถ้วน กดส่งได้เลย!</p>
                         
-                        <div class="space-y-5">
-                            <div class="relative group">
-                                <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-base z-10 group-focus-within:text-emerald-500 transition"></i>
-                                <input type="text" id="name" placeholder="ชื่อ-นามสกุล / รหัสนักศึกษา" 
-                                       class="w-full h-14 pl-11 pr-5 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern font-medium">
+                        <!-- ✅ ฟอร์ม Formspree - ใส่ endpoint เรียบร้อยแล้ว -->
+                        <form id="supportForm" action="https://formspree.io/f/mlgkjoqy" method="POST">
+                            <div class="space-y-5">
+                                <div class="relative group">
+                                    <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-base z-10 group-focus-within:text-emerald-500 transition"></i>
+                                    <input type="text" name="name" id="name" placeholder="ชื่อ-นามสกุล / รหัสนักศึกษา" 
+                                           class="w-full h-14 pl-11 pr-5 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern font-medium" required>
+                                </div>
+                                
+                                <div class="relative group">
+                                    <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-emerald-500 transition"></i>
+                                    <input type="email" name="email" id="email" placeholder="อีเมลติดต่อกลับ (example@rmutsb.ac.th)" 
+                                           class="w-full h-14 pl-11 pr-5 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern" required>
+                                </div>
+                                
+                                <div class="relative group">
+                                    <i class="fa-regular fa-message absolute left-4 top-5 text-slate-500 group-focus-within:text-emerald-500"></i>
+                                    <textarea name="message" id="message" rows="5" placeholder="รายละเอียดปัญหา ข้อเสนอแนะ หรือสิ่งที่ต้องการแจ้ง..." 
+                                           class="w-full p-5 pl-11 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern resize-none" required></textarea>
+                                </div>
+                                
+                                <button type="submit" id="sendBtn"
+                                        class="ripple-btn btn-gradient w-full h-14 rounded-2xl font-bold text-lg text-white flex items-center justify-center gap-3 shadow-xl transition-all duration-300">
+                                    <i class="fa-regular fa-paper-plane text-xl"></i> 
+                                    <span>ส่งข้อความ</span>
+                                    <i class="fa-regular fa-envelope text-sm opacity-80"></i>
+                                </button>
+                                
+                                <div id="formStatus" class="text-center text-sm hidden"></div>
+                                
+                                <div class="flex items-center justify-between text-xs text-white/50 pt-2">
+                                    <span><i class="fa-regular fa-shield-check"></i> ข้อมูลปลอดภัย 100%</span>
+                                    <span><i class="fa-regular fa-clock"></i> ส่งถึงอีเมลทันที</span>
+                                </div>
                             </div>
-                            
-                            <div class="relative group">
-                                <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-emerald-500 transition"></i>
-                                <input type="email" id="email" placeholder="อีเมลติดต่อกลับ (example@rmutsb.ac.th)" 
-                                       class="w-full h-14 pl-11 pr-5 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern">
-                            </div>
-                            
-                            <div class="relative group">
-                                <i class="fa-regular fa-message absolute left-4 top-5 text-slate-500 group-focus-within:text-emerald-500"></i>
-                                <textarea id="message" rows="5" placeholder="รายละเอียดปัญหา ข้อเสนอแนะ หรือสิ่งที่ต้องการแจ้ง..." 
-                                       class="w-full p-5 pl-11 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern resize-none"></textarea>
-                            </div>
-                            
-                            <button onclick="sendEmail()" id="sendBtn"
-                                    class="ripple-btn btn-gradient w-full h-14 rounded-2xl font-bold text-lg text-white flex items-center justify-center gap-3 shadow-xl transition-all duration-300">
-                                <i class="fa-regular fa-paper-plane text-xl"></i> 
-                                <span>ส่งข้อความ</span>
-                                <i class="fa-regular fa-envelope text-sm opacity-80"></i>
-                            </button>
-                            
-                            <div class="flex items-center justify-between text-xs text-white/50 pt-2">
-                                <span><i class="fa-regular fa-shield-check"></i> ข้อมูลปลอดภัย 100%</span>
-                                <span><i class="fa-regular fa-clock"></i> ตอบกลับไวภายใน 1-2 ชม.</span>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -239,114 +256,56 @@
             </div>
         </div>
     </div>
-    
-    <!-- Toast Notify -->
-    <div id="toastMsg" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 pointer-events-none"></div>
 
     <script>
-        // 🔴 อีเมลปลายทาง (ของคุณ)
-        const SUPPORT_EMAIL = "366409221006-st@rmutsb.ac.th";
-        const SUBJECT_PREFIX = "[RMUTSB ติดต่อผ่านเว็บไซต์]";
+        const form = document.getElementById('supportForm');
+        const submitBtn = document.getElementById('sendBtn');
+        const formStatus = document.getElementById('formStatus');
         
-        function showToast(message, type = "info") {
-            let toastDiv = document.getElementById("toastMsg");
-            if (!toastDiv) return;
-            let icon = "";
-            let bgStyle = "";
-            if (type === "success") {
-                icon = "<i class='fa-regular fa-circle-check mr-2 text-xl'></i>";
-                bgStyle = "bg-gradient-to-r from-emerald-600 to-teal-600";
-            } else if (type === "warning") {
-                icon = "<i class='fa-solid fa-triangle-exclamation mr-2 text-xl'></i>";
-                bgStyle = "bg-gradient-to-r from-amber-500 to-orange-500";
-            } else if (type === "error") {
-                icon = "<i class='fa-regular fa-circle-xmark mr-2 text-xl'></i>";
-                bgStyle = "bg-gradient-to-r from-rose-500 to-red-600";
-            } else {
-                icon = "<i class='fa-regular fa-comment-dots mr-2'></i>";
-                bgStyle = "bg-slate-800";
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // แสดง loading
+            const originalHTML = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="loading-spinner"></span><span class="ml-2">กำลังส่ง...</span>';
+            submitBtn.disabled = true;
+            formStatus.classList.add('hidden');
+            
+            const formData = new FormData(form);
+            
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    formStatus.innerHTML = '✅ ส่งข้อความเรียบร้อย! ทีมงานจะติดต่อกลับโดยเร็วที่สุด';
+                    formStatus.className = 'text-center text-sm mt-3 text-emerald-300 bg-emerald-900/30 py-2 rounded-lg';
+                    formStatus.classList.remove('hidden');
+                    form.reset();
+                } else {
+                    const data = await response.json();
+                    if (data.errors) {
+                        formStatus.innerHTML = '❌ ' + data.errors.map(error => error.message).join(', ');
+                    } else {
+                        formStatus.innerHTML = '❌ ส่งไม่สำเร็จ กรุณาลองใหม่อีกครั้ง';
+                    }
+                    formStatus.className = 'text-center text-sm mt-3 text-red-300 bg-red-900/30 py-2 rounded-lg';
+                    formStatus.classList.remove('hidden');
+                }
+            } catch (error) {
+                formStatus.innerHTML = '❌ เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาตรวจสอบอินเทอร์เน็ต';
+                formStatus.className = 'text-center text-sm mt-3 text-red-300 bg-red-900/30 py-2 rounded-lg';
+                formStatus.classList.remove('hidden');
+            } finally {
+                submitBtn.innerHTML = originalHTML;
+                submitBtn.disabled = false;
             }
-            toastDiv.innerHTML = `
-                <div class="transform transition-all duration-300 ${bgStyle} backdrop-blur-md text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-2 text-sm md:text-base font-medium border border-white/20" style="animation: bounce-slight 0.35s ease-out forwards;">
-                    ${icon} ${message}
-                </div>
-            `;
-            setTimeout(() => {
-                toastDiv.innerHTML = "";
-            }, 3500);
-        }
-        
-        function validateForm() {
-            let name = document.getElementById("name").value.trim();
-            let email = document.getElementById("email").value.trim();
-            let message = document.getElementById("message").value.trim();
-            
-            if (name === "") {
-                showToast("กรุณากรอกชื่อหรือรหัสนักศึกษา", "warning");
-                document.getElementById("name").focus();
-                return false;
-            }
-            if (email === "") {
-                showToast("กรุณากรอกอีเมลเพื่อให้ทีมงานติดต่อกลับ", "warning");
-                document.getElementById("email").focus();
-                return false;
-            }
-            const emailRegex = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
-            if (!emailRegex.test(email)) {
-                showToast("รูปแบบอีเมลไม่ถูกต้อง (example@rmutsb.ac.th)", "error");
-                document.getElementById("email").focus();
-                return false;
-            }
-            if (message === "") {
-                showToast("กรุณาใส่รายละเอียดปัญหา หรือข้อความที่ต้องการแจ้ง", "warning");
-                document.getElementById("message").focus();
-                return false;
-            }
-            return { name, email, message };
-        }
-        
-        function sendEmail() {
-            const validation = validateForm();
-            if (!validation) return;
-            
-            const { name, email, message } = validation;
-            const currentDate = new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' });
-            
-            // สร้างเนื้อหาอีเมลสวยงาม
-            const body = `
-═══════════════════════════════════════
-📞 ข้อความจากระบบสนับสนุน RMUTSB
-═══════════════════════════════════════
-
-👤 ชื่อผู้ติดต่อ: ${name}
-📧 อีเมลติดต่อกลับ: ${email}
-⏱️ เวลาที่ส่ง: ${currentDate}
-
-📝 รายละเอียด:
-${message}
-
-═══════════════════════════════════════
-💡 กรุณาติดต่อกลับยังอีเมล: ${email}
-═══════════════════════════════════════
-
--- 
-ส่งจากระบบสนับสนุน มหาวิทยาลัยเทคโนโลยีราชมงคลศรีวิชัย
-            `.trim();
-            
-            // หัวข้ออีเมล
-            const subject = `${SUBJECT_PREFIX} จาก ${name}`;
-            
-            // เปิดโปรแกรมส่งอีเมล
-            const mailtoLink = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailtoLink;
-            
-            showToast("✅ เปิดหน้าต่างส่งอีเมลเรียบร้อย! กรุณากดส่ง", "success");
-            
-            // Animation ปุ่ม
-            const btn = document.getElementById("sendBtn");
-            btn.style.transform = "scale(0.98)";
-            setTimeout(() => { btn.style.transform = ""; }, 150);
-        }
+        });
         
         // กด Enter แล้วไปช่องถัดไป
         document.querySelectorAll('.input-modern').forEach(input => {
