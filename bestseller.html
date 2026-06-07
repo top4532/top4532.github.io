@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--sb-w:280px;--sb-col:72px;--hd-h:64px;--primary:#0284c7;--primary-dark:#0369a1;--primary-light:#e0f2fe;--secondary:#0ea5e9;--accent:#38bdf8;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--bg:#f0f9ff;--white:#ffffff;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--danger-dark:#dc2626}
+:root{--sb-w:280px;--sb-col:72px;--hd-h:64px;--primary:#0284c7;--primary-dark:#0369a1;--primary-light:#e0f2fe;--secondary:#0ea5e9;--accent:#38bdf8;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--bg:#f0f9ff;--white:#ffffff;--success:#10b981;--warning:#f59e0b;--danger:#ef4444}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Kanit',sans-serif;background:linear-gradient(135deg,#f0f9ff 0%,#f8fafc 100%);min-height:100vh;overflow-x:hidden}
 #overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(3px);z-index:45;opacity:0;pointer-events:none;transition:opacity .15s}
@@ -109,7 +109,6 @@ body{font-family:'Kanit',sans-serif;background:linear-gradient(135deg,#f0f9ff 0%
 .btn-delete-selected:hover{box-shadow:0 8px 20px rgba(249,115,22,.3)}
 .btn-delete-selected:disabled{opacity:0.5;cursor:not-allowed;transform:none}
 
-/* ตาราง */
 .tbl-wrap{overflow-x:auto;padding:0}
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:.82rem}
 thead tr{background:linear-gradient(135deg,#0284c7,#0ea5e9)}
@@ -129,14 +128,12 @@ tbody tr:hover td:first-child{background:#e0f2fe}
 .cell-in:focus{background:#e0f2fe;box-shadow:0 0 0 2px rgba(2,132,199,.3)}
 td .cell-in[type=number]{text-align:right}
 
-/* Badge */
 .badge{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;padding:5px 12px;border-radius:30px;white-space:nowrap}
 .badge-moq{background:linear-gradient(135deg,#e0f2fe,#bae6fd);color:#0284c7;border:1px solid #7dd3fc}
 .badge-max{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#d97706;border:1px solid #fcd34d}
 .badge-min{background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#15803d;border:1px solid #86efac}
 .badge-selected{background:#0284c7;color:#fff;padding:6px 12px;border-radius:20px;font-size:.7rem}
 
-/* ปุ่ม action */
 .action-buttons{display:flex;gap:8px;justify-content:flex-end}
 .btn-action{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:6px 14px;border-radius:10px;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s ease;border:none;font-family:'Kanit',sans-serif}
 .btn-action i{font-size:.8rem}
@@ -146,7 +143,6 @@ td .cell-in[type=number]{text-align:right}
 .btn-delete{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
 .btn-delete:hover{background:linear-gradient(135deg,#dc2626,#b91c1c);box-shadow:0 4px 10px rgba(220,38,38,.4)}
 
-/* Progress bar */
 .progress-wrapper{display:flex;align-items:center;gap:8px;min-width:120px}
 .progress-bar-bg{flex:1;height:6px;background:#e2e8f0;border-radius:10px;overflow:hidden}
 .progress-bar-fill{height:100%;border-radius:10px;transition:width .3s}
@@ -160,13 +156,11 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:800;f
 .empty-state i{font-size:3rem;margin-bottom:16px;display:block;color:#cbd5e1}
 .empty-state p{font-size:.9rem;font-weight:500}
 
-/* Selection bar */
 .selection-bar{background:linear-gradient(135deg,#e0f2fe,#bae6fd);border-radius:16px;padding:12px 20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .selection-info{display:flex;align-items:center;gap:12px}
 .selection-info span{font-size:.85rem;font-weight:600;color:#0369a1}
 .selection-actions{display:flex;gap:10px}
 
-/* Modal */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);align-items:center;justify-content:center;z-index:1000}
 .modal-bg.show{display:flex;animation:fadeIn .2s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -195,15 +189,92 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:800;f
 .toast.warning{border-left-color:#f59e0b}
 .toast i{font-size:1.1rem}
 
+/* พิมพ์เฉพาะข้อมูลในตาราง - ส่งผู้บริหาร */
 @media print {
-  #sidebar, #header, .stat-row, .section-head .btn-group, .action-buttons, .selection-bar, .btn-action, .hd-actions, .hd-search, .hd-burger, .sb-profile, .modal-bg, #toasts, .checkbox, .select-all-checkbox {
+  @page {
+    size: A4 landscape;
+    margin: 1.5cm;
+  }
+  body {
+    background: white;
+    padding: 0;
+    margin: 0;
+  }
+  #sidebar, #header, .stat-row, .section-head .btn-group, 
+  .action-buttons, .btn-action, .hd-actions, .hd-search, 
+  .hd-burger, .sb-profile, .modal-bg, #toasts, .selection-bar,
+  .btn-add, .btn-pdf, .btn-export, .btn-delete-all, .btn-delete-selected,
+  .checkbox, .select-all-checkbox, .progress-wrapper .cell-in,
+  .progress-bar-bg, .progress-percent, .progress-wrapper input,
+  .badge-max input, .badge-min input {
     display: none !important;
   }
-  #main { margin-left: 0 !important; padding: 0 !important; }
-  .content { padding: 0 !important; }
-  .section-card { border: none !important; box-shadow: none !important; }
-  table { width: 100%; border-collapse: collapse; }
-  th, td { border: 1px solid #ccc; padding: 6px; }
+  #main {
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+  .content {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .section-card {
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .section-head {
+    background: none !important;
+    border-bottom: 2px solid #000 !important;
+    margin-bottom: 10px !important;
+    padding: 0 0 10px 0 !important;
+  }
+  .section-title {
+    color: #000 !important;
+    font-size: 16pt !important;
+  }
+  .tbl-wrap {
+    overflow: visible !important;
+  }
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 10pt !important;
+  }
+  th, td {
+    border: 1px solid #000 !important;
+    padding: 8px 6px !important;
+  }
+  th {
+    background: #f0f0f0 !important;
+    color: #000 !important;
+    font-weight: 800 !important;
+  }
+  .badge {
+    border: 1px solid #000 !important;
+    background: none !important;
+    padding: 2px 8px !important;
+  }
+  .badge-moq, .badge-max, .badge-min {
+    background: none !important;
+    color: #000 !important;
+  }
+  .td-total, .td-avg {
+    background: none !important;
+  }
+  tfoot tr td {
+    background: none !important;
+    border-top: 2px solid #000 !important;
+  }
+  .progress-wrapper {
+    display: inline !important;
+  }
+  .progress-wrapper strong {
+    display: inline !important;
+  }
+  .badge-max, .badge-min {
+    display: inline-block !important;
+  }
 }
 </style>
 </head>
@@ -212,7 +283,6 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:800;f
 <div id="toasts"></div>
 <div id="overlay" onclick="closeSidebar()"></div>
 
-<!-- Modal เพิ่ม/แก้ไข -->
 <div id="editModal" class="modal-bg">
   <div class="modal">
     <div class="modal-header">
@@ -225,8 +295,8 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:800;f
       </div>
       <div class="form-row-3">
         <div class="form-group"><label>Stock</label><input type="number" id="editStock" placeholder="0" value="0"></div>
-        <div class="form-group"><label>Max Lot</label><input type="number" id="editMaxLot" placeholder="0" value="0"></div>
-        <div class="form-group"><label>Min Lot</label><input type="number" id="editMinLot" placeholder="0" value="0"></div>
+        <div class="form-group"><label>Max</label><input type="number" id="editMaxLot" placeholder="0" value="0"></div>
+        <div class="form-group"><label>Min</label><input type="number" id="editMinLot" placeholder="0" value="0"></div>
       </div>
       <div class="form-row-3">
         <div class="form-group"><label>ม.ค.</label><input type="number" id="editJan" value="0"></div>
@@ -243,7 +313,6 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:800;f
   </div>
 </div>
 
-<!-- Modal ยืนยันการลบ -->
 <div id="deleteModal" class="modal-bg">
   <div class="modal">
     <div class="modal-header">
@@ -320,7 +389,7 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:800;f
       <div class="section-head">
         <div class="section-title"><i class="fas fa-crown"></i> ข้อมูล Lot Stock</div>
         <div class="btn-group">
-          <button class="btn-add btn-pdf" onclick="printPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+          <button class="btn-add btn-pdf" onclick="printPDF()"><i class="fas fa-file-pdf"></i> พิมพ์</button>
           <button class="btn-add btn-export" onclick="exportData()"><i class="fas fa-download"></i> Export</button>
           <button class="btn-add btn-delete-selected" id="deleteSelectedBtn" onclick="deleteSelected()" disabled><i class="fas fa-trash-alt"></i> ลบที่เลือก</button>
           <button class="btn-add btn-delete-all" onclick="deleteAll()"><i class="fas fa-trash-alt"></i> ลบทั้งหมด</button>
@@ -328,7 +397,6 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:800;f
         </div>
       </div>
       
-      <!-- Selection Bar -->
       <div id="selectionBar" class="selection-bar" style="display:none;">
         <div class="selection-info">
           <i class="fas fa-check-circle" style="color:#0284c7"></i>
@@ -348,14 +416,14 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:800;f
               <th class="th-l">รหัสสินค้า</th>
               <th class="th-l">MOQ</th>
               <th class="th-l">Stock</th>
-              <th class="th-l">Max Lot</th>
-              <th class="th-l">Min Lot</th>
+              <th class="th-l">Max</th>
+              <th class="th-l">Min</th>
               <th>ม.ค.</th>
               <th>ก.พ.</th>
               <th>มี.ค.</th>
               <th>เม.ย.</th>
               <th>พ.ค.</th>
-              <th>รวม 5D</th>
+              <th>รวม</th>
               <th>เฉลี่ย</th>
               <th></th>
             </tr>
@@ -376,11 +444,10 @@ let filterText = '';
 let nextId = 1;
 let pendingDeleteIndex = null;
 let editModeIndex = null;
-let isDeleteAllMode = false;
 let selectedRows = new Set();
 
 function loadData() {
-  const saved = localStorage.getItem('3rhb_lotstock_final_v2');
+  const saved = localStorage.getItem('3rhb_lotstock_final_v3');
   if(saved) {
     try {
       rows = JSON.parse(saved);
@@ -398,31 +465,20 @@ function loadData() {
   render();
 }
 
-function saveData() {
-  localStorage.setItem('3rhb_lotstock_final_v2', JSON.stringify(rows));
-}
-
+function saveData() { localStorage.setItem('3rhb_lotstock_final_v3', JSON.stringify(rows)); }
 const fmtStat = n => (+n||0).toLocaleString();
-
 function calcTotal(r){ return months.reduce((s,m)=>s+(+r[m]||0), 0); }
-
 function getStockPercent(stock) { return Math.min(100, Math.round((stock / MOQ) * 100)); }
 function getProgressClass(percent) { if(percent < 50) return 'progress-low'; if(percent < 100) return 'progress-medium'; return 'progress-high'; }
 
 function render(){
-  const filtered = filterText
-    ? rows.filter(r => (r.barcode + r.stock.toString()).toLowerCase().includes(filterText))
-    : rows;
-
+  const filtered = filterText ? rows.filter(r => (r.barcode + r.stock.toString()).toLowerCase().includes(filterText)) : rows;
   const tbody = document.getElementById('tbody');
   const tfoot = document.getElementById('tfoot');
 
   if(!rows.length){
     tbody.innerHTML=`<tr><td colspan="15"><div class="empty-state"><i class="fas fa-microchip"></i><p>เริ่มเพิ่มข้อมูลน็อตล้อกันเลย!</p></div></td></tr>`;
-    tfoot.innerHTML=''; 
-    updateStats(); 
-    updateSelectionBar();
-    return;
+    tfoot.innerHTML=''; updateStats(); updateSelectionBar(); return;
   }
 
   tbody.innerHTML = filtered.map((r,i)=>{
@@ -468,7 +524,7 @@ function render(){
     <td class="td-total"><strong style="font-size:1rem">${fmtStat(grand)}</strong></td>
     <td class="td-avg"><strong>${fmtStat(grandAvg)}</strong></td>
     <td></td>
-  </table>`;
+  </td>`;
 
   updateStats();
   updateSelectionBar();
@@ -478,15 +534,8 @@ function updateSelectionBar() {
   const bar = document.getElementById('selectionBar');
   const count = selectedRows.size;
   const deleteBtn = document.getElementById('deleteSelectedBtn');
-  if(count > 0) {
-    bar.style.display = 'flex';
-    document.getElementById('selectedCount').textContent = count;
-    if(deleteBtn) deleteBtn.disabled = false;
-  } else {
-    bar.style.display = 'none';
-    if(deleteBtn) deleteBtn.disabled = true;
-  }
-  // อัปเดต checkbox select all
+  if(count > 0) { bar.style.display = 'flex'; document.getElementById('selectedCount').textContent = count; if(deleteBtn) deleteBtn.disabled = false; }
+  else { bar.style.display = 'none'; if(deleteBtn) deleteBtn.disabled = true; }
   const selectAll = document.getElementById('selectAllCheckbox');
   if(selectAll) {
     const visibleIds = rows.filter(r => !filterText || (r.barcode + r.stock.toString()).toLowerCase().includes(filterText)).map(r => r.id);
@@ -500,43 +549,26 @@ function toggleSelectAll() {
   const selectAll = document.getElementById('selectAllCheckbox');
   const isChecked = selectAll.checked;
   const visibleRows = rows.filter(r => !filterText || (r.barcode + r.stock.toString()).toLowerCase().includes(filterText));
-  visibleRows.forEach(r => {
-    if(isChecked) selectedRows.add(r.id);
-    else selectedRows.delete(r.id);
-  });
+  visibleRows.forEach(r => { if(isChecked) selectedRows.add(r.id); else selectedRows.delete(r.id); });
   render();
 }
 
-function toggleRowSelect(id, isChecked) {
-  if(isChecked) selectedRows.add(id);
-  else selectedRows.delete(id);
-  render();
-}
+function toggleRowSelect(id, isChecked) { if(isChecked) selectedRows.add(id); else selectedRows.delete(id); render(); }
 
 function deleteSelected() {
-  if(selectedRows.size === 0) {
-    toast('ไม่มีรายการที่เลือก', 'warning');
-    return;
-  }
+  if(selectedRows.size === 0) { toast('ไม่มีรายการที่เลือก', 'warning'); return; }
   if(confirm(`คุณต้องการลบ ${selectedRows.size} รายการ ใช่หรือไม่?`)) {
     rows = rows.filter(r => !selectedRows.has(r.id));
     selectedRows.clear();
-    saveData();
-    render();
-    toast(`ลบ ${selectedRows.size} รายการสำเร็จ`, 'ok');
+    saveData(); render();
+    toast(`ลบข้อมูลสำเร็จ`, 'ok');
   }
 }
 
 function deleteAll() {
-  if(rows.length === 0) {
-    toast('ไม่มีข้อมูลที่จะลบ', 'warning');
-    return;
-  }
-  if(confirm(`คุณต้องการลบข้อมูลทั้งหมด ${rows.length} รายการ ใช่หรือไม่? การดำเนินการนี้ไม่สามารถกู้คืนได้`)) {
-    rows = [];
-    selectedRows.clear();
-    saveData();
-    render();
+  if(rows.length === 0) { toast('ไม่มีข้อมูลที่จะลบ', 'warning'); return; }
+  if(confirm(`คุณต้องการลบข้อมูลทั้งหมด ${rows.length} รายการ ใช่หรือไม่?`)) {
+    rows = []; selectedRows.clear(); saveData(); render();
     toast('ลบข้อมูลทั้งหมดสำเร็จ', 'ok');
   }
 }
@@ -546,12 +578,8 @@ function updateRow(index, field, value) {
     rows[index][field] = value;
     if(rows[index].minLot > rows[index].maxLot) rows[index].minLot = rows[index].maxLot;
     if(rows[index].maxLot < rows[index].minLot) rows[index].maxLot = rows[index].minLot;
-    saveData();
-    render();
+    saveData(); render();
     toast('บันทึกสำเร็จ', 'ok');
-    if(field === 'stock' && rows[index].stock < MOQ) {
-      toast(`⚠️ ${rows[index].barcode} เหลือ ${rows[index].stock} ต่ำ MOQ ${MOQ}`, 'warning');
-    }
   }
 }
 
@@ -564,22 +592,9 @@ function updateStats(){
   document.getElementById('stat-avg').textContent = grand ? fmtStat(Math.round(grand/5)) : 0;
 }
 
-function searchData() {
-  filterText = document.getElementById('searchInput').value.toLowerCase();
-  selectedRows.clear();
-  render();
-  toast(`พบ ${rows.filter(r => (r.barcode + r.stock.toString()).toLowerCase().includes(filterText)).length} รายการ`, 'ok');
-}
-
+function searchData() { filterText = document.getElementById('searchInput').value.toLowerCase(); selectedRows.clear(); render(); toast(`พบ ${rows.filter(r => (r.barcode + r.stock.toString()).toLowerCase().includes(filterText)).length} รายการ`, 'ok'); }
 function handleSearchKeypress(e) { if(e.key === 'Enter') searchData(); }
-
-function clearSearch(){ 
-  document.getElementById('searchInput').value = ''; 
-  filterText = ''; 
-  selectedRows.clear();
-  render(); 
-  toast('ล้างการค้นหาแล้ว', 'ok');
-}
+function clearSearch(){ document.getElementById('searchInput').value = ''; filterText = ''; selectedRows.clear(); render(); toast('ล้างการค้นหาแล้ว', 'ok'); }
 
 function openAddModal() {
   editModeIndex = null;
@@ -615,7 +630,7 @@ function confirmEditRow() {
   if(!barcode) { toast('กรุณากรอกรหัสสินค้า', 'warning'); return; }
   const maxLotVal = +document.getElementById('editMaxLot').value || 0;
   const minLotVal = +document.getElementById('editMinLot').value || 0;
-  if(minLotVal > maxLotVal) { toast('Min Lot ต้องไม่มากกว่า Max Lot', 'warning'); return; }
+  if(minLotVal > maxLotVal) { toast('Min ต้องไม่มากกว่า Max', 'warning'); return; }
   
   if(editModeIndex === null) {
     rows.push({ id: nextId++, barcode, stock: +document.getElementById('editStock').value || 0, maxLot: maxLotVal, minLot: minLotVal, jan: +document.getElementById('editJan').value||0, feb: +document.getElementById('editFeb').value||0, mar: +document.getElementById('editMar').value||0, apr: +document.getElementById('editApr').value||0, may: +document.getElementById('editMay').value||0 });
@@ -634,7 +649,7 @@ function closeDeleteModal() { pendingDeleteIndex = null; document.getElementById
 function confirmDeleteRow() { if(pendingDeleteIndex !== null && rows[pendingDeleteIndex]) { const deletedBarcode = rows[pendingDeleteIndex].barcode; rows.splice(pendingDeleteIndex,1); if(selectedRows.has(rows[pendingDeleteIndex]?.id)) selectedRows.delete(rows[pendingDeleteIndex]?.id); saveData(); render(); toast(`ลบ ${deletedBarcode} สำเร็จ`,'ok'); } closeDeleteModal(); }
 
 function exportData() {
-  let csv = "Barcode,Stock,Max Lot,Min Lot,ม.ค.,ก.พ.,มี.ค.,เม.ย.,พ.ค.,รวม 5 เดือน,เฉลี่ยต่อเดือน\n";
+  let csv = "Barcode,Stock,Max,Min,ม.ค.,ก.พ.,มี.ค.,เม.ย.,พ.ค.,รวม 5 เดือน,เฉลี่ยต่อเดือน\n";
   rows.forEach(r => { const total = calcTotal(r); const avg = total ? Math.round(total/5) : 0; csv += `"${r.barcode}",${r.stock},${r.maxLot||r.stock},${r.minLot||r.stock},${r.jan||0},${r.feb||0},${r.mar||0},${r.apr||0},${r.may||0},${total},${avg}\n`; });
   const blob = new Blob(["\uFEFF" + csv], {type: "text/csv;charset=utf-8;"});
   const link = document.createElement("a"); link.href = URL.createObjectURL(blob);
