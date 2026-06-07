@@ -28,6 +28,45 @@
             box-shadow: 0 20px 25px -5px rgba(30, 64, 175, 0.15);
         }
 
+        /* Sidebar */
+        .sidebar {
+            transition: transform 0.3s ease, width 0.3s ease;
+            z-index: 40;
+        }
+        .sidebar-open {
+            transform: translateX(0);
+        }
+        .sidebar-closed {
+            transform: translateX(-100%);
+        }
+        @media (min-width: 1024px) {
+            .sidebar-closed {
+                transform: translateX(0);
+                width: 80px;
+            }
+            .sidebar-closed .sidebar-text {
+                display: none;
+            }
+            .sidebar-closed .sidebar-icon {
+                margin: 0 auto;
+            }
+            .sidebar-open {
+                width: 280px;
+            }
+        }
+
+        /* Overlay สำหรับมือถือ */
+        .sidebar-overlay {
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 35;
+        }
+        .sidebar-overlay.active {
+            pointer-events: auto;
+            opacity: 1;
+        }
+
         /* ปรับแต่ง Swiper */
         .swiper {
             width: 100%;
@@ -81,72 +120,176 @@
         .notebook-shadow:hover {
             box-shadow: 0 15px 40px rgba(30, 64, 175, 0.2);
         }
+
+        /* scrollbar สวยๆ */
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #bfdbfe;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-blue-50 to-white min-h-screen">
 
-    <!-- Header -->
-    <header class="sticky top-0 z-50 h-20 bg-white/90 backdrop-blur-md border-b border-blue-100 shadow-sm">
-        <div class="max-w-7xl mx-auto h-full flex items-center justify-between px-6">
-            <!-- โลโก้ -->
-            <div class="flex items-center gap-3">
-                <div
-                    class="w-10 h-10 bg-gradient-to-br from-blue-600 to-sky-400 rounded-xl flex items-center justify-center shadow-md">
+    <!-- ==================== SIDEBAR OVERLAY (มือถือ) ==================== -->
+    <div id="sidebarOverlay" class="sidebar-overlay fixed inset-0 bg-black/50 lg:hidden" onclick="closeSidebar()"></div>
+
+    <!-- ==================== SIDEBAR ==================== -->
+    <aside id="sidebar" class="sidebar sidebar-open fixed top-0 left-0 h-full bg-white border-r border-blue-100 shadow-xl flex flex-col overflow-y-auto w-[280px] lg:sticky lg:top-0 lg:h-screen">
+        
+        <!-- Header Sidebar -->
+        <div class="h-20 flex items-center justify-between px-5 border-b border-blue-100">
+            <div class="flex items-center gap-3 sidebar-text">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-sky-400 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
                     <i class="fas fa-laptop text-white text-xl"></i>
                 </div>
-                <span class="text-2xl font-bold bg-gradient-to-r from-blue-800 to-sky-600 bg-clip-text text-transparent">NoteBookPro</span>
+                <span class="text-xl font-bold bg-gradient-to-r from-blue-800 to-sky-600 bg-clip-text text-transparent whitespace-nowrap">NoteBookPro</span>
             </div>
-            <!-- ปุ่มด้านขวา -->
-            <div class="flex items-center gap-4">
-                <div class="relative hidden sm:block">
-                    <input type="text" placeholder="ค้นหาโน๊ตบุ๊ค..."
-                    class="pl-10 pr-4 py-2.5 bg-slate-50 border border-blue-200 rounded-xl text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition">
-                    <i class="fas fa-search absolute left-3 top-3 text-blue-400 text-sm"></i>
-                </div>
-                <button class="p-2.5 bg-blue-50 hover:bg-blue-100 rounded-xl transition relative">
-                    <i class="fas fa-heart text-blue-600 text-lg"></i>
-                    <span
-                    class="absolute top-1 right-1 w-2.5 h-2.5 bg-sky-500 rounded-full border-2 border-white"></span>
-                </button>
-                <button class="p-2.5 bg-blue-50 hover:bg-blue-100 rounded-xl transition relative">
-                    <i class="fas fa-shopping-cart text-blue-600 text-lg"></i>
-                    <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">3</span>
-                </button>
-                <div
-                    class="w-10 h-10 bg-gradient-to-br from-blue-500 to-sky-400 rounded-full flex items-center justify-center shadow-md cursor-pointer">
+            <button onclick="toggleSidebar()" class="p-2 hover:bg-blue-50 rounded-xl transition text-slate-500 hover:text-blue-600 flex-shrink-0">
+                <i id="sidebarToggleIcon" class="fas fa-chevron-left text-lg"></i>
+            </button>
+        </div>
+
+        <!-- เมนู -->
+        <nav class="flex-1 py-6 px-4 space-y-1.5">
+            <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-4 px-3 sidebar-text">เมนูหลัก</p>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl bg-blue-50 text-blue-700 font-semibold transition hover:bg-blue-100">
+                <i class="fas fa-home w-5 text-center sidebar-icon"></i>
+                <span class="sidebar-text">หน้าหลัก</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 font-medium transition hover:bg-blue-50 hover:text-blue-700">
+                <i class="fas fa-chart-line w-5 text-center sidebar-icon"></i>
+                <span class="sidebar-text">อันดับขายดี</span>
+                <span class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full sidebar-text">ใหม่</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 font-medium transition hover:bg-blue-50 hover:text-blue-700">
+                <i class="fas fa-tags w-5 text-center sidebar-icon"></i>
+                <span class="sidebar-text">โปรโมชั่น</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 font-medium transition hover:bg-blue-50 hover:text-blue-700">
+                <i class="fas fa-star w-5 text-center sidebar-icon"></i>
+                <span class="sidebar-text">สินค้าแนะนำ</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 font-medium transition hover:bg-blue-50 hover:text-blue-700">
+                <i class="fas fa-fire w-5 text-center sidebar-icon"></i>
+                <span class="sidebar-text">กำลังมาแรง</span>
+            </a>
+
+            <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-4 mt-8 px-3 sidebar-text">หมวดหมู่</p>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 font-medium transition hover:bg-blue-50 hover:text-blue-700">
+                <i class="fas fa-laptop w-5 text-center sidebar-icon"></i>
+                <span class="sidebar-text">โน๊ตบุ๊คทั้งหมด</span>
+                <span class="ml-auto bg-slate-200 text-slate-600 text-xs px-2 py-0.5 rounded-full sidebar-text">1,284</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 font-medium transition hover:bg-blue-50 hover:text-blue-700">
+                <i class="fas fa-gamepad w-5 text-center sidebar-icon"></i>
+                <span class="sidebar-text">เกมมิ่ง</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 font-medium transition hover:bg-blue-50 hover:text-blue-700">
+                <i class="fas fa-briefcase w-5 text-center sidebar-icon"></i>
+                <span class="sidebar-text">ธุรกิจ</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 font-medium transition hover:bg-blue-50 hover:text-blue-700">
+                <i class="fas fa-paint-brush w-5 text-center sidebar-icon"></i>
+                <span class="sidebar-text">ครีเอทีฟ</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 font-medium transition hover:bg-blue-50 hover:text-blue-700">
+                <i class="fas fa-book w-5 text-center sidebar-icon"></i>
+                <span class="sidebar-text">นักเรียน/นักศึกษา</span>
+            </a>
+
+            <p class="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-4 mt-8 px-3 sidebar-text">อื่นๆ</p>
+            
+            <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 font-medium transition hover:bg-blue-50 hover:text-blue-700">
+                <i class="fas fa-headset w-5 text-center sidebar-icon"></i>
+                <span class="sidebar-text">บริการช่วยเหลือ</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 font-medium transition hover:bg-blue-50 hover:text-blue-700">
+                <i class="fas fa-question-circle w-5 text-center sidebar-icon"></i>
+                <span class="sidebar-text">คำถามที่พบบ่อย</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 font-medium transition hover:bg-blue-50 hover:text-blue-700">
+                <i class="fas fa-envelope w-5 text-center sidebar-icon"></i>
+                <span class="sidebar-text">ติดต่อเรา</span>
+            </a>
+        </nav>
+
+        <!-- โปรไฟล์ด้านล่าง sidebar -->
+        <div class="border-t border-blue-100 p-4">
+            <div class="flex items-center gap-3 px-2">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-sky-400 rounded-full flex items-center justify-center shadow-md flex-shrink-0">
                     <i class="fas fa-user text-white"></i>
                 </div>
+                <div class="sidebar-text flex-1 min-w-0">
+                    <p class="text-sm font-semibold text-slate-800 truncate">คุณสมชาย ใจดี</p>
+                    <p class="text-xs text-slate-400 truncate">admin@notebookpro.com</p>
+                </div>
+                <button class="sidebar-text p-2 hover:bg-blue-50 rounded-xl transition text-slate-400 hover:text-red-500 flex-shrink-0" title="ออกจากระบบ">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
             </div>
         </div>
-    </header>
+    </aside>
 
-    <!-- Navbar -->
-    <nav class="h-16 bg-white/80 backdrop-blur-sm border-b border-blue-100 sticky top-20 z-40">
-        <div class="max-w-7xl mx-auto h-full flex items-center gap-8 px-6 text-sm font-medium overflow-x-auto">
-            <a href="#" class="text-blue-700 border-b-2 border-blue-600 pb-1.5 flex items-center gap-1.5 whitespace-nowrap"><i
-                class="fas fa-home"></i> หน้าหลัก</a>
-                <a href="#" class="text-slate-500 hover:text-blue-600 transition flex items-center gap-1.5 whitespace-nowrap"><i
-                class="fas fa-laptop"></i> โน๊ตบุ๊คทั้งหมด</a>
-                <a href="#" class="text-slate-500 hover:text-blue-600 transition flex items-center gap-1.5 whitespace-nowrap"><i
-                class="fas fa-chart-line"></i> อันดับขายดี</a>
-                <a href="#" class="text-slate-500 hover:text-blue-600 transition flex items-center gap-1.5 whitespace-nowrap"><i
-                class="fas fa-tags"></i> โปรโมชั่น</a>
-                <a href="#" class="text-slate-500 hover:text-blue-600 transition flex items-center gap-1.5 whitespace-nowrap"><i
-                    class="fas fa-star"></i> แนะนำ</a>
-                    <a href="#" class="text-slate-500 hover:text-blue-600 transition flex items-center gap-1.5 whitespace-nowrap"><i
-                    class="fas fa-headset"></i> บริการ</a>
+    <!-- ==================== WRAPPER สำหรับเลื่อน sidebar ออก ==================== -->
+    <div id="mainWrapper" class="lg:ml-[280px] transition-all duration-300">
+        
+        <!-- Header -->
+        <header class="sticky top-0 z-50 h-20 bg-white/90 backdrop-blur-md border-b border-blue-100 shadow-sm">
+            <div class="max-w-7xl mx-auto h-full flex items-center justify-between px-6">
+                <!-- ปุ่มแฮมเบอร์เกอร์ (มือถือ) + ข้อความ -->
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2.5 hover:bg-blue-50 rounded-xl transition text-slate-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <span class="text-xl font-bold text-slate-800 lg:hidden">NoteBookPro</span>
                 </div>
-            </nav>
+                
+                <!-- ปุ่มด้านขวา -->
+                <div class="flex items-center gap-4 ml-auto">
+                    <div class="relative hidden sm:block">
+                        <input type="text" placeholder="ค้นหาโน๊ตบุ๊ค..." class="pl-10 pr-4 py-2.5 bg-slate-50 border border-blue-200 rounded-xl text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition">
+                        <i class="fas fa-search absolute left-3 top-3 text-blue-400 text-sm"></i>
+                    </div>
+                    <button class="p-2.5 bg-blue-50 hover:bg-blue-100 rounded-xl transition relative">
+                        <i class="fas fa-heart text-blue-600 text-lg"></i>
+                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-sky-500 rounded-full border-2 border-white"></span>
+                    </button>
+                    <button class="p-2.5 bg-blue-50 hover:bg-blue-100 rounded-xl transition relative">
+                        <i class="fas fa-shopping-cart text-blue-600 text-lg"></i>
+                        <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">3</span>
+                    </button>
+                </div>
+            </div>
+        </header>
 
-            <!-- Main Content -->
-            <main class="max-w-7xl mx-auto p-6">
+        <!-- Navbar -->
+        <nav class="h-16 bg-white/80 backdrop-blur-sm border-b border-blue-100 sticky top-20 z-40">
+            <div class="max-w-7xl mx-auto h-full flex items-center gap-8 px-6 text-sm font-medium overflow-x-auto">
+                <a href="#" class="text-blue-700 border-b-2 border-blue-600 pb-1.5 flex items-center gap-1.5 whitespace-nowrap"><i class="fas fa-home"></i> หน้าหลัก</a>
+                <a href="#" class="text-slate-500 hover:text-blue-600 transition flex items-center gap-1.5 whitespace-nowrap"><i class="fas fa-laptop"></i> โน๊ตบุ๊คทั้งหมด</a>
+                <a href="#" class="text-slate-500 hover:text-blue-600 transition flex items-center gap-1.5 whitespace-nowrap"><i class="fas fa-chart-line"></i> อันดับขายดี</a>
+                <a href="#" class="text-slate-500 hover:text-blue-600 transition flex items-center gap-1.5 whitespace-nowrap"><i class="fas fa-tags"></i> โปรโมชั่น</a>
+                <a href="#" class="text-slate-500 hover:text-blue-600 transition flex items-center gap-1.5 whitespace-nowrap"><i class="fas fa-star"></i> แนะนำ</a>
+                <a href="#" class="text-slate-500 hover:text-blue-600 transition flex items-center gap-1.5 whitespace-nowrap"><i class="fas fa-headset"></i> บริการ</a>
+            </div>
+        </nav>
 
-                <!-- Hero Section -->
-                <section class="h-80 md:h-96 rounded-3xl mb-6 overflow-hidden shadow-xl relative gradient-blue">
-                    <div class="absolute inset-0 bg-black/10"></div>
-                    <div class="relative z-10 h-full flex flex-col justify-center px-10 md:px-16 text-white">
-                        <span
-                        class="bg-white/20 backdrop-blur-sm text-sm px-4 py-1.5 rounded-full w-fit mb-4 border border-white/30">
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto p-6">
+
+            <!-- Hero Section -->
+            <section class="h-80 md:h-96 rounded-3xl mb-6 overflow-hidden shadow-xl relative gradient-blue">
+                <div class="absolute inset-0 bg-black/10"></div>
+                <div class="relative z-10 h-full flex flex-col justify-center px-10 md:px-16 text-white">
+                    <span class="bg-white/20 backdrop-blur-sm text-sm px-4 py-1.5 rounded-full w-fit mb-4 border border-white/30">
                         <i class="fas fa-fire text-sky-300 mr-2"></i>โน๊ตบุ๊คขายดีประจำเดือน
                     </span>
                     <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 drop-shadow-lg">
@@ -154,508 +297,561 @@
                     </h1>
                     <p class="text-blue-100 max-w-lg text-lg mb-6">พบกับโน๊ตบุ๊ครุ่นล่าสุดจากแบรนด์ชั้นนำ พร้อมข้อเสนอสุดพิเศษและจัดส่งฟรีทั่วประเทศ</p>
                     <div class="flex gap-4">
-                        <button
-                        class="px-6 py-3 bg-white text-blue-800 font-bold rounded-xl hover:bg-sky-50 transition shadow-lg flex items-center gap-2">
-                        <i class="fas fa-shopping-bag"></i> เลือกซื้อเลย
-                    </button>
-                    <button
-                    class="px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/40 text-white font-semibold rounded-xl hover:bg-white/20 transition flex items-center gap-2">
-                    <i class="fas fa-play-circle"></i> ดูรีวิว
-                </button>
-            </div>
-        </div>
-        <!-- วงกลมตกแต่ง -->
-        <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl"></div>
-        <div class="absolute right-20 top-10 w-40 h-40 bg-sky-300/20 rounded-full blur-2xl"></div>
-        <!-- รูปโน๊ตบุ๊คลอย -->
-        <div class="absolute right-10 md:right-20 bottom-0 opacity-20 md:opacity-30 hidden lg:block">
-            <i class="fas fa-laptop text-[200px] text-white"></i>
-        </div>
-    </section>
-
-    <!-- Stats Cards -->
-    <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
-
-        <!-- Card 1 -->
-        <div
-        class="h-40 bg-white rounded-3xl shadow-lg border border-blue-100 p-6 flex items-center justify-between card-hover cursor-pointer">
-        <div>
-            <p class="text-slate-500 text-sm font-medium mb-1">ยอดขายโน๊ตบุ๊ค</p>
-            <p class="text-4xl font-bold text-slate-800">1,284</p>
-            <p class="text-emerald-500 text-sm mt-2 flex items-center gap-1"><i class="fas fa-arrow-up"></i>
-            18.5%</p>
-        </div>
-        <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
-            <i class="fas fa-laptop text-blue-600 text-2xl"></i>
-        </div>
-    </div>
-
-    <!-- Card 2 -->
-    <div
-    class="h-40 bg-white rounded-3xl shadow-lg border border-blue-100 p-6 flex items-center justify-between card-hover cursor-pointer">
-    <div>
-        <p class="text-slate-500 text-sm font-medium mb-1">แบรนด์ยอดนิยม</p>
-        <p class="text-2xl font-bold text-slate-800 mt-2">ASUS, Lenovo, Dell</p>
-        <p class="text-sky-500 text-sm mt-2 flex items-center gap-1"><i class="fas fa-trophy"></i> Top 3</p>
-    </div>
-    <div class="w-14 h-14 bg-sky-100 rounded-2xl flex items-center justify-center">
-        <i class="fas fa-medal text-sky-600 text-2xl"></i>
-    </div>
-</div>
-
-<!-- Card 3 -->
-<div
-class="h-40 bg-white rounded-3xl shadow-lg border border-blue-100 p-6 flex items-center justify-between card-hover cursor-pointer">
-<div>
-    <p class="text-slate-500 text-sm font-medium mb-1">ราคาเฉลี่ย</p>
-    <p class="text-4xl font-bold text-slate-800">฿24,900</p>
-    <p class="text-slate-400 text-sm mt-2 flex items-center gap-1"><i class="fas fa-tag text-blue-400"></i>
-    คุ้มค่าที่สุด</p>
-</div>
-<div class="w-14 h-14 bg-indigo-100 rounded-2xl flex items-center justify-center">
-    <i class="fas fa-dollar-sign text-indigo-600 text-2xl"></i>
-</div>
-</div>
-
-<!-- Card 4 -->
-<div
-class="h-40 bg-white rounded-3xl shadow-lg border border-blue-100 p-6 flex items-center justify-between card-hover cursor-pointer">
-<div>
-    <p class="text-slate-500 text-sm font-medium mb-1">คะแนนรีวิว</p>
-    <p class="text-4xl font-bold text-slate-800">4.8</p>
-    <p class="text-slate-400 text-sm mt-2 flex items-center gap-1"><i
-        class="fas fa-star text-yellow-400"></i> 3.6k รีวิว</p>
-    </div>
-    <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
-        <i class="fas fa-smile text-blue-600 text-2xl"></i>
-    </div>
-</div>
-</section>
-
-<!-- Product Slider Section -->
-<section class="bg-white rounded-3xl shadow-lg border border-blue-100 min-h-[500px] mb-6 p-6 md:p-8">
-    <div class="flex justify-between items-center mb-8">
-        <div>
-            <h2 class="text-2xl font-bold text-slate-800">🔥 โน๊ตบุ๊คขายดีประจำสัปดาห์</h2>
-            <p class="text-slate-500 text-sm">เลื่อนดูสินค้ายอดนิยมของเรา</p>
-        </div>
-        <div class="flex gap-2">
-            <button class="swiper-button-prev-custom px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl text-sm font-medium transition flex items-center gap-2">
-                <i class="fas fa-chevron-left"></i> ก่อนหน้า
-            </button>
-            <button class="swiper-button-next-custom px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-medium transition flex items-center gap-2 shadow-md">
-                ถัดไป <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-    </div>
-
-    <!-- Swiper Slider -->
-    <div class="swiper notebookSwiper">
-        <div class="swiper-wrapper">
-
-            <!-- สไลด์ 1: ASUS ZenBook -->
-            <div class="swiper-slide">
-                <div class="bg-slate-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition notebook-shadow w-full">
-                    <div class="bg-gradient-to-br from-slate-700 to-slate-900 h-48 rounded-xl mb-5 flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-laptop text-white text-7xl opacity-80"></i>
-                        <span class="absolute top-3 left-3 bg-red-500 text-white text-xs px-3 py-1.5 rounded-full font-bold">ลด 15%</span>
-                    </div>
-                    <span class="text-xs text-blue-500 font-semibold bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">ASUS</span>
-                    <h3 class="font-bold text-slate-800 text-lg mb-2">ZenBook 14 OLED</h3>
-                    <p class="text-sm text-slate-500 mb-4 line-clamp-2">Intel Core i7-1360P | 16GB RAM | 512GB SSD | จอ OLED 2.8K</p>
-                    <div class="flex justify-between items-center mb-3">
-                        <div class="flex items-center gap-1">
-                            <i class="fas fa-star text-yellow-400 text-sm"></i>
-                            <span class="text-sm font-semibold text-slate-700">4.9</span>
-                            <span class="text-xs text-slate-400">(245 รีวิว)</span>
-                        </div>
-                        <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-medium"><i class="fas fa-check-circle mr-1"></i>มีสต็อก</span>
-                    </div>
-                    <div class="flex justify-between items-center border-t border-slate-200 pt-4">
-                        <div>
-                            <span class="text-xs text-slate-400 line-through">฿42,900</span>
-                            <p class="text-xl font-bold text-blue-700">฿36,465</p>
-                        </div>
-                        <button class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md flex items-center gap-1.5">
-                            <i class="fas fa-shopping-cart"></i> ซื้อ
+                        <button class="px-6 py-3 bg-white text-blue-800 font-bold rounded-xl hover:bg-sky-50 transition shadow-lg flex items-center gap-2">
+                            <i class="fas fa-shopping-bag"></i> เลือกซื้อเลย
+                        </button>
+                        <button class="px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/40 text-white font-semibold rounded-xl hover:bg-white/20 transition flex items-center gap-2">
+                            <i class="fas fa-play-circle"></i> ดูรีวิว
                         </button>
                     </div>
                 </div>
-            </div>
+                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl"></div>
+                <div class="absolute right-20 top-10 w-40 h-40 bg-sky-300/20 rounded-full blur-2xl"></div>
+                <div class="absolute right-10 md:right-20 bottom-0 opacity-20 md:opacity-30 hidden lg:block">
+                    <i class="fas fa-laptop text-[200px] text-white"></i>
+                </div>
+            </section>
 
-            <!-- สไลด์ 2: Lenovo ThinkPad -->
-            <div class="swiper-slide">
-                <div class="bg-slate-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition notebook-shadow w-full">
-                    <div class="bg-gradient-to-br from-slate-800 to-gray-900 h-48 rounded-xl mb-5 flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-laptop text-white text-7xl opacity-80"></i>
-                        <span class="absolute top-3 left-3 bg-blue-500 text-white text-xs px-3 py-1.5 rounded-full font-bold">ขายดี</span>
+            <!-- Stats Cards -->
+            <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-6">
+                <div class="h-40 bg-white rounded-3xl shadow-lg border border-blue-100 p-6 flex items-center justify-between card-hover cursor-pointer">
+                    <div>
+                        <p class="text-slate-500 text-sm font-medium mb-1">ยอดขายโน๊ตบุ๊ค</p>
+                        <p class="text-4xl font-bold text-slate-800">1,284</p>
+                        <p class="text-emerald-500 text-sm mt-2 flex items-center gap-1"><i class="fas fa-arrow-up"></i> 18.5%</p>
                     </div>
-                    <span class="text-xs text-blue-500 font-semibold bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">Lenovo</span>
-                    <h3 class="font-bold text-slate-800 text-lg mb-2">ThinkPad X1 Carbon Gen 11</h3>
-                    <p class="text-sm text-slate-500 mb-4 line-clamp-2">Intel Core i7-1355U | 16GB RAM | 1TB SSD | จอ 14" WUXGA</p>
-                    <div class="flex justify-between items-center mb-3">
-                        <div class="flex items-center gap-1">
-                            <i class="fas fa-star text-yellow-400 text-sm"></i>
-                            <span class="text-sm font-semibold text-slate-700">4.8</span>
-                            <span class="text-xs text-slate-400">(189 รีวิว)</span>
-                        </div>
-                        <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-medium"><i class="fas fa-check-circle mr-1"></i>มีสต็อก</span>
+                    <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-laptop text-blue-600 text-2xl"></i>
                     </div>
-                    <div class="flex justify-between items-center border-t border-slate-200 pt-4">
-                        <div>
-                            <span class="text-xs text-slate-400 line-through">฿55,000</span>
-                            <p class="text-xl font-bold text-blue-700">฿49,900</p>
-                        </div>
-                        <button class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md flex items-center gap-1.5">
-                            <i class="fas fa-shopping-cart"></i> ซื้อ
+                </div>
+
+                <div class="h-40 bg-white rounded-3xl shadow-lg border border-blue-100 p-6 flex items-center justify-between card-hover cursor-pointer">
+                    <div>
+                        <p class="text-slate-500 text-sm font-medium mb-1">แบรนด์ยอดนิยม</p>
+                        <p class="text-2xl font-bold text-slate-800 mt-2">ASUS, Lenovo, Dell</p>
+                        <p class="text-sky-500 text-sm mt-2 flex items-center gap-1"><i class="fas fa-trophy"></i> Top 3</p>
+                    </div>
+                    <div class="w-14 h-14 bg-sky-100 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-medal text-sky-600 text-2xl"></i>
+                    </div>
+                </div>
+
+                <div class="h-40 bg-white rounded-3xl shadow-lg border border-blue-100 p-6 flex items-center justify-between card-hover cursor-pointer">
+                    <div>
+                        <p class="text-slate-500 text-sm font-medium mb-1">ราคาเฉลี่ย</p>
+                        <p class="text-4xl font-bold text-slate-800">฿24,900</p>
+                        <p class="text-slate-400 text-sm mt-2 flex items-center gap-1"><i class="fas fa-tag text-blue-400"></i> คุ้มค่าที่สุด</p>
+                    </div>
+                    <div class="w-14 h-14 bg-indigo-100 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-dollar-sign text-indigo-600 text-2xl"></i>
+                    </div>
+                </div>
+
+                <div class="h-40 bg-white rounded-3xl shadow-lg border border-blue-100 p-6 flex items-center justify-between card-hover cursor-pointer">
+                    <div>
+                        <p class="text-slate-500 text-sm font-medium mb-1">คะแนนรีวิว</p>
+                        <p class="text-4xl font-bold text-slate-800">4.8</p>
+                        <p class="text-slate-400 text-sm mt-2 flex items-center gap-1"><i class="fas fa-star text-yellow-400"></i> 3.6k รีวิว</p>
+                    </div>
+                    <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-smile text-blue-600 text-2xl"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Product Slider Section -->
+            <section class="bg-white rounded-3xl shadow-lg border border-blue-100 min-h-[500px] mb-6 p-6 md:p-8">
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">🔥 โน๊ตบุ๊คขายดีประจำสัปดาห์</h2>
+                        <p class="text-slate-500 text-sm">เลื่อนดูสินค้ายอดนิยมของเรา</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="swiper-button-prev-custom px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl text-sm font-medium transition flex items-center gap-2">
+                            <i class="fas fa-chevron-left"></i> ก่อนหน้า
+                        </button>
+                        <button class="swiper-button-next-custom px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-medium transition flex items-center gap-2 shadow-md">
+                            ถัดไป <i class="fas fa-chevron-right"></i>
                         </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- สไลด์ 3: Dell XPS -->
-            <div class="swiper-slide">
-                <div class="bg-slate-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition notebook-shadow w-full">
-                    <div class="bg-gradient-to-br from-slate-600 to-slate-800 h-48 rounded-xl mb-5 flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-laptop text-white text-7xl opacity-80"></i>
-                        <span class="absolute top-3 left-3 bg-sky-500 text-white text-xs px-3 py-1.5 rounded-full font-bold">ใหม่</span>
-                    </div>
-                    <span class="text-xs text-blue-500 font-semibold bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">Dell</span>
-                    <h3 class="font-bold text-slate-800 text-lg mb-2">XPS 15 9530</h3>
-                    <p class="text-sm text-slate-500 mb-4 line-clamp-2">Intel Core i9-13900H | 32GB RAM | 1TB SSD | จอ 15.6" 3.5K OLED</p>
-                    <div class="flex justify-between items-center mb-3">
-                        <div class="flex items-center gap-1">
-                            <i class="fas fa-star text-yellow-400 text-sm"></i>
-                            <span class="text-sm font-semibold text-slate-700">4.9</span>
-                            <span class="text-xs text-slate-400">(312 รีวิว)</span>
+                <!-- Swiper Slider -->
+                <div class="swiper notebookSwiper">
+                    <div class="swiper-wrapper">
+
+                        <!-- สไลด์ 1: ASUS ZenBook -->
+                        <div class="swiper-slide">
+                            <div class="bg-slate-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition notebook-shadow w-full">
+                                <div class="bg-gradient-to-br from-slate-700 to-slate-900 h-48 rounded-xl mb-5 flex items-center justify-center relative overflow-hidden">
+                                    <i class="fas fa-laptop text-white text-7xl opacity-80"></i>
+                                    <span class="absolute top-3 left-3 bg-red-500 text-white text-xs px-3 py-1.5 rounded-full font-bold">ลด 15%</span>
+                                </div>
+                                <span class="text-xs text-blue-500 font-semibold bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">ASUS</span>
+                                <h3 class="font-bold text-slate-800 text-lg mb-2">ZenBook 14 OLED</h3>
+                                <p class="text-sm text-slate-500 mb-4 line-clamp-2">Intel Core i7-1360P | 16GB RAM | 512GB SSD | จอ OLED 2.8K</p>
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="flex items-center gap-1">
+                                        <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                        <span class="text-sm font-semibold text-slate-700">4.9</span>
+                                        <span class="text-xs text-slate-400">(245 รีวิว)</span>
+                                    </div>
+                                    <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-medium"><i class="fas fa-check-circle mr-1"></i>มีสต็อก</span>
+                                </div>
+                                <div class="flex justify-between items-center border-t border-slate-200 pt-4">
+                                    <div>
+                                        <span class="text-xs text-slate-400 line-through">฿42,900</span>
+                                        <p class="text-xl font-bold text-blue-700">฿36,465</p>
+                                    </div>
+                                    <button class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md flex items-center gap-1.5">
+                                        <i class="fas fa-shopping-cart"></i> ซื้อ
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-medium"><i class="fas fa-check-circle mr-1"></i>มีสต็อก</span>
-                    </div>
-                    <div class="flex justify-between items-center border-t border-slate-200 pt-4">
-                        <div>
-                            <span class="text-xs text-slate-400 line-through">฿79,900</span>
-                            <p class="text-xl font-bold text-blue-700">฿72,900</p>
+
+                        <!-- สไลด์ 2: Lenovo ThinkPad -->
+                        <div class="swiper-slide">
+                            <div class="bg-slate-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition notebook-shadow w-full">
+                                <div class="bg-gradient-to-br from-slate-800 to-gray-900 h-48 rounded-xl mb-5 flex items-center justify-center relative overflow-hidden">
+                                    <i class="fas fa-laptop text-white text-7xl opacity-80"></i>
+                                    <span class="absolute top-3 left-3 bg-blue-500 text-white text-xs px-3 py-1.5 rounded-full font-bold">ขายดี</span>
+                                </div>
+                                <span class="text-xs text-blue-500 font-semibold bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">Lenovo</span>
+                                <h3 class="font-bold text-slate-800 text-lg mb-2">ThinkPad X1 Carbon Gen 11</h3>
+                                <p class="text-sm text-slate-500 mb-4 line-clamp-2">Intel Core i7-1355U | 16GB RAM | 1TB SSD | จอ 14" WUXGA</p>
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="flex items-center gap-1">
+                                        <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                        <span class="text-sm font-semibold text-slate-700">4.8</span>
+                                        <span class="text-xs text-slate-400">(189 รีวิว)</span>
+                                    </div>
+                                    <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-medium"><i class="fas fa-check-circle mr-1"></i>มีสต็อก</span>
+                                </div>
+                                <div class="flex justify-between items-center border-t border-slate-200 pt-4">
+                                    <div>
+                                        <span class="text-xs text-slate-400 line-through">฿55,000</span>
+                                        <p class="text-xl font-bold text-blue-700">฿49,900</p>
+                                    </div>
+                                    <button class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md flex items-center gap-1.5">
+                                        <i class="fas fa-shopping-cart"></i> ซื้อ
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <button class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md flex items-center gap-1.5">
-                            <i class="fas fa-shopping-cart"></i> ซื้อ
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            <!-- สไลด์ 4: Acer Swift -->
-            <div class="swiper-slide">
-                <div class="bg-slate-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition notebook-shadow w-full">
-                    <div class="bg-gradient-to-br from-slate-500 to-slate-700 h-48 rounded-xl mb-5 flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-laptop text-white text-7xl opacity-80"></i>
-                        <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1.5 rounded-full font-bold">แนะนำ</span>
-                    </div>
-                    <span class="text-xs text-blue-500 font-semibold bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">Acer</span>
-                    <h3 class="font-bold text-slate-800 text-lg mb-2">Swift Go 14</h3>
-                    <p class="text-sm text-slate-500 mb-4 line-clamp-2">AMD Ryzen 7 7840U | 16GB RAM | 512GB SSD | จอ 14" 2.8K</p>
-                    <div class="flex justify-between items-center mb-3">
-                        <div class="flex items-center gap-1">
-                            <i class="fas fa-star text-yellow-400 text-sm"></i>
-                            <span class="text-sm font-semibold text-slate-700">4.7</span>
-                            <span class="text-xs text-slate-400">(178 รีวิว)</span>
+                        <!-- สไลด์ 3: Dell XPS -->
+                        <div class="swiper-slide">
+                            <div class="bg-slate-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition notebook-shadow w-full">
+                                <div class="bg-gradient-to-br from-slate-600 to-slate-800 h-48 rounded-xl mb-5 flex items-center justify-center relative overflow-hidden">
+                                    <i class="fas fa-laptop text-white text-7xl opacity-80"></i>
+                                    <span class="absolute top-3 left-3 bg-sky-500 text-white text-xs px-3 py-1.5 rounded-full font-bold">ใหม่</span>
+                                </div>
+                                <span class="text-xs text-blue-500 font-semibold bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">Dell</span>
+                                <h3 class="font-bold text-slate-800 text-lg mb-2">XPS 15 9530</h3>
+                                <p class="text-sm text-slate-500 mb-4 line-clamp-2">Intel Core i9-13900H | 32GB RAM | 1TB SSD | จอ 15.6" 3.5K OLED</p>
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="flex items-center gap-1">
+                                        <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                        <span class="text-sm font-semibold text-slate-700">4.9</span>
+                                        <span class="text-xs text-slate-400">(312 รีวิว)</span>
+                                    </div>
+                                    <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-medium"><i class="fas fa-check-circle mr-1"></i>มีสต็อก</span>
+                                </div>
+                                <div class="flex justify-between items-center border-t border-slate-200 pt-4">
+                                    <div>
+                                        <span class="text-xs text-slate-400 line-through">฿79,900</span>
+                                        <p class="text-xl font-bold text-blue-700">฿72,900</p>
+                                    </div>
+                                    <button class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md flex items-center gap-1.5">
+                                        <i class="fas fa-shopping-cart"></i> ซื้อ
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-medium"><i class="fas fa-check-circle mr-1"></i>มีสต็อก</span>
-                    </div>
-                    <div class="flex justify-between items-center border-t border-slate-200 pt-4">
-                        <div>
-                            <span class="text-xs text-slate-400 line-through">฿32,900</span>
-                            <p class="text-xl font-bold text-blue-700">฿27,900</p>
+
+                        <!-- สไลด์ 4: Acer Swift -->
+                        <div class="swiper-slide">
+                            <div class="bg-slate-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition notebook-shadow w-full">
+                                <div class="bg-gradient-to-br from-slate-500 to-slate-700 h-48 rounded-xl mb-5 flex items-center justify-center relative overflow-hidden">
+                                    <i class="fas fa-laptop text-white text-7xl opacity-80"></i>
+                                    <span class="absolute top-3 left-3 bg-orange-500 text-white text-xs px-3 py-1.5 rounded-full font-bold">แนะนำ</span>
+                                </div>
+                                <span class="text-xs text-blue-500 font-semibold bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">Acer</span>
+                                <h3 class="font-bold text-slate-800 text-lg mb-2">Swift Go 14</h3>
+                                <p class="text-sm text-slate-500 mb-4 line-clamp-2">AMD Ryzen 7 7840U | 16GB RAM | 512GB SSD | จอ 14" 2.8K</p>
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="flex items-center gap-1">
+                                        <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                        <span class="text-sm font-semibold text-slate-700">4.7</span>
+                                        <span class="text-xs text-slate-400">(178 รีวิว)</span>
+                                    </div>
+                                    <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-medium"><i class="fas fa-check-circle mr-1"></i>มีสต็อก</span>
+                                </div>
+                                <div class="flex justify-between items-center border-t border-slate-200 pt-4">
+                                    <div>
+                                        <span class="text-xs text-slate-400 line-through">฿32,900</span>
+                                        <p class="text-xl font-bold text-blue-700">฿27,900</p>
+                                    </div>
+                                    <button class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md flex items-center gap-1.5">
+                                        <i class="fas fa-shopping-cart"></i> ซื้อ
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <button class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md flex items-center gap-1.5">
-                            <i class="fas fa-shopping-cart"></i> ซื้อ
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            <!-- สไลด์ 5: HP Spectre -->
-            <div class="swiper-slide">
-                <div class="bg-slate-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition notebook-shadow w-full">
-                    <div class="bg-gradient-to-br from-slate-700 to-blue-900 h-48 rounded-xl mb-5 flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-laptop text-white text-7xl opacity-80"></i>
-                        <span class="absolute top-3 left-3 bg-purple-500 text-white text-xs px-3 py-1.5 rounded-full font-bold">พรีเมียม</span>
-                    </div>
-                    <span class="text-xs text-blue-500 font-semibold bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">HP</span>
-                    <h3 class="font-bold text-slate-800 text-lg mb-2">Spectre x360 14</h3>
-                    <p class="text-sm text-slate-500 mb-4 line-clamp-2">Intel Core i7-1355U | 16GB RAM | 1TB SSD | จอ 13.5" 3K2K OLED</p>
-                    <div class="flex justify-between items-center mb-3">
-                        <div class="flex items-center gap-1">
-                            <i class="fas fa-star text-yellow-400 text-sm"></i>
-                            <span class="text-sm font-semibold text-slate-700">4.8</span>
-                            <span class="text-xs text-slate-400">(156 รีวิว)</span>
+                        <!-- สไลด์ 5: HP Spectre -->
+                        <div class="swiper-slide">
+                            <div class="bg-slate-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition notebook-shadow w-full">
+                                <div class="bg-gradient-to-br from-slate-700 to-blue-900 h-48 rounded-xl mb-5 flex items-center justify-center relative overflow-hidden">
+                                    <i class="fas fa-laptop text-white text-7xl opacity-80"></i>
+                                    <span class="absolute top-3 left-3 bg-purple-500 text-white text-xs px-3 py-1.5 rounded-full font-bold">พรีเมียม</span>
+                                </div>
+                                <span class="text-xs text-blue-500 font-semibold bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">HP</span>
+                                <h3 class="font-bold text-slate-800 text-lg mb-2">Spectre x360 14</h3>
+                                <p class="text-sm text-slate-500 mb-4 line-clamp-2">Intel Core i7-1355U | 16GB RAM | 1TB SSD | จอ 13.5" 3K2K OLED</p>
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="flex items-center gap-1">
+                                        <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                        <span class="text-sm font-semibold text-slate-700">4.8</span>
+                                        <span class="text-xs text-slate-400">(156 รีวิว)</span>
+                                    </div>
+                                    <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full font-medium"><i class="fas fa-fire mr-1"></i>ใกล้หมด</span>
+                                </div>
+                                <div class="flex justify-between items-center border-t border-slate-200 pt-4">
+                                    <div>
+                                        <span class="text-xs text-slate-400 line-through">฿58,900</span>
+                                        <p class="text-xl font-bold text-blue-700">฿52,900</p>
+                                    </div>
+                                    <button class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md flex items-center gap-1.5">
+                                        <i class="fas fa-shopping-cart"></i> ซื้อ
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <span class="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full font-medium"><i class="fas fa-fire mr-1"></i>ใกล้หมด</span>
-                    </div>
-                    <div class="flex justify-between items-center border-t border-slate-200 pt-4">
-                        <div>
-                            <span class="text-xs text-slate-400 line-through">฿58,900</span>
-                            <p class="text-xl font-bold text-blue-700">฿52,900</p>
+
+                        <!-- สไลด์ 6: MSI Gaming -->
+                        <div class="swiper-slide">
+                            <div class="bg-slate-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition notebook-shadow w-full">
+                                <div class="bg-gradient-to-br from-red-900 to-slate-900 h-48 rounded-xl mb-5 flex items-center justify-center relative overflow-hidden">
+                                    <i class="fas fa-laptop text-white text-7xl opacity-80"></i>
+                                    <span class="absolute top-3 left-3 bg-red-600 text-white text-xs px-3 py-1.5 rounded-full font-bold">เกมมิ่ง</span>
+                                </div>
+                                <span class="text-xs text-blue-500 font-semibold bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">MSI</span>
+                                <h3 class="font-bold text-slate-800 text-lg mb-2">Stealth 16 Studio</h3>
+                                <p class="text-sm text-slate-500 mb-4 line-clamp-2">Intel Core i9-13900H | RTX 4070 | 32GB RAM | 1TB SSD | 165Hz</p>
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="flex items-center gap-1">
+                                        <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                        <span class="text-sm font-semibold text-slate-700">4.9</span>
+                                        <span class="text-xs text-slate-400">(420 รีวิว)</span>
+                                    </div>
+                                    <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-medium"><i class="fas fa-check-circle mr-1"></i>มีสต็อก</span>
+                                </div>
+                                <div class="flex justify-between items-center border-t border-slate-200 pt-4">
+                                    <div>
+                                        <span class="text-xs text-slate-400 line-through">฿89,900</span>
+                                        <p class="text-xl font-bold text-blue-700">฿79,900</p>
+                                    </div>
+                                    <button class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md flex items-center gap-1.5">
+                                        <i class="fas fa-shopping-cart"></i> ซื้อ
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <button class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md flex items-center gap-1.5">
-                            <i class="fas fa-shopping-cart"></i> ซื้อ
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            <!-- สไลด์ 6: MSI Gaming -->
-            <div class="swiper-slide">
-                <div class="bg-slate-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition notebook-shadow w-full">
-                    <div class="bg-gradient-to-br from-red-900 to-slate-900 h-48 rounded-xl mb-5 flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-laptop text-white text-7xl opacity-80"></i>
-                        <span class="absolute top-3 left-3 bg-red-600 text-white text-xs px-3 py-1.5 rounded-full font-bold">เกมมิ่ง</span>
-                    </div>
-                    <span class="text-xs text-blue-500 font-semibold bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">MSI</span>
-                    <h3 class="font-bold text-slate-800 text-lg mb-2">Stealth 16 Studio</h3>
-                    <p class="text-sm text-slate-500 mb-4 line-clamp-2">Intel Core i9-13900H | RTX 4070 | 32GB RAM | 1TB SSD | 165Hz</p>
-                    <div class="flex justify-between items-center mb-3">
-                        <div class="flex items-center gap-1">
-                            <i class="fas fa-star text-yellow-400 text-sm"></i>
-                            <span class="text-sm font-semibold text-slate-700">4.9</span>
-                            <span class="text-xs text-slate-400">(420 รีวิว)</span>
+                        <!-- สไลด์ 7: MacBook Air -->
+                        <div class="swiper-slide">
+                            <div class="bg-slate-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition notebook-shadow w-full">
+                                <div class="bg-gradient-to-br from-slate-300 to-slate-500 h-48 rounded-xl mb-5 flex items-center justify-center relative overflow-hidden">
+                                    <i class="fas fa-laptop text-white text-7xl opacity-80"></i>
+                                    <span class="absolute top-3 left-3 bg-slate-800 text-white text-xs px-3 py-1.5 rounded-full font-bold">Apple</span>
+                                </div>
+                                <span class="text-xs text-blue-500 font-semibold bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">Apple</span>
+                                <h3 class="font-bold text-slate-800 text-lg mb-2">MacBook Air 15" M3</h3>
+                                <p class="text-sm text-slate-500 mb-4 line-clamp-2">ชิป M3 | 16GB Unified Memory | 512GB SSD | จอ 15.3" Liquid Retina</p>
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="flex items-center gap-1">
+                                        <i class="fas fa-star text-yellow-400 text-sm"></i>
+                                        <span class="text-sm font-semibold text-slate-700">4.9</span>
+                                        <span class="text-xs text-slate-400">(567 รีวิว)</span>
+                                    </div>
+                                    <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-medium"><i class="fas fa-check-circle mr-1"></i>มีสต็อก</span>
+                                </div>
+                                <div class="flex justify-between items-center border-t border-slate-200 pt-4">
+                                    <div>
+                                        <span class="text-xs text-slate-400 line-through">฿56,900</span>
+                                        <p class="text-xl font-bold text-blue-700">฿53,900</p>
+                                    </div>
+                                    <button class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md flex items-center gap-1.5">
+                                        <i class="fas fa-shopping-cart"></i> ซื้อ
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-medium"><i class="fas fa-check-circle mr-1"></i>มีสต็อก</span>
+
                     </div>
-                    <div class="flex justify-between items-center border-t border-slate-200 pt-4">
-                        <div>
-                            <span class="text-xs text-slate-400 line-through">฿89,900</span>
-                            <p class="text-xl font-bold text-blue-700">฿79,900</p>
+                    <!-- Pagination -->
+                    <div class="swiper-pagination"></div>
+                </div>
+
+                <!-- Custom Navigation -->
+                <div class="flex justify-center gap-4 mt-4">
+                    <div class="swiper-button-prev after:content-[''] !static !w-auto !h-auto bg-blue-50 hover:bg-blue-100 text-blue-700 px-5 py-2.5 rounded-xl font-medium transition flex items-center gap-2">
+                        <i class="fas fa-arrow-left"></i> ก่อนหน้า
+                    </div>
+                    <div class="swiper-button-next after:content-[''] !static !w-auto !h-auto bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium transition flex items-center gap-2 shadow-md">
+                        ถัดไป <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chart Section -->
+            <section class="bg-white rounded-3xl shadow-lg border border-blue-100 min-h-[500px] p-6 md:p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">📊 เปรียบเทียบยอดขายโน๊ตบุ๊คตามแบรนด์</h2>
+                        <p class="text-slate-500 text-sm">สถิติย้อนหลัง 6 เดือน</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-medium shadow-md">ปีนี้</button>
+                        <button class="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl text-sm font-medium hover:bg-blue-50 transition">ปีก่อน</button>
+                    </div>
+                </div>
+
+                <div class="space-y-5">
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-semibold text-slate-700">ASUS</span>
+                            <span class="text-sm font-bold text-blue-700">385 เครื่อง</span>
                         </div>
-                        <button class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md flex items-center gap-1.5">
-                            <i class="fas fa-shopping-cart"></i> ซื้อ
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- สไลด์ 7: MacBook Air -->
-            <div class="swiper-slide">
-                <div class="bg-slate-50 rounded-2xl p-5 border border-blue-100 hover:border-blue-300 transition notebook-shadow w-full">
-                    <div class="bg-gradient-to-br from-slate-300 to-slate-500 h-48 rounded-xl mb-5 flex items-center justify-center relative overflow-hidden">
-                        <i class="fas fa-laptop text-white text-7xl opacity-80"></i>
-                        <span class="absolute top-3 left-3 bg-slate-800 text-white text-xs px-3 py-1.5 rounded-full font-bold">Apple</span>
-                    </div>
-                    <span class="text-xs text-blue-500 font-semibold bg-blue-50 px-3 py-1 rounded-full mb-3 inline-block">Apple</span>
-                    <h3 class="font-bold text-slate-800 text-lg mb-2">MacBook Air 15" M3</h3>
-                    <p class="text-sm text-slate-500 mb-4 line-clamp-2">ชิป M3 | 16GB Unified Memory | 512GB SSD | จอ 15.3" Liquid Retina</p>
-                    <div class="flex justify-between items-center mb-3">
-                        <div class="flex items-center gap-1">
-                            <i class="fas fa-star text-yellow-400 text-sm"></i>
-                            <span class="text-sm font-semibold text-slate-700">4.9</span>
-                            <span class="text-xs text-slate-400">(567 รีวิว)</span>
+                        <div class="w-full bg-slate-100 rounded-full h-5 overflow-hidden">
+                            <div class="bg-gradient-to-r from-blue-500 to-sky-400 h-full rounded-full flex items-center justify-end pr-3" style="width: 85%;">
+                                <span class="text-white text-xs font-bold">85%</span>
+                            </div>
                         </div>
-                        <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full font-medium"><i class="fas fa-check-circle mr-1"></i>มีสต็อก</span>
                     </div>
-                    <div class="flex justify-between items-center border-t border-slate-200 pt-4">
-                        <div>
-                            <span class="text-xs text-slate-400 line-through">฿56,900</span>
-                            <p class="text-xl font-bold text-blue-700">฿53,900</p>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-semibold text-slate-700">Lenovo</span>
+                            <span class="text-sm font-bold text-blue-700">290 เครื่อง</span>
                         </div>
-                        <button class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition shadow-md flex items-center gap-1.5">
-                            <i class="fas fa-shopping-cart"></i> ซื้อ
-                        </button>
+                        <div class="w-full bg-slate-100 rounded-full h-5 overflow-hidden">
+                            <div class="bg-gradient-to-r from-sky-500 to-blue-400 h-full rounded-full flex items-center justify-end pr-3" style="width: 72%;">
+                                <span class="text-white text-xs font-bold">72%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-semibold text-slate-700">Dell</span>
+                            <span class="text-sm font-bold text-blue-700">245 เครื่อง</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-5 overflow-hidden">
+                            <div class="bg-gradient-to-r from-indigo-500 to-blue-400 h-full rounded-full flex items-center justify-end pr-3" style="width: 60%;">
+                                <span class="text-white text-xs font-bold">60%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-semibold text-slate-700">Acer</span>
+                            <span class="text-sm font-bold text-blue-700">198 เครื่อง</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-5 overflow-hidden">
+                            <div class="bg-gradient-to-r from-blue-400 to-sky-300 h-full rounded-full flex items-center justify-end pr-3" style="width: 48%;">
+                                <span class="text-white text-xs font-bold">48%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-semibold text-slate-700">HP</span>
+                            <span class="text-sm font-bold text-blue-700">156 เครื่อง</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-5 overflow-hidden">
+                            <div class="bg-gradient-to-r from-blue-300 to-sky-200 h-full rounded-full flex items-center justify-end pr-3" style="width: 35%;">
+                                <span class="text-slate-700 text-xs font-bold">35%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-semibold text-slate-700">Apple</span>
+                            <span class="text-sm font-bold text-blue-700">120 เครื่อง</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-5 overflow-hidden">
+                            <div class="bg-gradient-to-r from-slate-400 to-slate-500 h-full rounded-full flex items-center justify-end pr-3" style="width: 28%;">
+                                <span class="text-white text-xs font-bold">28%</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </div>
-        <!-- Pagination -->
-        <div class="swiper-pagination"></div>
-    </div>
+                <div class="mt-8 flex flex-wrap gap-4 justify-between items-center bg-slate-50 rounded-2xl p-5">
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2"><span class="w-3 h-3 bg-blue-500 rounded-full"></span><span class="text-sm text-slate-600">ยอดขายรวม</span></div>
+                        <div class="flex items-center gap-2"><span class="w-3 h-3 bg-sky-300 rounded-full"></span><span class="text-sm text-slate-600">เป้าหมาย</span></div>
+                    </div>
+                    <p class="text-slate-500 text-sm flex items-center gap-2"><i class="fas fa-circle text-emerald-500 text-xs"></i> ยอดขายโน๊ตบุ๊คเพิ่มขึ้น 24.3% จากปีก่อน</p>
+                </div>
+            </section>
 
-    <!-- Custom Navigation -->
-    <div class="flex justify-center gap-4 mt-4">
-        <div class="swiper-button-prev after:content-[''] !static !w-auto !h-auto bg-blue-50 hover:bg-blue-100 text-blue-700 px-5 py-2.5 rounded-xl font-medium transition flex items-center gap-2">
-            <i class="fas fa-arrow-left"></i> ก่อนหน้า
-        </div>
-        <div class="swiper-button-next after:content-[''] !static !w-auto !h-auto bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium transition flex items-center gap-2 shadow-md">
-            ถัดไป <i class="fas fa-arrow-right"></i>
-        </div>
-    </div>
-</section>
+        </main>
 
-<!-- Chart Section -->
-<section class="bg-white rounded-3xl shadow-lg border border-blue-100 min-h-[500px] p-6 md:p-8">
-    <div class="flex justify-between items-center mb-6">
-        <div>
-            <h2 class="text-2xl font-bold text-slate-800">📊 เปรียบเทียบยอดขายโน๊ตบุ๊คตามแบรนด์</h2>
-            <p class="text-slate-500 text-sm">สถิติย้อนหลัง 6 เดือน</p>
-        </div>
-        <div class="flex gap-2">
-            <button class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-medium shadow-md">ปีนี้</button>
-            <button class="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl text-sm font-medium hover:bg-blue-50 transition">ปีก่อน</button>
-        </div>
-    </div>
-
-    <!-- จำลองกราฟ -->
-    <div class="space-y-5">
-        <!-- ASUS -->
-        <div>
-            <div class="flex justify-between mb-2">
-                <span class="text-sm font-semibold text-slate-700">ASUS</span>
-                <span class="text-sm font-bold text-blue-700">385 เครื่อง</span>
-            </div>
-            <div class="w-full bg-slate-100 rounded-full h-5 overflow-hidden">
-                <div class="bg-gradient-to-r from-blue-500 to-sky-400 h-full rounded-full flex items-center justify-end pr-3 transition-all duration-1000" style="width: 85%;">
-                    <span class="text-white text-xs font-bold">85%</span>
+        <!-- Footer -->
+        <footer class="h-20 bg-white border-t border-blue-100 mt-6">
+            <div class="max-w-7xl mx-auto h-full flex items-center justify-between px-6 text-sm text-slate-500">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-laptop text-blue-500"></i>
+                    <p>© 2026 NoteBookPro. สงวนลิขสิทธิ์ทั้งหมด.</p>
+                </div>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-blue-600 transition">นโยบายความเป็นส่วนตัว</a>
+                    <a href="#" class="hover:text-blue-600 transition">ข้อตกลงการใช้งาน</a>
+                    <a href="#" class="hover:text-blue-600 transition">ติดต่อเรา</a>
+                </div>
+                <div class="flex gap-3 text-slate-400">
+                    <i class="fab fa-facebook hover:text-blue-600 cursor-pointer transition text-lg"></i>
+                    <i class="fab fa-line hover:text-green-500 cursor-pointer transition text-lg"></i>
+                    <i class="fab fa-instagram hover:text-pink-500 cursor-pointer transition text-lg"></i>
                 </div>
             </div>
-        </div>
+        </footer>
+    </div><!-- END mainWrapper -->
 
-        <!-- Lenovo -->
-        <div>
-            <div class="flex justify-between mb-2">
-                <span class="text-sm font-semibold text-slate-700">Lenovo</span>
-                <span class="text-sm font-bold text-blue-700">290 เครื่อง</span>
-            </div>
-            <div class="w-full bg-slate-100 rounded-full h-5 overflow-hidden">
-                <div class="bg-gradient-to-r from-sky-500 to-blue-400 h-full rounded-full flex items-center justify-end pr-3 transition-all duration-1000" style="width: 72%;">
-                    <span class="text-white text-xs font-bold">72%</span>
-                </div>
-            </div>
-        </div>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js">
+    </script>
 
-        <!-- Dell -->
-        <div>
-            <div class="flex justify-between mb-2">
-                <span class="text-sm font-semibold text-slate-700">Dell</span>
-                <span class="text-sm font-bold text-blue-700">245 เครื่อง</span>
-            </div>
-            <div class="w-full bg-slate-100 rounded-full h-5 overflow-hidden">
-                <div class="bg-gradient-to-r from-indigo-500 to-blue-400 h-full rounded-full flex items-center justify-end pr-3 transition-all duration-1000" style="width: 60%;">
-                    <span class="text-white text-xs font-bold">60%</span>
-                </div>
-            </div>
-        </div>
+    <!-- Initialize Swiper + Sidebar Logic -->
+    <script>
+        // ============ SIDEBAR LOGIC ============
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const mainWrapper = document.getElementById('mainWrapper');
+        const toggleIcon = document.getElementById('sidebarToggleIcon');
+        let sidebarOpen = true;
 
-        <!-- Acer -->
-        <div>
-            <div class="flex justify-between mb-2">
-                <span class="text-sm font-semibold text-slate-700">Acer</span>
-                <span class="text-sm font-bold text-blue-700">198 เครื่อง</span>
-            </div>
-            <div class="w-full bg-slate-100 rounded-full h-5 overflow-hidden">
-                <div class="bg-gradient-to-r from-blue-400 to-sky-300 h-full rounded-full flex items-center justify-end pr-3 transition-all duration-1000" style="width: 48%;">
-                    <span class="text-white text-xs font-bold">48%</span>
-                </div>
-            </div>
-        </div>
+        function toggleSidebar() {
+            sidebarOpen = !sidebarOpen;
 
-        <!-- HP -->
-        <div>
-            <div class="flex justify-between mb-2">
-                <span class="text-sm font-semibold text-slate-700">HP</span>
-                <span class="text-sm font-bold text-blue-700">156 เครื่อง</span>
-            </div>
-            <div class="w-full bg-slate-100 rounded-full h-5 overflow-hidden">
-                <div class="bg-gradient-to-r from-blue-300 to-sky-200 h-full rounded-full flex items-center justify-end pr-3 transition-all duration-1000" style="width: 35%;">
-                    <span class="text-slate-700 text-xs font-bold">35%</span>
-                </div>
-            </div>
-        </div>
+            if (window.innerWidth < 1024) {
+                // มือถือ: ใช้ transform เลื่อนเข้าออก
+                if (sidebarOpen) {
+                    sidebar.classList.remove('sidebar-closed');
+                    sidebar.classList.add('sidebar-open');
+                    overlay.classList.add('active');
+                } else {
+                    sidebar.classList.remove('sidebar-open');
+                    sidebar.classList.add('sidebar-closed');
+                    overlay.classList.remove('active');
+                }
+            } else {
+                // เดสก์ท็อป: เปลี่ยนความกว้าง
+                if (sidebarOpen) {
+                    sidebar.classList.remove('sidebar-closed');
+                    sidebar.classList.add('sidebar-open');
+                    mainWrapper.style.marginLeft = '280px';
+                    toggleIcon.classList.remove('fa-chevron-right');
+                    toggleIcon.classList.add('fa-chevron-left');
+                } else {
+                    sidebar.classList.remove('sidebar-open');
+                    sidebar.classList.add('sidebar-closed');
+                    mainWrapper.style.marginLeft = '80px';
+                    toggleIcon.classList.remove('fa-chevron-left');
+                    toggleIcon.classList.add('fa-chevron-right');
+                }
+            }
+        }
 
-        <!-- Apple -->
-        <div>
-            <div class="flex justify-between mb-2">
-                <span class="text-sm font-semibold text-slate-700">Apple</span>
-                <span class="text-sm font-bold text-blue-700">120 เครื่อง</span>
-            </div>
-            <div class="w-full bg-slate-100 rounded-full h-5 overflow-hidden">
-                <div class="bg-gradient-to-r from-slate-400 to-slate-500 h-full rounded-full flex items-center justify-end pr-3 transition-all duration-1000" style="width: 28%;">
-                    <span class="text-white text-xs font-bold">28%</span>
-                </div>
-            </div>
-        </div>
-    </div>
+        function closeSidebar() {
+            if (window.innerWidth < 1024 && sidebarOpen) {
+                sidebarOpen = false;
+                sidebar.classList.remove('sidebar-open');
+                sidebar.classList.add('sidebar-closed');
+                overlay.classList.remove('active');
+            }
+        }
 
-    <!-- สรุปใต้กราฟ -->
-    <div class="mt-8 flex flex-wrap gap-4 justify-between items-center bg-slate-50 rounded-2xl p-5">
-        <div class="flex items-center gap-4">
-            <div class="flex items-center gap-2"><span class="w-3 h-3 bg-blue-500 rounded-full"></span><span
-            class="text-sm text-slate-600">ยอดขายรวม</span></div>
-            <div class="flex items-center gap-2"><span class="w-3 h-3 bg-sky-300 rounded-full"></span><span
-            class="text-sm text-slate-600">เป้าหมาย</span></div>
-        </div>
-        <p class="text-slate-500 text-sm flex items-center gap-2"><i
-            class="fas fa-circle text-emerald-500 text-xs"></i> ยอดขายโน๊ตบุ๊คเพิ่มขึ้น 24.3% จากปีก่อน</p>
-        </div>
-    </section>
+        // รีเซ็ต sidebar ตอนปรับขนาดหน้าจอ
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 1024) {
+                overlay.classList.remove('active');
+                if (sidebarOpen) {
+                    sidebar.classList.remove('sidebar-closed');
+                    sidebar.classList.add('sidebar-open');
+                    mainWrapper.style.marginLeft = '280px';
+                } else {
+                    sidebar.classList.remove('sidebar-open');
+                    sidebar.classList.add('sidebar-closed');
+                    mainWrapper.style.marginLeft = '80px';
+                }
+            } else {
+                mainWrapper.style.marginLeft = '0px';
+                if (sidebarOpen) {
+                    sidebar.classList.add('sidebar-open');
+                    sidebar.classList.remove('sidebar-closed');
+                    overlay.classList.add('active');
+                } else {
+                    sidebar.classList.add('sidebar-closed');
+                    sidebar.classList.remove('sidebar-open');
+                    overlay.classList.remove('active');
+                }
+            }
+        });
 
-</main>
+        // ตั้งค่าเริ่มต้นสำหรับมือถือ (ปิด sidebar)
+        if (window.innerWidth < 1024) {
+            sidebarOpen = false;
+            sidebar.classList.add('sidebar-closed');
+            sidebar.classList.remove('sidebar-open');
+            overlay.classList.remove('active');
+            mainWrapper.style.marginLeft = '0px';
+        }
 
-<!-- Footer -->
-<footer class="h-20 bg-white border-t border-blue-100 mt-6">
-    <div class="max-w-7xl mx-auto h-full flex items-center justify-between px-6 text-sm text-slate-500">
-        <div class="flex items-center gap-2">
-            <i class="fas fa-laptop text-blue-500"></i>
-            <p>© 2026 NoteBookPro. สงวนลิขสิทธิ์ทั้งหมด.</p>
-        </div>
-        <div class="flex gap-6">
-            <a href="#" class="hover:text-blue-600 transition">นโยบายความเป็นส่วนตัว</a>
-            <a href="#" class="hover:text-blue-600 transition">ข้อตกลงการใช้งาน</a>
-            <a href="#" class="hover:text-blue-600 transition">ติดต่อเรา</a>
-        </div>
-        <div class="flex gap-3 text-slate-400">
-            <i class="fab fa-facebook hover:text-blue-600 cursor-pointer transition text-lg"></i>
-            <i class="fab fa-line hover:text-green-500 cursor-pointer transition text-lg"></i>
-            <i class="fab fa-instagram hover:text-pink-500 cursor-pointer transition text-lg"></i>
-        </div>
-    </div>
-</footer>
-
-<!-- Swiper JS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js">
-</script>
-
-<!-- Initialize Swiper -->
-<script>
-    var swiper = new Swiper(".notebookSwiper", {
-        slidesPerView: 1,
-        spaceBetween: 20,
-        loop: true,
-        autoplay: {
-            delay: 3000,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-        },
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-            dynamicBullets: true,
-        },
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-        breakpoints: {
-            640: {
-                slidesPerView: 2,
-                spaceBetween: 20,
+        // ============ SWIPER ============
+        var swiper = new Swiper(".notebookSwiper", {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
             },
-            1024: {
-                slidesPerView: 3,
-                spaceBetween: 24,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+                dynamicBullets: true,
             },
-            1280: {
-                slidesPerView: 4,
-                spaceBetween: 24,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
             },
-        },
-    });
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 24,
+                },
+                1280: {
+                    slidesPerView: 4,
+                    spaceBetween: 24,
+                },
+            },
+        });
 
-    // หยุด autoplay เมื่อ hover
-    document.querySelector('.notebookSwiper').addEventListener('mouseenter', function() {
-        swiper.autoplay.stop();
-    });
-    document.querySelector('.notebookSwiper').addEventListener('mouseleave', function() {
-        swiper.autoplay.start();
-    });
-</script>
+        document.querySelector('.notebookSwiper').addEventListener('mouseenter', function() {
+            swiper.autoplay.stop();
+        });
+        document.querySelector('.notebookSwiper').addEventListener('mouseleave', function() {
+            swiper.autoplay.start();
+        });
+    </script>
 
 </body>
 </html>
