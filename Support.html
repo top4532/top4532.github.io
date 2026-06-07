@@ -69,6 +69,16 @@
             transform: translateY(-3px);
             box-shadow: 0 20px 30px -12px rgba(16, 185, 129, 0.5);
         }
+        .btn-back {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .btn-back:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
         .ripple-btn { position: relative; overflow: hidden; }
         .ripple-btn:after {
             content: '';
@@ -123,6 +133,16 @@
 
     <div class="relative z-10 min-h-screen flex items-center justify-center p-5 md:p-8">
         <div class="w-full max-w-6xl mx-auto">
+            
+            <!-- ปุ่มย้อนกลับหน้าแรก -->
+            <div class="mb-6">
+                <button onclick="goBackToHome()" 
+                        class="btn-back inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-white font-medium transition-all duration-300 shadow-lg hover:shadow-xl">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>ย้อนกลับหน้าแรก</span>
+                </button>
+            </div>
+            
             <div class="text-center mb-8">
                 <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-5 py-2 border border-white/20 shadow-lg">
                     <i class="fa-regular fa-headset text-emerald-300"></i>
@@ -258,6 +278,16 @@
     </div>
 
     <script>
+        // ฟังก์ชันย้อนกลับหน้าแรก
+        function goBackToHome() {
+            // กลับไปที่หน้าแรก (URL ของคุณ)
+            // แก้ไข URL นี้ให้ตรงกับหน้าแรกของเว็บไซต์คุณ
+            window.location.href = "/";
+            
+            // หรือถ้าอยากให้ย้อนกลับไปหน้าถัดไปใน history ให้ใช้:
+            // window.history.back();
+        }
+        
         const form = document.getElementById('supportForm');
         const submitBtn = document.getElementById('sendBtn');
         const formStatus = document.getElementById('formStatus');
