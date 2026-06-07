@@ -116,9 +116,7 @@ tbody tr:hover td{background:#f8fafc}
 td.td-l .cell-in{text-align:left}
 td .cell-in[type=number]{text-align:right}
 .chip{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;font-weight:600;padding:3px 9px;border-radius:6px;letter-spacing:.3px;white-space:nowrap}
-.chip-barcode{font-family:monospace;background:#f1f5f9;color:#334155;border:1px solid #e2e8f0}
 .chip-moq{background:#fdf4ff;color:#7e22ce;border:1px solid #e9d5ff}
-.chip-stock{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
 .actions{display:flex;gap:4px;justify-content:flex-end}
 .btn-del{background:none;border:none;cursor:pointer;color:#cbd5e1;padding:4px 6px;border-radius:6px;font-size:.85rem}
 .btn-del:hover{color:#dc2626;background:#fef2f2}
@@ -126,38 +124,84 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:700;f
 .empty-state{padding:48px 24px;text-align:center;color:#cbd5e1}
 .empty-state i{font-size:2.5rem;margin-bottom:12px;display:block}
 .empty-state p{font-size:.85rem;font-weight:500}
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;z-index:999}
+
+/* Modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;z-index:1000}
 .modal-bg.show{display:flex}
-.modal{background:#fff;border-radius:20px;border:1px solid var(--border);width:480px;max-width:95vw;overflow:hidden}
-.modal-header{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:20px 24px;display:flex;align-items:center;gap:10px}
-.modal-header i{color:#93c5fd;font-size:1.1rem}
-.modal-header h3{font-size:.95rem;font-weight:700;color:#fff;margin:0}
-.modal-body{padding:22px 24px 4px}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
-.form-row .full{grid-column:1/-1}
-label{display:block;font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
-input[type=text],input[type=number]{width:100%;padding:9px 12px;border-radius:10px;border:1.5px solid var(--border);background:#f8fafc;color:var(--text);font-size:.85rem;font-family:'Kanit',sans-serif;outline:none}
-input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:#fff;box-shadow:0 0 0 3px rgba(147,197,253,.2)}
-.modal-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 24px 22px}
-.btn-cancel{padding:9px 20px;border-radius:10px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;font-family:'Kanit',sans-serif}
-.btn-cancel:hover{background:#f1f5f9}
-.btn-save{padding:9px 22px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Kanit',sans-serif;box-shadow:0 4px 14px rgba(29,78,216,.3)}
-.btn-save:hover{box-shadow:0 6px 20px rgba(29,78,216,.4);transform:translateY(-1px)}
-.moq-note{font-size:.72rem;color:#7e22ce;background:#fdf4ff;border:1px solid #e9d5ff;border-radius:8px;padding:6px 12px;margin-bottom:16px;display:flex;align-items:center;gap:6px}
+.modal{background:#fff;border-radius:24px;width:480px;max-width:95vw;overflow:hidden;box-shadow:0 20px 60px rgba(15,23,42,.3)}
+.modal-header{padding:20px 24px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff}
+.modal-header h3{font-size:1rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.modal-header h3 i{color:#93c5fd}
+.modal-body{padding:24px}
+.modal-footer{display:flex;justify-content:flex-end;gap:12px;padding:0 24px 24px}
+.modal-btn-cancel{padding:9px 20px;border-radius:10px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer}
+.modal-btn-cancel:hover{background:#f1f5f9}
+.modal-btn-confirm{padding:9px 22px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;font-size:.82rem;font-weight:700;cursor:pointer}
+.modal-btn-confirm.danger{background:#dc2626}
+.modal-btn-confirm.danger:hover{background:#b91c1c}
+.modal-btn-confirm:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(29,78,216,.4)}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase}
+.form-group input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:'Kanit',sans-serif;font-size:.85rem;outline:none}
+.form-group input:focus{border-color:#93c5fd;box-shadow:0 0 0 3px rgba(147,197,253,.2)}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
 #toasts{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px}
 .toast{background:#0f172a;color:#fff;padding:11px 16px;border-radius:12px;font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 6px 24px rgba(15,23,42,.25);border-left:3px solid #3b82f6;min-width:200px}
 .toast.ok{border-left-color:#22c55e}
-.loading{opacity:0.6;pointer-events:none}
-.btn-export{background:#059669;border-color:#059669}
-.btn-export:hover{background:#047857;border-color:#047857}
-.stat-val .trend-up{color:#22c55e;font-size:.7rem;margin-left:4px}
-.stat-val .trend-down{color:#ef4444;font-size:.7rem;margin-left:4px}
+.toast.warning{border-left-color:#f97316}
 </style>
 </head>
 <body>
 
 <div id="toasts"></div>
 <div id="overlay" onclick="closeSidebar()"></div>
+
+<!-- Modal เพิ่มแถว -->
+<div id="addModal" class="modal-bg">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fas fa-plus-circle"></i> เพิ่มข้อมูลสินค้าใหม่</h3>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label><i class="fas fa-barcode"></i> Barcode</label>
+        <input type="text" id="newBarcode" placeholder="เช่น WHP-005">
+      </div>
+      <div class="form-group">
+        <label><i class="fas fa-cubes"></i> Stock คงเหลือ</label>
+        <input type="number" id="newStock" placeholder="0" value="0">
+      </div>
+      <div class="form-row-2">
+        <div class="form-group"><label>ม.ค.</label><input type="number" id="newJan" placeholder="0" value="0"></div>
+        <div class="form-group"><label>ก.พ.</label><input type="number" id="newFeb" placeholder="0" value="0"></div>
+        <div class="form-group"><label>มี.ค.</label><input type="number" id="newMar" placeholder="0" value="0"></div>
+        <div class="form-group"><label>เม.ย.</label><input type="number" id="newApr" placeholder="0" value="0"></div>
+        <div class="form-group"><label>พ.ค.</label><input type="number" id="newMay" placeholder="0" value="0"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn-cancel" onclick="closeAddModal()">ยกเลิก</button>
+      <button class="modal-btn-confirm" onclick="confirmAddRow()">ตกลง</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal ยืนยันการลบ -->
+<div id="deleteModal" class="modal-bg">
+  <div class="modal">
+    <div class="modal-header">
+      <h3><i class="fas fa-trash-alt"></i> ยืนยันการลบ</h3>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:.9rem; color:var(--text);">คุณต้องการลบสินค้า <strong id="deleteBarcode"></strong> ใช่หรือไม่?</p>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn-cancel" onclick="closeDeleteModal()">ยกเลิก</button>
+      <button class="modal-btn-confirm danger" onclick="confirmDeleteRow()">ลบ</button>
+    </div>
+  </div>
+</div>
 
 <aside id="sidebar">
   <div class="sb-logo">
@@ -168,7 +212,6 @@ input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:
     <div class="sb-label">การจัดการสินค้า</div>
     <a class="sb-item active" href="#" data-tip="Lot Stock"><i class="fas fa-boxes-stacked sb-icon"></i><span class="sb-text">Lot Stock</span><span class="sb-badge blue">New</span></a>
     <a class="sb-item" href="#" data-tip="ล้อทั้งหมด"><i class="fas fa-circle-dot sb-icon"></i><span class="sb-text">ล้อทั้งหมด</span><span class="sb-badge gray">456</span></a>
-    
     <div class="sb-label">บริการ</div>
     <a class="sb-item" href="#" data-tip="ติดต่อเรา"><i class="fas fa-headset sb-icon"></i><span class="sb-text">ติดต่อเรา</span></a>
     <a class="sb-item" href="#" data-tip="บทความ"><i class="fas fa-newspaper sb-icon"></i><span class="sb-text">บทความ</span></a>
@@ -234,7 +277,7 @@ input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:
         <div class="section-title"><i class="fas fa-boxes-stacked"></i>ข้อมูล Lot Stock</div>
         <div style="display:flex;gap:10px">
           <button class="btn-add" onclick="exportData()" style="background:#059669;border-color:#059669"><i class="fas fa-download"></i> Export</button>
-          <button class="btn-add" onclick="addRow()"><i class="fas fa-plus"></i> เพิ่มแถว</button>
+          <button class="btn-add" onclick="openAddModal()"><i class="fas fa-plus"></i> เพิ่มแถว</button>
         </div>
       </div>
       <div class="tbl-wrap">
@@ -243,14 +286,14 @@ input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:
             <tr>
               <th>#</th>
               <th class="th-l">Barcode</th>
-              <th class="th-l th-moq">MOQ <span style="font-size:.65rem;font-weight:500;opacity:.7">(1,500 ตัว)</span></th>
+              <th class="th-l th-moq">MOQ <span style="font-size:.65rem;font-weight:500;opacity:.7">(1,500)</span></th>
               <th class="th-l">Stock</th>
               <th>ม.ค.</th>
               <th>ก.พ.</th>
               <th>มี.ค.</th>
               <th>เม.ย.</th>
               <th>พ.ค.</th>
-              <th class="th-total">ยอดรวม 5 เดือน</th>
+              <th class="th-total">รวม 5 เดือน</th>
               <th class="th-avg">เฉลี่ย/เดือน</th>
               <th></th>
             </tr>
@@ -266,9 +309,11 @@ input[type=text]:focus,input[type=number]:focus{border-color:#93c5fd;background:
 <script>
 const MOQ = 1500;
 const months = ['jan','feb','mar','apr','may'];
+const monthThai = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.'];
 let rows = [];
 let filterText = '';
 let nextId = 1;
+let pendingDeleteIndex = null;
 
 function loadData() {
   const saved = localStorage.getItem('wheelpro_lotstock');
@@ -306,7 +351,7 @@ function render(){
   const tfoot = document.getElementById('tfoot');
 
   if(!rows.length){
-    tbody.innerHTML=`<tr><td colspan="12"><div class="empty-state"><i class="fas fa-inbox"></i><p>กด "เพิ่มแถว" เพื่อเริ่มใส่ข้อมูล</p></div></td></td>`;
+    tbody.innerHTML=`<tr><td colspan="12"><div class="empty-state"><i class="fas fa-inbox"></i><p>กด "เพิ่มแถว" เพื่อเริ่มใส่ข้อมูล</p></div></td></tr>`;
     tfoot.innerHTML=''; 
     updateStats(); 
     return;
@@ -330,16 +375,16 @@ function render(){
         </span>
         </td>
       <td class="td-l">
-        <input class="cell-in" type="number" value="${r.stock||''}" placeholder="จำนวน" min="0"
+        <input class="cell-in" type="number" value="${r.stock||''}" placeholder="0" min="0"
           onchange="updateRow(${ri}, 'stock', +this.value||0)" style="min-width:80px;text-align:right">
         </td>
       ${months.map(m=>`<td>
-        <input class="cell-in" type="number" value="${r[m]||''}" placeholder="—" min="0"
+        <input class="cell-in" type="number" value="${r[m]||''}" placeholder="0" min="0"
           onchange="updateRow(${ri}, '${m}', +this.value||0)">
         </td>`).join('')}
-      <td class="td-total">${total ? fmtStat(total) : '—'}</td>
-      <td class="td-avg">${avg ? fmtStat(avg) : '—'}</td>
-      <td><div class="actions"><button class="btn-del" onclick="delRow(${ri})" title="ลบ"><i class="fas fa-trash-alt"></i></button></div></td>
+      <td class="td-total">${total ? fmtStat(total) : '0'}</td>
+      <td class="td-avg">${avg ? fmtStat(avg) : '0'}</td>
+      <td><div class="actions"><button class="btn-del" onclick="openDeleteModal(${ri})" title="ลบ"><i class="fas fa-trash-alt"></i></button></div></td>
     </tr>`;
   }).join('');
 
@@ -350,14 +395,14 @@ function render(){
   const grandMoq = grandStock ? Math.ceil(grandStock/MOQ) : 0;
   
   tfoot.innerHTML=`<tr>
-    <td colspan="2" class="td-l" style="color:var(--muted)"><i class="fas fa-sigma" style="margin-right:6px"></i>รวมทั้งหมด</td>
-    <td class="td-l"><span class="chip chip-moq"><i class="fas fa-layer-group" style="font-size:.65rem"></i>${grandMoq ? grandMoq+' Lot' : '—'}</span></td>
-    <td style="text-align:right;font-weight:700;color:#15803d">${grandStock ? fmtStat(grandStock) : '—'}</td>
-    ${totals.map(t=>`<td>${t ? fmtStat(t) : '—'}</td>`).join('')}
-    <td class="td-total">${grand ? fmtStat(grand) : '—'}</td>
-    <td class="td-avg">${grandAvg ? fmtStat(grandAvg) : '—'}</td>
+    <td colspan="2" class="td-l" style="color:var(--muted)"><i class="fas fa-sigma"></i> รวมทั้งหมด</td>
+    <td class="td-l"><span class="chip chip-moq"><i class="fas fa-layer-group"></i> ${grandMoq ? grandMoq+' Lot' : '—'}</span></td>
+    <td style="text-align:right;font-weight:700;color:#15803d">${fmtStat(grandStock)}</td>
+    ${totals.map(t=>`<td>${fmtStat(t)}</td>`).join('')}
+    <td class="td-total">${fmtStat(grand)}</td>
+    <td class="td-avg">${fmtStat(grandAvg)}</td>
     <td></td>
-  </tr>`;
+  </table>`;
 
   updateStats();
 }
@@ -372,7 +417,7 @@ function updateRow(index, field, value) {
 }
 
 function checkMoqAlert(row) {
-  if(row.stock && row.stock < MOQ) toast(`⚠️ สินค้า ${row.barcode} มี Stock (${row.stock}) ต่ำกว่า MOQ (${MOQ})`, 'warning');
+  if(row.stock && row.stock < MOQ) toast(`⚠️ สินค้า ${row.barcode} Stock (${row.stock}) ต่ำกว่า MOQ (${MOQ})`, 'warning');
 }
 
 function updateStats(){
@@ -384,29 +429,76 @@ function updateStats(){
   document.getElementById('stat-avg').textContent = grand ? fmtStat(Math.round(grand/5)) : 0;
 }
 
-function addRow(){
-  const newRow = { id: nextId++, barcode: `WHP-${String(nextId-1).padStart(3,'0')}`, stock: 0, jan: 0, feb: 0, mar: 0, apr: 0, may: 0 };
+// Modal functions
+function openAddModal() {
+  document.getElementById('newBarcode').value = `WHP-${String(nextId).padStart(3,'0')}`;
+  document.getElementById('newStock').value = 0;
+  document.getElementById('newJan').value = 0;
+  document.getElementById('newFeb').value = 0;
+  document.getElementById('newMar').value = 0;
+  document.getElementById('newApr').value = 0;
+  document.getElementById('newMay').value = 0;
+  document.getElementById('addModal').classList.add('show');
+}
+
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('show');
+}
+
+function confirmAddRow() {
+  const barcode = document.getElementById('newBarcode').value.trim();
+  if(!barcode) {
+    toast('กรุณากรอก Barcode', 'warning');
+    return;
+  }
+  const newRow = {
+    id: nextId++,
+    barcode: barcode,
+    stock: +document.getElementById('newStock').value || 0,
+    jan: +document.getElementById('newJan').value || 0,
+    feb: +document.getElementById('newFeb').value || 0,
+    mar: +document.getElementById('newMar').value || 0,
+    apr: +document.getElementById('newApr').value || 0,
+    may: +document.getElementById('newMay').value || 0
+  };
   rows.push(newRow);
   saveData();
   render();
-  setTimeout(()=>{ const inputs = document.querySelectorAll('#tbody input[type=text]'); if(inputs.length) inputs[inputs.length-1].focus(); },50);
-  toast('เพิ่มแถวใหม่เรียบร้อย', 'ok');
+  closeAddModal();
+  toast('เพิ่มข้อมูลเรียบร้อย', 'ok');
 }
 
-function delRow(i){
-  if(rows[i].barcode && !confirm(`ลบแถว "${rows[i].barcode}" ?`)) return;
-  rows.splice(i,1);
-  saveData();
-  render();
-  toast('ลบแถวแล้ว','ok');
+function openDeleteModal(index) {
+  pendingDeleteIndex = index;
+  document.getElementById('deleteBarcode').textContent = rows[index].barcode;
+  document.getElementById('deleteModal').classList.add('show');
+}
+
+function closeDeleteModal() {
+  pendingDeleteIndex = null;
+  document.getElementById('deleteModal').classList.remove('show');
+}
+
+function confirmDeleteRow() {
+  if(pendingDeleteIndex !== null && rows[pendingDeleteIndex]) {
+    rows.splice(pendingDeleteIndex, 1);
+    saveData();
+    render();
+    toast('ลบข้อมูลเรียบร้อย', 'ok');
+  }
+  closeDeleteModal();
 }
 
 function filterTable(v){filterText=v.toLowerCase();render()}
 function clearSearch(){ document.getElementById('searchInput').value=''; filterText=''; render(); }
 
 function exportData() {
-  let csv = "Barcode,Stock,ม.ค.,ก.พ.,มี.ค.,เม.ย.,พ.ค.,รวม,เฉลี่ย\n";
-  rows.forEach(r => { const total = calcTotal(r); const avg = total ? Math.round(total/5) : 0; csv += `"${r.barcode}",${r.stock},${r.jan||0},${r.feb||0},${r.mar||0},${r.apr||0},${r.may||0},${total},${avg}\n`; });
+  let csv = "Barcode,Stock,ม.ค.,ก.พ.,มี.ค.,เม.ย.,พ.ค.,รวม 5 เดือน,เฉลี่ยต่อเดือน\n";
+  rows.forEach(r => { 
+    const total = calcTotal(r); 
+    const avg = total ? Math.round(total/5) : 0; 
+    csv += `"${r.barcode}",${r.stock},${r.jan||0},${r.feb||0},${r.mar||0},${r.apr||0},${r.may||0},${total},${avg}\n`; 
+  });
   const blob = new Blob(["\uFEFF" + csv], {type: "text/csv;charset=utf-8;"});
   const link = document.createElement("a");
   const url = URL.createObjectURL(blob);
@@ -438,7 +530,14 @@ function closeSidebar(){ if(window.innerWidth<1024){ document.getElementById('si
 window.addEventListener('resize',()=>{ if(window.innerWidth>=1024){ document.getElementById('overlay').classList.remove('show'); document.getElementById('sidebar').classList.remove('open'); } });
 document.querySelectorAll('.sb-item').forEach(item=>{ item.addEventListener('click',function(e){ e.preventDefault(); document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active')); this.classList.add('active'); toast(`เปลี่ยนไปที่: ${this.querySelector('.sb-text')?.textContent || this.getAttribute('data-tip')}`); if(window.innerWidth<1024) closeSidebar(); }); });
 
-function toast(msg, type=''){ const c=document.getElementById('toasts'), t=document.createElement('div'); const icon = type==='ok' ? '<i class="fas fa-circle-check" style="color:#22c55e"></i>' : (type==='warning' ? '<i class="fas fa-exclamation-triangle" style="color:#f97316"></i>' : '<i class="fas fa-info-circle" style="color:#3b82f6"></i>'); t.className='toast '+(type==='ok'?'ok':''); t.innerHTML=`${icon} ${msg}`; c.appendChild(t); setTimeout(()=>{ t.remove(); },2500); }
+function toast(msg, type=''){ 
+  const c=document.getElementById('toasts'), t=document.createElement('div'); 
+  const icon = type==='ok' ? '<i class="fas fa-circle-check" style="color:#22c55e"></i>' : (type==='warning' ? '<i class="fas fa-exclamation-triangle" style="color:#f97316"></i>' : '<i class="fas fa-info-circle" style="color:#3b82f6"></i>'); 
+  t.className='toast '+(type==='ok'?'ok':(type==='warning'?'warning':'')); 
+  t.innerHTML=`${icon} ${msg}`; 
+  c.appendChild(t); 
+  setTimeout(()=>{ t.remove(); }, 3000); 
+}
 
 function logout() { if(confirm('ยืนยันการออกจากระบบ?')) { toast('ออกจากระบบแล้ว', 'ok'); } }
 function showNotifications() { toast('ไม่มีการแจ้งเตือนใหม่'); }
