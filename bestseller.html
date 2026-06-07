@@ -2,10 +2,12 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WheelPro – Sidebar + Header</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>WheelPro – ตารางวิเคราะห์ยอดขาย</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- ใช้ JsBarcode สำหรับสร้างบาร์โค้ดในตาราง -->
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
   <style>
     :root {
@@ -27,12 +29,10 @@
       font-family: 'Kanit', sans-serif;
       background: var(--bg);
       min-height: 100vh;
-      overflow-x: hidden;
+      overflow-x: auto;
     }
 
-    /* ================================================================
-       OVERLAY
-    ================================================================ */
+    /* OVERLAY + SIDEBAR (沿用原有样式，略微调整宽度与适应性) */
     #overlay {
       position: fixed; inset: 0;
       background: rgba(15,23,42,.55);
@@ -43,9 +43,6 @@
     }
     #overlay.show { opacity: 1; pointer-events: auto; }
 
-    /* ================================================================
-       SIDEBAR
-    ================================================================ */
     #sidebar {
       position: fixed; top: 0; left: 0;
       width: var(--sb-w);
@@ -55,24 +52,15 @@
       display: flex; flex-direction: column;
       z-index: 50;
       overflow: hidden;
-      transition: width .32s cubic-bezier(.4,0,.2,1),
-                  transform .32s cubic-bezier(.4,0,.2,1);
+      transition: width .32s cubic-bezier(.4,0,.2,1), transform .32s cubic-bezier(.4,0,.2,1);
       box-shadow: 2px 0 20px rgba(30,64,175,.07);
     }
-
-    /* collapsed – desktop only */
     #sidebar.collapsed { width: var(--sb-col); }
-
-    /* mobile hidden */
     @media (max-width: 1023px) {
-      #sidebar {
-        transform: translateX(-100%);
-        width: var(--sb-w) !important;
-      }
+      #sidebar { transform: translateX(-100%); width: var(--sb-w) !important; }
       #sidebar.open { transform: translateX(0); }
     }
 
-    /* --- Logo bar --- */
     .sb-logo {
       height: var(--hd-h);
       display: flex; align-items: center; gap: 12px;
@@ -81,287 +69,169 @@
       flex-shrink: 0;
       overflow: hidden;
     }
-    .sb-logo-icon {
-      width: 36px; height: 36px; flex-shrink: 0;
-      background: rgba(255,255,255,.18);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      color: #93c5fd; font-size: 1rem;
-    }
-    .sb-logo-text {
-      color: #fff; font-size: 1.15rem; font-weight: 800;
-      letter-spacing: -.4px; white-space: nowrap;
-      transition: opacity .2s, width .3s;
-    }
+    .sb-logo-icon { width: 36px; height: 36px; flex-shrink: 0; background: rgba(255,255,255,.18); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #93c5fd; }
+    .sb-logo-text { color: #fff; font-size: 1.15rem; font-weight: 800; white-space: nowrap; transition: opacity .2s; }
     .sb-logo-text span { color: #93c5fd; }
     #sidebar.collapsed .sb-logo-text { opacity: 0; width: 0; overflow: hidden; }
 
-    /* --- Nav scroll --- */
-    .sb-nav {
-      flex: 1; overflow-y: auto; overflow-x: hidden;
-      padding: 14px 10px;
-    }
+    .sb-nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 14px 10px; }
     .sb-nav::-webkit-scrollbar { width: 3px; }
-    .sb-nav::-webkit-scrollbar-thumb { background: #bfdbfe; border-radius: 10px; }
-
-    /* section label */
-    .sb-label {
-      font-size: 9.5px; font-weight: 800; color: #94a3b8;
-      text-transform: uppercase; letter-spacing: 1.4px;
-      padding: 0 10px; margin: 18px 0 6px;
-      white-space: nowrap; transition: opacity .2s;
-    }
+    .sb-label { font-size: 9.5px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.4px; padding: 0 10px; margin: 18px 0 6px; white-space: nowrap; transition: opacity .2s; }
     #sidebar.collapsed .sb-label { opacity: 0; }
-
-    /* nav item */
     .sb-item {
-      display: flex; align-items: center; gap: 11px;
-      padding: 9px 10px; border-radius: 12px;
-      text-decoration: none; color: #475569;
-      font-size: .875rem; font-weight: 500;
-      white-space: nowrap; overflow: hidden;
-      transition: background .18s, color .18s, box-shadow .18s;
-      position: relative;
+      display: flex; align-items: center; gap: 11px; padding: 9px 10px; border-radius: 12px;
+      text-decoration: none; color: #475569; font-size: .875rem; font-weight: 500;
+      white-space: nowrap; overflow: hidden; transition: background .18s;
     }
     .sb-item:hover { background: var(--blue-light); color: var(--blue); }
-    .sb-item.active {
-      background: linear-gradient(135deg, var(--blue), #3b82f6);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(29,78,216,.28);
-    }
-    .sb-icon { width: 20px; text-align: center; flex-shrink: 0; font-size: .95rem; }
+    .sb-item.active { background: linear-gradient(135deg, var(--blue), #3b82f6); color: #fff; box-shadow: 0 4px 14px rgba(29,78,216,.28); }
+    .sb-icon { width: 20px; text-align: center; flex-shrink: 0; }
     .sb-text { transition: opacity .18s; }
     #sidebar.collapsed .sb-text { opacity: 0; width: 0; }
-
-    /* badge */
-    .sb-badge {
-      margin-left: auto; font-size: 9.5px; font-weight: 800;
-      padding: 2px 8px; border-radius: 20px; flex-shrink: 0;
-      transition: opacity .18s;
-    }
+    .sb-badge { margin-left: auto; font-size: 9.5px; font-weight: 800; padding: 2px 8px; border-radius: 20px; flex-shrink: 0; transition: opacity .18s; }
     #sidebar.collapsed .sb-badge { opacity: 0; width: 0; overflow: hidden; }
-    .sb-badge.red   { background: #fee2e2; color: #dc2626; }
-    .sb-badge.green { background: #dcfce7; color: #15803d; }
-    .sb-badge.gray  { background: #f1f5f9; color: #64748b; }
-    .sb-badge.blue  { background: #dbeafe; color: #1d4ed8; }
-
-    /* tooltip when collapsed */
+    .sb-badge.red { background: #fee2e2; color: #dc2626; }
     #sidebar.collapsed .sb-item::after {
       content: attr(data-tip);
-      position: absolute; left: calc(100% + 12px); top: 50%;
-      transform: translateY(-50%);
-      background: #0f172a; color: #fff;
-      font-size: .75rem; font-weight: 600;
-      padding: 5px 10px; border-radius: 8px;
-      white-space: nowrap; pointer-events: none;
-      opacity: 0; transition: opacity .15s;
-      z-index: 99;
+      position: absolute; left: calc(100% + 12px); top: 50%; transform: translateY(-50%);
+      background: #0f172a; color: #fff; font-size: .75rem; font-weight: 600;
+      padding: 5px 10px; border-radius: 8px; white-space: nowrap; pointer-events: none;
+      opacity: 0; transition: opacity .15s; z-index: 99;
     }
     #sidebar.collapsed .sb-item:hover::after { opacity: 1; }
-
-    /* --- Profile footer --- */
     .sb-profile { border-top: 1px solid #f1f5f9; padding: 10px; flex-shrink: 0; }
-    .sb-profile-inner {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 8px; border-radius: 12px; background: #f8fafc;
-    }
-    .sb-avatar {
-      width: 34px; height: 34px; flex-shrink: 0;
-      background: linear-gradient(135deg, var(--blue-dark), var(--blue));
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: .8rem;
-    }
-    .sb-pinfo { flex: 1; overflow: hidden; transition: opacity .2s, width .3s; min-width: 0; }
+    .sb-profile-inner { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 12px; background: #f8fafc; }
+    .sb-avatar { width: 34px; height: 34px; background: linear-gradient(135deg, var(--blue-dark), var(--blue)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; }
+    .sb-pinfo { flex: 1; overflow: hidden; transition: opacity .2s; }
     #sidebar.collapsed .sb-pinfo { opacity: 0; width: 0; }
-    .sb-pname {
-      font-size: .78rem; font-weight: 700; color: #1e293b;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
+    .sb-pname { font-size: .78rem; font-weight: 700; color: #1e293b; }
     .sb-prole { font-size: .68rem; color: #94a3b8; }
-    .sb-logout {
-      background: none; border: none; color: #94a3b8;
-      cursor: pointer; padding: 5px; border-radius: 8px;
-      transition: all .2s; flex-shrink: 0; font-size: .85rem;
-    }
+    .sb-logout { background: none; border: none; color: #94a3b8; cursor: pointer; padding: 5px; border-radius: 8px; flex-shrink: 0; }
     .sb-logout:hover { color: #dc2626; background: #fef2f2; }
     #sidebar.collapsed .sb-logout { display: none; }
 
-    /* ================================================================
-       MAIN WRAPPER
-    ================================================================ */
-    #main {
-      margin-left: var(--sb-w);
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      transition: margin-left .32s cubic-bezier(.4,0,.2,1);
-    }
+    /* MAIN */
+    #main { margin-left: var(--sb-w); min-height: 100vh; display: flex; flex-direction: column; transition: margin-left .32s cubic-bezier(.4,0,.2,1); }
     #main.sb-col { margin-left: var(--sb-col); }
     @media (max-width: 1023px) { #main { margin-left: 0 !important; } }
 
-    /* ================================================================
-       HEADER
-    ================================================================ */
+    /* HEADER */
     #header {
-      height: var(--hd-h);
-      background: #fff;
-      border-bottom: 1px solid var(--border);
-      position: sticky; top: 0; z-index: 40;
-      display: flex; align-items: center;
-      padding: 0 20px; gap: 12px;
-      box-shadow: 0 1px 10px rgba(15,23,42,.05);
+      height: var(--hd-h); background: #fff; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 40; display: flex; align-items: center;
+      padding: 0 20px; gap: 12px; flex-wrap: wrap;
     }
-
-    /* hamburger */
-    .hd-burger {
-      width: 38px; height: 38px; flex-shrink: 0;
-      border-radius: 10px; border: 1.5px solid var(--border);
-      background: #f8fafc; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      color: #475569; font-size: .95rem;
-      transition: all .2s;
-    }
-    .hd-burger:hover { background: var(--blue-light); color: var(--blue); border-color: #bfdbfe; }
-
-    /* breadcrumb */
-    .hd-breadcrumb {
-      display: flex; align-items: center; gap: 6px;
-      font-size: .8rem; color: var(--muted);
-    }
-    .hd-breadcrumb .sep { color: #cbd5e1; }
-    .hd-breadcrumb .current { color: var(--text); font-weight: 700; }
-
-    /* search */
-    .hd-search {
-      flex: 1; max-width: 360px;
-      position: relative; margin-left: 8px;
-    }
-    .hd-search input {
-      width: 100%; padding: 8px 36px 8px 38px;
-      border: 1.5px solid var(--border); border-radius: 10px;
-      font-family: 'Kanit', sans-serif; font-size: .82rem;
-      background: #f8fafc; color: var(--text);
-      outline: none; transition: all .2s;
-    }
-    .hd-search input:focus {
-      border-color: #93c5fd; background: #fff;
-      box-shadow: 0 0 0 3px rgba(147,197,253,.2);
-    }
-    .hd-search .si { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: .8rem; pointer-events: none; }
-    .hd-search .sc {
-      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-      background: none; border: none; color: #94a3b8; cursor: pointer;
-      font-size: .75rem; padding: 2px 5px; border-radius: 5px;
-      display: none; transition: color .2s;
-    }
-    .hd-search .sc:hover { color: #dc2626; }
-    .hd-search input:not(:placeholder-shown) ~ .sc { display: block; }
-
-    /* right actions */
+    .hd-burger { width: 38px; height: 38px; border-radius: 10px; border: 1.5px solid var(--border); background: #f8fafc; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .hd-burger:hover { background: var(--blue-light); color: var(--blue); }
+    .hd-breadcrumb { display: flex; align-items: center; gap: 6px; font-size: .8rem; color: var(--muted); }
+    .hd-search { flex: 1; max-width: 320px; position: relative; }
+    .hd-search input { width: 100%; padding: 8px 36px 8px 38px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'Kanit', sans-serif; background: #f8fafc; }
+    .hd-search input:focus { border-color: #93c5fd; background: #fff; box-shadow: 0 0 0 3px rgba(147,197,253,.2); }
+    .hd-search .si { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
     .hd-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+    .hd-btn { width: 38px; height: 38px; border-radius: 10px; border: 1.5px solid var(--border); background: #f8fafc; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+    .hd-btn:hover { background: var(--blue-light); color: var(--blue); }
+    .hd-dot, .hd-badge { position: absolute; top: -5px; right: -5px; background: #f97316; border-radius: 20px; font-size: 9px; font-weight: 800; padding: 0 5px; border: 2px solid white; }
+    .hd-badge { background: #dc2626; color: white; }
+    .hd-div { width: 1px; height: 24px; background: var(--border); }
+    .hd-phone { display: flex; align-items: center; gap: 7px; background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 6px 14px; border-radius: 10px; cursor: pointer; }
+    .hd-user { display: flex; align-items: center; gap: 8px; padding: 5px 12px 5px 5px; border-radius: 10px; border: 1.5px solid var(--border); background: #f8fafc; cursor: pointer; }
+    @media (max-width: 640px) { .hd-phone, .hd-breadcrumb { display: none; } .hd-search { max-width: none; } }
 
-    .hd-btn {
-      width: 38px; height: 38px; border-radius: 10px;
-      border: 1.5px solid var(--border); background: #f8fafc;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; color: #475569; font-size: .9rem;
-      transition: all .2s; position: relative; flex-shrink: 0;
-    }
-    .hd-btn:hover { background: var(--blue-light); color: var(--blue); border-color: #bfdbfe; }
-
-    .hd-dot {
-      position: absolute; top: -3px; right: -3px;
-      width: 8px; height: 8px; border-radius: 50%;
-      border: 2px solid #fff;
-    }
-    .hd-badge {
-      position: absolute; top: -5px; right: -5px;
-      min-width: 18px; height: 18px; padding: 0 4px;
-      border-radius: 20px; border: 2px solid #fff;
-      font-size: 9.5px; font-weight: 800;
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    /* divider */
-    .hd-div { width: 1px; height: 24px; background: var(--border); flex-shrink: 0; }
-
-    /* phone chip */
-    .hd-phone {
-      display: flex; align-items: center; gap: 7px;
-      background: #f0fdf4; border: 1.5px solid #bbf7d0;
-      padding: 6px 14px; border-radius: 10px;
-      cursor: pointer; transition: all .2s; white-space: nowrap;
-    }
-    .hd-phone:hover { background: #dcfce7; }
-    .hd-phone i { color: #16a34a; font-size: .82rem; }
-    .hd-phone span { font-size: .78rem; font-weight: 800; color: #15803d; }
-
-    /* user chip */
-    .hd-user {
-      display: flex; align-items: center; gap: 8px;
-      padding: 5px 12px 5px 5px;
-      border-radius: 10px; border: 1.5px solid var(--border);
-      background: #f8fafc; cursor: pointer; transition: all .2s;
-    }
-    .hd-user:hover { background: var(--blue-light); border-color: #bfdbfe; }
-    .hd-user-av {
-      width: 28px; height: 28px; border-radius: 8px;
-      background: linear-gradient(135deg, var(--blue-dark), var(--blue));
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: .72rem;
-    }
-    .hd-user-name { font-size: .78rem; font-weight: 700; color: var(--text); }
-    .hd-user-role { font-size: .65rem; color: var(--muted); }
-    .hd-user i { color: #94a3b8; font-size: .75rem; margin-left: 4px; }
-
-    /* hide on small screens */
-    @media (max-width: 640px) {
-      .hd-phone { display: none; }
-      .hd-breadcrumb { display: none; }
-      .hd-search { max-width: none; }
-    }
-    @media (max-width: 480px) {
-      .hd-user-name, .hd-user-role, .hd-user i { display: none; }
-      .hd-user { padding: 4px; }
-    }
-
-    /* ================================================================
-       CONTENT PLACEHOLDER
-    ================================================================ */
+    /* =========  ตารางหลัก (Modern Table) ========= */
     .content {
-      flex: 1; padding: 28px 24px;
-      display: flex; flex-direction: column; gap: 16px;
+      padding: 28px 24px;
+      background: var(--bg);
     }
-    .placeholder-card {
-      background: #fff; border-radius: 16px;
-      border: 1.5px dashed #e2e8f0;
-      padding: 40px 24px;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 10px; color: #94a3b8; text-align: center;
+    .stats-header {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+      margin-bottom: 20px;
     }
-    .placeholder-card i { font-size: 2rem; color: #bfdbfe; }
-    .placeholder-card p { font-size: .85rem; font-weight: 500; }
-    .placeholder-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 14px; }
-    .placeholder-mini {
-      background: #fff; border-radius: 14px; border: 1.5px solid #f1f5f9;
-      height: 90px; display: flex; align-items: center; justify-content: center;
-      color: #cbd5e1; font-size: .8rem; font-weight: 600;
-      box-shadow: 0 2px 8px rgba(15,23,42,.04);
-    }
-
-    /* toast */
-    #toasts { position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
-    .toast {
-      background: #0f172a; color: #fff;
-      padding: 10px 16px; border-radius: 12px; font-size: .82rem; font-weight: 600;
+    .stats-header h2 {
+      font-size: 1.4rem; font-weight: 700; color: #0f172a;
       display: flex; align-items: center; gap: 8px;
-      box-shadow: 0 6px 24px rgba(15,23,42,.25);
-      transform: translateX(110%); transition: transform .35s cubic-bezier(.34,1.56,.64,1);
-      border-left: 3px solid #3b82f6; min-width: 200px;
     }
+    .export-btn {
+      background: #fff; border: 1px solid var(--border); border-radius: 12px;
+      padding: 6px 14px; font-family: 'Kanit'; font-weight: 600;
+      cursor: pointer; transition: all .2s; color: var(--blue);
+    }
+    .export-btn:hover { background: var(--blue-light); border-color: var(--blue); }
+
+    .table-wrapper {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.02), 0 2px 6px rgba(0,0,0,0.05);
+      overflow-x: auto;
+      border: 1px solid var(--border);
+    }
+    .sales-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      min-width: 1000px;
+    }
+    .sales-table th {
+      background: #f8fafc;
+      padding: 16px 12px;
+      font-weight: 700;
+      color: #1e293b;
+      border-bottom: 2px solid var(--border);
+      text-align: center;
+    }
+    .sales-table td {
+      padding: 14px 10px;
+      border-bottom: 1px solid #f1f5f9;
+      text-align: center;
+      vertical-align: middle;
+      color: #334155;
+      font-weight: 500;
+    }
+    .sales-table tr:hover td {
+      background: #fefce8;
+    }
+    .barcode-cell {
+      text-align: center;
+      min-width: 130px;
+    }
+    .barcode-svg {
+      display: inline-block;
+      max-width: 120px;
+      background: #fff;
+      padding: 4px;
+      border-radius: 8px;
+    }
+    .sum-row {
+      background: #fef9e6;
+      font-weight: 800;
+      border-top: 2px solid #e2e8f0;
+    }
+    .sum-row td {
+      background: #fffbeb;
+      font-weight: 700;
+      color: #b45309;
+    }
+    .badge-perf {
+      background: #dbeafe;
+      color: #1e40af;
+      border-radius: 30px;
+      padding: 2px 10px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .footer-note {
+      margin-top: 20px;
+      font-size: 0.7rem;
+      text-align: right;
+      color: #94a3b8;
+    }
+    @media (max-width: 700px) {
+      .content { padding: 20px 16px; }
+    }
+    .toast { background: #0f172a; color: white; padding: 10px 16px; border-radius: 12px; font-weight: 600; position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; gap: 8px; transform: translateX(110%); transition: transform .3s; border-left: 4px solid #3b82f6; }
     .toast.show { transform: translateX(0); }
-    .toast.ok   { border-left-color: #22c55e; }
+    #toasts { position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
   </style>
 </head>
 <body>
@@ -369,283 +239,255 @@
 <div id="toasts"></div>
 <div id="overlay" onclick="closeSidebar()"></div>
 
-<!-- ================================================================
-     SIDEBAR
-================================================================ -->
+<!-- SIDEBAR -->
 <aside id="sidebar">
-
-  <!-- Logo -->
   <div class="sb-logo">
     <div class="sb-logo-icon"><i class="fas fa-truck-monster"></i></div>
     <div class="sb-logo-text">Wheel<span>Pro</span></div>
   </div>
-
-  <!-- Nav -->
   <nav class="sb-nav">
-
     <div class="sb-label">เมนูหลัก</div>
-
-    <a class="sb-item active" href="#" data-tip="หน้าหลัก">
-      <i class="fas fa-house sb-icon"></i>
-      <span class="sb-text">หน้าหลัก</span>
-    </a>
-    <a class="sb-item" href="#" data-tip="อันดับขายดี">
-      <i class="fas fa-chart-line sb-icon"></i>
-      <span class="sb-text">อันดับขายดี</span>
-      <span class="sb-badge red">Hot</span>
-    </a>
-    <a class="sb-item" href="#" data-tip="โปรโมชั่น">
-      <i class="fas fa-tags sb-icon"></i>
-      <span class="sb-text">โปรโมชั่น</span>
-      <span class="sb-badge green">ลด 30%</span>
-    </a>
-    <a class="sb-item" href="#" data-tip="สินค้าแนะนำ">
-      <i class="fas fa-star sb-icon"></i>
-      <span class="sb-text">สินค้าแนะนำ</span>
-    </a>
-    <a class="sb-item" href="#" data-tip="สินค้าพรีเมียม">
-      <i class="fas fa-crown sb-icon"></i>
-      <span class="sb-text">สินค้าพรีเมียม</span>
-    </a>
-    <a class="sb-item" href="#" data-tip="รายการสั่งซื้อ">
-      <i class="fas fa-box-open sb-icon"></i>
-      <span class="sb-text">รายการสั่งซื้อ</span>
-      <span class="sb-badge blue">5</span>
-    </a>
-
+    <a class="sb-item active" href="#" data-tip="หน้าหลัก"><i class="fas fa-house sb-icon"></i><span class="sb-text">หน้าหลัก</span></a>
+    <a class="sb-item" href="#" data-tip="อันดับขายดี"><i class="fas fa-chart-line sb-icon"></i><span class="sb-text">อันดับขายดี</span><span class="sb-badge red">Hot</span></a>
+    <a class="sb-item" href="#" data-tip="โปรโมชั่น"><i class="fas fa-tags sb-icon"></i><span class="sb-text">โปรโมชั่น</span><span class="sb-badge green">ลด 30%</span></a>
+    <a class="sb-item" href="#" data-tip="สินค้าแนะนำ"><i class="fas fa-star sb-icon"></i><span class="sb-text">สินค้าแนะนำ</span></a>
+    <a class="sb-item" href="#" data-tip="รายการสั่งซื้อ"><i class="fas fa-box-open sb-icon"></i><span class="sb-text">รายการสั่งซื้อ</span><span class="sb-badge blue">5</span></a>
     <div class="sb-label">ประเภทล้อ</div>
-
-    <a class="sb-item" href="#" data-tip="ล้อทั้งหมด">
-      <i class="fas fa-circle-dot sb-icon"></i>
-      <span class="sb-text">ล้อทั้งหมด</span>
-      <span class="sb-badge gray">456</span>
-    </a>
-    <a class="sb-item" href="#" data-tip="ล้อบรรทุก 10 ล้อ">
-      <i class="fas fa-truck sb-icon"></i>
-      <span class="sb-text">ล้อบรรทุก 10 ล้อ</span>
-    </a>
-    <a class="sb-item" href="#" data-tip="ล้อเทรลเลอร์">
-      <i class="fas fa-truck-moving sb-icon"></i>
-      <span class="sb-text">ล้อเทรลเลอร์</span>
-    </a>
-    <a class="sb-item" href="#" data-tip="ล้อออฟโรด">
-      <i class="fas fa-shield-halved sb-icon"></i>
-      <span class="sb-text">ล้อออฟโรด</span>
-    </a>
-    <a class="sb-item" href="#" data-tip="ล้อสปอร์ต">
-      <i class="fas fa-bolt sb-icon"></i>
-      <span class="sb-text">ล้อสปอร์ต</span>
-    </a>
-
-    <div class="sb-label">บริการ</div>
-
-    <a class="sb-item" href="#" data-tip="ติดตั้งและบริการ">
-      <i class="fas fa-wrench sb-icon"></i>
-      <span class="sb-text">ติดตั้งและบริการ</span>
-    </a>
-    <a class="sb-item" href="#" data-tip="รับประกัน">
-      <i class="fas fa-shield-check sb-icon"></i>
-      <span class="sb-text">รับประกัน</span>
-    </a>
-    <a class="sb-item" href="#" data-tip="ติดต่อเรา">
-      <i class="fas fa-headset sb-icon"></i>
-      <span class="sb-text">ติดต่อเรา</span>
-    </a>
-    <a class="sb-item" href="#" data-tip="บทความ">
-      <i class="fas fa-newspaper sb-icon"></i>
-      <span class="sb-text">บทความ</span>
-    </a>
-
+    <a class="sb-item" href="#" data-tip="ล้อทั้งหมด"><i class="fas fa-circle-dot sb-icon"></i><span class="sb-text">ล้อทั้งหมด</span><span class="sb-badge gray">456</span></a>
+    <a class="sb-item" href="#" data-tip="ล้อบรรทุก 10 ล้อ"><i class="fas fa-truck sb-icon"></i><span class="sb-text">ล้อบรรทุก 10 ล้อ</span></a>
+    <a class="sb-item" href="#" data-tip="ล้อเทรลเลอร์"><i class="fas fa-truck-moving sb-icon"></i><span class="sb-text">ล้อเทรลเลอร์</span></a>
+    <a class="sb-item" href="#" data-tip="ล้อออฟโรด"><i class="fas fa-shield-halved sb-icon"></i><span class="sb-text">ล้อออฟโรด</span></a>
   </nav>
-
-  <!-- Profile -->
   <div class="sb-profile">
     <div class="sb-profile-inner">
       <div class="sb-avatar"><i class="fas fa-user-tie"></i></div>
-      <div class="sb-pinfo">
-        <div class="sb-pname">คุณสมศักดิ์ รักล้อ</div>
-        <div class="sb-prole">ผู้จัดการฝ่ายขาย</div>
-      </div>
-      <button class="sb-logout" onclick="toast('ออกจากระบบแล้ว')" title="ออกจากระบบ">
-        <i class="fas fa-sign-out-alt"></i>
-      </button>
+      <div class="sb-pinfo"><div class="sb-pname">คุณสมศักดิ์ รักล้อ</div><div class="sb-prole">ผู้จัดการฝ่ายขาย</div></div>
+      <button class="sb-logout" onclick="toast('ออกจากระบบแล้ว')"><i class="fas fa-sign-out-alt"></i></button>
     </div>
   </div>
-
 </aside>
 
-<!-- ================================================================
-     MAIN
-================================================================ -->
 <div id="main">
-
-  <!-- ============================================================
-       HEADER
-  ============================================================ -->
   <header id="header">
-
-    <!-- Hamburger -->
-    <button class="hd-burger" onclick="toggleSidebar()" title="เปิด/ปิด Sidebar">
-      <i class="fas fa-bars" id="burgerIcon"></i>
-    </button>
-
-    <!-- Breadcrumb -->
-    <nav class="hd-breadcrumb">
-      <i class="fas fa-house" style="color:#94a3b8;font-size:.75rem;"></i>
-      <span class="sep">/</span>
-      <span>สินค้า</span>
-      <span class="sep">/</span>
-      <span class="current">ล้อรถบรรทุก</span>
-    </nav>
-
-    <!-- Search -->
-    <div class="hd-search">
-      <i class="fas fa-search si"></i>
-      <input id="searchInput" type="text" placeholder="ค้นหาล้อรถบรรทุก..." oninput="onSearch(this)">
-      <button class="sc" onclick="clearSearch()"><i class="fas fa-xmark"></i></button>
-    </div>
-
-    <!-- Right actions -->
+    <button class="hd-burger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+    <nav class="hd-breadcrumb"><i class="fas fa-house"></i><span class="sep">/</span><span>วิเคราะห์ยอดขาย</span><span class="sep">/</span><span class="current">ตาราง B/L และยอดขาย</span></nav>
+    <div class="hd-search"><i class="fas fa-search si"></i><input id="searchInput" type="text" placeholder="ค้นหา B/L หรือรหัสสินค้า..."><button class="sc" onclick="clearSearch()"><i class="fas fa-xmark"></i></button></div>
     <div class="hd-actions">
-
-      <!-- Notification -->
-      <div class="hd-btn" onclick="toast('ไม่มีการแจ้งเตือนใหม่')" title="การแจ้งเตือน">
-        <i class="fas fa-bell"></i>
-        <span class="hd-dot" style="background:#f97316;"></span>
-      </div>
-
-      <!-- Wishlist -->
-      <div class="hd-btn" onclick="toast('รายการโปรด: 3 รายการ')" title="รายการโปรด">
-        <i class="fas fa-heart" style="color:#dc2626;"></i>
-        <span class="hd-badge" style="background:#dc2626;color:#fff;">3</span>
-      </div>
-
-      <!-- Cart -->
-      <div class="hd-btn" id="cartBtn" onclick="toast('ตะกร้าสินค้า: 5 รายการ')" title="ตะกร้าสินค้า" style="color:var(--blue);">
-        <i class="fas fa-shopping-cart"></i>
-        <span class="hd-badge" id="cartBadge" style="background:#dc2626;color:#fff;">5</span>
-      </div>
-
+      <div class="hd-btn" onclick="toast('ไม่มีการแจ้งเตือนใหม่')"><i class="fas fa-bell"></i><span class="hd-dot" style="background:#f97316;"></span></div>
+      <div class="hd-btn" onclick="toast('รายการโปรด: 3 รายการ')"><i class="fas fa-heart" style="color:#dc2626;"></i><span class="hd-badge">3</span></div>
+      <div class="hd-btn" onclick="toast('ตะกร้าสินค้า: 5 รายการ')"><i class="fas fa-shopping-cart"></i><span class="hd-badge">5</span></div>
       <div class="hd-div"></div>
-
-      <!-- Phone -->
-      <div class="hd-phone" onclick="toast('กำลังโทร 02-123-4567...')">
-        <i class="fas fa-phone"></i>
-        <span>02-123-4567</span>
-      </div>
-
-      <!-- User chip -->
-      <div class="hd-user" onclick="toast('เปิดโปรไฟล์')">
-        <div class="hd-user-av"><i class="fas fa-user-tie"></i></div>
-        <div>
-          <div class="hd-user-name">สมศักดิ์ ร.</div>
-          <div class="hd-user-role">Admin</div>
-        </div>
-        <i class="fas fa-chevron-down"></i>
-      </div>
-
+      <div class="hd-phone" onclick="toast('โทร 02-123-4567')"><i class="fas fa-phone"></i><span>02-123-4567</span></div>
+      <div class="hd-user" onclick="toast('โปรไฟล์สมศักดิ์')"><div class="hd-user-av"><i class="fas fa-user-tie"></i></div><div><div class="hd-user-name">สมศักดิ์ ร.</div><div class="hd-user-role">Admin</div></div><i class="fas fa-chevron-down"></i></div>
     </div>
   </header>
 
-  <!-- ============================================================
-       DEMO CONTENT
-  ============================================================ -->
   <div class="content">
-    <div class="placeholder-row">
-      <div class="placeholder-mini"><i class="fas fa-chart-line" style="margin-right:6px;"></i> ยอดขาย</div>
-      <div class="placeholder-mini"><i class="fas fa-box" style="margin-right:6px;"></i> สินค้า</div>
-      <div class="placeholder-mini"><i class="fas fa-truck" style="margin-right:6px;"></i> จัดส่ง</div>
-      <div class="placeholder-mini"><i class="fas fa-star" style="margin-right:6px;"></i> รีวิว</div>
+    <div class="stats-header">
+      <h2><i class="fas fa-chart-simple" style="color:#1d4ed8;"></i> รายงานยอดขายแยกตาม B/L (Bill of Lading)</h2>
+      <button class="export-btn" onclick="exportTableToCSV()"><i class="fas fa-download"></i> ดาวน์โหลด CSV</button>
     </div>
-    <div class="placeholder-card" style="flex:1;min-height:320px;">
-      <i class="fas fa-table-cells-large"></i>
-      <p>เนื้อหาหลักของคุณจะแสดงที่นี่</p>
-      <p style="font-size:.75rem;color:#cbd5e1;">Sidebar + Header พร้อมใช้งานแล้ว ✓</p>
+    <div class="table-wrapper">
+      <table class="sales-table" id="salesDataTable">
+        <thead>
+          <tr>
+            <th>บาร์โค้ด (B/L)</th><th>รหัส / B/L No.</th><th>ยอดขาย ม.ค.</th><th>ยอดขาย ก.พ.</th><th>ยอดขาย มี.ค.</th><th>ยอดขาย เม.ย.</th><th>ยอดขาย พ.ค.</th><th>ยอดรวม 5 เดือน</th><th>ยอดขายเฉลี่ย/เดือน</th>
+          </tr>
+        </thead>
+        <tbody id="dynamicTableBody">
+          <!-- ข้อมูลจะถูกสร้างผ่าน JS พร้อมบาร์โค้ด และการคำนวณ -->
+        </tbody>
+        <tfoot id="tableFooter" class="sum-row">
+          <!-- ผลรวมเฉลี่ยรวมและ grand total -->
+        </tfoot>
+      </table>
+    </div>
+    <div class="footer-note">
+      <i class="fas fa-chart-line"></i> อัปเดตล่าสุด: มกราคม - พฤษภาคม 2568 | บาร์โค้ดแสดงตามมาตรฐาน Code128
     </div>
   </div>
-
-</div><!-- end #main -->
-
+</div>
 
 <script>
-/* ================================================================
-   STATE
-================================================================ */
-let sbOpen = window.innerWidth >= 1024;
-let sbCollapsed = false;
-
-/* ================================================================
-   SIDEBAR TOGGLE
-================================================================ */
-function toggleSidebar() {
-  const sb   = document.getElementById('sidebar');
-  const main = document.getElementById('main');
-  const ov   = document.getElementById('overlay');
-
-  if (window.innerWidth < 1024) {
-    /* Mobile: slide in/out */
-    sbOpen = !sbOpen;
-    sb.classList.toggle('open', sbOpen);
-    ov.classList.toggle('show', sbOpen);
-  } else {
-    /* Desktop: collapse / expand */
-    sbCollapsed = !sbCollapsed;
-    sb.classList.toggle('collapsed', sbCollapsed);
-    main.classList.toggle('sb-col', sbCollapsed);
+  /* ---------- Helper ---------- */
+  function toast(msg) {
+    let container = document.getElementById('toasts');
+    let t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = `<i class="fas fa-circle-check" style="color:#22c55e;"></i> ${msg}`;
+    container.appendChild(t);
+    requestAnimationFrame(() => { requestAnimationFrame(() => t.classList.add('show')); });
+    setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 2800);
   }
-}
 
-function closeSidebar() {
-  if (window.innerWidth < 1024) {
-    sbOpen = false;
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('overlay').classList.remove('show');
+  /* ข้อมูลตัวอย่างที่มี บาร์โค้ด B/L, ยอดขายแต่ละเดือน (หน่วย: พันบาท หรือ จำนวน) */
+  const salesDataset = [
+    { blCode: "BL-WH001", blName: "WHL-2210", jan: 125000, feb: 132000, mar: 148000, apr: 137500, may: 162000 },
+    { blCode: "BL-WH002", blName: "WHL-571R", jan: 98000, feb: 103000, mar: 112000, apr: 119000, may: 127500 },
+    { blCode: "BL-TR018", blName: "TRL-X9", jan: 210000, feb: 225000, mar: 243000, apr: 258000, may: 275000 },
+    { blCode: "BL-OF042", blName: "OFF-ROAD PRO", jan: 87500, feb: 93200, mar: 101200, apr: 108500, may: 114300 },
+    { blCode: "BL-SP997", blName: "SPORT-R", jan: 154000, feb: 166000, mar: 173000, apr: 189000, may: 201000 }
+  ];
+
+  // ฟังก์ชันคำนวณยอดรวม 5 เดือน + เฉลี่ย
+  function computeTotals(item) {
+    let sum = item.jan + item.feb + item.mar + item.apr + item.may;
+    let avg = sum / 5;
+    return { sum, avg: Math.round(avg) };
   }
-}
 
-window.addEventListener('resize', () => {
-  if (window.innerWidth >= 1024) {
-    document.getElementById('overlay').classList.remove('show');
-    document.getElementById('sidebar').classList.remove('open');
+  // สร้างบาร์โค้ดแบบ SVG โดยใช้ JsBarcode (รองรับในตาราง)
+  function generateBarcodeSVG(blCode, targetElement) {
+    // ใช้ JsBarcode กับ element canvas? แต่เนื่องจากเราจะใส่ใน td โดยตรง สร้าง canvas element แทน SVG ให้ง่าย
+    // หรือสร้าง canvas แล้วแปลงเป็นภาพ? ใช้ jsbarcode บน canvas ดีกว่า
+    const canvas = document.createElement('canvas');
+    canvas.className = 'barcode-canvas';
+    canvas.style.width = '120px';
+    canvas.style.height = '35px';
+    JsBarcode(canvas, blCode, {
+      format: "CODE128",
+      width: 1.2,
+      height: 30,
+      displayValue: true,
+      fontSize: 10,
+      margin: 0,
+      textMargin: 2
+    });
+    return canvas;
   }
-});
 
-/* ================================================================
-   NAV ACTIVE
-================================================================ */
-document.querySelectorAll('.sb-item').forEach(item => {
-  item.addEventListener('click', function(e) {
-    e.preventDefault();
-    document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
-    this.classList.add('active');
-    if (window.innerWidth < 1024) closeSidebar();
-  });
-});
+  // สร้างแถวตาราง
+  function renderTable() {
+    const tbody = document.getElementById('dynamicTableBody');
+    const tfoot = document.getElementById('tableFooter');
+    tbody.innerHTML = '';
+    let grandTotalSum = 0;
+    let totalAvgSum = 0;
+    let rowCount = 0;
 
-/* ================================================================
-   SEARCH
-================================================================ */
-function onSearch(input) { /* extend with real search */ }
-function clearSearch() {
-  document.getElementById('searchInput').value = '';
-  document.getElementById('searchInput').focus();
-}
+    salesDataset.forEach((item, idx) => {
+      const { sum, avg } = computeTotals(item);
+      grandTotalSum += sum;
+      totalAvgSum += avg;
+      rowCount++;
 
-/* ================================================================
-   TOAST
-================================================================ */
-function toast(msg, type='') {
-  const c = document.getElementById('toasts');
-  const t = document.createElement('div');
-  t.className = 'toast ' + type;
-  t.innerHTML = `<i class="fas fa-circle-check" style="color:#22c55e;"></i> ${msg}`;
-  c.appendChild(t);
-  requestAnimationFrame(() => { requestAnimationFrame(() => t.classList.add('show')); });
-  setTimeout(() => {
-    t.classList.remove('show');
-    setTimeout(() => t.remove(), 400);
-  }, 2800);
-}
+      const tr = document.createElement('tr');
+
+      // เซลล์บาร์โค้ด - ใช้ canvas แทน SVG แต่วางใน td
+      const tdBar = document.createElement('td');
+      tdBar.className = 'barcode-cell';
+      const canvasCode = generateBarcodeSVG(item.blCode, null);
+      tdBar.appendChild(canvasCode);
+      tr.appendChild(tdBar);
+
+      // เซลล์ B/L No.
+      const tdBlName = document.createElement('td');
+      tdBlName.innerText = item.blName;
+      tdBlName.style.fontWeight = '600';
+      tr.appendChild(tdBlName);
+
+      // เดือน
+      const janTd = document.createElement('td'); janTd.innerText = item.jan.toLocaleString(); tr.appendChild(janTd);
+      const febTd = document.createElement('td'); febTd.innerText = item.feb.toLocaleString(); tr.appendChild(febTd);
+      const marTd = document.createElement('td'); marTd.innerText = item.mar.toLocaleString(); tr.appendChild(marTd);
+      const aprTd = document.createElement('td'); aprTd.innerText = item.apr.toLocaleString(); tr.appendChild(aprTd);
+      const mayTd = document.createElement('td'); mayTd.innerText = item.may.toLocaleString(); tr.appendChild(mayTd);
+      
+      const sumTd = document.createElement('td'); sumTd.innerText = sum.toLocaleString(); sumTd.style.fontWeight = '800'; tr.appendChild(sumTd);
+      const avgTd = document.createElement('td'); avgTd.innerText = avg.toLocaleString(); avgTd.style.fontWeight = '800'; tr.appendChild(avgTd);
+      
+      tbody.appendChild(tr);
+    });
+
+    // แถวผลรวมเฉลี่ยรวม และ grand total
+    const grandAvgAll = rowCount ? Math.round(totalAvgSum / rowCount) : 0;
+    const footerRow = document.createElement('tr');
+    footerRow.classList.add('sum-row');
+    footerRow.innerHTML = `
+      <td colspan="2" style="text-align:right; font-weight:800;">🎯 รวมทั้งหมด / ค่าเฉลี่ยรวม</td>
+      <td colspan="5" style="text-align:center;"></td>
+      <td style="font-weight:800; background:#fffbeb;">💰 ${grandTotalSum.toLocaleString()} ฿</td>
+      <td style="font-weight:800; background:#fffbeb;">📊 ${Math.round(grandTotalSum/rowCount).toLocaleString()} ฿/เดือน</td>
+    `;
+    tfoot.innerHTML = '';
+    tfoot.appendChild(footerRow);
+  }
+
+  // ฟังก์ชันค้นหา (กรองตาม B/L No. หรือ B/L Code)
+  function filterTableBySearch() {
+    const searchVal = document.getElementById('searchInput').value.trim().toLowerCase();
+    const tbody = document.getElementById('dynamicTableBody');
+    tbody.innerHTML = '';
+    let filtered = salesDataset.filter(item => item.blCode.toLowerCase().includes(searchVal) || item.blName.toLowerCase().includes(searchVal));
+    if(filtered.length === 0 && searchVal !== "") {
+      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:40px;">🔍 ไม่พบข้อมูล B/L ที่ค้นหา</td></tr>';
+      document.getElementById('tableFooter').innerHTML = '<tr class="sum-row"><td colspan="9" style="text-align:center;">ไม่มีข้อมูลสำหรับผลรวม</td></tr>';
+      return;
+    }
+    let grandTotalSum = 0, totalAvgSum=0, rowCount=0;
+    filtered.forEach(item => {
+      const { sum, avg } = computeTotals(item);
+      grandTotalSum += sum; totalAvgSum += avg; rowCount++;
+      const tr = document.createElement('tr');
+      const tdBar = document.createElement('td');
+      tdBar.className = 'barcode-cell';
+      tdBar.appendChild(generateBarcodeSVG(item.blCode, null));
+      tr.appendChild(tdBar);
+      const tdBlName = document.createElement('td'); tdBlName.innerText = item.blName; tr.appendChild(tdBlName);
+      tr.appendChild(createNumTd(item.jan)); tr.appendChild(createNumTd(item.feb)); tr.appendChild(createNumTd(item.mar));
+      tr.appendChild(createNumTd(item.apr)); tr.appendChild(createNumTd(item.may));
+      tr.appendChild(createNumTd(sum, true)); tr.appendChild(createNumTd(avg, true));
+      tbody.appendChild(tr);
+    });
+    const avgAll = rowCount ? Math.round(totalAvgSum/rowCount):0;
+    const footRow = document.createElement('tr');
+    footRow.classList.add('sum-row');
+    footRow.innerHTML = `<td colspan="2" style="text-align:right;">ผลรวมจาก ${rowCount} รายการ</td><td colspan="5"></td><td style="font-weight:800;">${grandTotalSum.toLocaleString()} ฿</td><td>${avgAll.toLocaleString()} ฿</td>`;
+    document.getElementById('tableFooter').innerHTML = '';
+    document.getElementById('tableFooter').appendChild(footRow);
+  }
+
+  function createNumTd(val, bold=false) { let td=document.createElement('td'); td.innerText=val.toLocaleString(); if(bold) td.style.fontWeight='800'; return td; }
+
+  function clearSearch() {
+    document.getElementById('searchInput').value = '';
+    renderTable();
+  }
+
+  function exportTableToCSV() {
+    let dataToExport = salesDataset;
+    let rows = [["B/L Code","B/L Name","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","รวม 5 เดือน","เฉลี่ย/เดือน"]];
+    dataToExport.forEach(item => {
+      let {sum, avg} = computeTotals(item);
+      rows.push([item.blCode, item.blName, item.jan, item.feb, item.mar, item.apr, item.may, sum, avg]);
+    });
+    // เพิ่มสรุปท้าย
+    let totalAll = dataToExport.reduce((acc,it)=> acc + (it.jan+it.feb+it.mar+it.apr+it.may),0);
+    rows.push(["","Grand Total","","","","","",totalAll, Math.round(totalAll/dataToExport.length)]);
+    let csvContent = rows.map(row => row.join(",")).join("\n");
+    const blob = new Blob(["\uFEFF" + csvContent], {type: "text/csv;charset=utf-8;"});
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.href = url; link.setAttribute("download","WheelPro_sales_report.csv");
+    document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url);
+    toast("ส่งออก CSV สำเร็จ");
+  }
+
+  // Sidebar logic
+  let sbOpen = window.innerWidth >= 1024;
+  let sbCollapsed = false;
+  function toggleSidebar() {
+    const sb = document.getElementById('sidebar'); const main = document.getElementById('main'); const ov = document.getElementById('overlay');
+    if (window.innerWidth < 1024) { sbOpen = !sbOpen; sb.classList.toggle('open', sbOpen); ov.classList.toggle('show', sbOpen); }
+    else { sbCollapsed = !sbCollapsed; sb.classList.toggle('collapsed', sbCollapsed); main.classList.toggle('sb-col', sbCollapsed); }
+  }
+  function closeSidebar() { if (window.innerWidth < 1024) { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); } }
+  window.addEventListener('resize', () => { if (window.innerWidth >= 1024) { document.getElementById('overlay').classList.remove('show'); document.getElementById('sidebar').classList.remove('open'); } });
+  document.querySelectorAll('.sb-item').forEach(link => link.addEventListener('click',(e)=>{e.preventDefault(); if(window.innerWidth<1024)closeSidebar(); toast('เมนู '+link.innerText.trim());}));
+  
+  document.getElementById('searchInput').addEventListener('input', filterTableBySearch);
+  // เริ่มต้นเรนเดอร์
+  renderTable();
 </script>
 </body>
 </html>
