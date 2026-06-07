@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--sb-w:280px;--sb-col:72px;--hd-h:64px;--blue:#0284c7;--blue-dark:#0369a1;--blue-light:#e0f2fe;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--bg:#f0f9ff;--white:#ffffff}
+:root{--sb-w:280px;--sb-col:72px;--hd-h:64px;--blue:#0284c7;--blue-dark:#0369a1;--blue-light:#e0f2fe;--border:#cbd5e1;--text:#0f172a;--muted:#64748b;--bg:#f0f9ff;--white:#ffffff}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Kanit',sans-serif;background:var(--bg);min-height:100vh;overflow-x:hidden}
 #overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(3px);z-index:45;opacity:0;pointer-events:none;transition:opacity .15s}
@@ -89,9 +89,9 @@ body{font-family:'Kanit',sans-serif;background:var(--bg);min-height:100vh;overfl
 .stat-val{font-size:1.25rem;font-weight:800;color:var(--text)}
 .stat-sub{font-size:.68rem;color:#22c55e;font-weight:600;margin-top:2px}
 
-.section-card{background:var(--white);border-radius:16px;border:1px solid var(--border);overflow:hidden}
-.section-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border);gap:12px;flex-wrap:wrap}
-.section-title{font-size:.95rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.section-card{background:var(--white);border-radius:16px;border:1px solid var(--border);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.section-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:2px solid var(--blue);background:linear-gradient(135deg,#fff,#f8fafc);gap:12px;flex-wrap:wrap}
+.section-title{font-size:.95rem;font-weight:800;color:var(--blue-dark);display:flex;align-items:center;gap:8px}
 .section-title i{color:var(--blue);font-size:1rem}
 .btn-group{display:flex;gap:10px}
 .btn-add{display:flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;border:1.5px solid var(--blue);background:var(--blue);color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Kanit',sans-serif;transition:all .2s}
@@ -101,35 +101,40 @@ body{font-family:'Kanit',sans-serif;background:var(--bg);min-height:100vh;overfl
 .btn-export{background:#059669;border-color:#059669}
 .btn-export:hover{background:#047857}
 
-.tbl-wrap{overflow-x:auto}
+/* ตารางที่ชัดเจน */
+.tbl-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border)}
 table{width:100%;border-collapse:collapse;font-size:.82rem}
-thead tr{background:#f0f9ff}
-th{padding:11px 10px;text-align:right;font-weight:700;font-size:.72rem;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;letter-spacing:.3px}
-th:first-child{text-align:left;width:44px}
+thead tr{background:linear-gradient(135deg,var(--blue),#38bdf8)}
+th{padding:12px 10px;text-align:right;font-weight:700;font-size:.72rem;color:#fff;border-bottom:2px solid #fff;white-space:nowrap;letter-spacing:.5px}
+th:first-child{text-align:left;border-top-left-radius:12px}
+th:last-child{border-top-right-radius:12px}
 th.th-l{text-align:left}
-.th-moq{color:#0284c7}
-.th-total{color:#0369a1}
-.th-avg{color:#0891b2}
-td{padding:10px 10px;text-align:right;border-bottom:1px solid #f1f5f9;color:var(--text);vertical-align:middle}
-td:first-child{text-align:left;color:var(--muted);font-size:.75rem}
+.th-moq{background:rgba(255,255,255,0.15)}
+.th-total{background:rgba(255,255,255,0.1)}
+.th-avg{background:rgba(255,255,255,0.1)}
+td{padding:10px 10px;text-align:right;border-bottom:1px solid #e2e8f0;color:var(--text);vertical-align:middle;background:#fff}
+td:first-child{text-align:left;color:var(--muted);font-size:.75rem;background:#fafcff}
 td.td-l{text-align:left}
-tbody tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:#f0f9ff}
-.td-total{font-weight:700;color:#0284c7}
-.td-avg{font-weight:700;color:#0891b2}
-.cell-in{width:100%;background:transparent;border:none;outline:none;font-size:.82rem;font-family:'Kanit',sans-serif;color:var(--text);padding:0;text-align:inherit}
-.cell-in:focus{background:#e0f2fe;border-radius:6px;padding:2px 6px;color:var(--blue)}
+tbody tr td:first-child:hover{background:#e0f2fe}
+.td-total{font-weight:800;color:#0284c7;background:#f0f9ff}
+.td-avg{font-weight:800;color:#0891b2}
+.cell-in{width:100%;background:transparent;border:none;outline:none;font-size:.82rem;font-family:'Kanit',sans-serif;color:var(--text);padding:4px 0;text-align:inherit}
+.cell-in:focus{background:#e0f2fe;border-radius:8px;padding:4px 6px;color:var(--blue);box-shadow:0 0 0 2px rgba(2,132,199,.3)}
 td.td-l .cell-in{text-align:left}
 td .cell-in[type=number]{text-align:right}
-.chip{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;font-weight:600;padding:3px 9px;border-radius:6px;letter-spacing:.3px;white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;font-weight:600;padding:4px 10px;border-radius:20px;letter-spacing:.3px;white-space:nowrap}
 .chip-moq{background:#e0f2fe;color:#0284c7;border:1px solid #bae6fd}
-.chip-minmax{background:#fef3c7;color:#d97706;border:1px solid #fde68a}
-.actions{display:flex;gap:4px;justify-content:flex-end}
-.btn-del{background:none;border:none;cursor:pointer;color:#cbd5e1;padding:4px 6px;border-radius:6px;font-size:.85rem}
+.chip-max{background:#fef3c7;color:#d97706;border:1px solid #fde68a}
+.chip-min{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0}
+.actions{display:flex;gap:5px;justify-content:flex-end}
+.btn-del{background:none;border:none;cursor:pointer;color:#cbd5e1;padding:6px 8px;border-radius:8px;font-size:.85rem;transition:all .2s}
 .btn-del:hover{color:#dc2626;background:#fef2f2}
-.btn-edit{background:none;border:none;cursor:pointer;color:#cbd5e1;padding:4px 6px;border-radius:6px;font-size:.85rem}
+.btn-edit{background:none;border:none;cursor:pointer;color:#cbd5e1;padding:6px 8px;border-radius:8px;font-size:.85rem;transition:all .2s}
 .btn-edit:hover{color:var(--blue);background:#e0f2fe}
-tfoot tr td{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);font-weight:700;font-size:.82rem;border-top:2px solid var(--border)}
+tfoot tr td{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);font-weight:800;font-size:.82rem;border-top:2px solid var(--blue);padding:12px 10px}
+tfoot tr:first-child td:first-child{border-bottom-left-radius:12px}
+tfoot tr:first-child td:last-child{border-bottom-right-radius:12px}
 .empty-state{padding:48px 24px;text-align:center;color:#cbd5e1}
 .empty-state i{font-size:2.5rem;margin-bottom:12px;display:block}
 .empty-state p{font-size:.85rem;font-weight:500}
@@ -138,7 +143,7 @@ tfoot tr td{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);font-weight:700;f
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.7);backdrop-filter:blur(6px);align-items:center;justify-content:center;z-index:1000}
 .modal-bg.show{display:flex;animation:fadeIn .2s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal{background:#fff;border-radius:28px;width:600px;max-width:95vw;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.35);transform:scale(0.95);transition:transform .2s ease}
+.modal{background:#fff;border-radius:28px;width:580px;max-width:95vw;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.35);transform:scale(0.95);transition:transform .2s ease}
 .modal-bg.show .modal{transform:scale(1)}
 .modal-header{padding:22px 26px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff}
 .modal-header h3{font-size:1.1rem;font-weight:700;display:flex;align-items:center;gap:10px}
@@ -153,8 +158,8 @@ tfoot tr td{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);font-weight:700;f
 .modal-btn-confirm:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(2,132,199,.4)}
 .form-group{margin-bottom:18px}
 .form-group label{display:block;font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
-.form-group input, .form-group select{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;font-family:'Kanit',sans-serif;font-size:.9rem;outline:none}
-.form-group input:focus, .form-group select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(2,132,199,.2)}
+.form-group input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;font-family:'Kanit',sans-serif;font-size:.9rem;outline:none}
+.form-group input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(2,132,199,.2)}
 .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 .info-box{background:#e0f2fe;border-radius:12px;padding:12px;margin-top:16px}
@@ -200,8 +205,8 @@ tfoot tr td{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);font-weight:700;f
       </div>
       <div class="form-row-3">
         <div class="form-group"><label><i class="fas fa-cubes"></i> Stock</label><input type="number" id="editStock" placeholder="0" value="0"></div>
-        <div class="form-group"><label><i class="fas fa-arrow-up"></i> Max Lot</label><input type="number" id="editMaxLot" placeholder="0" value="0"></div>
-        <div class="form-group"><label><i class="fas fa-arrow-down"></i> Min Lot</label><input type="number" id="editMinLot" placeholder="0" value="0"></div>
+        <div class="form-group"><label><i class="fas fa-arrow-up" style="color:#d97706"></i> Max Lot</label><input type="number" id="editMaxLot" placeholder="0" value="0"></div>
+        <div class="form-group"><label><i class="fas fa-arrow-down" style="color:#15803d"></i> Min Lot</label><input type="number" id="editMinLot" placeholder="0" value="0"></div>
       </div>
       <div class="form-row-3">
         <div class="form-group"><label>📅 ม.ค.</label><input type="number" id="editJan" placeholder="0" value="0"></div>
@@ -320,11 +325,11 @@ tfoot tr td{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);font-weight:700;f
           <thead>
             <tr>
               <th>#</th>
-              <th class="th-l">Barcode / รหัสสินค้า</th>
-              <th class="th-l th-moq">MOQ <span style="font-size:.65rem;font-weight:500;opacity:.7">(1,500)</span></th>
+              <th class="th-l">Barcode</th>
+              <th class="th-l th-moq">MOQ <span style="font-size:.65rem">(1,500)</span></th>
               <th class="th-l">Stock</th>
-              <th class="th-l">Max Lot</th>
-              <th class="th-l">Min Lot</th>
+              <th class="th-l">Max Lot <i class="fas fa-arrow-up" style="font-size:.6rem"></i></th>
+              <th class="th-l">Min Lot <i class="fas fa-arrow-down" style="font-size:.6rem"></i></th>
               <th>ม.ค.</th>
               <th>ก.พ.</th>
               <th>มี.ค.</th>
@@ -353,7 +358,7 @@ let pendingDeleteIndex = null;
 let editModeIndex = null;
 
 function loadData() {
-  const saved = localStorage.getItem('3rhb_lotstock_v2');
+  const saved = localStorage.getItem('3rhb_lotstock_v3');
   if(saved) {
     try {
       rows = JSON.parse(saved);
@@ -372,7 +377,7 @@ function loadData() {
 }
 
 function saveData() {
-  localStorage.setItem('3rhb_lotstock_v2', JSON.stringify(rows));
+  localStorage.setItem('3rhb_lotstock_v3', JSON.stringify(rows));
 }
 
 const fmtStat = n => (+n||0).toLocaleString();
@@ -388,7 +393,7 @@ function render(){
   const tfoot = document.getElementById('tfoot');
 
   if(!rows.length){
-    tbody.innerHTML=`<tr><td colspan="14"><div class="empty-state"><i class="fas fa-microchip"></i><p>กด "เพิ่มแถว" เพื่อเริ่มใส่ข้อมูลน็อตล้อ</p></div></td></tr>`;
+    tbody.innerHTML=`<tr><td colspan="14"><div class="empty-state"><i class="fas fa-microchip"></i><p>กด "เพิ่มแถว" เพื่อเริ่มใส่ข้อมูลน็อตล้อ</p></div></td></td>`;
     tfoot.innerHTML=''; 
     updateStats(); 
     return;
@@ -400,12 +405,10 @@ function render(){
     const avg = total ? Math.round(total/5) : 0;
     const moqLots = r.stock ? Math.ceil(r.stock / MOQ) : 0;
     return `<tr>
-      <td>${i+1}</td>
+      <td><span style="font-weight:600;color:var(--blue);">${i+1}</span></td>
       <td class="td-l">
-        <span style="cursor:pointer;display:inline-block;" onclick="openEditModal(${ri})">
-          <span class="chip chip-moq" style="background:#e0f2fe;">
-            <i class="fas fa-microchip"></i> ${escapeHtml(r.barcode)}
-          </span>
+        <span class="chip chip-moq" style="cursor:pointer;background:#e0f2fe;" onclick="openEditModal(${ri})">
+          <i class="fas fa-microchip"></i> ${escapeHtml(r.barcode)}
         </span>
         </td>
       <td class="td-l">
@@ -419,11 +422,11 @@ function render(){
         </td>
       <td class="td-l">
         <input class="cell-in" type="number" value="${r.maxLot||r.stock||0}" placeholder="0" min="0"
-          onchange="updateRow(${ri}, 'maxLot', +this.value||0)" style="min-width:80px;text-align:right">
+          onchange="updateRow(${ri}, 'maxLot', +this.value||0)" style="min-width:80px;text-align:right;color:#d97706;font-weight:600">
         </td>
       <td class="td-l">
         <input class="cell-in" type="number" value="${r.minLot||r.stock||0}" placeholder="0" min="0"
-          onchange="updateRow(${ri}, 'minLot', +this.value||0)" style="min-width:80px;text-align:right">
+          onchange="updateRow(${ri}, 'minLot', +this.value||0)" style="min-width:80px;text-align:right;color:#15803d;font-weight:600">
         </td>
       ${months.map(m=>`<td>
         <input class="cell-in" type="number" value="${r[m]||''}" placeholder="0" min="0"
@@ -447,14 +450,14 @@ function render(){
   const grandMin = filtered.reduce((s,r)=>s+(+r.minLot||r.stock||0),0);
   
   tfoot.innerHTML=`<tr>
-    <td colspan="2" class="td-l" style="color:var(--muted)"><i class="fas fa-sigma"></i> รวมทั้งหมด</td>
+    <td colspan="2" class="td-l" style="font-weight:800"><i class="fas fa-sigma"></i> รวมทั้งหมด</td>
     <td class="td-l"><span class="chip chip-moq"><i class="fas fa-layer-group"></i> ${grandMoq ? grandMoq+' Lot' : '—'}</span></td>
-    <td style="text-align:right;font-weight:700;color:#15803d">${fmtStat(grandStock)}</td>
-    <td style="text-align:right;font-weight:700;color:#d97706">${fmtStat(grandMax)}</td>
-    <td style="text-align:right;font-weight:700;color:#d97706">${fmtStat(grandMin)}</td>
+    <td style="text-align:right;font-weight:800;color:#15803d">${fmtStat(grandStock)}</td>
+    <td style="text-align:right;font-weight:800;color:#d97706">${fmtStat(grandMax)}</td>
+    <td style="text-align:right;font-weight:800;color:#15803d">${fmtStat(grandMin)}</td>
     ${totals.map(t=>`<td>${fmtStat(t)}</td>`).join('')}
-    <td class="td-total">${fmtStat(grand)}</td>
-    <td class="td-avg">${fmtStat(grandAvg)}</td>
+    <td style="font-weight:800;color:#0284c7">${fmtStat(grand)}</td>
+    <td style="font-weight:800;color:#0891b2">${fmtStat(grandAvg)}</td>
     <td></td>
   </tr>`;
 
@@ -464,9 +467,12 @@ function render(){
 function updateRow(index, field, value) {
   if(rows[index]) {
     rows[index][field] = value;
-    // ตรวจสอบว่า minLot ไม่มากกว่า maxLot และไม่น้อยกว่า 0
+    // ตรวจสอบความถูกต้อง: minLot ไม่มากกว่า maxLot
     if(rows[index].minLot > rows[index].maxLot) {
       rows[index].minLot = rows[index].maxLot;
+    }
+    if(rows[index].maxLot < rows[index].minLot) {
+      rows[index].maxLot = rows[index].minLot;
     }
     saveData();
     render();
