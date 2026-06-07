@@ -2,8 +2,8 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3RHB IMPORT WHEEL NUTS – Lot Stock</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>3RHB IMPORT WHEEL NUTS – ระบบคลังสินค้ามาตรฐาน</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -106,8 +106,8 @@ body{font-family:'Kanit',sans-serif;background:linear-gradient(135deg,#f0f9ff 0%
 .btn-delete-all{background:linear-gradient(135deg,#ef4444,#dc2626)}
 .btn-delete-all:hover{box-shadow:0 8px 20px rgba(239,68,68,.3)}
 .btn-delete-selected{background:linear-gradient(135deg,#f97316,#ea580c)}
-.btn-delete-selected:hover{box-shadow:0 8px 20px rgba(249,115,22,.3)}
 .btn-delete-selected:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.btn-delete-selected:hover:not(:disabled){box-shadow:0 8px 20px rgba(249,115,22,.3)}
 
 .tbl-wrap{overflow-x:auto;padding:0}
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:.82rem}
@@ -143,86 +143,48 @@ td .cell-in[type=number]{text-align:right}
 .btn-delete{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
 .btn-delete:hover{background:linear-gradient(135deg,#dc2626,#b91c1c);box-shadow:0 4px 10px rgba(220,38,38,.4)}
 
-.progress-wrapper{display:flex;align-items:center;gap:8px;min-width:120px}
-.progress-bar-bg{flex:1;height:6px;background:#e2e8f0;border-radius:10px;overflow:hidden}
-.progress-bar-fill{height:100%;border-radius:10px;transition:width .3s}
-.progress-low{background:#ef4444}
-.progress-medium{background:#f59e0b}
-.progress-high{background:#10b981}
-.progress-percent{font-size:.65rem;font-weight:700;color:var(--muted);min-width:40px}
-
-tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:800;font-size:.85rem;border-top:2px solid var(--primary-light);padding:16px 12px}
-.empty-state{padding:60px 24px;text-align:center;color:#cbd5e1}
-.empty-state i{font-size:3rem;margin-bottom:16px;display:block;color:#cbd5e1}
-.empty-state p{font-size:.9rem;font-weight:500}
-
 .selection-bar{background:linear-gradient(135deg,#e0f2fe,#bae6fd);border-radius:16px;padding:12px 20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .selection-info{display:flex;align-items:center;gap:12px}
 .selection-info span{font-size:.85rem;font-weight:600;color:#0369a1}
 .selection-actions{display:flex;gap:10px}
 
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);align-items:center;justify-content:center;z-index:1000}
+/* ===== STANDARD MODAL FORM ===== */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);align-items:center;justify-content:center;z-index:1000}
 .modal-bg.show{display:flex;animation:fadeIn .2s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal{background:#fff;border-radius:32px;width:500px;max-width:95vw;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.3);transform:scale(0.95);transition:transform .2s ease}
+.modal{background:#fff;border-radius:36px;width:600px;max-width:94vw;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.4);transform:scale(0.96);transition:transform .2s ease}
 .modal-bg.show .modal{transform:scale(1)}
-.modal-header{padding:24px 28px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff}
-.modal-header h3{font-size:1.2rem;font-weight:800;display:flex;align-items:center;gap:12px}
+.modal-header{padding:24px 30px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff}
+.modal-header h3{font-size:1.3rem;font-weight:800;display:flex;align-items:center;gap:12px}
 .modal-header h3 i{font-size:1.3rem;color:var(--accent)}
-.modal-body{padding:28px}
-.modal-footer{display:flex;justify-content:flex-end;gap:12px;padding:0 28px 28px}
-.modal-btn-cancel{padding:10px 24px;border-radius:14px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-size:.85rem;font-weight:600;cursor:pointer}
-.modal-btn-cancel:hover{background:#f1f5f9}
-.modal-btn-confirm{padding:10px 28px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff;font-size:.85rem;font-weight:700;cursor:pointer}
+.modal-body{padding:30px;max-height:70vh;overflow-y:auto}
+.modal-footer{display:flex;justify-content:flex-end;gap:14px;padding:0 30px 30px}
+.modal-btn-cancel{padding:12px 28px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-size:.85rem;font-weight:600;cursor:pointer;transition:.2s}
+.modal-btn-cancel:hover{background:#f1f5f9;color:var(--text)}
+.modal-btn-confirm{padding:12px 32px;border-radius:20px;border:none;background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff;font-size:.85rem;font-weight:800;cursor:pointer;transition:all .2s}
 .modal-btn-confirm.danger{background:linear-gradient(135deg,#dc2626,#b91c1c)}
-.modal-btn-confirm:hover{transform:translateY(-2px)}
-.form-group{margin-bottom:20px}
-.form-group label{display:block;font-size:.72rem;font-weight:800;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
-.form-group input{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:16px;font-family:'Kanit',sans-serif;font-size:.9rem;outline:none}
-.form-group input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(2,132,199,.1)}
-.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.modal-btn-confirm:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(2,132,199,.4)}
+.form-group{margin-bottom:22px}
+.form-group label{display:block;font-size:.7rem;font-weight:800;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+.form-group input, .form-group select{width:100%;padding:12px 18px;border:1.5px solid var(--border);border-radius:20px;font-family:'Kanit',sans-serif;font-size:.9rem;outline:none;transition:all .2s;background:#fff}
+.form-group input:focus, .form-group select:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(2,132,199,.1)}
+.form-row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:12px}
+.form-row-5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:8px}
+.detail-hint{font-size:.7rem;color:#94a3b8;margin-top:4px;display:flex;align-items:center;gap:4px}
+.required-star{color:#ef4444;margin-left:4px}
+@media (max-width:560px){.form-row-3,.form-row-5{grid-template-columns:1fr;gap:12px}}
 
 #toasts{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:12px}
 .toast{background:#1e293b;color:#fff;padding:14px 20px;border-radius:20px;font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:12px;box-shadow:0 15px 35px rgba(0,0,0,.2);border-left:4px solid var(--primary);min-width:260px;transform:translateX(120%);transition:transform .3s}
-.toast.show{transform:translateX(0)}
-.toast.ok{border-left-color:#10b981}
-.toast.warning{border-left-color:#f59e0b}
-.toast i{font-size:1.1rem}
-
-/* พิมพ์เฉพาะข้อมูลในตาราง */
-@media print {
-  @page { size: A4 landscape; margin: 1.5cm; }
-  body { background: white; padding: 0; margin: 0; }
-  #sidebar, #header, .stat-row, .section-head .btn-group, 
-  .action-buttons, .btn-action, .hd-actions, .hd-search, 
-  .hd-burger, .sb-profile, .modal-bg, #toasts, .selection-bar,
-  .btn-add, .btn-pdf, .btn-export, .btn-delete-all, .btn-delete-selected,
-  .checkbox, .select-all-checkbox, .progress-wrapper .cell-in,
-  .progress-bar-bg, .progress-percent, .progress-wrapper input {
-    display: none !important;
-  }
-  #main { margin-left: 0 !important; padding: 0 !important; }
-  .content { padding: 0 !important; margin: 0 !important; }
-  .section-card { border: none !important; box-shadow: none !important; margin: 0 !important; padding: 0 !important; }
-  .section-head { background: none !important; border-bottom: 2px solid #000 !important; margin-bottom: 10px !important; padding: 0 0 10px 0 !important; }
-  .section-title { color: #000 !important; font-size: 16pt !important; }
-  .tbl-wrap { overflow: visible !important; }
-  table { width: 100% !important; border-collapse: collapse !important; font-size: 10pt !important; }
-  th, td { border: 1px solid #000 !important; padding: 8px 6px !important; }
-  th { background: #f0f0f0 !important; color: #000 !important; font-weight: 800 !important; }
-  .badge { border: 1px solid #000 !important; background: none !important; padding: 2px 8px !important; }
-  .td-total, .td-avg { background: none !important; }
-  tfoot tr td { background: none !important; border-top: 2px solid #000 !important; }
-  .progress-wrapper { display: inline !important; }
-  .progress-wrapper strong { display: inline !important; }
-}
+.toast.show{transform:translateX(0)}.toast.ok{border-left-color:#10b981}.toast.warning{border-left-color:#f59e0b}
+@media print{ body *{visibility:hidden} #dataTable, #dataTable *{visibility:visible} #dataTable{position:absolute;top:0;left:0;width:100%} .no-print{display:none} }
 </style>
 </head>
 <body>
-
 <div id="toasts"></div>
 <div id="overlay" onclick="closeSidebar()"></div>
 
+<!-- STANDARD MODAL: เพิ่ม/แก้ไข แบบครบวงจร -->
 <div id="editModal" class="modal-bg">
   <div class="modal">
     <div class="modal-header">
@@ -230,380 +192,122 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:800;f
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label><i class="fas fa-barcode"></i> รหัสสินค้า</label>
-        <input type="text" id="editBarcode" placeholder="เช่น NUT-3R001">
+        <label><i class="fas fa-barcode"></i> รหัสสินค้า <span class="required-star">*</span></label>
+        <input type="text" id="editBarcode" placeholder="ตัวอย่าง: NUT-3R001" autocomplete="off">
+        <div class="detail-hint"><i class="fas fa-info-circle"></i> รหัสต้องไม่ซ้ำกัน</div>
       </div>
       <div class="form-row-3">
-        <div class="form-group"><label>B/L (Balance)</label><input type="number" id="editStock" placeholder="0" value="0"></div>
-        <div class="form-group"><label>Max</label><input type="number" id="editMaxLot" placeholder="0" value="0"></div>
-        <div class="form-group"><label>Min</label><input type="number" id="editMinLot" placeholder="0" value="0"></div>
+        <div class="form-group"><label><i class="fas fa-boxes"></i> B/L (คงเหลือ)</label><input type="number" id="editStock" placeholder="จำนวน" value="0" min="0" step="1"></div>
+        <div class="form-group"><label><i class="fas fa-chart-line"></i> Max Lot</label><input type="number" id="editMaxLot" placeholder="สูงสุด" value="0" min="0"></div>
+        <div class="form-group"><label><i class="fas fa-chart-line"></i> Min Lot</label><input type="number" id="editMinLot" placeholder="ต่ำสุด" value="0" min="0"></div>
       </div>
-      <div class="form-row-3">
-        <div class="form-group"><label>ม.ค.</label><input type="number" id="editJan" value="0"></div>
-        <div class="form-group"><label>ก.พ.</label><input type="number" id="editFeb" value="0"></div>
-        <div class="form-group"><label>มี.ค.</label><input type="number" id="editMar" value="0"></div>
-        <div class="form-group"><label>เม.ย.</label><input type="number" id="editApr" value="0"></div>
-        <div class="form-group"><label>พ.ค.</label><input type="number" id="editMay" value="0"></div>
+      <div class="form-group"><label><i class="fas fa-chart-simple"></i> ยอดขาย 5 เดือน (หน่วย: ชุด)</label></div>
+      <div class="form-row-5">
+        <div class="form-group"><label>ม.ค.</label><input type="number" id="editJan" value="0" min="0"></div>
+        <div class="form-group"><label>ก.พ.</label><input type="number" id="editFeb" value="0" min="0"></div>
+        <div class="form-group"><label>มี.ค.</label><input type="number" id="editMar" value="0" min="0"></div>
+        <div class="form-group"><label>เม.ย.</label><input type="number" id="editApr" value="0" min="0"></div>
+        <div class="form-group"><label>พ.ค.</label><input type="number" id="editMay" value="0" min="0"></div>
       </div>
+      <div class="detail-hint"><i class="fas fa-lightbulb"></i> ระบบจะคำนวณยอดรวมและเฉลี่ยอัตโนมัติ</div>
     </div>
     <div class="modal-footer">
       <button class="modal-btn-cancel" onclick="closeEditModal()">ยกเลิก</button>
-      <button class="modal-btn-confirm" onclick="confirmEditRow()">บันทึก</button>
+      <button class="modal-btn-confirm" onclick="confirmEditRow()">บันทึกข้อมูล</button>
     </div>
   </div>
 </div>
 
 <div id="deleteModal" class="modal-bg">
-  <div class="modal">
-    <div class="modal-header">
-      <h3><i class="fas fa-trash-alt"></i> ยืนยันการลบ</h3>
-    </div>
-    <div class="modal-body">
-      <p style="font-size:.95rem; color:var(--text);">คุณต้องการลบสินค้า <strong id="deleteBarcode"></strong> ใช่หรือไม่?</p>
-    </div>
-    <div class="modal-footer">
-      <button class="modal-btn-cancel" onclick="closeDeleteModal()">ยกเลิก</button>
-      <button class="modal-btn-confirm danger" onclick="confirmDeleteRow()">ลบ</button>
-    </div>
-  </div>
+  <div class="modal"><div class="modal-header"><h3><i class="fas fa-trash-alt"></i> ยืนยันการลบ</h3></div><div class="modal-body"><p style="font-size:.95rem;">คุณต้องการลบสินค้า <strong id="deleteBarcode"></strong> ใช่หรือไม่?</p></div><div class="modal-footer"><button class="modal-btn-cancel" onclick="closeDeleteModal()">ยกเลิก</button><button class="modal-btn-confirm danger" onclick="confirmDeleteRow()">ลบ</button></div></div>
 </div>
 
-<aside id="sidebar">
-  <div class="sb-logo">
-    <div class="sb-logo-icon"><i class="fas fa-microchip"></i></div>
-    <div class="sb-logo-text">3RHB<br><span>IMPORT NUTS</span></div>
-  </div>
-  <nav class="sb-nav">
-    <div class="sb-label">การจัดการสินค้า</div>
-    <a class="sb-item active" href="#" data-tip="Lot Stock"><i class="fas fa-boxes-stacked sb-icon"></i><span class="sb-text">Lot Stock</span><span class="sb-badge blue">New</span></a>
-    <a class="sb-item" href="#" data-tip="น็อตล้อทั้งหมด"><i class="fas fa-circle-dot sb-icon"></i><span class="sb-text">น็อตล้อทั้งหมด</span><span class="sb-badge gray">456</span></a>
-    <div class="sb-label">บริการ</div>
-    <a class="sb-item" href="Support.html" data-tip="ติดต่อเรา"><i class="fas fa-headset sb-icon"></i><span class="sb-text">ติดต่อเรา</span></a>
-    <a class="sb-item" href="#" data-tip="บทความ"><i class="fas fa-newspaper sb-icon"></i><span class="sb-text">บทความ</span></a>
-  </nav>
-  <div class="sb-profile">
-    <div class="sb-profile-inner">
-      <div class="sb-avatar"><i class="fas fa-user-tie"></i></div>
-      <div class="sb-pinfo"><div class="sb-pname">PATIWAT</div><div class="sb-prole">Admin</div></div>
-      <button class="sb-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
-    </div>
-  </div>
+<aside id="sidebar"><div class="sb-logo"><div class="sb-logo-icon"><i class="fas fa-microchip"></i></div><div class="sb-logo-text">3RHB<br><span>IMPORT NUTS</span></div></div>
+  <nav class="sb-nav"><div class="sb-label">การจัดการสินค้า</div><a class="sb-item active" href="#"><i class="fas fa-boxes-stacked sb-icon"></i><span class="sb-text">Lot Stock</span><span class="sb-badge blue">New</span></a><a class="sb-item" href="#"><i class="fas fa-circle-dot sb-icon"></i><span class="sb-text">น็อตล้อทั้งหมด</span><span class="sb-badge gray">456</span></a><div class="sb-label">บริการ</div><a class="sb-item" href="#"><i class="fas fa-headset sb-icon"></i><span class="sb-text">ติดต่อเรา</span></a><a class="sb-item" href="#"><i class="fas fa-newspaper sb-icon"></i><span class="sb-text">บทความ</span></a></nav>
+  <div class="sb-profile"><div class="sb-profile-inner"><div class="sb-avatar"><i class="fas fa-user-tie"></i></div><div class="sb-pinfo"><div class="sb-pname">PATIWAT</div><div class="sb-prole">Admin</div></div><button class="sb-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button></div></div>
 </aside>
 
-<div id="main">
-  <header id="header">
-    <button class="hd-burger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-    <nav class="hd-breadcrumb">
-      <i class="fas fa-microchip" style="color:var(--primary);font-size:.75rem"></i>
-      <span class="sep">/</span><span>คลังสินค้า</span>
-      <span class="sep">/</span><span class="current">Lot Stock</span>
-    </nav>
-    <div class="hd-search">
-      <i class="fas fa-search si"></i>
-      <input id="searchInput" type="text" placeholder="ค้นหา Barcode หรือ B/L..." onkeypress="handleSearchKeypress(event)">
-      <button class="search-btn" onclick="searchData()"><i class="fas fa-search"></i> ค้นหา</button>
-      <button class="sc" onclick="clearSearch()"><i class="fas fa-xmark"></i></button>
-    </div>
-    <div class="hd-actions">
-      <div class="hd-btn" onclick="showNotifications()"><i class="fas fa-bell"></i><span class="hd-dot" style="background:#f97316"></span></div>
-      <div class="hd-btn" onclick="showFavorites()"><i class="fas fa-heart" style="color:#dc2626"></i><span class="hd-badge" style="background:#dc2626;color:#fff">3</span></div>
-      <div class="hd-div"></div>
-      <div class="hd-phone" onclick="callPhone()"><i class="fas fa-phone"></i><span>02-123-4567</span></div>
-      <div class="hd-user" onclick="showProfile()">
-        <div class="hd-user-av"><i class="fas fa-user-tie"></i></div>
-        <div><div class="hd-user-name">PATIWAT</div><div class="hd-user-role">Admin</div></div>
-        <i class="fas fa-chevron-down"></i>
-      </div>
-    </div>
-  </header>
-
-  <div class="content">
-    <div class="stat-row">
-      <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#e0f2fe,#bae6fd)"><i class="fas fa-microchip" style="color:#0284c7"></i></div><div><div class="stat-label">สินค้าทั้งหมด</div><div class="stat-val" id="stat-count">0</div><div class="stat-sub">รายการ</div></div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)"><i class="fas fa-cubes" style="color:#15803d"></i></div><div><div class="stat-label">B/L รวม</div><div class="stat-val" id="stat-stock">0</div><div class="stat-sub">หน่วย</div></div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a)"><i class="fas fa-chart-line" style="color:#d97706"></i></div><div><div class="stat-label">ยอดขาย 5 เดือน</div><div class="stat-val" id="stat-total">0</div><div class="stat-sub">ชุด</div></div></div>
-      <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#e0f2fe,#bae6fd)"><i class="fas fa-calendar-week" style="color:#0284c7"></i></div><div><div class="stat-label">เฉลี่ย/เดือน</div><div class="stat-val" id="stat-avg">0</div><div class="stat-sub">ชุด</div></div></div>
-    </div>
-
-    <div class="section-card">
-      <div class="section-head">
-        <div class="section-title"><i class="fas fa-crown"></i> ข้อมูล Lot Stock</div>
-        <div class="btn-group">
-          <button class="btn-add btn-pdf" onclick="printPDF()"><i class="fas fa-file-pdf"></i> พิมพ์</button>
-          <button class="btn-add btn-export" onclick="exportData()"><i class="fas fa-download"></i> Export</button>
-          <button class="btn-add btn-delete-selected" id="deleteSelectedBtn" onclick="deleteSelected()" disabled><i class="fas fa-trash-alt"></i> ลบที่เลือก</button>
-          <button class="btn-add btn-delete-all" onclick="deleteAll()"><i class="fas fa-trash-alt"></i> ลบทั้งหมด</button>
-          <button class="btn-add" onclick="openAddModal()"><i class="fas fa-plus"></i> เพิ่ม</button>
-        </div>
-      </div>
-      
-      <div id="selectionBar" class="selection-bar" style="display:none;">
-        <div class="selection-info">
-          <i class="fas fa-check-circle" style="color:#0284c7"></i>
-          <span id="selectedCount">0</span> รายการที่เลือก
-        </div>
-        <div class="selection-actions">
-          <button class="btn-action btn-delete" onclick="deleteSelected()" style="padding:6px 16px"><i class="fas fa-trash-alt"></i> ลบที่เลือก</button>
-        </div>
-      </div>
-      
-      <div class="tbl-wrap">
-        <table id="dataTable">
-          <thead>
-            <tr>
-              <th style="text-align:center"><input type="checkbox" class="select-all-checkbox" id="selectAllCheckbox" onclick="toggleSelectAll()"></th>
-              <th class="th-l">#</th>
-              <th class="th-l">รหัสสินค้า</th>
-              <th class="th-l">B/L</th>
-              <th class="th-l">Max</th>
-              <th class="th-l">Min</th>
-              <th>ม.ค.</th>
-              <th>ก.พ.</th>
-              <th>มี.ค.</th>
-              <th>เม.ย.</th>
-              <th>พ.ค.</th>
-              <th>รวม 5D</th>
-              <th>เฉลี่ย</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="tbody"></tbody>
-          <tfoot id="tfoot"></tfoot>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
+<div id="main"><header id="header"><button class="hd-burger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button><nav class="hd-breadcrumb"><i class="fas fa-microchip" style="color:var(--primary);"></i><span class="sep">/</span><span>คลังสินค้า</span><span class="sep">/</span><span class="current">Lot Stock</span></nav><div class="hd-search"><i class="fas fa-search si"></i><input id="searchInput" type="text" placeholder="ค้นหา Barcode หรือ B/L..." onkeypress="handleSearchKeypress(event)"><button class="search-btn" onclick="searchData()"><i class="fas fa-search"></i> ค้นหา</button><button class="sc" onclick="clearSearch()"><i class="fas fa-xmark"></i></button></div><div class="hd-actions"><div class="hd-btn" onclick="showNotifications()"><i class="fas fa-bell"></i><span class="hd-dot" style="background:#f97316"></span></div><div class="hd-btn" onclick="showFavorites()"><i class="fas fa-heart" style="color:#dc2626"></i><span class="hd-badge" style="background:#dc2626;color:#fff">3</span></div><div class="hd-div"></div><div class="hd-phone" onclick="callPhone()"><i class="fas fa-phone"></i><span>02-123-4567</span></div><div class="hd-user" onclick="showProfile()"><div class="hd-user-av"><i class="fas fa-user-tie"></i></div><div><div class="hd-user-name">PATIWAT</div><div class="hd-user-role">Admin</div></div><i class="fas fa-chevron-down"></i></div></div></header>
+<div class="content"><div class="stat-row"><div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#e0f2fe,#bae6fd)"><i class="fas fa-microchip" style="color:#0284c7"></i></div><div><div class="stat-label">สินค้าทั้งหมด</div><div class="stat-val" id="stat-count">0</div><div class="stat-sub">รายการ</div></div></div><div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)"><i class="fas fa-cubes" style="color:#15803d"></i></div><div><div class="stat-label">B/L รวม</div><div class="stat-val" id="stat-stock">0</div><div class="stat-sub">หน่วย</div></div></div><div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a)"><i class="fas fa-chart-line" style="color:#d97706"></i></div><div><div class="stat-label">ยอดขาย 5 เดือน</div><div class="stat-val" id="stat-total">0</div><div class="stat-sub">ชุด</div></div></div><div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#e0f2fe,#bae6fd)"><i class="fas fa-calendar-week" style="color:#0284c7"></i></div><div><div class="stat-label">เฉลี่ย/เดือน</div><div class="stat-val" id="stat-avg">0</div><div class="stat-sub">ชุด</div></div></div></div>
+<div class="section-card"><div class="section-head"><div class="section-title"><i class="fas fa-crown"></i> ข้อมูล Lot Stock</div><div class="btn-group"><button class="btn-add btn-pdf" onclick="printPDF()"><i class="fas fa-file-pdf"></i> พิมพ์</button><button class="btn-add btn-export" onclick="exportData()"><i class="fas fa-download"></i> Export</button><button class="btn-add btn-delete-selected" id="deleteSelectedBtn" onclick="deleteSelected()" disabled><i class="fas fa-trash-alt"></i> ลบที่เลือก</button><button class="btn-add btn-delete-all" onclick="deleteAll()"><i class="fas fa-trash-alt"></i> ลบทั้งหมด</button><button class="btn-add" onclick="openAddModal()"><i class="fas fa-plus"></i> เพิ่ม</button></div></div><div id="selectionBar" class="selection-bar" style="display:none;"><div class="selection-info"><i class="fas fa-check-circle" style="color:#0284c7"></i><span id="selectedCount">0</span> รายการที่เลือก</div><div class="selection-actions"><button class="btn-action btn-delete" onclick="deleteSelected()" style="padding:6px 16px"><i class="fas fa-trash-alt"></i> ลบที่เลือก</button></div></div><div class="tbl-wrap"><table id="dataTable"><thead><tr><th style="text-align:center"><input type="checkbox" class="select-all-checkbox" id="selectAllCheckbox" onclick="toggleSelectAll()"></th><th class="th-l">#</th><th class="th-l">รหัสสินค้า</th><th class="th-l">B/L</th><th class="th-l">Max</th><th class="th-l">Min</th><th>ม.ค.</th><th>ก.พ.</th><th>มี.ค.</th><th>เม.ย.</th><th>พ.ค.</th><th>รวม 5D</th><th>เฉลี่ย</th><th></th></tr></thead><tbody id="tbody"></tbody><tfoot id="tfoot"></tfoot></table></div></div></div></div>
 <script>
 const months = ['jan','feb','mar','apr','may'];
-let rows = [];
-let filterText = '';
-let nextId = 1;
-let pendingDeleteIndex = null;
-let editModeIndex = null;
+let rows = [], filterText = '', nextId = 1, pendingDeleteIndex = null, editModeIndex = null;
 let selectedRows = new Set();
 
 function loadData() {
-  const saved = localStorage.getItem('3rhb_lotstock_final_v4');
-  if(saved) {
-    try {
-      rows = JSON.parse(saved);
-      nextId = Math.max(...rows.map(r=>r.id), 0) + 1;
-    } catch(e) { console.error(e); }
-  } else {
-    rows = [
-      {id:1, barcode:'NUT-3R001', stock:3200, maxLot:5200, minLot:2800, jan:450, feb:520, mar:480, apr:510, may:490},
-      {id:2, barcode:'NUT-3R002', stock:1800, maxLot:2600, minLot:1200, jan:230, feb:245, mar:260, apr:240, may:255},
-      {id:3, barcode:'NUT-3R003', stock:4500, maxLot:6800, minLot:3800, jan:680, feb:720, mar:690, apr:710, may:735},
-      {id:4, barcode:'NUT-3R004', stock:900, maxLot:1500, minLot:600, jan:120, feb:135, mar:110, apr:125, may:130}
-    ];
-    nextId = 5;
-  }
+  const saved = localStorage.getItem('3rhb_lotstock_std_v1');
+  if(saved) { try { rows = JSON.parse(saved); nextId = Math.max(...rows.map(r=>r.id), 0) + 1; } catch(e) {} } 
+  else { rows = [{id:1,barcode:'NUT-3R001',stock:3200,maxLot:5200,minLot:2800,jan:450,feb:520,mar:480,apr:510,may:490},{id:2,barcode:'NUT-3R002',stock:1800,maxLot:2600,minLot:1200,jan:230,feb:245,mar:260,apr:240,may:255},{id:3,barcode:'NUT-3R003',stock:4500,maxLot:6800,minLot:3800,jan:680,feb:720,mar:690,apr:710,may:735},{id:4,barcode:'NUT-3R004',stock:900,maxLot:1500,minLot:600,jan:120,feb:135,mar:110,apr:125,may:130}]; nextId = 5; }
   render();
 }
-
-function saveData() { localStorage.setItem('3rhb_lotstock_final_v4', JSON.stringify(rows)); }
-const fmtStat = n => (+n||0).toLocaleString();
-function calcTotal(r){ return months.reduce((s,m)=>s+(+r[m]||0), 0); }
-function getStockPercent(stock) { return 0; }
-function getProgressClass(percent) { return 'progress-high'; }
-
+function saveData() { localStorage.setItem('3rhb_lotstock_std_v1', JSON.stringify(rows)); }
+function calcTotal(r){ return months.reduce((s,m)=>s+(+r[m]||0),0); }
 function render(){
   const filtered = filterText ? rows.filter(r => (r.barcode + r.stock.toString()).toLowerCase().includes(filterText)) : rows;
-  const tbody = document.getElementById('tbody');
-  const tfoot = document.getElementById('tfoot');
-
-  if(!rows.length){
-    tbody.innerHTML=`<tr><td colspan="14"><div class="empty-state"><i class="fas fa-microchip"></i><p>เริ่มเพิ่มข้อมูลน็อตล้อกันเลย!</p></div></td></tr>`;
-    tfoot.innerHTML=''; updateStats(); updateSelectionBar(); return;
-  }
-
+  const tbody = document.getElementById('tbody'), tfoot = document.getElementById('tfoot');
+  if(!rows.length){ tbody.innerHTML=`<tr><td colspan="14"><div class="empty-state"><i class="fas fa-microchip"></i><p>เริ่มเพิ่มข้อมูลน็อตล้อกันเลย!</p></div></td></tr>`; tfoot.innerHTML=''; updateStats(); updateSelectionBar(); return; }
   tbody.innerHTML = filtered.map((r,i)=>{
-    const ri = rows.findIndex(row => row.id === r.id);
-    const total = calcTotal(r);
-    const avg = total ? Math.round(total/5) : 0;
+    const idx = rows.findIndex(row => row.id === r.id);
+    const total = calcTotal(r), avg = total ? Math.round(total/5) : 0;
     const isChecked = selectedRows.has(r.id);
-    return `<tr>
-      <td style="text-align:center"><input type="checkbox" class="row-checkbox" data-id="${r.id}" ${isChecked ? 'checked' : ''} onchange="toggleRowSelect(${r.id}, this.checked)"></td>
-      <td class="td-l"><span style="font-weight:800;color:var(--primary);">${i+1}</span></td>
-      <td class="td-l"><span class="badge badge-code" style="cursor:pointer;" onclick="openEditModal(${ri})"><i class="fas fa-microchip"></i> ${escapeHtml(r.barcode)}</span></td>
-      <td class="td-l"><input class="cell-in" type="number" value="${r.stock||0}" min="0" onchange="updateRow(${ri}, 'stock', +this.value||0)" style="width:100px;text-align:right"></td>
-      <td class="td-l"><span class="badge badge-max"><i class="fas fa-arrow-up"></i> ${fmtStat(r.maxLot||r.stock)}</span><input type="hidden" value="${r.maxLot||r.stock||0}" onchange="updateRow(${ri}, 'maxLot', +this.value||0)"></td>
-      <td class="td-l"><span class="badge badge-min"><i class="fas fa-arrow-down"></i> ${fmtStat(r.minLot||r.stock)}</span><input type="hidden" value="${r.minLot||r.stock||0}" onchange="updateRow(${ri}, 'minLot', +this.value||0)"></td>
-      ${months.map(m=>`<td><input class="cell-in" type="number" value="${r[m]||0}" min="0" onchange="updateRow(${ri}, '${m}', +this.value||0)" style="width:65px;text-align:center"></td>`).join('')}
-      <td class="td-total"><strong>${fmtStat(total)}</strong></td>
-      <td class="td-avg"><strong>${fmtStat(avg)}</strong></td>
-      <td><div class="action-buttons"><button class="btn-action btn-edit" onclick="openEditModal(${ri})" title="แก้ไข"><i class="fas fa-pen"></i> แก้ไข</button><button class="btn-action btn-delete" onclick="openDeleteModal(${ri})" title="ลบ"><i class="fas fa-trash-alt"></i> ลบ</button></div></td>
-    </tr>`;
+    return `<tr><td style="text-align:center"><input type="checkbox" class="row-checkbox" data-id="${r.id}" ${isChecked ? 'checked' : ''} onchange="toggleRowSelect(${r.id}, this.checked)"></td>
+    <td class="td-l"><span style="font-weight:800;color:var(--primary);">${i+1}</span></td>
+    <td class="td-l"><span class="badge badge-code" style="cursor:pointer;" onclick="openEditModal(${idx})"><i class="fas fa-microchip"></i> ${escapeHtml(r.barcode)}</span></td>
+    <td class="td-l"><input class="cell-in" type="number" value="${r.stock||0}" min="0" onchange="updateRow(${idx}, 'stock', +this.value||0)" style="width:100px;"></td>
+    <td class="td-l"><span class="badge badge-max"><i class="fas fa-arrow-up"></i> ${(+r.maxLot||r.stock||0).toLocaleString()}</span><input type="hidden" value="${r.maxLot||r.stock||0}" onchange="updateRow(${idx}, 'maxLot', +this.value||0)"></td>
+    <td class="td-l"><span class="badge badge-min"><i class="fas fa-arrow-down"></i> ${(+r.minLot||r.stock||0).toLocaleString()}</span><input type="hidden" value="${r.minLot||r.stock||0}" onchange="updateRow(${idx}, 'minLot', +this.value||0)"></td>
+    ${months.map(m=>`<td><input class="cell-in" type="number" value="${r[m]||0}" min="0" onchange="updateRow(${idx}, '${m}', +this.value||0)" style="width:65px;text-align:center"></td>`).join('')}
+    <td class="td-total"><strong>${total.toLocaleString()}</strong></td><td class="td-avg"><strong>${avg.toLocaleString()}</strong></td>
+    <td><div class="action-buttons"><button class="btn-action btn-edit" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i> แก้ไข</button><button class="btn-action btn-delete" onclick="openDeleteModal(${idx})"><i class="fas fa-trash-alt"></i> ลบ</button></div></td></tr>`;
   }).join('');
-
   const totals = months.map(m=>filtered.reduce((s,r)=>s+(+r[m]||0),0));
-  const grand = totals.reduce((a,b)=>a+b,0);
-  const grandAvg = grand ? Math.round(grand/5) : 0;
-  const grandStock = filtered.reduce((s,r)=>s+(+r.stock||0),0);
-  const grandMax = filtered.reduce((s,r)=>s+(+r.maxLot||r.stock||0),0);
-  const grandMin = filtered.reduce((s,r)=>s+(+r.minLot||r.stock||0),0);
-  
-  tfoot.innerHTML=`<tr>
-    <td colspan="2"><strong><i class="fas fa-sigma"></i> รวม</strong></td>
-    <td><strong>${fmtStat(grandStock)}</strong></td>
-    <td><span class="badge badge-max"><i class="fas fa-arrow-up"></i> ${fmtStat(grandMax)}</span></td>
-    <td><span class="badge badge-min"><i class="fas fa-arrow-down"></i> ${fmtStat(grandMin)}</span></td>
-    ${totals.map(t=>`<td><strong>${fmtStat(t)}</strong></td>`).join('')}
-    <td class="td-total"><strong style="font-size:1rem">${fmtStat(grand)}</strong></td>
-    <td class="td-avg"><strong>${fmtStat(grandAvg)}</strong></td>
-    <td></td>
-  </table>`;
-
-  updateStats();
-  updateSelectionBar();
+  const grand = totals.reduce((a,b)=>a+b,0), grandAvg = grand ? Math.round(grand/5) : 0;
+  const grandStock = filtered.reduce((s,r)=>s+(+r.stock||0),0), grandMax = filtered.reduce((s,r)=>s+(+r.maxLot||r.stock||0),0), grandMin = filtered.reduce((s,r)=>s+(+r.minLot||r.stock||0),0);
+  tfoot.innerHTML=`<tr><td colspan="2"><strong><i class="fas fa-sigma"></i> รวม</strong></td><td><strong>${grandStock.toLocaleString()}</strong></td><td><span class="badge badge-max"><i class="fas fa-arrow-up"></i> ${grandMax.toLocaleString()}</span></td><td><span class="badge badge-min"><i class="fas fa-arrow-down"></i> ${grandMin.toLocaleString()}</span></td>${totals.map(t=>`<td><strong>${t.toLocaleString()}</strong></td>`).join('')}<td class="td-total"><strong>${grand.toLocaleString()}</strong></td><td class="td-avg"><strong>${grandAvg.toLocaleString()}</strong></td><td></td></tr>`;
+  updateStats(); updateSelectionBar();
 }
-
-function updateSelectionBar() {
-  const bar = document.getElementById('selectionBar');
-  const count = selectedRows.size;
-  const deleteBtn = document.getElementById('deleteSelectedBtn');
-  if(count > 0) { bar.style.display = 'flex'; document.getElementById('selectedCount').textContent = count; if(deleteBtn) deleteBtn.disabled = false; }
-  else { bar.style.display = 'none'; if(deleteBtn) deleteBtn.disabled = true; }
-  const selectAll = document.getElementById('selectAllCheckbox');
-  if(selectAll) {
-    const visibleIds = rows.filter(r => !filterText || (r.barcode + r.stock.toString()).toLowerCase().includes(filterText)).map(r => r.id);
-    const selectedVisible = visibleIds.filter(id => selectedRows.has(id)).length;
-    selectAll.checked = visibleIds.length > 0 && selectedVisible === visibleIds.length;
-    selectAll.indeterminate = selectedVisible > 0 && selectedVisible < visibleIds.length;
-  }
-}
-
-function toggleSelectAll() {
-  const selectAll = document.getElementById('selectAllCheckbox');
-  const isChecked = selectAll.checked;
-  const visibleRows = rows.filter(r => !filterText || (r.barcode + r.stock.toString()).toLowerCase().includes(filterText));
-  visibleRows.forEach(r => { if(isChecked) selectedRows.add(r.id); else selectedRows.delete(r.id); });
-  render();
-}
-
-function toggleRowSelect(id, isChecked) { if(isChecked) selectedRows.add(id); else selectedRows.delete(id); render(); }
-
-function deleteSelected() {
-  if(selectedRows.size === 0) { toast('ไม่มีรายการที่เลือก', 'warning'); return; }
-  if(confirm(`คุณต้องการลบ ${selectedRows.size} รายการ ใช่หรือไม่?`)) {
-    rows = rows.filter(r => !selectedRows.has(r.id));
-    selectedRows.clear();
-    saveData(); render();
-    toast(`ลบข้อมูลสำเร็จ`, 'ok');
-  }
-}
-
-function deleteAll() {
-  if(rows.length === 0) { toast('ไม่มีข้อมูลที่จะลบ', 'warning'); return; }
-  if(confirm(`คุณต้องการลบข้อมูลทั้งหมด ${rows.length} รายการ ใช่หรือไม่?`)) {
-    rows = []; selectedRows.clear(); saveData(); render();
-    toast('ลบข้อมูลทั้งหมดสำเร็จ', 'ok');
-  }
-}
-
-function updateRow(index, field, value) {
-  if(rows[index]) {
-    rows[index][field] = value;
-    if(rows[index].minLot > rows[index].maxLot) rows[index].minLot = rows[index].maxLot;
-    if(rows[index].maxLot < rows[index].minLot) rows[index].maxLot = rows[index].minLot;
-    saveData(); render();
-    toast('บันทึกสำเร็จ', 'ok');
-  }
-}
-
-function updateStats(){
-  const grand = rows.reduce((s,r)=>s+calcTotal(r),0);
-  const totalStock = rows.reduce((s,r)=>s+(+r.stock||0),0);
-  document.getElementById('stat-count').textContent = rows.length;
-  document.getElementById('stat-stock').textContent = fmtStat(totalStock);
-  document.getElementById('stat-total').textContent = fmtStat(grand);
-  document.getElementById('stat-avg').textContent = grand ? fmtStat(Math.round(grand/5)) : 0;
-}
-
-function searchData() { filterText = document.getElementById('searchInput').value.toLowerCase(); selectedRows.clear(); render(); toast(`พบ ${rows.filter(r => (r.barcode + r.stock.toString()).toLowerCase().includes(filterText)).length} รายการ`, 'ok'); }
-function handleSearchKeypress(e) { if(e.key === 'Enter') searchData(); }
-function clearSearch(){ document.getElementById('searchInput').value = ''; filterText = ''; selectedRows.clear(); render(); toast('ล้างการค้นหาแล้ว', 'ok'); }
-
-function openAddModal() {
-  editModeIndex = null;
-  document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> เพิ่มข้อมูลใหม่';
-  document.getElementById('editBarcode').value = `NUT-3R${String(nextId).padStart(3,'0')}`;
-  document.getElementById('editStock').value = 0;
-  document.getElementById('editMaxLot').value = 0;
-  document.getElementById('editMinLot').value = 0;
-  ['editJan','editFeb','editMar','editApr','editMay'].forEach(id => document.getElementById(id).value = 0);
-  document.getElementById('editModal').classList.add('show');
-}
-
-function openEditModal(index) {
-  editModeIndex = index;
-  const row = rows[index];
-  document.getElementById('modalTitle').innerHTML = '<i class="fas fa-pen"></i> แก้ไขข้อมูล';
-  document.getElementById('editBarcode').value = row.barcode;
-  document.getElementById('editStock').value = row.stock;
-  document.getElementById('editMaxLot').value = row.maxLot || row.stock || 0;
-  document.getElementById('editMinLot').value = row.minLot || row.stock || 0;
-  document.getElementById('editJan').value = row.jan || 0;
-  document.getElementById('editFeb').value = row.feb || 0;
-  document.getElementById('editMar').value = row.mar || 0;
-  document.getElementById('editApr').value = row.apr || 0;
-  document.getElementById('editMay').value = row.may || 0;
-  document.getElementById('editModal').classList.add('show');
-}
-
-function closeEditModal() { document.getElementById('editModal').classList.remove('show'); }
-
-function confirmEditRow() {
-  const barcode = document.getElementById('editBarcode').value.trim();
-  if(!barcode) { toast('กรุณากรอกรหัสสินค้า', 'warning'); return; }
-  const maxLotVal = +document.getElementById('editMaxLot').value || 0;
-  const minLotVal = +document.getElementById('editMinLot').value || 0;
-  if(minLotVal > maxLotVal) { toast('Min ต้องไม่มากกว่า Max', 'warning'); return; }
-  
-  if(editModeIndex === null) {
-    rows.push({ id: nextId++, barcode, stock: +document.getElementById('editStock').value || 0, maxLot: maxLotVal, minLot: minLotVal, jan: +document.getElementById('editJan').value||0, feb: +document.getElementById('editFeb').value||0, mar: +document.getElementById('editMar').value||0, apr: +document.getElementById('editApr').value||0, may: +document.getElementById('editMay').value||0 });
-    toast('เพิ่มข้อมูลสำเร็จ', 'ok');
+function updateRow(index, field, value) { if(rows[index]){ rows[index][field] = value; if(rows[index].minLot > rows[index].maxLot) rows[index].minLot = rows[index].maxLot; if(rows[index].maxLot < rows[index].minLot) rows[index].maxLot = rows[index].minLot; saveData(); render(); toast(`อัปเดต ${field} สำเร็จ`,'ok'); } }
+function updateStats(){ const grand = rows.reduce((s,r)=>s+calcTotal(r),0); const totalStock = rows.reduce((s,r)=>s+(+r.stock||0),0); document.getElementById('stat-count').innerHTML = rows.length; document.getElementById('stat-stock').innerHTML = totalStock.toLocaleString(); document.getElementById('stat-total').innerHTML = grand.toLocaleString(); document.getElementById('stat-avg').innerHTML = grand ? Math.round(grand/5).toLocaleString() : 0; }
+function searchData() { filterText = document.getElementById('searchInput').value.toLowerCase(); selectedRows.clear(); render(); toast(`พบ ${rows.filter(r => (r.barcode + r.stock.toString()).toLowerCase().includes(filterText)).length} รายการ`,'ok'); }
+function clearSearch(){ document.getElementById('searchInput').value=''; filterText=''; selectedRows.clear(); render(); toast('ล้างการค้นหาแล้ว','ok'); }
+function toggleRowSelect(id,checked){ if(checked) selectedRows.add(id); else selectedRows.delete(id); render(); }
+function toggleSelectAll(){ const visible = rows.filter(r=>!filterText || (r.barcode+r.stock.toString()).toLowerCase().includes(filterText)); const allChecked = document.getElementById('selectAllCheckbox').checked; visible.forEach(r=>{ if(allChecked) selectedRows.add(r.id); else selectedRows.delete(r.id); }); render(); }
+function deleteSelected(){ if(selectedRows.size===0){ toast('ไม่มีรายการที่เลือก','warning'); return; } if(confirm(`ต้องการลบ ${selectedRows.size} รายการ ใช่ไหม?`)){ rows = rows.filter(r=>!selectedRows.has(r.id)); selectedRows.clear(); saveData(); render(); toast('ลบรายการที่เลือกสำเร็จ','ok'); } }
+function deleteAll(){ if(rows.length===0){ toast('ไม่มีข้อมูล','warning'); return; } if(confirm(`ลบทั้งหมด ${rows.length} รายการ?`)){ rows=[]; selectedRows.clear(); saveData(); render(); toast('ลบข้อมูลทั้งหมด','ok'); } }
+function updateSelectionBar(){ const bar=document.getElementById('selectionBar'),count=selectedRows.size,delBtn=document.getElementById('deleteSelectedBtn'); if(count>0){ bar.style.display='flex'; document.getElementById('selectedCount').innerText=count; if(delBtn) delBtn.disabled=false; }else{ bar.style.display='none'; if(delBtn) delBtn.disabled=true; } const selectAll=document.getElementById('selectAllCheckbox'); if(selectAll){ const visible=rows.filter(r=>!filterText||(r.barcode+r.stock.toString()).toLowerCase().includes(filterText)); const selectedVisible=visible.filter(r=>selectedRows.has(r.id)).length; selectAll.checked=visible.length>0 && selectedVisible===visible.length; selectAll.indeterminate=selectedVisible>0 && selectedVisible<visible.length; } }
+function openAddModal(){ editModeIndex=null; document.getElementById('modalTitle').innerHTML='<i class="fas fa-plus-circle"></i> เพิ่มข้อมูลน็อตล้อมาตรฐาน'; document.getElementById('editBarcode').value=`NUT-3R${String(nextId).padStart(3,'0')}`; document.getElementById('editStock').value=0; document.getElementById('editMaxLot').value=0; document.getElementById('editMinLot').value=0; ['editJan','editFeb','editMar','editApr','editMay'].forEach(id=>document.getElementById(id).value=0); document.getElementById('editModal').classList.add('show'); }
+function openEditModal(index){ editModeIndex=index; const row=rows[index]; document.getElementById('modalTitle').innerHTML='<i class="fas fa-pen"></i> แก้ไขข้อมูลสินค้า'; document.getElementById('editBarcode').value=row.barcode; document.getElementById('editStock').value=row.stock; document.getElementById('editMaxLot').value=row.maxLot||row.stock||0; document.getElementById('editMinLot').value=row.minLot||row.stock||0; document.getElementById('editJan').value=row.jan||0; document.getElementById('editFeb').value=row.feb||0; document.getElementById('editMar').value=row.mar||0; document.getElementById('editApr').value=row.apr||0; document.getElementById('editMay').value=row.may||0; document.getElementById('editModal').classList.add('show'); }
+function closeEditModal(){ document.getElementById('editModal').classList.remove('show'); }
+function confirmEditRow(){
+  const barcode = document.getElementById('editBarcode').value.trim(); if(!barcode){ toast('กรุณากรอกรหัสสินค้า','warning'); return; }
+  const maxLotVal = +document.getElementById('editMaxLot').value||0, minLotVal = +document.getElementById('editMinLot').value||0;
+  if(minLotVal > maxLotVal){ toast('Min ต้องไม่เกิน Max','warning'); return; }
+  if(editModeIndex===null){
+    if(rows.some(r=>r.barcode===barcode)){ toast('รหัสสินค้านี้มีอยู่แล้ว','warning'); return; }
+    rows.push({ id: nextId++, barcode, stock: +document.getElementById('editStock').value||0, maxLot: maxLotVal, minLot: minLotVal, jan: +document.getElementById('editJan').value||0, feb: +document.getElementById('editFeb').value||0, mar: +document.getElementById('editMar').value||0, apr: +document.getElementById('editApr').value||0, may: +document.getElementById('editMay').value||0 });
+    toast('เพิ่มข้อมูลสำเร็จ','ok');
   } else {
-    const row = rows[editModeIndex];
-    row.barcode = barcode; row.stock = +document.getElementById('editStock').value || 0; row.maxLot = maxLotVal; row.minLot = minLotVal;
-    row.jan = +document.getElementById('editJan').value||0; row.feb = +document.getElementById('editFeb').value||0; row.mar = +document.getElementById('editMar').value||0; row.apr = +document.getElementById('editApr').value||0; row.may = +document.getElementById('editMay').value||0;
-    toast('แก้ไขข้อมูลสำเร็จ', 'ok');
+    const existing = rows.find((r,i)=>i!==editModeIndex && r.barcode===barcode);
+    if(existing){ toast('รหัสสินค้าซ้ำกับรายการอื่น','warning'); return; }
+    const row = rows[editModeIndex]; row.barcode=barcode; row.stock=+document.getElementById('editStock').value||0; row.maxLot=maxLotVal; row.minLot=minLotVal; row.jan=+document.getElementById('editJan').value||0; row.feb=+document.getElementById('editFeb').value||0; row.mar=+document.getElementById('editMar').value||0; row.apr=+document.getElementById('editApr').value||0; row.may=+document.getElementById('editMay').value||0;
+    toast('แก้ไขสำเร็จ','ok');
   }
   saveData(); render(); closeEditModal();
 }
-
-function openDeleteModal(index) { pendingDeleteIndex = index; document.getElementById('deleteBarcode').textContent = rows[index].barcode; document.getElementById('deleteModal').classList.add('show'); }
-function closeDeleteModal() { pendingDeleteIndex = null; document.getElementById('deleteModal').classList.remove('show'); }
-function confirmDeleteRow() { if(pendingDeleteIndex !== null && rows[pendingDeleteIndex]) { const deletedBarcode = rows[pendingDeleteIndex].barcode; rows.splice(pendingDeleteIndex,1); if(selectedRows.has(rows[pendingDeleteIndex]?.id)) selectedRows.delete(rows[pendingDeleteIndex]?.id); saveData(); render(); toast(`ลบ ${deletedBarcode} สำเร็จ`,'ok'); } closeDeleteModal(); }
-
-function exportData() {
-  let csv = "Barcode,B/L,Max,Min,ม.ค.,ก.พ.,มี.ค.,เม.ย.,พ.ค.,รวม 5 เดือน,เฉลี่ยต่อเดือน\n";
-  rows.forEach(r => { const total = calcTotal(r); const avg = total ? Math.round(total/5) : 0; csv += `"${r.barcode}",${r.stock},${r.maxLot||r.stock},${r.minLot||r.stock},${r.jan||0},${r.feb||0},${r.mar||0},${r.apr||0},${r.may||0},${total},${avg}\n`; });
-  const blob = new Blob(["\uFEFF" + csv], {type: "text/csv;charset=utf-8;"});
-  const link = document.createElement("a"); link.href = URL.createObjectURL(blob);
-  link.setAttribute("download", `3RHB_export_${new Date().toISOString().slice(0,19)}.csv`);
-  document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(link.href);
-  toast("ส่งออกข้อมูลเรียบร้อย", "ok");
-}
-
-function printPDF() { toast("เปิดหน้าต่างพิมพ์...", "ok"); setTimeout(()=>window.print(),200); }
-function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
-
+function openDeleteModal(index){ pendingDeleteIndex=index; document.getElementById('deleteBarcode').innerText=rows[index].barcode; document.getElementById('deleteModal').classList.add('show'); }
+function closeDeleteModal(){ pendingDeleteIndex=null; document.getElementById('deleteModal').classList.remove('show'); }
+function confirmDeleteRow(){ if(pendingDeleteIndex!==null && rows[pendingDeleteIndex]){ const deleted=rows[pendingDeleteIndex].barcode; rows.splice(pendingDeleteIndex,1); if(rows.length===0) selectedRows.clear(); saveData(); render(); toast(`ลบ ${deleted} สำเร็จ`,'ok'); } closeDeleteModal(); }
+function exportData(){ let csv="Barcode,B/L,Max,Min,ม.ค.,ก.พ.,มี.ค.,เม.ย.,พ.ค.,รวม 5 เดือน,เฉลี่ย\n"; rows.forEach(r=>{ const total=calcTotal(r), avg=total?Math.round(total/5):0; csv+=`"${r.barcode}",${r.stock},${r.maxLot||r.stock},${r.minLot||r.stock},${r.jan||0},${r.feb||0},${r.mar||0},${r.apr||0},${r.may||0},${total},${avg}\n`; }); const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"}); const link=document.createElement("a"); link.href=URL.createObjectURL(blob); link.download=`3RHB_export_${new Date().toISOString().slice(0,19)}.csv`; document.body.appendChild(link); link.click(); document.body.removeChild(link); toast("ส่งออก CSV สำเร็จ","ok"); }
+function printPDF(){ toast("เปิดหน้าต่างพิมพ์", "ok"); setTimeout(()=>window.print(),150); }
+function handleSearchKeypress(e){ if(e.key==='Enter') searchData(); }
+function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, m=> m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
 let sbOpen=window.innerWidth>=1024, sbCollapsed=false;
 function toggleSidebar(){ const sb=document.getElementById('sidebar'),main=document.getElementById('main'),ov=document.getElementById('overlay'); if(window.innerWidth<1024){ sbOpen=!sbOpen; sb.classList.toggle('open',sbOpen); ov.classList.toggle('show',sbOpen); } else { sbCollapsed=!sbCollapsed; sb.classList.toggle('collapsed',sbCollapsed); main.classList.toggle('sb-col',sbCollapsed); } }
 function closeSidebar(){ if(window.innerWidth<1024){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); } }
+function toast(msg,type=''){ const c=document.getElementById('toasts'),t=document.createElement('div'); const icon=type==='ok'?'<i class="fas fa-check-circle"></i>':(type==='warning'?'<i class="fas fa-exclamation-triangle"></i>':'<i class="fas fa-info-circle"></i>'); t.className='toast '+(type==='ok'?'ok':(type==='warning'?'warning':'')); t.innerHTML=`${icon}<span>${msg}</span>`; c.appendChild(t); setTimeout(()=>t.classList.add('show'),10); setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),400); },2800); }
+function logout(){ toast('ออกจากระบบ demo'); } function showNotifications(){ toast('ไม่มีการแจ้งเตือน'); } function showFavorites(){ toast('รายการโปรด'); } function callPhone(){ toast('โทร 02-123-4567'); } function showProfile(){ toast('โปรไฟล์ผู้ใช้'); }
 window.addEventListener('resize',()=>{ if(window.innerWidth>=1024){ document.getElementById('overlay').classList.remove('show'); document.getElementById('sidebar').classList.remove('open'); } });
-document.querySelectorAll('.sb-item').forEach(item=>{ item.addEventListener('click',function(e){ e.preventDefault(); document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active')); this.classList.add('active'); toast(`ไปที่: ${this.querySelector('.sb-text')?.textContent || this.getAttribute('data-tip')}`); if(window.innerWidth<1024) closeSidebar(); }); });
-
-function toast(msg, type=''){ const c=document.getElementById('toasts'), t=document.createElement('div'); const icon = type==='ok'?'<i class="fas fa-check-circle"></i>':(type==='warning'?'<i class="fas fa-exclamation-triangle"></i>':'<i class="fas fa-info-circle"></i>'); t.className='toast '+(type==='ok'?'ok':(type==='warning'?'warning':'')); t.innerHTML=`${icon} <span>${msg}</span>`; c.appendChild(t); setTimeout(()=>t.classList.add('show'),10); setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),400); },2800); }
-function logout() { if(confirm('ออกจากระบบ?')) toast('ออกจากระบบแล้ว','ok'); }
-function showNotifications() { toast('ไม่มีการแจ้งเตือน'); }
-function showFavorites() { toast('รายการโปรด 3 รายการ'); }
-function callPhone() { toast('โทร 02-123-4567'); }
-function showProfile() { toast('โปรไฟล์ผู้ใช้'); }
-
 loadData();
 </script>
 </body>
