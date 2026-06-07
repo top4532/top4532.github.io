@@ -1,1201 +1,364 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WheelPro - ล้อรถบรรทุกคุณภาพสูง</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sidebar</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --primary: #1d4ed8;
-            --primary-dark: #1e3a8a;
-            --accent: #f97316;
-            --sidebar-w: 280px;
-            --sidebar-collapsed: 72px;
-            --header-h: 64px;
-        }
+  <style>
+    :root {
+      --sidebar-w: 280px;
+      --sidebar-collapsed: 72px;
+      --header-h: 64px;
+    }
 
-        * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: 'Kanit', sans-serif;
-            background: #f1f5f9;
-            overflow-x: hidden;
-        }
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: #f1f5f9;
+      display: flex;
+      min-height: 100vh;
+    }
 
-        /* ====== LAYOUT ====== */
-        #layout { display: flex; min-height: 100vh; }
+    /* ====== OVERLAY (mobile) ====== */
+    #overlay {
+      position: fixed; inset: 0;
+      background: rgba(15,23,42,.5);
+      z-index: 45;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+      backdrop-filter: blur(2px);
+    }
+    #overlay.show { opacity: 1; pointer-events: auto; }
 
-        /* ====== SIDEBAR ====== */
-        #sidebar {
-            width: var(--sidebar-w);
-            min-height: 100vh;
-            background: #fff;
-            border-right: 1px solid #e2e8f0;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            top: 0; left: 0;
-            z-index: 50;
-            transition: width 0.3s cubic-bezier(0.4,0,0.2,1), transform 0.3s cubic-bezier(0.4,0,0.2,1);
-            overflow: hidden;
-            box-shadow: 4px 0 24px rgba(30,64,175,.06);
-        }
-        #sidebar.collapsed { width: var(--sidebar-collapsed); }
-        #sidebar .sidebar-logo { padding: 0 20px; height: var(--header-h); display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #f1f5f9; background: linear-gradient(135deg,#1e3a8a,#1d4ed8); flex-shrink: 0; }
-        #sidebar .logo-icon { width: 36px; height: 36px; background: rgba(255,255,255,.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        #sidebar .logo-text { color: #fff; font-size: 1.2rem; font-weight: 800; white-space: nowrap; letter-spacing: -0.5px; transition: opacity 0.2s, width 0.3s; }
-        #sidebar .logo-text span { color: #93c5fd; }
-        #sidebar.collapsed .logo-text { opacity: 0; width: 0; overflow: hidden; }
+    /* ====== SIDEBAR ====== */
+    #sidebar {
+      width: var(--sidebar-w);
+      min-height: 100vh;
+      background: #fff;
+      border-right: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 50;
+      transition: width 0.3s cubic-bezier(0.4,0,0.2,1),
+                  transform 0.3s cubic-bezier(0.4,0,0.2,1);
+      overflow: hidden;
+      box-shadow: 4px 0 24px rgba(30,64,175,.06);
+    }
 
-        #sidebar nav { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 16px 12px; }
-        #sidebar nav::-webkit-scrollbar { width: 3px; }
-        #sidebar nav::-webkit-scrollbar-thumb { background: #bfdbfe; border-radius: 10px; }
+    /* Desktop collapsed */
+    #sidebar.collapsed { width: var(--sidebar-collapsed); }
 
-        .nav-label { font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.2px; padding: 0 8px; margin: 16px 0 8px; white-space: nowrap; transition: opacity 0.2s; }
-        #sidebar.collapsed .nav-label { opacity: 0; }
+    /* Mobile hidden */
+    @media (max-width: 1023px) {
+      #sidebar { transform: translateX(-100%); width: var(--sidebar-w) !important; }
+      #sidebar.open { transform: translateX(0); }
+    }
 
-        .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; cursor: pointer; transition: all 0.2s; position: relative; text-decoration: none; color: #475569; font-weight: 500; font-size: 0.9rem; white-space: nowrap; overflow: hidden; }
-        .nav-item:hover { background: #eff6ff; color: #1d4ed8; }
-        .nav-item.active { background: linear-gradient(135deg,#1d4ed8,#3b82f6); color: #fff; box-shadow: 0 4px 14px rgba(29,78,216,.3); }
-        .nav-item .nav-icon { width: 20px; text-align: center; flex-shrink: 0; font-size: 1rem; }
-        .nav-item .nav-text { transition: opacity 0.2s; }
-        #sidebar.collapsed .nav-text { opacity: 0; width: 0; }
-        .nav-badge { margin-left: auto; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 700; flex-shrink: 0; transition: opacity 0.2s; }
-        #sidebar.collapsed .nav-badge { opacity: 0; width: 0; overflow: hidden; }
-        .nav-badge.red { background: #fee2e2; color: #dc2626; }
-        .nav-badge.green { background: #dcfce7; color: #16a34a; }
-        .nav-badge.gray { background: #f1f5f9; color: #64748b; }
+    /* ---- Logo ---- */
+    .sidebar-logo {
+      padding: 0 20px;
+      height: var(--header-h);
+      display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid #f1f5f9;
+      background: linear-gradient(135deg, #1e3a8a, #1d4ed8);
+      flex-shrink: 0;
+    }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,.15);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-text {
+      color: #fff; font-size: 1.2rem; font-weight: 800;
+      white-space: nowrap; letter-spacing: -0.5px;
+      transition: opacity 0.2s, width 0.3s;
+    }
+    .logo-text span { color: #93c5fd; }
+    #sidebar.collapsed .logo-text { opacity: 0; width: 0; overflow: hidden; }
 
-        .sidebar-profile { border-top: 1px solid #f1f5f9; padding: 12px; flex-shrink: 0; }
-        .profile-inner { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 12px; background: #f8fafc; }
-        .profile-avatar { width: 36px; height: 36px; background: linear-gradient(135deg,#1e3a8a,#1d4ed8); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; font-size: 0.85rem; }
-        .profile-info { flex: 1; overflow: hidden; transition: opacity 0.2s, width 0.3s; }
-        #sidebar.collapsed .profile-info { opacity: 0; width: 0; }
-        .profile-name { font-size: 0.8rem; font-weight: 700; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .profile-role { font-size: 0.7rem; color: #94a3b8; white-space: nowrap; }
+    /* ---- Nav ---- */
+    #sidebar nav {
+      flex: 1; overflow-y: auto; overflow-x: hidden;
+      padding: 16px 12px;
+    }
+    #sidebar nav::-webkit-scrollbar { width: 3px; }
+    #sidebar nav::-webkit-scrollbar-thumb { background: #bfdbfe; border-radius: 10px; }
 
-        /* ====== OVERLAY ====== */
-        #overlay { position: fixed; inset: 0; background: rgba(15,23,42,.5); z-index: 45; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(2px); }
-        #overlay.show { opacity: 1; pointer-events: auto; }
+    .nav-label {
+      font-size: 10px; font-weight: 700; color: #94a3b8;
+      text-transform: uppercase; letter-spacing: 1.2px;
+      padding: 0 8px; margin: 16px 0 8px;
+      white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+    #sidebar.collapsed .nav-label { opacity: 0; }
 
-        /* ====== MAIN ====== */
-        #main { margin-left: var(--sidebar-w); flex: 1; transition: margin-left 0.3s cubic-bezier(0.4,0,0.2,1); min-width: 0; display: flex; flex-direction: column; }
-        #main.sidebar-collapsed { margin-left: var(--sidebar-collapsed); }
-        @media (max-width: 1023px) { #main { margin-left: 0 !important; } }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px; border-radius: 12px;
+      cursor: pointer; transition: all 0.2s;
+      text-decoration: none; color: #475569;
+      font-weight: 500; font-size: 0.9rem;
+      white-space: nowrap; overflow: hidden;
+    }
+    .nav-item:hover { background: #eff6ff; color: #1d4ed8; }
+    .nav-item.active {
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(29,78,216,.3);
+    }
+    .nav-icon { width: 20px; text-align: center; flex-shrink: 0; font-size: 1rem; }
+    .nav-text { transition: opacity 0.2s; }
+    #sidebar.collapsed .nav-text { opacity: 0; width: 0; }
 
-        /* ====== HEADER ====== */
-        #header {
-            height: var(--header-h);
-            background: rgba(255,255,255,.98);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid #e2e8f0;
-            position: sticky;
-            top: 0;
-            z-index: 40;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            gap: 12px;
-            box-shadow: 0 1px 12px rgba(15,23,42,.06);
-        }
-        .header-search { flex: 1; max-width: 400px; position: relative; }
-        .header-search input { width: 100%; padding: 9px 16px 9px 40px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 0.875rem; font-family: 'Kanit', sans-serif; background: #f8fafc; color: #1e293b; transition: all 0.2s; outline: none; }
-        .header-search input:focus { border-color: #93c5fd; background: #fff; box-shadow: 0 0 0 4px rgba(147,197,253,.15); }
-        .header-search .search-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.85rem; }
-        .header-search .search-clear { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; cursor: pointer; display: none; padding: 2px 6px; border-radius: 6px; }
-        .header-search input:not(:placeholder-shown) + .search-icon + .search-clear { display: block; }
+    .nav-badge {
+      margin-left: auto; font-size: 10px;
+      padding: 2px 8px; border-radius: 20px;
+      font-weight: 700; flex-shrink: 0;
+      transition: opacity 0.2s;
+    }
+    #sidebar.collapsed .nav-badge { opacity: 0; width: 0; overflow: hidden; }
+    .nav-badge.red   { background: #fee2e2; color: #dc2626; }
+    .nav-badge.green { background: #dcfce7; color: #16a34a; }
+    .nav-badge.gray  { background: #f1f5f9; color: #64748b; }
 
-        .header-btn { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; color: #475569; border: 1.5px solid #e2e8f0; background: #f8fafc; position: relative; }
-        .header-btn:hover { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
-        .header-badge { position: absolute; top: -4px; right: -4px; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; }
+    /* ---- Profile ---- */
+    .sidebar-profile { border-top: 1px solid #f1f5f9; padding: 12px; flex-shrink: 0; }
+    .profile-inner {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 12px; background: #f8fafc;
+    }
+    .profile-avatar {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, #1e3a8a, #1d4ed8);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; flex-shrink: 0; font-size: 0.85rem;
+    }
+    .profile-info {
+      flex: 1; overflow: hidden;
+      transition: opacity 0.2s, width 0.3s;
+    }
+    #sidebar.collapsed .profile-info { opacity: 0; width: 0; }
+    .profile-name {
+      font-size: 0.8rem; font-weight: 700; color: #1e293b;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .profile-role { font-size: 0.7rem; color: #94a3b8; white-space: nowrap; }
+    .logout-btn {
+      background: none; border: none; color: #94a3b8;
+      cursor: pointer; padding: 6px; border-radius: 8px;
+      transition: all .2s; flex-shrink: 0; font-size: .9rem;
+    }
+    .logout-btn:hover { color: #dc2626; background: #fef2f2; }
+    #sidebar.collapsed .logout-btn { display: none; }
 
-        .cart-count { background: #dc2626; color: #fff; }
-        .notify-dot { background: #f97316; }
+    /* ====== MAIN CONTENT ====== */
+    #main {
+      margin-left: var(--sidebar-w);
+      flex: 1; min-width: 0;
+      transition: margin-left 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    #main.sidebar-collapsed { margin-left: var(--sidebar-collapsed); }
+    @media (max-width: 1023px) { #main { margin-left: 0 !important; } }
 
-        /* ====== SUB NAV ====== */
-        #subnav { height: 48px; background: #fff; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; padding: 0 20px; gap: 4px; overflow-x: auto; position: sticky; top: 64px; z-index: 38; }
-        #subnav::-webkit-scrollbar { height: 0; }
-        .subnav-link { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; color: #64748b; white-space: nowrap; cursor: pointer; transition: all 0.2s; text-decoration: none; }
-        .subnav-link:hover { background: #eff6ff; color: #1d4ed8; }
-        .subnav-link.active { background: #eff6ff; color: #1d4ed8; }
+    /* ---- Toggle button in main header ---- */
+    #toggleBtn {
+      position: fixed; top: 12px; left: 296px;
+      z-index: 60;
+      width: 40px; height: 40px; border-radius: 12px;
+      border: 1.5px solid #e2e8f0; background: #fff;
+      cursor: pointer; color: #475569; font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      display: flex; align-items: center; justify-content: center;
+    }
+    #toggleBtn:hover { background: #eff6ff; color: #1d4ed8; }
+    #toggleBtn.collapsed-btn { left: 84px; }
+    @media (max-width: 1023px) { #toggleBtn { left: 12px; } }
 
-        /* ====== HERO ====== */
-        .hero {
-            border-radius: 20px;
-            background: linear-gradient(135deg, #0c1929 0%, #1a2f4e 40%, #1d4ed8 100%);
-            position: relative;
-            overflow: hidden;
-            min-height: 420px;
-            display: flex;
-            align-items: center;
-        }
-        .hero-pattern {
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(circle at 20% 50%, rgba(29,78,216,.3) 0%, transparent 50%),
-                              radial-gradient(circle at 80% 20%, rgba(249,115,22,.15) 0%, transparent 40%);
-        }
-        .hero-rings { position: absolute; right: 5%; top: 50%; transform: translateY(-50%); display: flex; gap: 0; }
-        .ring { border-radius: 50%; border: 8px solid rgba(255,255,255,.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .ring-outer { width: 260px; height: 260px; border-color: rgba(255,255,255,.08); }
-        .ring-mid { width: 200px; height: 200px; position: absolute; border-color: rgba(255,255,255,.15); background: rgba(255,255,255,.04); }
-        .ring-inner { width: 130px; height: 130px; position: absolute; border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.06); }
-        .ring-hub { width: 60px; height: 60px; position: absolute; background: rgba(255,255,255,.12); border: 4px solid rgba(255,255,255,.3); border-radius: 50%; }
-
-        /* ====== STATS ====== */
-        .stat-card { background: #fff; border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 16px; box-shadow: 0 2px 12px rgba(15,23,42,.06); border: 1.5px solid #f1f5f9; transition: all 0.25s; cursor: pointer; }
-        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(29,78,216,.12); border-color: #bfdbfe; }
-        .stat-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
-        .stat-val { font-size: 1.75rem; font-weight: 800; color: #0f172a; line-height: 1; }
-        .stat-label { font-size: 0.78rem; color: #94a3b8; font-weight: 500; margin-top: 2px; }
-        .stat-trend { display: flex; align-items: center; gap: 4px; font-size: 0.75rem; font-weight: 700; margin-top: 4px; }
-        .stat-trend.up { color: #16a34a; }
-        .stat-trend.down { color: #dc2626; }
-        .stat-trend.neutral { color: #0ea5e9; }
-
-        /* ====== PRODUCT CARD ====== */
-        .product-card { background: #fff; border-radius: 16px; border: 1.5px solid #f1f5f9; overflow: hidden; transition: all 0.3s; display: flex; flex-direction: column; }
-        .product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(29,78,216,.13); border-color: #93c5fd; }
-
-        .product-img { position: relative; height: 200px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .product-badges { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 6px; z-index: 2; }
-        .pbadge { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 20px; display: inline-block; letter-spacing: 0.5px; text-transform: uppercase; }
-        .product-rating { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,.5); backdrop-filter: blur(4px); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; display: flex; align-items: center; gap: 4px; z-index: 2; }
-        .wheel-svg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-
-        .product-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
-        .brand-tag { font-size: 10px; font-weight: 800; letter-spacing: 1px; color: #1d4ed8; background: #eff6ff; padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 8px; border: 1px solid #bfdbfe; }
-        .product-name { font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: 6px; line-height: 1.3; }
-        .product-desc { font-size: 0.78rem; color: #64748b; line-height: 1.5; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
-        .product-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
-        .ptag { font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 20px; display: flex; align-items: center; gap: 4px; }
-        .ptag.green { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
-        .ptag.blue { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
-        .ptag.orange { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
-        .ptag.purple { background: #faf5ff; color: #7c3aed; border: 1px solid #e9d5ff; }
-        .ptag.teal { background: #f0fdfa; color: #0f766e; border: 1px solid #99f6e4; }
-        .ptag.red { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
-
-        .product-footer { border-top: 1px solid #f1f5f9; padding-top: 12px; display: flex; align-items: center; justify-content: space-between; margin-top: auto; gap: 8px; }
-        .price-old { font-size: 11px; color: #94a3b8; text-decoration: line-through; }
-        .price-new { font-size: 1.4rem; font-weight: 800; color: #1d4ed8; line-height: 1; }
-        .price-unit { font-size: 11px; color: #94a3b8; }
-
-        .footer-actions { display: flex; gap: 6px; align-items: center; }
-        .btn-wish { width: 36px; height: 36px; border-radius: 10px; background: #f8fafc; border: 1.5px solid #e2e8f0; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #94a3b8; transition: all 0.2s; font-size: 0.9rem; }
-        .btn-wish:hover, .btn-wish.active { background: #fef2f2; border-color: #fecaca; color: #dc2626; }
-        .btn-cart { display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg,#1d4ed8,#3b82f6); color: #fff; border: none; padding: 8px 16px; border-radius: 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; font-family: 'Kanit', sans-serif; transition: all 0.2s; }
-        .btn-cart:hover { background: linear-gradient(135deg,#1e3a8a,#1d4ed8); transform: scale(1.03); }
-        .btn-cart:active { transform: scale(0.97); }
-
-        /* ====== SWIPER ====== */
-        .swiper { padding: 8px 4px 48px 4px !important; }
-        .swiper-slide { height: auto !important; }
-        .swiper-pagination-bullet { background: #93c5fd; opacity: 0.5; width: 8px; height: 8px; }
-        .swiper-pagination-bullet-active { background: #1d4ed8; opacity: 1; width: 28px; border-radius: 8px; }
-        .swiper-button-next, .swiper-button-prev { display: none; }
-
-        /* ====== CHART ====== */
-        .chart-bar-wrap { margin-bottom: 14px; }
-        .chart-bar-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-        .chart-bar-track { height: 20px; background: #f1f5f9; border-radius: 20px; overflow: hidden; }
-        .chart-bar-fill { height: 100%; border-radius: 20px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); width: 0; }
-        .chart-bar-fill.animate { /* triggered by JS */ }
-        .chart-bar-fill span { font-size: 10px; font-weight: 800; color: #fff; }
-
-        /* ====== TOAST ====== */
-        #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .toast { background: #0f172a; color: #fff; padding: 12px 20px; border-radius: 14px; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 30px rgba(15,23,42,.3); pointer-events: auto; transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); min-width: 240px; border-left: 4px solid #3b82f6; }
-        .toast.show { transform: translateX(0); }
-        .toast.success { border-left-color: #22c55e; }
-        .toast.error { border-left-color: #ef4444; }
-        .toast .toast-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .toast.success .toast-icon { background: rgba(34,197,94,.2); color: #22c55e; }
-        .toast.info .toast-icon { background: rgba(59,130,246,.2); color: #3b82f6; }
-
-        /* ====== SCROLL TO TOP ====== */
-        #scrollTop { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: linear-gradient(135deg,#1d4ed8,#3b82f6); color: #fff; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 20px rgba(29,78,216,.35); border: none; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); z-index: 999; font-size: 1rem; }
-        #scrollTop.show { transform: translateX(-50%) translateY(0); }
-        #scrollTop:hover { transform: translateX(-50%) translateY(-4px); }
-
-        /* ====== SEARCH DROPDOWN ====== */
-        #search-dropdown { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 14px; box-shadow: 0 12px 40px rgba(15,23,42,.12); z-index: 100; display: none; overflow: hidden; }
-        #search-dropdown.show { display: block; }
-        .search-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; cursor: pointer; transition: background 0.15s; }
-        .search-item:hover { background: #f8fafc; }
-        .search-item-icon { width: 32px; height: 32px; background: #eff6ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #1d4ed8; font-size: 0.8rem; flex-shrink: 0; }
-        .search-item-text { font-size: 0.82rem; font-weight: 600; color: #1e293b; }
-        .search-item-sub { font-size: 0.72rem; color: #94a3b8; }
-
-        /* ====== SECTION CARD ====== */
-        .section-card { background: #fff; border-radius: 20px; border: 1.5px solid #f1f5f9; box-shadow: 0 2px 16px rgba(15,23,42,.05); overflow: hidden; }
-        .section-header { padding: 24px 24px 16px; border-bottom: 1px solid #f8fafc; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px; justify-content: space-between; }
-        .section-title { display: flex; align-items: center; gap: 12px; }
-        .section-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
-        .section-h2 { font-size: 1.25rem; font-weight: 800; color: #0f172a; }
-        .section-sub { font-size: 0.78rem; color: #94a3b8; font-weight: 500; margin-top: 2px; }
-
-        /* ====== PROMO BANNER ====== */
-        .promo-banner { border-radius: 16px; background: linear-gradient(135deg,#1e3a8a,#7c3aed); padding: 24px; position: relative; overflow: hidden; }
-        .promo-banner::before { content: ''; position: absolute; right: -40px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,.06); }
-        .promo-banner::after { content: ''; position: absolute; right: 60px; bottom: -50px; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,.04); }
-
-        /* ====== MOBILE SIDEBAR ====== */
-        @media (max-width: 1023px) {
-            #sidebar { transform: translateX(-100%); width: var(--sidebar-w) !important; }
-            #sidebar.open { transform: translateX(0); }
-            #main { margin-left: 0 !important; }
-        }
-
-        /* ====== ANIMATIONS ====== */
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes spin-reverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-        @keyframes pulse-ring { 0%,100% { opacity: .6; } 50% { opacity: 1; } }
-        @keyframes badge-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,.4); } 50% { box-shadow: 0 0 0 8px rgba(239,68,68,0); } }
-
-        .anim-fade-up { animation: fadeUp 0.6s ease forwards; opacity: 0; }
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-        .delay-4 { animation-delay: 0.4s; }
-        .delay-5 { animation-delay: 0.5s; }
-
-        .spin-slow { animation: spin-slow 12s linear infinite; }
-        .spin-reverse { animation: spin-reverse 8s linear infinite; }
-        .pulse-badge { animation: badge-pulse 2s infinite; }
-
-        /* Filter tabs */
-        .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 24px 16px; }
-        .ftab { padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: 1.5px solid #e2e8f0; color: #64748b; background: #f8fafc; }
-        .ftab:hover { border-color: #93c5fd; color: #1d4ed8; }
-        .ftab.active { background: #1d4ed8; color: #fff; border-color: #1d4ed8; box-shadow: 0 4px 12px rgba(29,78,216,.25); }
-
-        /* Quantity buttons */
-        .qty-wrap { display: flex; align-items: center; gap: 0; border: 1.5px solid #e2e8f0; border-radius: 10px; overflow: hidden; }
-        .qty-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: #f8fafc; cursor: pointer; font-weight: 700; color: #475569; transition: background 0.15s; border: none; font-size: 1rem; }
-        .qty-btn:hover { background: #eff6ff; color: #1d4ed8; }
-        .qty-val { width: 32px; height: 28px; text-align: center; border: none; outline: none; font-size: 0.85rem; font-weight: 700; color: #0f172a; font-family: 'Kanit', sans-serif; background: #fff; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; }
-
-        /* Delivery bar */
-        .delivery-bar { background: linear-gradient(135deg,#0f172a,#1e3a8a); color: #93c5fd; font-size: 0.78rem; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 24px; padding: 8px 20px; flex-wrap: wrap; }
-        .delivery-item { display: flex; align-items: center; gap: 6px; }
-        .delivery-item i { color: #60a5fa; }
-
-        /* Footer */
-        footer { background: linear-gradient(135deg,#0c1629,#1e3a8a); color: #e2e8f0; }
-        .footer-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 32px; padding: 48px 32px; }
-        @media (max-width: 768px) { .footer-grid { grid-template-columns: repeat(2,1fr); padding: 32px 20px; } }
-        @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
-        .footer-link { display: block; color: #94a3b8; font-size: 0.82rem; margin-bottom: 8px; text-decoration: none; transition: color 0.2s; }
-        .footer-link:hover { color: #93c5fd; }
-        .footer-h { font-weight: 700; font-size: 0.95rem; color: #e2e8f0; margin-bottom: 16px; }
-        .social-btn { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,.08); display: inline-flex; align-items: center; justify-content: center; color: #94a3b8; transition: all 0.2s; cursor: pointer; font-size: 0.9rem; }
-        .social-btn:hover { background: rgba(255,255,255,.16); color: #fff; }
-    </style>
+    /* Demo page styles */
+    .demo-content {
+      padding: 80px 40px 40px;
+      color: #64748b; font-size: .9rem; line-height: 1.7;
+    }
+    .demo-content h1 { font-size: 1.5rem; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
+  </style>
 </head>
 <body>
 
-<!-- TOAST CONTAINER -->
-<div id="toast-container"></div>
-
-<!-- SCROLL TO TOP -->
-<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="กลับด้านบน">
-    <i class="fas fa-arrow-up"></i>
-</button>
-
-<!-- OVERLAY (mobile) -->
+<!-- OVERLAY -->
 <div id="overlay" onclick="closeSidebar()"></div>
 
-<div id="layout">
-    <!-- ===================== SIDEBAR ===================== -->
-    <aside id="sidebar">
-        <div class="sidebar-logo">
-            <div class="logo-icon">
-                <i class="fas fa-truck-monster" style="color:#93c5fd;font-size:1.1rem;"></i>
-            </div>
-            <div class="logo-text">Wheel<span>Pro</span></div>
-        </div>
-
-        <nav>
-            <div class="nav-label">เมนูหลัก</div>
-
-            <a class="nav-item active" href="#">
-                <i class="fas fa-house nav-icon"></i>
-                <span class="nav-text">หน้าหลัก</span>
-            </a>
-            <a class="nav-item" href="#">
-                <i class="fas fa-chart-line nav-icon"></i>
-                <span class="nav-text">อันดับขายดี</span>
-                <span class="nav-badge red">Hot</span>
-            </a>
-            <a class="nav-item" href="#">
-                <i class="fas fa-tags nav-icon"></i>
-                <span class="nav-text">โปรโมชั่น</span>
-                <span class="nav-badge green">ลด 30%</span>
-            </a>
-            <a class="nav-item" href="#">
-                <i class="fas fa-star nav-icon"></i>
-                <span class="nav-text">สินค้าแนะนำ</span>
-            </a>
-            <a class="nav-item" href="#">
-                <i class="fas fa-crown nav-icon"></i>
-                <span class="nav-text">สินค้าพรีเมียม</span>
-            </a>
-            <a class="nav-item" href="#">
-                <i class="fas fa-box-open nav-icon"></i>
-                <span class="nav-text">รายการสั่งซื้อ</span>
-                <span class="nav-badge gray">5</span>
-            </a>
-
-            <div class="nav-label">ประเภทล้อ</div>
-
-            <a class="nav-item" href="#">
-                <i class="fas fa-circle-dot nav-icon"></i>
-                <span class="nav-text">ล้อทั้งหมด</span>
-                <span class="nav-badge gray">456</span>
-            </a>
-            <a class="nav-item" href="#">
-                <i class="fas fa-truck nav-icon"></i>
-                <span class="nav-text">ล้อบรรทุก 10 ล้อ</span>
-            </a>
-            <a class="nav-item" href="#">
-                <i class="fas fa-truck-moving nav-icon"></i>
-                <span class="nav-text">ล้อเทรลเลอร์</span>
-            </a>
-            <a class="nav-item" href="#">
-                <i class="fas fa-shield-halved nav-icon"></i>
-                <span class="nav-text">ล้อออฟโรด</span>
-            </a>
-            <a class="nav-item" href="#">
-                <i class="fas fa-bolt nav-icon"></i>
-                <span class="nav-text">ล้อสปอร์ต</span>
-            </a>
-
-            <div class="nav-label">บริการ</div>
-
-            <a class="nav-item" href="#">
-                <i class="fas fa-wrench nav-icon"></i>
-                <span class="nav-text">ติดตั้งและบริการ</span>
-            </a>
-            <a class="nav-item" href="#">
-                <i class="fas fa-shield-check nav-icon"></i>
-                <span class="nav-text">รับประกัน</span>
-            </a>
-            <a class="nav-item" href="#">
-                <i class="fas fa-headset nav-icon"></i>
-                <span class="nav-text">ติดต่อเรา</span>
-            </a>
-            <a class="nav-item" href="#">
-                <i class="fas fa-newspaper nav-icon"></i>
-                <span class="nav-text">บทความ</span>
-            </a>
-        </nav>
-
-        <div class="sidebar-profile">
-            <div class="profile-inner">
-                <div class="profile-avatar">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-                <div class="profile-info">
-                    <div class="profile-name">คุณสมศักดิ์ รักล้อ</div>
-                    <div class="profile-role">ผู้จัดการฝ่ายขาย</div>
-                </div>
-                <button onclick="showToast('ออกจากระบบแล้ว','error')" style="background:none;border:none;color:#94a3b8;cursor:pointer;padding:6px;border-radius:8px;transition:all .2s;flex-shrink:0;font-size:.9rem;" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#94a3b8'">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            </div>
-        </div>
-    </aside>
-
-    <!-- ===================== MAIN ===================== -->
-    <div id="main">
-        <!-- DELIVERY BAR -->
-        <div class="delivery-bar">
-            <div class="delivery-item"><i class="fas fa-truck-fast"></i> จัดส่งฟรีทั่วประเทศ</div>
-            <div class="delivery-item"><i class="fas fa-bolt"></i> ส่งด่วน กทม. ภายใน 1 วัน</div>
-            <div class="delivery-item"><i class="fas fa-shield-halved"></i> รับประกันสินค้า 2 ปีเต็ม</div>
-            <div class="delivery-item"><i class="fas fa-rotate-left"></i> คืนสินค้าภายใน 7 วัน</div>
-        </div>
-
-        <!-- HEADER -->
-        <header id="header">
-            <!-- Hamburger -->
-            <button id="hamburger" onclick="toggleSidebar()" style="width:40px;height:40px;border-radius:12px;border:1.5px solid #e2e8f0;background:#f8fafc;cursor:pointer;color:#475569;font-size:1rem;transition:all .2s;flex-shrink:0;" onmouseover="this.style.background='#eff6ff';this.style.color='#1d4ed8'" onmouseout="this.style.background='#f8fafc';this.style.color='#475569'">
-                <i class="fas fa-bars"></i>
-            </button>
-
-            <!-- Search -->
-            <div class="header-search" style="position:relative;">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" id="searchInput" placeholder="ค้นหาล้อรถบรรทุก..." oninput="handleSearch(this.value)" onfocus="showSearchDropdown()" onblur="setTimeout(hideSearchDropdown,200)">
-                <button class="search-clear" onclick="clearSearch()"><i class="fas fa-times"></i></button>
-                <div id="search-dropdown">
-                    <div style="padding:8px 14px 4px;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;">ค้นหายอดนิยม</div>
-                    <div class="search-item" onclick="selectSearch('Bridgestone 12R22.5')">
-                        <div class="search-item-icon"><i class="fas fa-circle-dot"></i></div>
-                        <div><div class="search-item-text">Bridgestone 12R22.5</div><div class="search-item-sub">ล้อขับเคลื่อน • ฿14,800</div></div>
-                    </div>
-                    <div class="search-item" onclick="selectSearch('Michelin 315/80R22.5')">
-                        <div class="search-item-icon"><i class="fas fa-circle-dot"></i></div>
-                        <div><div class="search-item-text">Michelin 315/80R22.5</div><div class="search-item-sub">ล้อขับเคลื่อน • ฿19,500</div></div>
-                    </div>
-                    <div class="search-item" onclick="selectSearch('Goodyear KMAX')">
-                        <div class="search-item-icon"><i class="fas fa-circle-dot"></i></div>
-                        <div><div class="search-item-text">Goodyear KMAX D</div><div class="search-item-sub">ล้อขับเคลื่อน • ฿15,900</div></div>
-                    </div>
-                    <div class="search-item" onclick="selectSearch('Continental HDR3')">
-                        <div class="search-item-icon"><i class="fas fa-circle-dot"></i></div>
-                        <div><div class="search-item-text">Continental HDR3 พรีเมียม</div><div class="search-item-sub">ล้อพรีเมียม • ฿22,900</div></div>
-                    </div>
-                    <div style="border-top:1px solid #f1f5f9;padding:10px 14px;text-align:center;font-size:0.78rem;color:#1d4ed8;font-weight:600;cursor:pointer;" onclick="showToast('ค้นหาสินค้าทั้งหมด...')">ดูผลลัพธ์ทั้งหมด <i class="fas fa-arrow-right"></i></div>
-                </div>
-            </div>
-
-            <!-- Actions -->
-            <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;">
-                <!-- Notify -->
-                <div class="header-btn" onclick="showToast('ไม่มีการแจ้งเตือนใหม่','info')" title="การแจ้งเตือน">
-                    <i class="fas fa-bell" style="font-size:.95rem;"></i>
-                    <span class="header-badge notify-dot" style="width:8px;height:8px;"></span>
-                </div>
-                <!-- Wishlist -->
-                <div class="header-btn" id="wishlistBtn" onclick="openWishlist()" title="รายการโปรด">
-                    <i class="fas fa-heart" style="font-size:.95rem;color:#dc2626;"></i>
-                    <span class="header-badge cart-count" id="wishlistCount" style="display:none;"></span>
-                </div>
-                <!-- Cart -->
-                <div class="header-btn" onclick="openCart()" title="ตะกร้าสินค้า" style="color:#1d4ed8;">
-                    <i class="fas fa-shopping-cart" style="font-size:.95rem;"></i>
-                    <span class="header-badge cart-count" id="cartCount">0</span>
-                </div>
-                <!-- Phone (desktop) -->
-                <div style="display:flex;align-items:center;gap:8px;background:#f0fdf4;padding:8px 14px;border-radius:12px;cursor:pointer;border:1.5px solid #bbf7d0;white-space:nowrap;" onclick="showToast('กำลังโทร 02-123-4567...')">
-                    <i class="fas fa-phone" style="color:#16a34a;font-size:.85rem;"></i>
-                    <span style="font-size:.82rem;font-weight:700;color:#15803d;">02-123-4567</span>
-                </div>
-            </div>
-        </header>
-
-        <!-- SUB NAV -->
-        <nav id="subnav">
-            <a class="subnav-link active" href="#"><i class="fas fa-house"></i> หน้าหลัก</a>
-            <a class="subnav-link" href="#"><i class="fas fa-truck"></i> ล้อบรรทุก</a>
-            <a class="subnav-link" href="#"><i class="fas fa-chart-line"></i> ขายดี</a>
-            <a class="subnav-link" href="#"><i class="fas fa-tags"></i> โปรฯ ลดล้างสต็อก</a>
-            <a class="subnav-link" href="#"><i class="fas fa-star"></i> แนะนำ</a>
-            <a class="subnav-link" href="#"><i class="fas fa-wrench"></i> บริการติดตั้ง</a>
-            <a class="subnav-link" href="#"><i class="fas fa-newspaper"></i> บทความ</a>
-            <a class="subnav-link" href="#"><i class="fas fa-phone"></i> ติดต่อเรา</a>
-        </nav>
-
-        <!-- CONTENT -->
-        <main style="padding:20px;display:flex;flex-direction:column;gap:20px;max-width:1400px;width:100%;margin:0 auto;">
-
-            <!-- HERO -->
-            <section class="hero anim-fade-up">
-                <div class="hero-pattern"></div>
-                <div style="position:relative;z-index:2;padding:32px 40px;flex:1;">
-                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
-                        <span style="background:rgba(239,68,68,.9);color:#fff;font-size:.75rem;font-weight:800;padding:6px 14px;border-radius:20px;display:flex;align-items:center;gap:6px;" class="pulse-badge">
-                            <i class="fas fa-fire" style="color:#fbbf24;"></i> โปรโมชั่นพิเศษ
-                        </span>
-                        <span style="background:rgba(255,255,255,.15);color:#e2e8f0;font-size:.75rem;font-weight:600;padding:6px 14px;border-radius:20px;backdrop-filter:blur(4px);">
-                            <i class="fas fa-clock" style="color:#fbbf24;"></i> หมดเขต 30 มิ.ย. นี้
-                        </span>
-                    </div>
-                    <h1 style="font-size:clamp(1.6rem,4vw,3rem);font-weight:900;color:#fff;line-height:1.15;margin-bottom:12px;">
-                        ล้อรถบรรทุกคุณภาพสูง<br>
-                        <span style="background:linear-gradient(135deg,#fbbf24,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">ราคาโรงงาน ส่งตรง</span>
-                    </h1>
-                    <p style="color:#93c5fd;font-size:.95rem;max-width:480px;line-height:1.7;margin-bottom:28px;">ล้อแม็กซ์ ล้อกระทะ ล้อยาง สำหรับรถบรรทุกทุกประเภท รับประกัน 2 ปีเต็ม พร้อมบริการติดตั้งฟรีทั่วประเทศ</p>
-                    <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                        <button onclick="showToast('เปิดหน้าเลือกสินค้า...')" style="display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#f97316,#dc2626);color:#fff;border:none;padding:12px 28px;border-radius:12px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Kanit',sans-serif;box-shadow:0 8px 24px rgba(249,115,22,.4);transition:all .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-                            <i class="fas fa-shopping-cart"></i> เลือกซื้อเลย
-                        </button>
-                        <button onclick="showToast('เปิดแคตตาล็อก...')" style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);color:#fff;border:2px solid rgba(255,255,255,.4);padding:12px 28px;border-radius:12px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Kanit',sans-serif;backdrop-filter:blur(4px);transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,.2)'" onmouseout="this.style.background='rgba(255,255,255,.12)'">
-                            <i class="fas fa-play-circle"></i> ดูแคตตาล็อก
-                        </button>
-                    </div>
-                    <!-- Mini stats -->
-                    <div style="display:flex;gap:24px;margin-top:28px;flex-wrap:wrap;">
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <i class="fas fa-check-circle" style="color:#4ade80;"></i>
-                            <span style="color:#e2e8f0;font-size:.82rem;font-weight:600;">มีสินค้า 456 รายการ</span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <i class="fas fa-star" style="color:#fbbf24;"></i>
-                            <span style="color:#e2e8f0;font-size:.82rem;font-weight:600;">รีวิว 12,000+ ครั้ง</span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:8px;">
-                            <i class="fas fa-shield-halved" style="color:#60a5fa;"></i>
-                            <span style="color:#e2e8f0;font-size:.82rem;font-weight:600;">รับประกัน 2-3 ปี</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- Ring decoration (desktop) -->
-                <div class="hero-rings" style="display:none;" id="heroRings">
-                    <div class="ring ring-outer" style="animation:spin-slow 20s linear infinite;">
-                        <div class="ring ring-mid" style="animation:spin-reverse 15s linear infinite;">
-                            <div class="ring ring-inner" style="animation:spin-slow 10s linear infinite;">
-                                <div class="ring-hub"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- STATS -->
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
-                <div class="stat-card anim-fade-up delay-1">
-                    <div>
-                        <div class="stat-label">ยอดขายรวม (เส้น)</div>
-                        <div class="stat-val" id="statSales">0</div>
-                        <div class="stat-trend up"><i class="fas fa-arrow-up"></i> +24.5% จากเดือนก่อน</div>
-                    </div>
-                    <div class="stat-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1d4ed8;">
-                        <i class="fas fa-truck"></i>
-                    </div>
-                </div>
-                <div class="stat-card anim-fade-up delay-2">
-                    <div>
-                        <div class="stat-label">แบรนด์ขายดีอันดับ 1</div>
-                        <div class="stat-val" style="font-size:1.3rem;">Bridgestone</div>
-                        <div class="stat-trend neutral"><i class="fas fa-trophy"></i> Top Brand 2026</div>
-                    </div>
-                    <div class="stat-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#d97706;">
-                        <i class="fas fa-medal"></i>
-                    </div>
-                </div>
-                <div class="stat-card anim-fade-up delay-3">
-                    <div>
-                        <div class="stat-label">ลูกค้าพอใจ</div>
-                        <div class="stat-val">98.5<span style="font-size:1.2rem;">%</span></div>
-                        <div class="stat-trend up"><i class="fas fa-star" style="color:#fbbf24;"></i> 12,000+ รีวิว</div>
-                    </div>
-                    <div class="stat-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#16a34a;">
-                        <i class="fas fa-face-smile"></i>
-                    </div>
-                </div>
-                <div class="stat-card anim-fade-up delay-4">
-                    <div>
-                        <div class="stat-label">จัดส่งสำเร็จ</div>
-                        <div class="stat-val" id="statDelivery">0</div>
-                        <div class="stat-trend up"><i class="fas fa-box"></i> ทั่วประเทศ</div>
-                    </div>
-                    <div class="stat-icon" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);color:#7c3aed;">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PROMO BANNERS -->
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;" class="anim-fade-up delay-2">
-                <div class="promo-banner">
-                    <div style="position:relative;z-index:1;">
-                        <div style="font-size:.7rem;font-weight:700;color:#c4b5fd;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Flash Sale</div>
-                        <div style="font-size:1.4rem;font-weight:900;color:#fff;line-height:1.2;">ลดสูงสุด <span style="color:#fbbf24;">30%</span><br>ล้อบรรทุก</div>
-                        <div style="font-size:.78rem;color:#c4b5fd;margin-top:6px;">เฉพาะวันนี้ถึง 30 มิ.ย.</div>
-                        <button onclick="showToast('เปิดหน้าโปรโมชั่น...')" style="margin-top:14px;background:#fff;color:#7c3aed;border:none;padding:8px 18px;border-radius:10px;font-size:.8rem;font-weight:800;cursor:pointer;font-family:'Kanit',sans-serif;transition:all .2s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">ดูโปรโมชั่น <i class="fas fa-arrow-right"></i></button>
-                    </div>
-                </div>
-                <div style="border-radius:16px;background:linear-gradient(135deg,#0f766e,#0d9488);padding:24px;position:relative;overflow:hidden;">
-                    <div style="position:absolute;right:-20px;top:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.08);"></div>
-                    <div style="position:relative;z-index:1;">
-                        <div style="font-size:.7rem;font-weight:700;color:#99f6e4;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Premium Service</div>
-                        <div style="font-size:1.4rem;font-weight:900;color:#fff;line-height:1.2;">ติดตั้งฟรี<br>ทุกออเดอร์</div>
-                        <div style="font-size:.78rem;color:#99f6e4;margin-top:6px;">+ ตรวจเช็คล้อฟรี 1 ครั้ง</div>
-                        <button onclick="showToast('เปิดหน้าบริการติดตั้ง...')" style="margin-top:14px;background:#fff;color:#0f766e;border:none;padding:8px 18px;border-radius:10px;font-size:.8rem;font-weight:800;cursor:pointer;font-family:'Kanit',sans-serif;transition:all .2s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">ดูรายละเอียด <i class="fas fa-arrow-right"></i></button>
-                    </div>
-                </div>
-                <div style="border-radius:16px;background:linear-gradient(135deg,#c2410c,#ea580c);padding:24px;position:relative;overflow:hidden;">
-                    <div style="position:absolute;right:-20px;top:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.08);"></div>
-                    <div style="position:relative;z-index:1;">
-                        <div style="font-size:.7rem;font-weight:700;color:#fed7aa;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">New Arrival</div>
-                        <div style="font-size:1.4rem;font-weight:900;color:#fff;line-height:1.2;">Continental<br>HDR3 ใหม่!</div>
-                        <div style="font-size:.78rem;color:#fed7aa;margin-top:6px;">ยางพรีเมียมรุ่นล่าสุด ปี 2026</div>
-                        <button onclick="showToast('เปิดหน้าสินค้าใหม่...')" style="margin-top:14px;background:#fff;color:#c2410c;border:none;padding:8px 18px;border-radius:10px;font-size:.8rem;font-weight:800;cursor:pointer;font-family:'Kanit',sans-serif;transition:all .2s;" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">ดูสินค้า <i class="fas fa-arrow-right"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PRODUCT SECTION -->
-            <section class="section-card anim-fade-up delay-3">
-                <div class="section-header">
-                    <div class="section-title">
-                        <div class="section-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:#dc2626;">
-                            <i class="fas fa-fire"></i>
-                        </div>
-                        <div>
-                            <div class="section-h2">ล้อรถบรรทุกขายดี</div>
-                            <div class="section-sub">อัพเดทล่าสุดวันนี้ — เลือกจาก 456 รายการ</div>
-                        </div>
-                    </div>
-                    <div style="display:flex;gap:8px;">
-                        <button class="swiper-button-prev-custom" style="display:flex;align-items:center;gap:6px;padding:8px 18px;border-radius:12px;border:1.5px solid #e2e8f0;background:#f8fafc;color:#475569;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Kanit',sans-serif;transition:all .2s;" onmouseover="this.style.background='#eff6ff';this.style.color='#1d4ed8'" onmouseout="this.style.background='#f8fafc';this.style.color='#475569'">
-                            <i class="fas fa-chevron-left"></i> ก่อนหน้า
-                        </button>
-                        <button class="swiper-button-next-custom" style="display:flex;align-items:center;gap:6px;padding:8px 18px;border-radius:12px;border:none;background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Kanit',sans-serif;transition:all .2s;box-shadow:0 4px 14px rgba(29,78,216,.25);" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
-                            ถัดไป <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Filter Tabs -->
-                <div class="filter-tabs">
-                    <div class="ftab active" onclick="filterProducts(this,'all')">ทั้งหมด</div>
-                    <div class="ftab" onclick="filterProducts(this,'drive')">ล้อขับเคลื่อน</div>
-                    <div class="ftab" onclick="filterProducts(this,'trailer')">ล้อเทรลเลอร์</div>
-                    <div class="ftab" onclick="filterProducts(this,'premium')">พรีเมียม</div>
-                    <div class="ftab" onclick="filterProducts(this,'eco')">ประหยัดน้ำมัน</div>
-                    <div class="ftab" onclick="filterProducts(this,'offroad')">ออฟโรด</div>
-                </div>
-
-                <!-- Swiper -->
-                <div style="padding:0 20px 20px;">
-                    <div class="swiper productSwiper">
-                        <div class="swiper-wrapper" id="productWrapper">
-                            <!-- Cards injected by JS -->
-                        </div>
-                        <div class="swiper-pagination"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- CHART SECTION -->
-            <section class="section-card anim-fade-up delay-4" id="chartSection">
-                <div class="section-header">
-                    <div class="section-title">
-                        <div class="section-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1d4ed8;">
-                            <i class="fas fa-chart-bar"></i>
-                        </div>
-                        <div>
-                            <div class="section-h2">เปรียบเทียบยอดขายตามแบรนด์</div>
-                            <div class="section-sub">สถิติย้อนหลัง 6 เดือน | ข้อมูลอัพเดท มิ.ย. 2026</div>
-                        </div>
-                    </div>
-                    <div style="display:flex;gap:8px;">
-                        <button style="padding:7px 16px;border-radius:20px;background:#1d4ed8;color:#fff;border:none;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Kanit',sans-serif;">ปี 2026</button>
-                        <button style="padding:7px 16px;border-radius:20px;background:#f8fafc;color:#64748b;border:1.5px solid #e2e8f0;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Kanit',sans-serif;" onclick="showToast('กำลังโหลดข้อมูลปี 2025...')">ปี 2025</button>
-                    </div>
-                </div>
-
-                <div style="padding:24px;" id="chartBars">
-                    <!-- Chart bars inserted by JS -->
-                </div>
-
-                <div style="margin:0 24px 24px;padding:16px 20px;background:linear-gradient(135deg,#f0f9ff,#eff6ff);border-radius:14px;border:1.5px solid #bfdbfe;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
-                    <div style="display:flex;gap:20px;flex-wrap:wrap;">
-                        <div style="display:flex;align-items:center;gap:8px;"><span style="width:12px;height:12px;background:#1d4ed8;border-radius:50%;display:inline-block;"></span><span style="font-size:.8rem;font-weight:600;color:#475569;">ยอดขายจริง</span></div>
-                        <div style="display:flex;align-items:center;gap:8px;"><span style="width:12px;height:12px;background:#93c5fd;border-radius:50%;display:inline-block;"></span><span style="font-size:.8rem;font-weight:600;color:#475569;">เป้าหมาย</span></div>
-                    </div>
-                    <div style="display:flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700;color:#16a34a;">
-                        <i class="fas fa-arrow-trend-up"></i> ยอดขายเพิ่มขึ้น 31.2% จากปีก่อน
-                    </div>
-                </div>
-            </section>
-
-            <!-- LATEST ORDERS TABLE -->
-            <section class="section-card anim-fade-up delay-5">
-                <div class="section-header">
-                    <div class="section-title">
-                        <div class="section-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#16a34a;">
-                            <i class="fas fa-receipt"></i>
-                        </div>
-                        <div>
-                            <div class="section-h2">รายการสั่งซื้อล่าสุด</div>
-                            <div class="section-sub">10 รายการล่าสุด • อัพเดทแบบ real-time</div>
-                        </div>
-                    </div>
-                    <button onclick="showToast('เปิดรายการสั่งซื้อทั้งหมด...')" style="padding:8px 18px;border-radius:12px;border:1.5px solid #e2e8f0;background:#f8fafc;color:#475569;font-size:.8rem;font-weight:700;cursor:pointer;font-family:'Kanit',sans-serif;transition:all .2s;" onmouseover="this.style.background='#eff6ff';this.style.color='#1d4ed8'" onmouseout="this.style.background='#f8fafc';this.style.color='#475569'">
-                        ดูทั้งหมด <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-                <div style="overflow-x:auto;">
-                    <table style="width:100%;border-collapse:collapse;font-size:.82rem;">
-                        <thead>
-                            <tr style="background:#f8fafc;border-bottom:2px solid #e2e8f0;">
-                                <th style="text-align:left;padding:12px 20px;font-weight:700;color:#475569;">เลขที่ออเดอร์</th>
-                                <th style="text-align:left;padding:12px 16px;font-weight:700;color:#475569;">สินค้า</th>
-                                <th style="text-align:left;padding:12px 16px;font-weight:700;color:#475569;">ลูกค้า</th>
-                                <th style="text-align:center;padding:12px 16px;font-weight:700;color:#475569;">จำนวน</th>
-                                <th style="text-align:right;padding:12px 16px;font-weight:700;color:#475569;">ยอดรวม</th>
-                                <th style="text-align:center;padding:12px 16px;font-weight:700;color:#475569;">สถานะ</th>
-                                <th style="text-align:center;padding:12px 20px;font-weight:700;color:#475569;">การดำเนินการ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="orderTable">
-                            <!-- Injected by JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-        </main>
-
-        <!-- FOOTER -->
-        <footer>
-            <div class="footer-grid">
-                <div>
-                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-                        <div style="width:38px;height:38px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);border-radius:10px;display:flex;align-items:center;justify-content:center;">
-                            <i class="fas fa-truck-monster" style="color:#fff;font-size:1rem;"></i>
-                        </div>
-                        <span style="font-size:1.15rem;font-weight:800;color:#f1f5f9;">Wheel<span style="color:#60a5fa;">Pro</span></span>
-                    </div>
-                    <p style="font-size:.78rem;color:#64748b;line-height:1.7;margin-bottom:16px;">ศูนย์รวมล้อรถบรรทุกคุณภาพสูง ราคาโรงงาน บริการจัดส่งและติดตั้งทั่วประเทศ ก่อตั้งมากกว่า 20 ปี</p>
-                    <div style="display:flex;gap:8px;">
-                        <div class="social-btn"><i class="fab fa-facebook-f"></i></div>
-                        <div class="social-btn"><i class="fab fa-line"></i></div>
-                        <div class="social-btn"><i class="fab fa-instagram"></i></div>
-                        <div class="social-btn"><i class="fab fa-youtube"></i></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="footer-h">หมวดหมู่สินค้า</div>
-                    <a class="footer-link" href="#">ล้อบรรทุก 10 ล้อ</a>
-                    <a class="footer-link" href="#">ล้อเทรลเลอร์</a>
-                    <a class="footer-link" href="#">ล้อออฟโรด</a>
-                    <a class="footer-link" href="#">ยางในและยางรอง</a>
-                    <a class="footer-link" href="#">ล้อสปอร์ต</a>
-                </div>
-                <div>
-                    <div class="footer-h">บริการ</div>
-                    <a class="footer-link" href="#">ติดตั้งหน้างาน</a>
-                    <a class="footer-link" href="#">รับประกันสินค้า</a>
-                    <a class="footer-link" href="#">ผ่อน 0%</a>
-                    <a class="footer-link" href="#">เปลี่ยนคืนใน 7 วัน</a>
-                    <a class="footer-link" href="#">ตรวจเช็คล้อฟรี</a>
-                </div>
-                <div>
-                    <div class="footer-h">ติดต่อเรา</div>
-                    <div style="display:flex;flex-direction:column;gap:10px;">
-                        <div style="display:flex;align-items:center;gap:8px;font-size:.78rem;color:#64748b;">
-                            <i class="fas fa-phone" style="color:#60a5fa;width:14px;"></i> 02-123-4567
-                        </div>
-                        <div style="display:flex;align-items:center;gap:8px;font-size:.78rem;color:#64748b;">
-                            <i class="fas fa-envelope" style="color:#60a5fa;width:14px;"></i> sales@wheelpro.com
-                        </div>
-                        <div style="display:flex;align-items:flex-start;gap:8px;font-size:.78rem;color:#64748b;">
-                            <i class="fas fa-location-dot" style="color:#60a5fa;width:14px;margin-top:2px;"></i> 123/45 ถ.พระราม 2 แขวงบางมด เขตจอมทอง กรุงเทพฯ 10150
-                        </div>
-                        <div style="display:flex;align-items:center;gap:8px;font-size:.78rem;color:#64748b;">
-                            <i class="fas fa-clock" style="color:#60a5fa;width:14px;"></i> จ-ส 08:00–18:00 น.
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div style="border-top:1px solid rgba(255,255,255,.08);padding:16px 32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
-                <div style="font-size:.75rem;color:#475569;">© 2026 WheelPro Thailand. สงวนลิขสิทธิ์ทั้งหมด.</div>
-                <div style="display:flex;gap:16px;">
-                    <a href="#" style="font-size:.75rem;color:#64748b;text-decoration:none;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#64748b'">นโยบายความเป็นส่วนตัว</a>
-                    <a href="#" style="font-size:.75rem;color:#64748b;text-decoration:none;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#64748b'">ข้อตกลงการใช้งาน</a>
-                    <a href="#" style="font-size:.75rem;color:#64748b;text-decoration:none;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#64748b'">แผนผังเว็บไซต์</a>
-                </div>
-            </div>
-        </footer>
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">
+      <i class="fas fa-truck-monster" style="color:#93c5fd;font-size:1rem;"></i>
     </div>
+    <div class="logo-text">Wheel<span>Pro</span></div>
+  </div>
+
+  <nav>
+    <div class="nav-label">เมนูหลัก</div>
+
+    <a class="nav-item active" href="#">
+      <i class="fas fa-house nav-icon"></i>
+      <span class="nav-text">หน้าหลัก</span>
+    </a>
+    <a class="nav-item" href="#">
+      <i class="fas fa-chart-line nav-icon"></i>
+      <span class="nav-text">อันดับขายดี</span>
+      <span class="nav-badge red">Hot</span>
+    </a>
+    <a class="nav-item" href="#">
+      <i class="fas fa-tags nav-icon"></i>
+      <span class="nav-text">โปรโมชั่น</span>
+      <span class="nav-badge green">ลด 30%</span>
+    </a>
+    <a class="nav-item" href="#">
+      <i class="fas fa-star nav-icon"></i>
+      <span class="nav-text">สินค้าแนะนำ</span>
+    </a>
+    <a class="nav-item" href="#">
+      <i class="fas fa-crown nav-icon"></i>
+      <span class="nav-text">สินค้าพรีเมียม</span>
+    </a>
+    <a class="nav-item" href="#">
+      <i class="fas fa-box-open nav-icon"></i>
+      <span class="nav-text">รายการสั่งซื้อ</span>
+      <span class="nav-badge gray">5</span>
+    </a>
+
+    <div class="nav-label">ประเภทล้อ</div>
+
+    <a class="nav-item" href="#">
+      <i class="fas fa-circle-dot nav-icon"></i>
+      <span class="nav-text">ล้อทั้งหมด</span>
+      <span class="nav-badge gray">456</span>
+    </a>
+    <a class="nav-item" href="#">
+      <i class="fas fa-truck nav-icon"></i>
+      <span class="nav-text">ล้อบรรทุก 10 ล้อ</span>
+    </a>
+    <a class="nav-item" href="#">
+      <i class="fas fa-truck-moving nav-icon"></i>
+      <span class="nav-text">ล้อเทรลเลอร์</span>
+    </a>
+    <a class="nav-item" href="#">
+      <i class="fas fa-shield-halved nav-icon"></i>
+      <span class="nav-text">ล้อออฟโรด</span>
+    </a>
+    <a class="nav-item" href="#">
+      <i class="fas fa-bolt nav-icon"></i>
+      <span class="nav-text">ล้อสปอร์ต</span>
+    </a>
+
+    <div class="nav-label">บริการ</div>
+
+    <a class="nav-item" href="#">
+      <i class="fas fa-wrench nav-icon"></i>
+      <span class="nav-text">ติดตั้งและบริการ</span>
+    </a>
+    <a class="nav-item" href="#">
+      <i class="fas fa-shield-check nav-icon"></i>
+      <span class="nav-text">รับประกัน</span>
+    </a>
+    <a class="nav-item" href="#">
+      <i class="fas fa-headset nav-icon"></i>
+      <span class="nav-text">ติดต่อเรา</span>
+    </a>
+    <a class="nav-item" href="#">
+      <i class="fas fa-newspaper nav-icon"></i>
+      <span class="nav-text">บทความ</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-profile">
+    <div class="profile-inner">
+      <div class="profile-avatar"><i class="fas fa-user-tie"></i></div>
+      <div class="profile-info">
+        <div class="profile-name">คุณสมศักดิ์ รักล้อ</div>
+        <div class="profile-role">ผู้จัดการฝ่ายขาย</div>
+      </div>
+      <button class="logout-btn" title="ออกจากระบบ">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<!-- TOGGLE BUTTON -->
+<button id="toggleBtn" onclick="toggleSidebar()" title="เปิด/ปิด Sidebar">
+  <i class="fas fa-bars" id="toggleIcon"></i>
+</button>
+
+<!-- MAIN -->
+<div id="main">
+  <div class="demo-content">
+    <h1>เนื้อหาหลัก</h1>
+    <p>พื้นที่ content ของคุณอยู่ที่นี่ — sidebar จะ toggle ระหว่าง 280px และ 72px บน desktop, และซ่อน/แสดงบน mobile</p>
+  </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-// ===== STATE =====
-let sidebarOpen = window.innerWidth >= 1024;
-let cartCount = 0;
-let wishlist = [];
-let wishlistCount = 0;
+  let isOpen = window.innerWidth >= 1024;
 
-// ===== PRODUCTS DATA =====
-const products = [
-    { id:1, brand:'BRIDGESTONE', name:'R294 12R22.5', desc:'ยางเรเดียล 12R22.5 สำหรับล้อขับเคลื่อน ดอกยางลึก ทนทาน ใช้งานได้ยาวนาน 80,000 กม.', oldPrice:'18,500', price:'14,800', rating:'4.9', badge:'ลด 20%', badgeColor:'#dc2626', tags:[{cls:'green',icon:'check-circle',text:'มีสต็อก'},{cls:'blue',icon:'truck',text:'ส่งฟรี'},{cls:'orange',icon:'shield-alt',text:'รับประกัน 2 ปี'}], color:'135deg,#1e3a8a,#1d4ed8', category:'drive' },
-    { id:2, brand:'MICHELIN', name:'X Multi D 315/80R22.5', desc:'ยางเรเดียลสำหรับล้อขับเคลื่อน ประหยัดน้ำมันสูงสุด ดอกยางพิเศษลดเสียงรบกวน', oldPrice:'21,000', price:'19,500', rating:'5.0', badge:'ขายดีที่สุด', badgeColor:'#0369a1', tags:[{cls:'green',icon:'check-circle',text:'มีสต็อก'},{cls:'blue',icon:'truck',text:'ส่งด่วน'},{cls:'teal',icon:'leaf',text:'ประหยัดน้ำมัน'}], color:'135deg,#0369a1,#0c4a6e', category:'eco' },
-    { id:3, brand:'GOODYEAR', name:'KMAX D 295/80R22.5', desc:'ยางดอกบั้งพิเศษ เกาะถนนดีเยี่ยม ทนต่อการสึกหรอสูง เหมาะสำหรับการบรรทุกหนัก', oldPrice:'17,900', price:'15,900', rating:'4.8', badge:'นิยม', badgeColor:'#b45309', tags:[{cls:'green',icon:'check-circle',text:'มีสต็อก'},{cls:'red',icon:'fire',text:'ขายดีอันดับ 3'},{cls:'orange',icon:'shield-alt',text:'รับประกัน 2 ปี'}], color:'135deg,#92400e,#b45309', category:'drive' },
-    { id:4, brand:'YOKOHAMA', name:'TY517E 12R22.5', desc:'ยางเรเดียลคุณภาพสูง ทนทานทุกสภาพถนน ใช้งานได้ทั้งทางเรียบและออฟโรดเบา', oldPrice:'15,500', price:'13,200', rating:'4.7', badge:'ประหยัด', badgeColor:'#15803d', tags:[{cls:'green',icon:'check-circle',text:'มีสต็อก'},{cls:'blue',icon:'truck',text:'ส่งฟรี'},{cls:'teal',icon:'piggy-bank',text:'คุ้มค่า'}], color:'135deg,#7f1d1d,#991b1b', category:'offroad' },
-    { id:5, brand:'CONTINENTAL', name:'HDR3 315/80R22.5', desc:'ยางพรีเมียมเกรดยุโรป รองรับน้ำหนักสูงสุด 5 ตันต่อเส้น นุ่มเงียบ ขับสบาย', oldPrice:'24,500', price:'22,900', rating:'5.0', badge:'พรีเมียม', badgeColor:'#7c3aed', tags:[{cls:'green',icon:'check-circle',text:'มีสต็อก'},{cls:'purple',icon:'crown',text:'พรีเมียม'},{cls:'orange',icon:'shield-alt',text:'รับประกัน 3 ปี'}], color:'135deg,#78350f,#c2410c', category:'premium' },
-    { id:6, brand:'TOYO', name:'M170 11R22.5', desc:'ยางเรเดียลราคาคุ้มค่า คุณภาพดี ดอกยางถี่ ทนต่อการเสียดสี ใช้งานยาวนาน', oldPrice:'14,000', price:'11,800', rating:'4.6', badge:'คุ้มค่า', badgeColor:'#0f766e', tags:[{cls:'green',icon:'check-circle',text:'มีสต็อก'},{cls:'teal',icon:'piggy-bank',text:'คุ้มค่าที่สุด'},{cls:'blue',icon:'truck',text:'ส่งฟรี'}], color:'135deg,#155e75,#0e7490', category:'eco' },
-    { id:7, brand:'DUNLOP', name:'SP371 12R22.5', desc:'ยางเรเดียลประสิทธิภาพสูง สำหรับรถบรรทุกขนาดกลาง-ใหญ่ ทนทานสูง', oldPrice:'16,500', price:'14,200', rating:'4.5', badge:'ใหม่', badgeColor:'#1d4ed8', tags:[{cls:'green',icon:'check-circle',text:'มีสต็อก'},{cls:'blue',icon:'truck',text:'ส่งฟรี'},{cls:'orange',icon:'shield-alt',text:'รับประกัน 2 ปี'}], color:'135deg,#3730a3,#4338ca', category:'trailer' },
-    { id:8, brand:'PIRELLI', name:'ST:01 315/70R22.5', desc:'ยางพรีเมียมอิตาลี สำหรับเทรลเลอร์ ลดการสึกหรอ ประหยัดน้ำมัน รับน้ำหนักสูง', oldPrice:'26,000', price:'23,500', rating:'4.9', badge:'แนะนำ', badgeColor:'#7c3aed', tags:[{cls:'green',icon:'check-circle',text:'มีสต็อก'},{cls:'purple',icon:'crown',text:'Premium Italy'},{cls:'teal',icon:'leaf',text:'ประหยัดน้ำมัน'}], color:'135deg,#4a044e,#7c3aed', category:'trailer' },
-];
+  function toggleSidebar() {
+    const sb   = document.getElementById('sidebar');
+    const main = document.getElementById('main');
+    const btn  = document.getElementById('toggleBtn');
+    const ov   = document.getElementById('overlay');
 
-// ===== BUILD PRODUCT CARDS =====
-function buildCard(p) {
-    return `
-    <div class="swiper-slide" data-category="${p.category}">
-      <div class="product-card" style="height:100%;">
-        <div class="product-img" style="background:linear-gradient(${p.color});">
-          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-            <i class="fas fa-circle-notch" style="font-size:120px;color:rgba(255,255,255,.08);" class="spin-slow"></i>
-          </div>
-          <!-- SVG Wheel -->
-          <svg width="100" height="100" viewBox="0 0 100 100" style="position:relative;z-index:1;filter:drop-shadow(0 8px 20px rgba(0,0,0,.4));">
-            <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="3"/>
-            <circle cx="50" cy="50" r="36" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.2)" stroke-width="2"/>
-            <circle cx="50" cy="50" r="14" fill="rgba(255,255,255,.15)" stroke="rgba(255,255,255,.35)" stroke-width="2.5"/>
-            <circle cx="50" cy="50" r="6" fill="rgba(255,255,255,.5)"/>
-            ${[0,60,120,180,240,300].map(a=>{
-                const r1=16,r2=34,rad=a*Math.PI/180;
-                const x1=50+r1*Math.cos(rad),y1=50+r1*Math.sin(rad);
-                const x2=50+r2*Math.cos(rad),y2=50+r2*Math.sin(rad);
-                return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(255,255,255,.35)" stroke-width="2.5" stroke-linecap="round"/>`;
-            }).join('')}
-            ${[0,45,90,135,180,225,270,315].map(a=>{
-                const r=40,rad=a*Math.PI/180;
-                const x=50+r*Math.cos(rad),y=50+r*Math.sin(rad);
-                return `<rect x="${x-4}" y="${y-6}" width="8" height="12" rx="2" fill="rgba(255,255,255,.2)" transform="rotate(${a+90} ${x} ${y})"/>`;
-            }).join('')}
-          </svg>
-          <div class="product-badges">
-            <span class="pbadge" style="background:${p.badgeColor};color:#fff;">${p.badge}</span>
-          </div>
-          <div class="product-rating"><i class="fas fa-star" style="color:#fbbf24;font-size:.7rem;"></i> ${p.rating}</div>
-          <button onclick="toggleWishlist(${p.id},this)" class="btn-wish" id="wish-${p.id}" style="position:absolute;bottom:10px;right:10px;z-index:2;" title="เพิ่มในรายการโปรด">
-            <i class="fas fa-heart"></i>
-          </button>
-        </div>
-        <div class="product-body">
-          <span class="brand-tag">${p.brand}</span>
-          <div class="product-name">${p.name}</div>
-          <div class="product-desc">${p.desc}</div>
-          <div class="product-tags">
-            ${p.tags.map(t=>`<span class="ptag ${t.cls}"><i class="fas fa-${t.icon}"></i> ${t.text}</span>`).join('')}
-          </div>
-          <div class="product-footer">
-            <div>
-              <div class="price-old">฿${p.oldPrice}</div>
-              <div class="price-new">฿${p.price}</div>
-              <div class="price-unit">ต่อเส้น</div>
-            </div>
-            <div class="footer-actions">
-              <div class="qty-wrap">
-                <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
-                <input class="qty-val" type="number" value="1" min="1" max="99">
-                <button class="qty-btn" onclick="changeQty(this,1)">+</button>
-              </div>
-              <button class="btn-cart" onclick="addToCart('${p.brand} ${p.name}',this)">
-                <i class="fas fa-shopping-cart"></i> สั่งซื้อ
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-}
-
-function renderProducts(filter='all') {
-    const wrap = document.getElementById('productWrapper');
-    const list = filter === 'all' ? products : products.filter(p => p.category === filter);
-    wrap.innerHTML = list.map(buildCard).join('');
-    if (window.productSwiper) {
-        window.productSwiper.destroy(true,true);
-    }
-    initSwiper();
-}
-
-// ===== SWIPER =====
-function initSwiper() {
-    window.productSwiper = new Swiper('.productSwiper', {
-        slidesPerView: 1.1,
-        spaceBetween: 14,
-        loop: false,
-        pagination: { el: '.swiper-pagination', clickable: true, dynamicBullets: true },
-        breakpoints: {
-            480: { slidesPerView: 1.6 },
-            640: { slidesPerView: 2.1 },
-            900: { slidesPerView: 2.8 },
-            1100: { slidesPerView: 3.2 },
-            1280: { slidesPerView: 4.1 },
-        }
-    });
-    document.querySelector('.swiper-button-next-custom').onclick = () => window.productSwiper.slideNext();
-    document.querySelector('.swiper-button-prev-custom').onclick = () => window.productSwiper.slidePrev();
-}
-
-// ===== FILTER =====
-function filterProducts(el, cat) {
-    document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    renderProducts(cat);
-}
-
-// ===== CART =====
-function addToCart(name, btn) {
-    btn.innerHTML = '<i class="fas fa-check"></i> เพิ่มแล้ว';
-    btn.style.background = 'linear-gradient(135deg,#15803d,#16a34a)';
-    setTimeout(() => {
-        btn.innerHTML = '<i class="fas fa-shopping-cart"></i> สั่งซื้อ';
-        btn.style.background = '';
-    }, 1800);
-    cartCount++;
-    document.getElementById('cartCount').textContent = cartCount;
-    showToast(`เพิ่ม ${name} ลงตะกร้าแล้ว`, 'success');
-}
-
-function openCart() {
-    showToast(`ตะกร้าสินค้า: ${cartCount} รายการ`, 'info');
-}
-
-// ===== WISHLIST =====
-function toggleWishlist(id, btn) {
-    const idx = wishlist.indexOf(id);
-    if (idx === -1) {
-        wishlist.push(id);
-        btn.classList.add('active');
-        wishlistCount++;
-        showToast('เพิ่มในรายการโปรดแล้ว ❤️', 'success');
-    } else {
-        wishlist.splice(idx, 1);
-        btn.classList.remove('active');
-        wishlistCount--;
-        showToast('ลบออกจากรายการโปรดแล้ว');
-    }
-    const wEl = document.getElementById('wishlistCount');
-    if (wishlistCount > 0) {
-        wEl.textContent = wishlistCount;
-        wEl.style.display = 'flex';
-    } else {
-        wEl.style.display = 'none';
-    }
-}
-
-function openWishlist() {
-    showToast(`รายการโปรด: ${wishlistCount} รายการ`, 'info');
-}
-
-// ===== QTY =====
-function changeQty(btn, delta) {
-    const input = btn.parentElement.querySelector('.qty-val');
-    let v = parseInt(input.value) + delta;
-    if (v < 1) v = 1;
-    if (v > 99) v = 99;
-    input.value = v;
-}
-
-// ===== TOAST =====
-function showToast(msg, type='info') {
-    const cont = document.getElementById('toast-container');
-    const t = document.createElement('div');
-    const icons = { success:'<i class="fas fa-check"></i>', error:'<i class="fas fa-xmark"></i>', info:'<i class="fas fa-info"></i>' };
-    t.className = `toast ${type}`;
-    t.innerHTML = `<div class="toast-icon">${icons[type]||icons.info}</div><div>${msg}</div>`;
-    cont.appendChild(t);
-    setTimeout(() => t.classList.add('show'), 10);
-    setTimeout(() => {
-        t.classList.remove('show');
-        setTimeout(() => t.remove(), 400);
-    }, 3000);
-}
-
-// ===== SIDEBAR =====
-function toggleSidebar() {
     if (window.innerWidth < 1024) {
-        sidebarOpen = !sidebarOpen;
-        document.getElementById('sidebar').classList.toggle('open', sidebarOpen);
-        document.getElementById('overlay').classList.toggle('show', sidebarOpen);
+      // Mobile: slide in/out
+      isOpen = !isOpen;
+      sb.classList.toggle('open', isOpen);
+      ov.classList.toggle('show', isOpen);
     } else {
-        sidebarOpen = !sidebarOpen;
-        const sb = document.getElementById('sidebar');
-        const main = document.getElementById('main');
-        sb.classList.toggle('collapsed', !sidebarOpen);
-        main.classList.toggle('sidebar-collapsed', !sidebarOpen);
+      // Desktop: collapse/expand
+      isOpen = !isOpen;
+      sb.classList.toggle('collapsed', !isOpen);
+      main.classList.toggle('sidebar-collapsed', !isOpen);
+      btn.classList.toggle('collapsed-btn', !isOpen);
     }
-}
+  }
 
-function closeSidebar() {
+  function closeSidebar() {
     if (window.innerWidth < 1024) {
-        sidebarOpen = false;
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('overlay').classList.remove('show');
+      isOpen = false;
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('overlay').classList.remove('show');
     }
-}
+  }
 
-window.addEventListener('resize', () => {
-    if (window.innerWidth >= 1024) {
-        document.getElementById('overlay').classList.remove('show');
-        document.getElementById('sidebar').classList.remove('open');
-    }
-});
-
-// ===== SEARCH =====
-function handleSearch(v) {
-    if (v.length > 0) {
-        document.querySelector('.search-clear').style.display = 'block';
-    } else {
-        document.querySelector('.search-clear').style.display = 'none';
-    }
-}
-function clearSearch() {
-    document.getElementById('searchInput').value = '';
-    document.querySelector('.search-clear').style.display = 'none';
-    hideSearchDropdown();
-}
-function showSearchDropdown() {
-    document.getElementById('search-dropdown').classList.add('show');
-}
-function hideSearchDropdown() {
-    document.getElementById('search-dropdown').classList.remove('show');
-}
-function selectSearch(text) {
-    document.getElementById('searchInput').value = text;
-    hideSearchDropdown();
-    showToast(`ค้นหา: ${text}`);
-}
-
-// ===== SCROLL TO TOP =====
-window.addEventListener('scroll', () => {
-    const btn = document.getElementById('scrollTop');
-    if (window.scrollY > 300) btn.classList.add('show');
-    else btn.classList.remove('show');
-});
-
-// ===== COUNT ANIMATION =====
-function animateCount(id, target, duration=1800) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    let start = 0;
-    const step = Math.ceil(target / (duration / 16));
-    const timer = setInterval(() => {
-        start += step;
-        if (start >= target) { start = target; clearInterval(timer); }
-        el.textContent = start.toLocaleString();
-    }, 16);
-}
-
-// ===== CHART BARS =====
-const chartData = [
-    { brand:'Bridgestone', count:1245, pct:88, color:'linear-gradient(135deg,#1d4ed8,#3b82f6)' },
-    { brand:'Michelin', count:980, pct:70, color:'linear-gradient(135deg,#0369a1,#38bdf8)' },
-    { brand:'Goodyear', count:845, pct:60, color:'linear-gradient(135deg,#b45309,#f59e0b)' },
-    { brand:'Yokohama', count:620, pct:44, color:'linear-gradient(135deg,#dc2626,#f87171)' },
-    { brand:'Continental', count:480, pct:34, color:'linear-gradient(135deg,#c2410c,#fb923c)' },
-    { brand:'Toyo', count:340, pct:24, color:'linear-gradient(135deg,#0f766e,#2dd4bf)' },
-    { brand:'Dunlop', count:210, pct:15, color:'linear-gradient(135deg,#4338ca,#818cf8)' },
-];
-
-function buildChart() {
-    document.getElementById('chartBars').innerHTML = chartData.map((d,i) => `
-    <div class="chart-bar-wrap">
-        <div class="chart-bar-label">
-            <span style="font-size:.82rem;font-weight:700;color:#334155;display:flex;align-items:center;gap:8px;">
-                <span style="width:10px;height:10px;border-radius:50%;background:${d.color};display:inline-block;flex-shrink:0;"></span>
-                ${d.brand}
-            </span>
-            <span style="font-size:.82rem;font-weight:800;color:#1d4ed8;">${d.count.toLocaleString()} เส้น</span>
-        </div>
-        <div class="chart-bar-track">
-            <div class="chart-bar-fill" id="bar-${i}" style="background:${d.color};width:0%;">
-                <span>${d.pct}%</span>
-            </div>
-        </div>
-    </div>`).join('');
-}
-
-function animateBars() {
-    chartData.forEach((d,i) => {
-        setTimeout(() => {
-            const el = document.getElementById(`bar-${i}`);
-            if (el) el.style.width = d.pct + '%';
-        }, i * 120);
-    });
-}
-
-// ===== ORDERS TABLE =====
-const orders = [
-    { id:'#WP-2026-1842', product:'Bridgestone R294 ×10 เส้น', customer:'บ.ขนส่งสยาม จก.', qty:10, total:'148,000', status:'จัดส่งแล้ว', statusClass:'green' },
-    { id:'#WP-2026-1841', product:'Michelin X Multi D ×4 เส้น', customer:'คุณวิชัย มีสุข', qty:4, total:'78,000', status:'กำลังจัดส่ง', statusClass:'blue' },
-    { id:'#WP-2026-1840', product:'Continental HDR3 ×6 เส้น', customer:'บ.เฮียพาขน จก.', qty:6, total:'137,400', status:'รอชำระเงิน', statusClass:'orange' },
-    { id:'#WP-2026-1839', product:'Goodyear KMAX D ×8 เส้น', customer:'คุณสมพงษ์ ดีจริง', qty:8, total:'127,200', status:'จัดส่งแล้ว', statusClass:'green' },
-    { id:'#WP-2026-1838', product:'Yokohama TY517E ×12 เส้น', customer:'บ.ทรักส์ไทย จก.', qty:12, total:'158,400', status:'กำลังเตรียม', statusClass:'purple' },
-    { id:'#WP-2026-1837', product:'Toyo M170 ×6 เส้น', customer:'คุณประยูร สำเร็จ', qty:6, total:'70,800', status:'ยกเลิก', statusClass:'red' },
-];
-const statusStyle = {
-    green: 'background:#f0fdf4;color:#15803d;',
-    blue: 'background:#eff6ff;color:#1d4ed8;',
-    orange: 'background:#fff7ed;color:#c2410c;',
-    purple: 'background:#faf5ff;color:#7c3aed;',
-    red: 'background:#fef2f2;color:#b91c1c;',
-};
-
-function buildOrderTable() {
-    document.getElementById('orderTable').innerHTML = orders.map(o => `
-    <tr style="border-bottom:1px solid #f1f5f9;transition:background .15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-        <td style="padding:12px 20px;font-weight:700;color:#1d4ed8;">${o.id}</td>
-        <td style="padding:12px 16px;color:#334155;font-weight:600;">${o.product}</td>
-        <td style="padding:12px 16px;color:#64748b;">${o.customer}</td>
-        <td style="padding:12px 16px;text-align:center;color:#334155;font-weight:700;">${o.qty}</td>
-        <td style="padding:12px 16px;text-align:right;font-weight:800;color:#0f172a;">฿${o.total}</td>
-        <td style="padding:12px 16px;text-align:center;">
-            <span style="font-size:.72rem;font-weight:800;padding:4px 12px;border-radius:20px;${statusStyle[o.statusClass]}">${o.status}</span>
-        </td>
-        <td style="padding:12px 20px;text-align:center;">
-            <button onclick="showToast('เปิดรายละเอียด ${o.id}')" style="padding:5px 12px;border-radius:8px;border:1.5px solid #e2e8f0;background:#f8fafc;color:#475569;font-size:.75rem;font-weight:700;cursor:pointer;font-family:'Kanit',sans-serif;transition:all .2s;" onmouseover="this.style.background='#eff6ff';this.style.color='#1d4ed8'" onmouseout="this.style.background='#f8fafc';this.style.color='#475569'">ดูรายละเอียด</button>
-        </td>
-    </tr>`).join('');
-}
-
-// ===== HERO RING DESKTOP =====
-function checkHeroRings() {
-    const r = document.getElementById('heroRings');
-    if (window.innerWidth >= 900) r.style.display = 'flex';
-    else r.style.display = 'none';
-}
-
-// ===== INTERSECTION OBSERVER for chart animation =====
-const chartObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-        if (e.isIntersecting) {
-            animateBars();
-            chartObserver.unobserve(e.target);
-        }
-    });
-}, { threshold: 0.3 });
-
-// ===== SUBNAV active on click =====
-document.querySelectorAll('.subnav-link').forEach(link => {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.querySelectorAll('.subnav-link').forEach(l => l.classList.remove('active'));
-        this.classList.add('active');
-    });
-});
-
-// ===== SIDEBAR nav items =====
-document.querySelectorAll('.nav-item').forEach(item => {
+  // Active nav item
+  document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-        if (window.innerWidth < 1024) closeSidebar();
+      e.preventDefault();
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      this.classList.add('active');
+      if (window.innerWidth < 1024) closeSidebar();
     });
-});
+  });
 
-// ===== INIT =====
-document.addEventListener('DOMContentLoaded', () => {
-    renderProducts();
-    buildChart();
-    buildOrderTable();
-    checkHeroRings();
-    window.addEventListener('resize', checkHeroRings);
-
-    // Animate stats on load
-    setTimeout(() => {
-        animateCount('statSales', 4842);
-        animateCount('statDelivery', 3120);
-    }, 400);
-
-    // Observe chart
-    chartObserver.observe(document.getElementById('chartSection'));
-
-    // Init sidebar state
+  // Sync on resize
+  window.addEventListener('resize', () => {
+    const ov = document.getElementById('overlay');
     if (window.innerWidth >= 1024) {
-        document.getElementById('main').style.marginLeft = 'var(--sidebar-w)';
+      ov.classList.remove('show');
+      document.getElementById('sidebar').classList.remove('open');
+      isOpen = !document.getElementById('sidebar').classList.contains('collapsed');
     }
-});
+  });
 </script>
 </body>
 </html>
