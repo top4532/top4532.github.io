@@ -92,8 +92,13 @@ body{font-family:'Kanit',sans-serif;background:var(--bg);min-height:100vh;overfl
 .section-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border);gap:12px;flex-wrap:wrap}
 .section-title{font-size:.95rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
 .section-title i{color:var(--blue);font-size:1rem}
+.btn-group{display:flex;gap:10px}
 .btn-add{display:flex;align-items:center;gap:7px;padding:9px 18px;border-radius:10px;border:1.5px solid var(--blue);background:var(--blue);color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Kanit',sans-serif}
 .btn-add:hover{background:var(--blue-dark);border-color:var(--blue-dark);box-shadow:0 4px 14px rgba(29,78,216,.3)}
+.btn-pdf{background:#dc2626;border-color:#dc2626}
+.btn-pdf:hover{background:#b91c1c;border-color:#b91c1c;box-shadow:0 4px 14px rgba(220,38,38,.3)}
+.btn-export{background:#059669;border-color:#059669}
+.btn-export:hover{background:#047857;border-color:#047857}
 
 .tbl-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.82rem}
@@ -125,31 +130,73 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:700;f
 .empty-state i{font-size:2.5rem;margin-bottom:12px;display:block}
 .empty-state p{font-size:.85rem;font-weight:500}
 
-/* Modal */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;z-index:1000}
-.modal-bg.show{display:flex}
-.modal{background:#fff;border-radius:24px;width:480px;max-width:95vw;overflow:hidden;box-shadow:0 20px 60px rgba(15,23,42,.3)}
-.modal-header{padding:20px 24px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff}
-.modal-header h3{font-size:1rem;font-weight:700;display:flex;align-items:center;gap:8px}
-.modal-header h3 i{color:#93c5fd}
-.modal-body{padding:24px}
-.modal-footer{display:flex;justify-content:flex-end;gap:12px;padding:0 24px 24px}
-.modal-btn-cancel{padding:9px 20px;border-radius:10px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer}
+/* Modal สวยงาม */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.7);backdrop-filter:blur(6px);align-items:center;justify-content:center;z-index:1000}
+.modal-bg.show{display:flex;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:#fff;border-radius:28px;width:500px;max-width:95vw;overflow:hidden;box-shadow:0 25px 50px -12px rgba(0,0,0,.35);transform:scale(0.95);transition:transform .2s ease}
+.modal-bg.show .modal{transform:scale(1)}
+.modal-header{padding:22px 26px;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff}
+.modal-header h3{font-size:1.1rem;font-weight:700;display:flex;align-items:center;gap:10px}
+.modal-header h3 i{font-size:1.2rem;color:#93c5fd}
+.modal-body{padding:26px}
+.modal-footer{display:flex;justify-content:flex-end;gap:12px;padding:0 26px 26px}
+.modal-btn-cancel{padding:10px 22px;border-radius:12px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s}
 .modal-btn-cancel:hover{background:#f1f5f9}
-.modal-btn-confirm{padding:9px 22px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;font-size:.82rem;font-weight:700;cursor:pointer}
+.modal-btn-confirm{padding:10px 26px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s}
 .modal-btn-confirm.danger{background:#dc2626}
-.modal-btn-confirm.danger:hover{background:#b91c1c}
-.modal-btn-confirm:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(29,78,216,.4)}
-.form-group{margin-bottom:16px}
-.form-group label{display:block;font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase}
-.form-group input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:'Kanit',sans-serif;font-size:.85rem;outline:none}
+.modal-btn-confirm.danger:hover{background:#b91c1c;transform:translateY(-1px)}
+.modal-btn-confirm:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(29,78,216,.4)}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.form-group input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:12px;font-family:'Kanit',sans-serif;font-size:.9rem;outline:none;transition:all .2s}
 .form-group input:focus{border-color:#93c5fd;box-shadow:0 0 0 3px rgba(147,197,253,.2)}
-.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 
-#toasts{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px}
-.toast{background:#0f172a;color:#fff;padding:11px 16px;border-radius:12px;font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 6px 24px rgba(15,23,42,.25);border-left:3px solid #3b82f6;min-width:200px}
+/* Toast สวยงาม */
+#toasts{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px}
+.toast{background:#1e293b;color:#fff;padding:12px 18px;border-radius:14px;font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:10px;box-shadow:0 10px 25px -5px rgba(0,0,0,.2);border-left:4px solid #3b82f6;min-width:240px;transform:translateX(120%);transition:transform .3s cubic-bezier(.34,1.2,.64,1)}
+.toast.show{transform:translateX(0)}
 .toast.ok{border-left-color:#22c55e}
 .toast.warning{border-left-color:#f97316}
+.toast i{font-size:1rem}
+
+/* พิมพ์ PDF */
+@media print {
+  #sidebar, #header, .stat-row, .section-head .btn-group, .actions, .btn-del, .hd-actions, .hd-search, .hd-burger, .sb-profile, .modal-bg, #toasts {
+    display: none !important;
+  }
+  #main {
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+  .content {
+    padding: 0 !important;
+  }
+  .section-card {
+    border: none !important;
+    box-shadow: none !important;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 6px;
+  }
+  .cell-in {
+    border: none;
+    padding: 0;
+  }
+  .chip {
+    border: none;
+    background: none;
+  }
+  body {
+    background: white;
+  }
+}
 </style>
 </head>
 <body>
@@ -157,7 +204,7 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:700;f
 <div id="toasts"></div>
 <div id="overlay" onclick="closeSidebar()"></div>
 
-<!-- Modal เพิ่มแถว -->
+<!-- Modal เพิ่มแถวสวยๆ -->
 <div id="addModal" class="modal-bg">
   <div class="modal">
     <div class="modal-header">
@@ -173,11 +220,11 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:700;f
         <input type="number" id="newStock" placeholder="0" value="0">
       </div>
       <div class="form-row-2">
-        <div class="form-group"><label>ม.ค.</label><input type="number" id="newJan" placeholder="0" value="0"></div>
-        <div class="form-group"><label>ก.พ.</label><input type="number" id="newFeb" placeholder="0" value="0"></div>
-        <div class="form-group"><label>มี.ค.</label><input type="number" id="newMar" placeholder="0" value="0"></div>
-        <div class="form-group"><label>เม.ย.</label><input type="number" id="newApr" placeholder="0" value="0"></div>
-        <div class="form-group"><label>พ.ค.</label><input type="number" id="newMay" placeholder="0" value="0"></div>
+        <div class="form-group"><label>📅 ม.ค.</label><input type="number" id="newJan" placeholder="0" value="0"></div>
+        <div class="form-group"><label>📅 ก.พ.</label><input type="number" id="newFeb" placeholder="0" value="0"></div>
+        <div class="form-group"><label>📅 มี.ค.</label><input type="number" id="newMar" placeholder="0" value="0"></div>
+        <div class="form-group"><label>📅 เม.ย.</label><input type="number" id="newApr" placeholder="0" value="0"></div>
+        <div class="form-group"><label>📅 พ.ค.</label><input type="number" id="newMay" placeholder="0" value="0"></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -194,7 +241,8 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:700;f
       <h3><i class="fas fa-trash-alt"></i> ยืนยันการลบ</h3>
     </div>
     <div class="modal-body">
-      <p style="font-size:.9rem; color:var(--text);">คุณต้องการลบสินค้า <strong id="deleteBarcode"></strong> ใช่หรือไม่?</p>
+      <p style="font-size:.95rem; color:var(--text);">คุณต้องการลบสินค้า <strong id="deleteBarcode" style="color:#dc2626;"></strong> ใช่หรือไม่?</p>
+      <p style="font-size:.75rem; color:var(--muted); margin-top:8px;">ข้อมูลจะถูกลบอย่างถาวร</p>
     </div>
     <div class="modal-footer">
       <button class="modal-btn-cancel" onclick="closeDeleteModal()">ยกเลิก</button>
@@ -275,8 +323,9 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:700;f
     <div class="section-card">
       <div class="section-head">
         <div class="section-title"><i class="fas fa-boxes-stacked"></i>ข้อมูล Lot Stock</div>
-        <div style="display:flex;gap:10px">
-          <button class="btn-add" onclick="exportData()" style="background:#059669;border-color:#059669"><i class="fas fa-download"></i> Export</button>
+        <div class="btn-group">
+          <button class="btn-add btn-pdf" onclick="printPDF()"><i class="fas fa-file-pdf"></i> พิมพ์ PDF</button>
+          <button class="btn-add btn-export" onclick="exportData()"><i class="fas fa-download"></i> Export</button>
           <button class="btn-add" onclick="openAddModal()"><i class="fas fa-plus"></i> เพิ่มแถว</button>
         </div>
       </div>
@@ -309,7 +358,6 @@ tfoot tr td{background:linear-gradient(135deg,#f8fafc,#f1f5f9);font-weight:700;f
 <script>
 const MOQ = 1500;
 const months = ['jan','feb','mar','apr','may'];
-const monthThai = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.'];
 let rows = [];
 let filterText = '';
 let nextId = 1;
@@ -402,7 +450,7 @@ function render(){
     <td class="td-total">${fmtStat(grand)}</td>
     <td class="td-avg">${fmtStat(grandAvg)}</td>
     <td></td>
-  </table>`;
+   </tr>`;
 
   updateStats();
 }
@@ -412,6 +460,7 @@ function updateRow(index, field, value) {
     rows[index][field] = value;
     saveData();
     render();
+    toast('บันทึกสำเร็จ', 'ok');
     if(field !== 'barcode') checkMoqAlert(rows[index]);
   }
 }
@@ -429,7 +478,6 @@ function updateStats(){
   document.getElementById('stat-avg').textContent = grand ? fmtStat(Math.round(grand/5)) : 0;
 }
 
-// Modal functions
 function openAddModal() {
   document.getElementById('newBarcode').value = `WHP-${String(nextId).padStart(3,'0')}`;
   document.getElementById('newStock').value = 0;
@@ -465,7 +513,7 @@ function confirmAddRow() {
   saveData();
   render();
   closeAddModal();
-  toast('เพิ่มข้อมูลเรียบร้อย', 'ok');
+  toast('บันทึกสำเร็จ', 'ok');
 }
 
 function openDeleteModal(index) {
@@ -484,7 +532,7 @@ function confirmDeleteRow() {
     rows.splice(pendingDeleteIndex, 1);
     saveData();
     render();
-    toast('ลบข้อมูลเรียบร้อย', 'ok');
+    toast('ลบข้อมูลสำเร็จ', 'ok');
   }
   closeDeleteModal();
 }
@@ -511,6 +559,13 @@ function exportData() {
   toast("ส่งออกข้อมูลเรียบร้อย", "ok");
 }
 
+function printPDF() {
+  toast("กำลังเปิดหน้าต่างพิมพ์ กรุณารอสักครู่...", "ok");
+  setTimeout(() => {
+    window.print();
+  }, 300);
+}
+
 function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
 
 let sbOpen=window.innerWidth>=1024, sbCollapsed=false;
@@ -532,11 +587,15 @@ document.querySelectorAll('.sb-item').forEach(item=>{ item.addEventListener('cli
 
 function toast(msg, type=''){ 
   const c=document.getElementById('toasts'), t=document.createElement('div'); 
-  const icon = type==='ok' ? '<i class="fas fa-circle-check" style="color:#22c55e"></i>' : (type==='warning' ? '<i class="fas fa-exclamation-triangle" style="color:#f97316"></i>' : '<i class="fas fa-info-circle" style="color:#3b82f6"></i>'); 
+  const icon = type==='ok' ? '<i class="fas fa-check-circle"></i>' : (type==='warning' ? '<i class="fas fa-exclamation-triangle"></i>' : '<i class="fas fa-info-circle"></i>'); 
   t.className='toast '+(type==='ok'?'ok':(type==='warning'?'warning':'')); 
-  t.innerHTML=`${icon} ${msg}`; 
+  t.innerHTML=`${icon} <span>${msg}</span>`; 
   c.appendChild(t); 
-  setTimeout(()=>{ t.remove(); }, 3000); 
+  setTimeout(()=>t.classList.add('show'), 10);
+  setTimeout(()=>{ 
+    t.classList.remove('show'); 
+    setTimeout(()=>t.remove(), 400); 
+  }, 2800); 
 }
 
 function logout() { if(confirm('ยืนยันการออกจากระบบ?')) { toast('ออกจากระบบแล้ว', 'ok'); } }
