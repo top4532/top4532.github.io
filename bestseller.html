@@ -2,338 +2,770 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>3RHB IMPORT WHEEL NUTS – ระบบคลังสินค้ามาตรฐาน</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3RHB · Lot Stock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--sb-w:280px;--sb-col:72px;--hd-h:64px;--primary:#0284c7;--primary-dark:#0369a1;--primary-light:#e0f2fe;--secondary:#0ea5e9;--accent:#38bdf8;--border:#e2e8f0;--text:#0f172a;--muted:#64748b;--bg:#f0f9ff;--white:#ffffff;--success:#10b981;--warning:#f59e0b;--danger:#ef4444}
+:root{
+  --navy:#0b1f4b;
+  --navy-mid:#122454;
+  --navy-light:#1a3066;
+  --blue:#1d6ef5;
+  --blue-bright:#3b82f6;
+  --blue-glow:#60a5fa;
+  --sky:#e8f1ff;
+  --sky-deep:#d0e2ff;
+  --ice:#f4f8ff;
+  --white:#ffffff;
+  --border:#dbeafe;
+  --border-mid:#bfdbfe;
+  --text:#0b1f4b;
+  --muted:#4b6396;
+  --faint:#8ba5cc;
+  --success:#059669;
+  --success-bg:#ecfdf5;
+  --warning:#d97706;
+  --warning-bg:#fffbeb;
+  --danger:#dc2626;
+  --danger-bg:#fef2f2;
+  --orange:#f97316;
+  --sb:270px;
+  --sb-col:68px;
+  --hh:62px;
+  --radius:16px;
+  --radius-lg:24px;
+  --radius-xl:32px;
+  --shadow:0 4px 24px rgba(11,31,75,.07);
+  --shadow-md:0 8px 40px rgba(11,31,75,.12);
+  --shadow-blue:0 8px 32px rgba(29,110,245,.18);
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Kanit',sans-serif;background:linear-gradient(135deg,#f0f9ff 0%,#f8fafc 100%);min-height:100vh;overflow-x:hidden}
-#overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(3px);z-index:45;opacity:0;pointer-events:none;transition:opacity .15s}
-#overlay.show{opacity:1;pointer-events:auto}
-#sidebar{position:fixed;top:0;left:0;width:var(--sb-w);height:100vh;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:50;overflow:hidden;box-shadow:2px 0 20px rgba(2,132,199,.08)}
+body{font-family:'IBM Plex Sans Thai','Space Grotesk',sans-serif;background:#eef4ff;min-height:100vh;color:var(--text);overflow-x:hidden}
+
+/* ─── SIDEBAR ─── */
+#sidebar{
+  position:fixed;top:0;left:0;width:var(--sb);height:100vh;
+  background:linear-gradient(180deg,var(--navy) 0%,var(--navy-light) 100%);
+  display:flex;flex-direction:column;z-index:60;
+  transition:width .25s cubic-bezier(.4,0,.2,1);
+  box-shadow:4px 0 32px rgba(11,31,75,.18);
+  overflow:hidden;
+}
 #sidebar.collapsed{width:var(--sb-col)}
-@media(max-width:1023px){#sidebar{transform:translateX(-100%);width:var(--sb-w)!important}#sidebar.open{transform:translateX(0)}}
-.sb-logo{height:var(--hd-h);display:flex;align-items:center;gap:12px;padding:0 18px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));flex-shrink:0;overflow:hidden}
-.sb-logo-icon{width:36px;height:36px;flex-shrink:0;background:rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1rem}
-.sb-logo-text{color:#fff;font-size:.95rem;font-weight:700;letter-spacing:-.2px;white-space:nowrap}
-.sb-logo-text span{color:var(--accent);font-weight:800}
-#sidebar.collapsed .sb-logo-text{opacity:0;width:0;overflow:hidden}
-.sb-nav{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 10px}
-.sb-nav::-webkit-scrollbar{width:3px}
-.sb-nav::-webkit-scrollbar-thumb{background:#bae6fd;border-radius:10px}
-.sb-label{font-size:9.5px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:1.4px;padding:0 10px;margin:18px 0 6px;white-space:nowrap}
-#sidebar.collapsed .sb-label{opacity:0}
-.sb-item{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:12px;text-decoration:none;color:#475569;font-size:.875rem;font-weight:500;white-space:nowrap;overflow:hidden;position:relative}
-.sb-item:hover{background:var(--primary-light);color:var(--primary)}
-.sb-item.active{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;box-shadow:0 4px 10px rgba(2,132,199,.3)}
-.sb-icon{width:20px;text-align:center;flex-shrink:0;font-size:.95rem}
-#sidebar.collapsed .sb-text{opacity:0;width:0}
-.sb-badge{margin-left:auto;font-size:9.5px;font-weight:800;padding:2px 8px;border-radius:20px;flex-shrink:0}
-#sidebar.collapsed .sb-badge{opacity:0;width:0;overflow:hidden}
-.sb-badge.red{background:#fee2e2;color:#dc2626}.sb-badge.green{background:#dcfce7;color:#15803d}.sb-badge.gray{background:#f1f5f9;color:#64748b}.sb-badge.blue{background:#dbeafe;color:#0284c7}
-#sidebar.collapsed .sb-item::after{content:attr(data-tip);position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%);background:#0f172a;color:#fff;font-size:.75rem;font-weight:600;padding:5px 10px;border-radius:8px;white-space:nowrap;pointer-events:none;opacity:0;z-index:99}
-#sidebar.collapsed .sb-item:hover::after{opacity:1}
-.sb-profile{border-top:1px solid #f1f5f9;padding:10px;flex-shrink:0}
-.sb-profile-inner{display:flex;align-items:center;gap:10px;padding:8px;border-radius:12px;background:#f8fafc}
-.sb-avatar{width:34px;height:34px;flex-shrink:0;background:linear-gradient(135deg,var(--primary-dark),var(--primary));border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:.8rem}
-.sb-pinfo{flex:1;overflow:hidden;min-width:0}
-#sidebar.collapsed .sb-pinfo{opacity:0;width:0}
-.sb-pname{font-size:.78rem;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-prole{font-size:.68rem;color:#94a3b8}
-.sb-logout{background:none;border:none;color:#94a3b8;cursor:pointer;padding:5px;border-radius:8px;flex-shrink:0;font-size:.85rem}
-.sb-logout:hover{color:#dc2626;background:#fef2f2}
-#sidebar.collapsed .sb-logout{display:none}
-#main{margin-left:var(--sb-w);min-height:100vh;display:flex;flex-direction:column}
-#main.sb-col{margin-left:var(--sb-col)}
+@media(max-width:1023px){#sidebar{transform:translateX(-100%);width:var(--sb)!important}&.open{transform:translateX(0)}}
+
+.sb-top{
+  height:var(--hh);display:flex;align-items:center;padding:0 20px;gap:14px;
+  border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;overflow:hidden;
+}
+.sb-logo-mark{
+  width:38px;height:38px;flex-shrink:0;border-radius:12px;
+  background:linear-gradient(135deg,var(--blue),var(--blue-glow));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;color:#fff;box-shadow:0 4px 12px rgba(29,110,245,.4);
+}
+.sb-brand{overflow:hidden;white-space:nowrap}
+.sb-brand-name{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:#fff;line-height:1.1}
+.sb-brand-sub{font-size:.65rem;color:rgba(255,255,255,.4);letter-spacing:2px;text-transform:uppercase}
+#sidebar.collapsed .sb-brand{opacity:0;width:0}
+
+.sb-nav{flex:1;overflow-y:auto;overflow-x:hidden;padding:18px 12px}
+.sb-nav::-webkit-scrollbar{width:0}
+.sb-sect{font-size:.6rem;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:2px;text-transform:uppercase;padding:0 12px;margin:16px 0 8px}
+#sidebar.collapsed .sb-sect{opacity:0}
+
+.sb-link{
+  display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;
+  text-decoration:none;color:rgba(255,255,255,.55);font-size:.82rem;font-weight:500;
+  white-space:nowrap;overflow:hidden;position:relative;
+  transition:all .2s;margin-bottom:2px;
+}
+.sb-link:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.9)}
+.sb-link.active{background:linear-gradient(135deg,rgba(29,110,245,.45),rgba(59,130,246,.3));color:#fff;box-shadow:0 2px 12px rgba(29,110,245,.2)}
+.sb-link.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:20px;background:var(--blue-glow);border-radius:0 3px 3px 0}
+.sb-ico{width:18px;text-align:center;flex-shrink:0;font-size:.85rem}
+.sb-lbl{flex:1;min-width:0}
+#sidebar.collapsed .sb-lbl{opacity:0;width:0}
+.sb-chip{font-size:.6rem;font-weight:700;padding:3px 9px;border-radius:20px;flex-shrink:0;margin-left:auto}
+#sidebar.collapsed .sb-chip{opacity:0;width:0;overflow:hidden}
+.chip-blue{background:rgba(29,110,245,.3);color:#93c5fd}
+.chip-gray{background:rgba(255,255,255,.08);color:rgba(255,255,255,.4)}
+
+.sb-foot{border-top:1px solid rgba(255,255,255,.06);padding:14px 12px;flex-shrink:0}
+.sb-user{display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px;background:rgba(255,255,255,.05)}
+.sb-av{width:36px;height:36px;flex-shrink:0;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--blue-glow));display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;font-weight:700}
+.sb-uinfo{flex:1;overflow:hidden;min-width:0}
+#sidebar.collapsed .sb-uinfo{opacity:0;width:0}
+.sb-uname{font-size:.78rem;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-urole{font-size:.65rem;color:rgba(255,255,255,.35)}
+.sb-uout{background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;padding:4px;border-radius:8px;font-size:.8rem;flex-shrink:0;transition:.2s}
+.sb-uout:hover{color:#f87171;background:rgba(239,68,68,.12)}
+#sidebar.collapsed .sb-uout{display:none}
+
+/* ─── MAIN ─── */
+#main{margin-left:var(--sb);min-height:100vh;display:flex;flex-direction:column;transition:margin-left .25s cubic-bezier(.4,0,.2,1)}
+#main.col{margin-left:var(--sb-col)}
 @media(max-width:1023px){#main{margin-left:0!important}}
-#header{height:var(--hd-h);background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:40;display:flex;align-items:center;padding:0 20px;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,.05)}
-.hd-burger{width:38px;height:38px;flex-shrink:0;border-radius:12px;border:1.5px solid var(--border);background:#f8fafc;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#475569;font-size:.95rem;transition:all .2s}
-.hd-burger:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary)}
-.hd-breadcrumb{display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--muted)}
-.hd-breadcrumb .sep{color:#cbd5e1}
-.hd-breadcrumb .current{color:var(--primary);font-weight:700}
-.hd-search{flex:1;max-width:400px;position:relative;margin-left:8px}
-.hd-search input{width:100%;padding:8px 80px 8px 38px;border:1.5px solid var(--border);border-radius:12px;font-family:'Kanit',sans-serif;font-size:.82rem;background:#f8fafc;color:var(--text);outline:none;transition:all .2s}
-.hd-search input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(2,132,199,.1)}
-.hd-search .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:.8rem;pointer-events:none}
-.hd-search .search-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:linear-gradient(135deg,var(--primary),var(--secondary));border:none;border-radius:10px;padding:5px 12px;color:#fff;font-size:.7rem;font-weight:600;cursor:pointer;font-family:'Kanit',sans-serif;transition:all .2s}
-.hd-search .search-btn:hover{background:var(--primary-dark);transform:translateY(-50%) scale(1.02)}
-.hd-search .sc{position:absolute;right:80px;top:50%;transform:translateY(-50%);background:none;border:none;color:#94a3b8;cursor:pointer;font-size:.75rem;padding:2px 5px;border-radius:5px;display:none}
-.hd-search .sc:hover{color:#dc2626}
+
+/* ─── HEADER ─── */
+#header{
+  height:var(--hh);background:var(--white);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:40;
+  display:flex;align-items:center;padding:0 24px;gap:14px;
+  box-shadow:0 1px 0 var(--border),0 4px 20px rgba(11,31,75,.04);
+}
+.hd-burger{
+  width:36px;height:36px;border-radius:10px;border:1px solid var(--border);
+  background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);font-size:.9rem;transition:.2s;flex-shrink:0;
+}
+.hd-burger:hover{background:var(--sky);color:var(--blue);border-color:var(--border-mid)}
+
+.hd-bc{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--faint)}
+.hd-bc-sep{color:var(--border-mid)}
+.hd-bc-cur{color:var(--blue);font-weight:600}
+
+.hd-search{flex:1;max-width:380px;position:relative;margin-left:8px}
+.hd-search input{
+  width:100%;padding:9px 90px 9px 38px;
+  border:1.5px solid var(--border);border-radius:12px;
+  font-family:inherit;font-size:.8rem;background:var(--ice);
+  color:var(--text);outline:none;transition:.2s;
+}
+.hd-search input:focus{border-color:var(--blue-bright);background:#fff;box-shadow:0 0 0 3px rgba(29,110,245,.1)}
+.hd-search .si{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--faint);font-size:.75rem;pointer-events:none}
+.hd-search .sbtn{
+  position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  background:var(--blue);border:none;border-radius:9px;
+  padding:5px 13px;color:#fff;font-size:.7rem;font-weight:600;cursor:pointer;
+  font-family:inherit;transition:.2s;
+}
+.hd-search .sbtn:hover{background:var(--navy)}
+.hd-search .sc{position:absolute;right:80px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--faint);cursor:pointer;font-size:.7rem;padding:2px 6px;border-radius:5px;display:none}
 .hd-search input:not(:placeholder-shown)~.sc{display:block}
-.hd-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
-.hd-btn{width:38px;height:38px;border-radius:12px;border:1.5px solid var(--border);background:#f8fafc;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#475569;font-size:.9rem;position:relative;flex-shrink:0;transition:all .2s}
-.hd-btn:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary)}
-.hd-dot{position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;border:2px solid #fff}
-.hd-badge{position:absolute;top:-5px;right:-5px;min-width:18px;height:18px;padding:0 4px;border-radius:20px;border:2px solid #fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center}
-.hd-div{width:1px;height:24px;background:var(--border);flex-shrink:0}
-.hd-phone{display:flex;align-items:center;gap:7px;background:#f0fdf4;border:1.5px solid #bbf7d0;padding:6px 14px;border-radius:12px;cursor:pointer;white-space:nowrap;transition:all .2s}
+
+.hd-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.hd-ico{
+  width:36px;height:36px;border-radius:10px;border:1px solid var(--border);
+  background:transparent;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--muted);font-size:.85rem;position:relative;
+  transition:.2s;flex-shrink:0;
+}
+.hd-ico:hover{background:var(--sky);color:var(--blue);border-color:var(--border-mid)}
+.hd-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--orange);border:2px solid #fff}
+.hd-num{position:absolute;top:-4px;right:-4px;width:17px;height:17px;border-radius:50%;background:var(--danger);color:#fff;font-size:.55rem;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.hd-sep{width:1px;height:22px;background:var(--border);flex-shrink:0}
+.hd-phone{
+  display:flex;align-items:center;gap:7px;padding:7px 14px;border-radius:10px;
+  border:1px solid #bbf7d0;background:#f0fdf4;cursor:pointer;transition:.2s;
+}
+.hd-phone i{color:#16a34a;font-size:.75rem}
+.hd-phone span{font-size:.75rem;font-weight:700;color:#15803d}
 .hd-phone:hover{background:#dcfce7}
-.hd-phone i{color:#16a34a;font-size:.82rem}
-.hd-phone span{font-size:.78rem;font-weight:800;color:#15803d}
-.hd-user{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:12px;border:1.5px solid var(--border);background:#f8fafc;cursor:pointer;transition:all .2s}
-.hd-user:hover{background:var(--primary-light);border-color:var(--primary)}
-.hd-user-av{width:28px;height:28px;border-radius:10px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:.72rem}
-.hd-user-name{font-size:.78rem;font-weight:700;color:var(--text)}
-.hd-user-role{font-size:.65rem;color:var(--muted)}
-.hd-user i{color:#94a3b8;font-size:.75rem;margin-left:4px}
-@media(max-width:640px){.hd-phone{display:none}.hd-breadcrumb{display:none}.hd-search{max-width:none}}
-@media(max-width:480px){.hd-user-name,.hd-user-role,.hd-user i{display:none}.hd-user{padding:4px}}
+.hd-userbtn{
+  display:flex;align-items:center;gap:9px;padding:5px 13px 5px 5px;
+  border:1px solid var(--border);border-radius:10px;background:transparent;
+  cursor:pointer;transition:.2s;
+}
+.hd-userbtn:hover{background:var(--sky);border-color:var(--border-mid)}
+.hd-uav{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--navy),var(--blue));display:flex;align-items:center;justify-content:center;color:var(--blue-glow);font-size:.7rem}
+.hd-un{font-size:.75rem;font-weight:700;color:var(--text)}
+.hd-ur{font-size:.6rem;color:var(--faint)}
+@media(max-width:640px){.hd-phone,.hd-bc{display:none}.hd-search{max-width:none}}
 
-.content{flex:1;padding:28px 24px;display:flex;flex-direction:column;gap:24px}
-.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.stat-card{background:var(--white);border-radius:24px;border:1px solid var(--border);padding:20px 24px;display:flex;align-items:center;gap:16px;transition:all .3s ease;box-shadow:0 2px 8px rgba(0,0,0,.02)}
-.stat-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(2,132,199,.12);border-color:var(--primary-light)}
-.stat-icon{width:52px;height:52px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
-.stat-label{font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
-.stat-val{font-size:1.6rem;font-weight:800;color:var(--text);line-height:1.2}
-.stat-sub{font-size:.68rem;color:var(--success);font-weight:600;margin-top:4px;display:inline-block;padding:2px 8px;background:#dcfce7;border-radius:20px}
+/* ─── CONTENT ─── */
+.wrap{flex:1;padding:28px 28px 40px;display:flex;flex-direction:column;gap:24px}
 
-.section-card{background:var(--white);border-radius:28px;border:1px solid var(--border);overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.06);transition:box-shadow .3s}
-.section-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.1)}
-.section-head{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;background:linear-gradient(135deg,#fafcff 0%,#ffffff 100%);border-bottom:2px solid var(--primary-light);gap:12px;flex-wrap:wrap}
-.section-title{font-size:1.1rem;font-weight:800;color:var(--primary-dark);display:flex;align-items:center;gap:10px}
-.section-title i{color:var(--primary);font-size:1.2rem}
-.btn-group{display:flex;gap:12px;flex-wrap:wrap}
-.btn-add{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;font-family:'Kanit',sans-serif;transition:all .2s;box-shadow:0 2px 4px rgba(0,0,0,.05)}
-.btn-add:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(2,132,199,.3)}
-.btn-pdf{background:linear-gradient(135deg,#dc2626,#b91c1c)}
-.btn-pdf:hover{box-shadow:0 8px 20px rgba(220,38,38,.3)}
-.btn-export{background:linear-gradient(135deg,#059669,#047857)}
-.btn-export:hover{box-shadow:0 8px 20px rgba(5,150,105,.3)}
-.btn-delete-all{background:linear-gradient(135deg,#ef4444,#dc2626)}
-.btn-delete-all:hover{box-shadow:0 8px 20px rgba(239,68,68,.3)}
-.btn-delete-selected{background:linear-gradient(135deg,#f97316,#ea580c)}
-.btn-delete-selected:disabled{opacity:0.5;cursor:not-allowed;transform:none}
-.btn-delete-selected:hover:not(:disabled){box-shadow:0 8px 20px rgba(249,115,22,.3)}
+/* PAGE TITLE */
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.page-title{font-family:'Space Grotesk',sans-serif;font-size:1.65rem;font-weight:700;color:var(--navy);line-height:1.15}
+.page-sub{font-size:.78rem;color:var(--faint);margin-top:4px}
+.page-date{font-size:.75rem;color:var(--faint);border:1px solid var(--border);padding:6px 14px;border-radius:30px;background:var(--white);display:flex;align-items:center;gap:8px}
+.page-date i{color:var(--blue-bright)}
 
-.tbl-wrap{overflow-x:auto;padding:0}
-table{width:100%;border-collapse:separate;border-spacing:0;font-size:.82rem}
-thead tr{background:linear-gradient(135deg,#0284c7,#0ea5e9)}
-th{padding:16px 12px;text-align:right;font-weight:700;font-size:.75rem;color:#fff;white-space:nowrap;letter-spacing:.5px}
-th:first-child{text-align:center;width:40px;border-top-left-radius:0}
-th.th-l{text-align:left}
-td{padding:14px 12px;text-align:right;border-bottom:1px solid #f0f0f0;color:var(--text);vertical-align:middle;background:#fff;transition:all .2s}
-td:first-child{text-align:center;background:#fafcff}
-td.td-l{text-align:left}
-tbody tr:hover td{background:#f8fafc}
-tbody tr:hover td:first-child{background:#e0f2fe}
-.td-total{font-weight:800;color:#0284c7;background:#f0f9ff}
-.td-avg{font-weight:800;color:#0891b2}
-.checkbox{width:18px;height:18px;cursor:pointer;accent-color:var(--primary)}
-.select-all-checkbox{width:18px;height:18px;cursor:pointer;accent-color:var(--primary)}
-.cell-in{width:100%;background:transparent;border:none;outline:none;font-size:.82rem;font-family:'Kanit',sans-serif;color:var(--text);padding:6px 8px;text-align:inherit;border-radius:10px;transition:all .15s}
-.cell-in:focus{background:#e0f2fe;box-shadow:0 0 0 2px rgba(2,132,199,.3)}
-td .cell-in[type=number]{text-align:right}
+/* STAT CARDS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.stats{grid-template-columns:1fr}}
 
-.badge{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;padding:5px 12px;border-radius:30px;white-space:nowrap}
-.badge-max{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#d97706;border:1px solid #fcd34d}
-.badge-min{background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#15803d;border:1px solid #86efac}
-.badge-code{background:linear-gradient(135deg,#e0f2fe,#bae6fd);color:#0284c7;border:1px solid #7dd3fc}
-.badge-selected{background:#0284c7;color:#fff;padding:6px 12px;border-radius:20px;font-size:.7rem}
+.scard{
+  background:var(--white);border-radius:var(--radius-lg);
+  border:1px solid var(--border);padding:22px 24px;
+  display:flex;align-items:center;gap:18px;
+  transition:all .25s;box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+}
+.scard::after{content:'';position:absolute;bottom:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(29,110,245,.06) 0%,transparent 70%);pointer-events:none}
+.scard:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--border-mid)}
+.scard-icon{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
+.scard-ico1{background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1d4ed8}
+.scard-ico2{background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#065f46}
+.scard-ico3{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e}
+.scard-ico4{background:linear-gradient(135deg,#ede9fe,#ddd6fe);color:#5b21b6}
+.scard-lbl{font-size:.65rem;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
+.scard-val{font-family:'Space Grotesk',sans-serif;font-size:1.9rem;font-weight:700;color:var(--navy);line-height:1}
+.scard-badge{display:inline-flex;align-items:center;gap:5px;margin-top:7px;font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:20px}
+.badge-up{background:#dcfce7;color:#15803d}
+.badge-info{background:#dbeafe;color:#1d4ed8}
 
-.action-buttons{display:flex;gap:8px;justify-content:flex-end}
-.btn-action{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:6px 14px;border-radius:10px;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .2s ease;border:none;font-family:'Kanit',sans-serif}
-.btn-action i{font-size:.8rem}
-.btn-action:hover{transform:translateY(-2px)}
-.btn-edit{background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff}
-.btn-edit:hover{background:linear-gradient(135deg,#0369a1,#0284c7);box-shadow:0 4px 10px rgba(2,132,199,.4)}
-.btn-delete{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
-.btn-delete:hover{background:linear-gradient(135deg,#dc2626,#b91c1c);box-shadow:0 4px 10px rgba(220,38,38,.4)}
+/* TABLE CARD */
+.tcard{background:var(--white);border-radius:var(--radius-xl);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow-md)}
+.tcard-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 28px;border-bottom:1px solid var(--sky-deep);
+  background:linear-gradient(135deg,#f8fbff 0%,#ffffff 100%);
+  flex-wrap:wrap;gap:14px;
+}
+.tcard-title{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:10px}
+.tcard-title-ico{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--blue-glow));display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;box-shadow:0 4px 10px rgba(29,110,245,.3)}
 
-.selection-bar{background:linear-gradient(135deg,#e0f2fe,#bae6fd);border-radius:16px;padding:12px 20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.selection-info{display:flex;align-items:center;gap:12px}
-.selection-info span{font-size:.85rem;font-weight:600;color:#0369a1}
-.selection-actions{display:flex;gap:10px}
+/* BUTTONS */
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 18px;border-radius:10px;border:none;
+  font-family:inherit;font-size:.78rem;font-weight:600;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.btn i{font-size:.8rem}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-bright));color:#fff;box-shadow:0 4px 14px rgba(29,110,245,.3)}
+.btn-primary:hover{box-shadow:0 6px 20px rgba(29,110,245,.4)}
+.btn-red{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;box-shadow:0 4px 14px rgba(220,38,38,.25)}
+.btn-red:hover{box-shadow:0 6px 20px rgba(220,38,38,.35)}
+.btn-orange{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;box-shadow:0 4px 14px rgba(249,115,22,.25)}
+.btn-green{background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 4px 14px rgba(16,185,129,.25)}
+.btn-green:hover{box-shadow:0 6px 20px rgba(16,185,129,.35)}
+.btn-slate{background:var(--sky);color:var(--blue);border:1.5px solid var(--border-mid)}
+.btn-slate:hover{background:var(--sky-deep)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none !important;box-shadow:none !important}
 
-/* ===== STANDARD MODAL FORM ===== */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);align-items:center;justify-content:center;z-index:1000}
+/* SELECTION BAR */
+.sel-bar{
+  display:none;margin:0 28px 0;padding:12px 20px;
+  background:linear-gradient(135deg,#eff6ff,#dbeafe);
+  border-radius:14px;border:1px solid var(--border-mid);
+  align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+.sel-bar.show{display:flex}
+.sel-info{display:flex;align-items:center;gap:10px;font-size:.82rem;font-weight:600;color:#1d4ed8}
+.sel-info i{color:var(--blue-bright)}
+
+/* TABLE */
+.tbl-outer{overflow-x:auto}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:.8rem}
+thead tr{background:linear-gradient(135deg,var(--navy),var(--navy-light))}
+th{
+  padding:15px 13px;color:rgba(255,255,255,.85);
+  font-size:.68rem;font-weight:700;letter-spacing:.8px;
+  text-transform:uppercase;text-align:right;white-space:nowrap;
+}
+th:first-child{text-align:center;padding-left:20px}
+th.thl{text-align:left}
+td{
+  padding:13px 13px;text-align:right;
+  border-bottom:1px solid var(--sky);
+  color:var(--text);vertical-align:middle;
+  background:var(--white);transition:background .15s;
+}
+td:first-child{text-align:center;padding-left:20px}
+td.tdl{text-align:left}
+tbody tr:hover td{background:#f5f9ff}
+tbody tr:last-child td{border-bottom:none}
+tfoot td{
+  background:linear-gradient(135deg,#eff6ff,#f8fbff);
+  border-top:2px solid var(--sky-deep);
+  font-weight:700;font-size:.78rem;color:var(--navy);
+  padding:14px 13px;border-bottom:none;
+}
+tfoot td:first-child{padding-left:20px}
+
+/* CELL INPUTS */
+.cin{
+  width:100%;background:transparent;border:none;outline:none;
+  font-family:inherit;font-size:.8rem;color:var(--text);
+  padding:6px 8px;border-radius:9px;transition:.15s;text-align:right;
+}
+.cin:focus{background:var(--sky-deep);box-shadow:0 0 0 2px rgba(29,110,245,.25)}
+td .cin[type=number]{text-align:right}
+
+/* BADGES */
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:.7rem;font-weight:700;padding:5px 11px;border-radius:30px;white-space:nowrap;cursor:pointer;transition:.2s}
+.pill:hover{filter:brightness(.95);transform:scale(1.03)}
+.pill-blue{background:#dbeafe;color:#1e3a8a;border:1px solid #bfdbfe}
+.pill-green{background:#d1fae5;color:#064e3b;border:1px solid #a7f3d0}
+.pill-amber{background:#fef3c7;color:#78350f;border:1px solid #fde68a}
+.td-sum{font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--blue);font-size:.88rem}
+.td-avg{font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--muted)}
+
+/* ROW ACTIONS */
+.ra{display:flex;gap:7px;justify-content:flex-end}
+.ra-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 12px;border-radius:8px;font-size:.7rem;font-weight:600;
+  cursor:pointer;border:none;font-family:inherit;transition:.2s;
+}
+.ra-btn:hover{transform:translateY(-1px)}
+.ra-edit{background:#dbeafe;color:#1d4ed8}
+.ra-edit:hover{background:#bfdbfe;box-shadow:0 3px 10px rgba(29,110,245,.2)}
+.ra-del{background:#fee2e2;color:#b91c1c}
+.ra-del:hover{background:#fecaca;box-shadow:0 3px 10px rgba(220,38,38,.2)}
+
+/* CHECKBOX */
+.cbx{width:16px;height:16px;cursor:pointer;accent-color:var(--blue);border-radius:4px}
+
+/* EMPTY STATE */
+.empty{padding:60px 20px;text-align:center;color:var(--faint)}
+.empty i{font-size:3rem;margin-bottom:14px;color:var(--border-mid)}
+.empty p{font-size:.9rem}
+
+/* ─── MODAL ─── */
+.modal-bg{
+  display:none;position:fixed;inset:0;
+  background:rgba(11,31,75,.65);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;z-index:1000;
+}
 .modal-bg.show{display:flex;animation:fadeIn .2s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal{background:#fff;border-radius:36px;width:600px;max-width:94vw;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.4);transform:scale(0.96);transition:transform .2s ease}
-.modal-bg.show .modal{transform:scale(1)}
-.modal-header{padding:24px 30px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff}
-.modal-header h3{font-size:1.3rem;font-weight:800;display:flex;align-items:center;gap:12px}
-.modal-header h3 i{font-size:1.3rem;color:var(--accent)}
-.modal-body{padding:30px;max-height:70vh;overflow-y:auto}
-.modal-footer{display:flex;justify-content:flex-end;gap:14px;padding:0 30px 30px}
-.modal-btn-cancel{padding:12px 28px;border-radius:20px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-size:.85rem;font-weight:600;cursor:pointer;transition:.2s}
-.modal-btn-cancel:hover{background:#f1f5f9;color:var(--text)}
-.modal-btn-confirm{padding:12px 32px;border-radius:20px;border:none;background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:#fff;font-size:.85rem;font-weight:800;cursor:pointer;transition:all .2s}
-.modal-btn-confirm.danger{background:linear-gradient(135deg,#dc2626,#b91c1c)}
-.modal-btn-confirm:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(2,132,199,.4)}
-.form-group{margin-bottom:22px}
-.form-group label{display:block;font-size:.7rem;font-weight:800;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
-.form-group input, .form-group select{width:100%;padding:12px 18px;border:1.5px solid var(--border);border-radius:20px;font-family:'Kanit',sans-serif;font-size:.9rem;outline:none;transition:all .2s;background:#fff}
-.form-group input:focus, .form-group select:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(2,132,199,.1)}
-.form-row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:12px}
-.form-row-5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:8px}
-.detail-hint{font-size:.7rem;color:#94a3b8;margin-top:4px;display:flex;align-items:center;gap:4px}
-.required-star{color:#ef4444;margin-left:4px}
-@media (max-width:560px){.form-row-3,.form-row-5{grid-template-columns:1fr;gap:12px}}
 
-#toasts{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:12px}
-.toast{background:#1e293b;color:#fff;padding:14px 20px;border-radius:20px;font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:12px;box-shadow:0 15px 35px rgba(0,0,0,.2);border-left:4px solid var(--primary);min-width:260px;transform:translateX(120%);transition:transform .3s}
-.toast.show{transform:translateX(0)}.toast.ok{border-left-color:#10b981}.toast.warning{border-left-color:#f59e0b}
-@media print{ body *{visibility:hidden} #dataTable, #dataTable *{visibility:visible} #dataTable{position:absolute;top:0;left:0;width:100%} .no-print{display:none} }
+.modal{
+  background:var(--white);border-radius:var(--radius-xl);
+  width:580px;max-width:93vw;overflow:hidden;
+  box-shadow:0 40px 80px rgba(11,31,75,.35);
+  transform:translateY(8px) scale(.98);transition:transform .2s ease;
+}
+.modal-bg.show .modal{transform:none}
+
+.modal-hd{
+  padding:28px 32px 24px;
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);
+}
+.modal-hd h3{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:12px}
+.modal-hd h3 i{width:32px;height:32px;background:rgba(255,255,255,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--blue-glow)}
+.modal-body{padding:28px 32px;max-height:65vh;overflow-y:auto}
+.modal-body::-webkit-scrollbar{width:4px}
+.modal-body::-webkit-scrollbar-thumb{background:var(--border-mid);border-radius:4px}
+.modal-foot{display:flex;justify-content:flex-end;gap:12px;padding:0 32px 28px}
+
+.fg{margin-bottom:20px}
+.fg label{display:block;font-size:.65rem;font-weight:700;color:var(--faint);margin-bottom:7px;text-transform:uppercase;letter-spacing:1.2px}
+.fg input,.fg select{
+  width:100%;padding:11px 16px;
+  border:1.5px solid var(--border);border-radius:12px;
+  font-family:inherit;font-size:.88rem;
+  outline:none;transition:.2s;background:var(--ice);color:var(--text);
+}
+.fg input:focus,.fg select:focus{border-color:var(--blue-bright);background:#fff;box-shadow:0 0 0 3px rgba(29,110,245,.1)}
+.fg-hint{font-size:.68rem;color:var(--faint);margin-top:5px;display:flex;align-items:center;gap:5px}
+.req{color:#ef4444;margin-left:3px}
+.fg-row3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.fg-row5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.fg-section{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--sky)}
+.m-btn-cancel{padding:11px 26px;border-radius:12px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;transition:.2s;font-family:inherit}
+.m-btn-cancel:hover{background:var(--sky);color:var(--text)}
+.m-btn-ok{padding:11px 28px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--blue),var(--blue-bright));color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;transition:.2s;font-family:inherit;box-shadow:0 4px 14px rgba(29,110,245,.3)}
+.m-btn-ok:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(29,110,245,.4)}
+.m-btn-ok.danger{background:linear-gradient(135deg,#dc2626,#b91c1c);box-shadow:0 4px 14px rgba(220,38,38,.3)}
+@media(max-width:540px){.fg-row3,.fg-row5{grid-template-columns:1fr}}
+
+/* OVERLAY */
+#overlay{position:fixed;inset:0;background:rgba(11,31,75,.4);backdrop-filter:blur(2px);z-index:45;opacity:0;pointer-events:none;transition:.2s}
+#overlay.show{opacity:1;pointer-events:auto}
+
+/* TOASTS */
+#toasts{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.toast{
+  background:var(--navy);color:#fff;
+  padding:13px 18px;border-radius:14px;
+  font-size:.82rem;font-weight:500;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 16px 40px rgba(11,31,75,.25);
+  min-width:240px;
+  transform:translateX(130%);transition:transform .3s cubic-bezier(.4,0,.2,1);
+  border-left:3px solid var(--blue-bright);
+}
+.toast.show{transform:translateX(0)}
+.toast.ok{border-left-color:#34d399}
+.toast.warning{border-left-color:#fbbf24}
+.toast-ico{font-size:.9rem}
+
+@media print{body *{visibility:hidden}#dataTable,#dataTable *{visibility:visible}#dataTable{position:absolute;top:0;left:0;width:100%}.no-print{display:none}}
 </style>
 </head>
 <body>
 <div id="toasts"></div>
-<div id="overlay" onclick="closeSidebar()"></div>
+<div id="overlay" onclick="closeSb()"></div>
 
-<!-- STANDARD MODAL: เพิ่ม/แก้ไข แบบครบวงจร -->
+<!-- MODAL: Add/Edit -->
 <div id="editModal" class="modal-bg">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 id="modalTitle"><i class="fas fa-microchip"></i> เพิ่มข้อมูลน็อตล้อ</h3>
+<div class="modal">
+  <div class="modal-hd">
+    <h3 id="modalTitle"><i class="fas fa-microchip"></i> เพิ่มข้อมูลน็อตล้อ</h3>
+  </div>
+  <div class="modal-body">
+    <div class="fg">
+      <label>รหัสสินค้า <span class="req">*</span></label>
+      <input type="text" id="editBarcode" placeholder="เช่น NUT-3R001" autocomplete="off">
+      <div class="fg-hint"><i class="fas fa-info-circle"></i> รหัสต้องไม่ซ้ำกัน</div>
     </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label><i class="fas fa-barcode"></i> รหัสสินค้า <span class="required-star">*</span></label>
-        <input type="text" id="editBarcode" placeholder="ตัวอย่าง: NUT-3R001" autocomplete="off">
-        <div class="detail-hint"><i class="fas fa-info-circle"></i> รหัสต้องไม่ซ้ำกัน</div>
-      </div>
-      <div class="form-row-3">
-        <div class="form-group"><label><i class="fas fa-boxes"></i> B/L (คงเหลือ)</label><input type="number" id="editStock" placeholder="จำนวน" value="0" min="0" step="1"></div>
-        <div class="form-group"><label><i class="fas fa-chart-line"></i> Max Lot</label><input type="number" id="editMaxLot" placeholder="สูงสุด" value="0" min="0"></div>
-        <div class="form-group"><label><i class="fas fa-chart-line"></i> Min Lot</label><input type="number" id="editMinLot" placeholder="ต่ำสุด" value="0" min="0"></div>
-      </div>
-      <div class="form-group"><label><i class="fas fa-chart-simple"></i> ยอดขาย 5 เดือน (หน่วย: ชุด)</label></div>
-      <div class="form-row-5">
-        <div class="form-group"><label>ม.ค.</label><input type="number" id="editJan" value="0" min="0"></div>
-        <div class="form-group"><label>ก.พ.</label><input type="number" id="editFeb" value="0" min="0"></div>
-        <div class="form-group"><label>มี.ค.</label><input type="number" id="editMar" value="0" min="0"></div>
-        <div class="form-group"><label>เม.ย.</label><input type="number" id="editApr" value="0" min="0"></div>
-        <div class="form-group"><label>พ.ค.</label><input type="number" id="editMay" value="0" min="0"></div>
-      </div>
-      <div class="detail-hint"><i class="fas fa-lightbulb"></i> ระบบจะคำนวณยอดรวมและเฉลี่ยอัตโนมัติ</div>
+    <div class="fg-row3">
+      <div class="fg"><label>B/L คงเหลือ</label><input type="number" id="editStock" value="0" min="0"></div>
+      <div class="fg"><label>Max Lot</label><input type="number" id="editMaxLot" value="0" min="0"></div>
+      <div class="fg"><label>Min Lot</label><input type="number" id="editMinLot" value="0" min="0"></div>
     </div>
-    <div class="modal-footer">
-      <button class="modal-btn-cancel" onclick="closeEditModal()">ยกเลิก</button>
-      <button class="modal-btn-confirm" onclick="confirmEditRow()">บันทึกข้อมูล</button>
+    <div class="fg-section"><i class="fas fa-chart-bar" style="margin-right:6px"></i>ยอดขาย 5 เดือน (ชุด)</div>
+    <div class="fg-row5">
+      <div class="fg"><label>ม.ค.</label><input type="number" id="editJan" value="0" min="0"></div>
+      <div class="fg"><label>ก.พ.</label><input type="number" id="editFeb" value="0" min="0"></div>
+      <div class="fg"><label>มี.ค.</label><input type="number" id="editMar" value="0" min="0"></div>
+      <div class="fg"><label>เม.ย.</label><input type="number" id="editApr" value="0" min="0"></div>
+      <div class="fg"><label>พ.ค.</label><input type="number" id="editMay" value="0" min="0"></div>
     </div>
+    <div class="fg-hint"><i class="fas fa-lightbulb"></i> รวมและเฉลี่ยจะคำนวณอัตโนมัติ</div>
+  </div>
+  <div class="modal-foot">
+    <button class="m-btn-cancel" onclick="closeEditModal()">ยกเลิก</button>
+    <button class="m-btn-ok" onclick="confirmEdit()">บันทึก</button>
   </div>
 </div>
-
-<div id="deleteModal" class="modal-bg">
-  <div class="modal"><div class="modal-header"><h3><i class="fas fa-trash-alt"></i> ยืนยันการลบ</h3></div><div class="modal-body"><p style="font-size:.95rem;">คุณต้องการลบสินค้า <strong id="deleteBarcode"></strong> ใช่หรือไม่?</p></div><div class="modal-footer"><button class="modal-btn-cancel" onclick="closeDeleteModal()">ยกเลิก</button><button class="modal-btn-confirm danger" onclick="confirmDeleteRow()">ลบ</button></div></div>
 </div>
 
-<aside id="sidebar"><div class="sb-logo"><div class="sb-logo-icon"><i class="fas fa-microchip"></i></div><div class="sb-logo-text">3RHB<br><span>IMPORT NUTS</span></div></div>
+<!-- MODAL: Delete -->
+<div id="delModal" class="modal-bg">
+<div class="modal">
+  <div class="modal-hd"><h3><i class="fas fa-trash-alt"></i> ยืนยันการลบ</h3></div>
+  <div class="modal-body">
+    <p style="font-size:.9rem;line-height:1.6;color:var(--text)">ต้องการลบสินค้า <strong id="delName" style="color:var(--danger)"></strong> ออกจากระบบ ใช่หรือไม่?<br><span style="font-size:.78rem;color:var(--faint)">การดำเนินการนี้ไม่สามารถกู้คืนได้</span></p>
+  </div>
+  <div class="modal-foot">
+    <button class="m-btn-cancel" onclick="closeDelModal()">ยกเลิก</button>
+    <button class="m-btn-ok danger" onclick="confirmDel()">ลบออก</button>
+  </div>
+</div>
+</div>
+
+<!-- ══════════ SIDEBAR ══════════ -->
+<aside id="sidebar">
+  <div class="sb-top">
+    <div class="sb-logo-mark"><i class="fas fa-microchip"></i></div>
+    <div class="sb-brand">
+      <div class="sb-brand-name">3RHB</div>
+      <div class="sb-brand-sub">Import Nuts</div>
+    </div>
+  </div>
   <nav class="sb-nav">
-    <div class="sb-label">การจัดการสินค้า</div>
-    <!-- เพิ่มปุ่มย้อนกลับไปยัง inventory.html -->
-    <a class="sb-item" href="inventory.html" data-tip="ย้อนกลับ">
-      <i class="fas fa-arrow-left sb-icon"></i>
-      <span class="sb-text">ย้อนกลับ</span>
+    <div class="sb-sect">จัดการสินค้า</div>
+    <a class="sb-link" href="inventory.html">
+      <i class="fas fa-arrow-left sb-ico"></i>
+      <span class="sb-lbl">ย้อนกลับ</span>
     </a>
-    <a class="sb-item active" href="#" data-tip="Lot Stock">
-      <i class="fas fa-boxes-stacked sb-icon"></i>
-      <span class="sb-text">Lot Stock</span>
-      <span class="sb-badge blue">New</span>
+    <a class="sb-link active" href="#">
+      <i class="fas fa-boxes-stacked sb-ico"></i>
+      <span class="sb-lbl">Lot Stock</span>
+      <span class="sb-chip chip-blue">Active</span>
     </a>
-    <a class="sb-item" href="#" data-tip="น็อตล้อทั้งหมด">
-      <i class="fas fa-circle-dot sb-icon"></i>
-      <span class="sb-text">น็อตล้อทั้งหมด</span>
-      <span class="sb-badge gray">456</span>
+    <a class="sb-link" href="#">
+      <i class="fas fa-circle-dot sb-ico"></i>
+      <span class="sb-lbl">น็อตล้อทั้งหมด</span>
+      <span class="sb-chip chip-gray">456</span>
     </a>
-    <div class="sb-label">บริการ</div>
-    <a class="sb-item" href="Support.html" data-tip="ติดต่อเรา">
-      <i class="fas fa-headset sb-icon"></i>
-      <span class="sb-text">ติดต่อเรา</span>
+    <div class="sb-sect">บริการ</div>
+    <a class="sb-link" href="Support.html">
+      <i class="fas fa-headset sb-ico"></i>
+      <span class="sb-lbl">ติดต่อเรา</span>
     </a>
-    <a class="sb-item" href="#" data-tip="บทความ">
-      <i class="fas fa-newspaper sb-icon"></i>
-      <span class="sb-text">บทความ</span>
+    <a class="sb-link" href="#">
+      <i class="fas fa-newspaper sb-ico"></i>
+      <span class="sb-lbl">บทความ</span>
     </a>
   </nav>
-  <div class="sb-profile"><div class="sb-profile-inner"><div class="sb-avatar"><i class="fas fa-user-tie"></i></div><div class="sb-pinfo"><div class="sb-pname">PATIWAT</div><div class="sb-prole">Admin</div></div><button class="sb-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button></div></div>
+  <div class="sb-foot">
+    <div class="sb-user">
+      <div class="sb-av">P</div>
+      <div class="sb-uinfo">
+        <div class="sb-uname">PATIWAT</div>
+        <div class="sb-urole">Administrator</div>
+      </div>
+      <button class="sb-uout" onclick="toast('ออกจากระบบ demo')"><i class="fas fa-sign-out-alt"></i></button>
+    </div>
+  </div>
 </aside>
 
-<div id="main"><header id="header"><button class="hd-burger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button><nav class="hd-breadcrumb"><i class="fas fa-microchip" style="color:var(--primary);"></i><span class="sep">/</span><span>คลังสินค้า</span><span class="sep">/</span><span class="current">Lot Stock</span></nav><div class="hd-search"><i class="fas fa-search si"></i><input id="searchInput" type="text" placeholder="ค้นหา Barcode หรือ B/L..." onkeypress="handleSearchKeypress(event)"><button class="search-btn" onclick="searchData()"><i class="fas fa-search"></i> ค้นหา</button><button class="sc" onclick="clearSearch()"><i class="fas fa-xmark"></i></button></div><div class="hd-actions"><div class="hd-btn" onclick="showNotifications()"><i class="fas fa-bell"></i><span class="hd-dot" style="background:#f97316"></span></div><div class="hd-btn" onclick="showFavorites()"><i class="fas fa-heart" style="color:#dc2626"></i><span class="hd-badge" style="background:#dc2626;color:#fff">3</span></div><div class="hd-div"></div><div class="hd-phone" onclick="callPhone()"><i class="fas fa-phone"></i><span>02-123-4567</span></div><div class="hd-user" onclick="showProfile()"><div class="hd-user-av"><i class="fas fa-user-tie"></i></div><div><div class="hd-user-name">PATIWAT</div><div class="hd-user-role">Admin</div></div><i class="fas fa-chevron-down"></i></div></div></header>
-<div class="content"><div class="stat-row"><div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#e0f2fe,#bae6fd)"><i class="fas fa-microchip" style="color:#0284c7"></i></div><div><div class="stat-label">สินค้าทั้งหมด</div><div class="stat-val" id="stat-count">0</div><div class="stat-sub">รายการ</div></div></div><div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)"><i class="fas fa-cubes" style="color:#15803d"></i></div><div><div class="stat-label">B/L รวม</div><div class="stat-val" id="stat-stock">0</div><div class="stat-sub">หน่วย</div></div></div><div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a)"><i class="fas fa-chart-line" style="color:#d97706"></i></div><div><div class="stat-label">ยอดขาย 5 เดือน</div><div class="stat-val" id="stat-total">0</div><div class="stat-sub">ชุด</div></div></div><div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#e0f2fe,#bae6fd)"><i class="fas fa-calendar-week" style="color:#0284c7"></i></div><div><div class="stat-label">เฉลี่ย/เดือน</div><div class="stat-val" id="stat-avg">0</div><div class="stat-sub">ชุด</div></div></div></div>
-<div class="section-card"><div class="section-head"><div class="section-title"><i class="fas fa-crown"></i> ข้อมูล Lot Stock</div><div class="btn-group"><button class="btn-add btn-pdf" onclick="printPDF()"><i class="fas fa-file-pdf"></i> พิมพ์</button><button class="btn-add btn-export" onclick="exportData()"><i class="fas fa-download"></i> Export</button><button class="btn-add btn-delete-selected" id="deleteSelectedBtn" onclick="deleteSelected()" disabled><i class="fas fa-trash-alt"></i> ลบที่เลือก</button><button class="btn-add btn-delete-all" onclick="deleteAll()"><i class="fas fa-trash-alt"></i> ลบทั้งหมด</button><button class="btn-add" onclick="openAddModal()"><i class="fas fa-plus"></i> เพิ่ม</button></div></div><div id="selectionBar" class="selection-bar" style="display:none;"><div class="selection-info"><i class="fas fa-check-circle" style="color:#0284c7"></i><span id="selectedCount">0</span> รายการที่เลือก</div><div class="selection-actions"><button class="btn-action btn-delete" onclick="deleteSelected()" style="padding:6px 16px"><i class="fas fa-trash-alt"></i> ลบที่เลือก</button></div></div><div class="tbl-wrap"><table id="dataTable"><thead><tr><th style="text-align:center"><input type="checkbox" class="select-all-checkbox" id="selectAllCheckbox" onclick="toggleSelectAll()"></th><th class="th-l">#</th><th class="th-l">รหัสสินค้า</th><th class="th-l">B/L</th><th class="th-l">Max</th><th class="th-l">Min</th><th>ม.ค.</th><th>ก.พ.</th><th>มี.ค.</th><th>เม.ย.</th><th>พ.ค.</th><th>รวม 5D</th><th>เฉลี่ย</th><th></th></tr></thead><tbody id="tbody"></tbody><tfoot id="tfoot"></tfoot></table></div></div></div></div>
-<script>
-const months = ['jan','feb','mar','apr','may'];
-let rows = [], filterText = '', nextId = 1, pendingDeleteIndex = null, editModeIndex = null;
-let selectedRows = new Set();
+<!-- ══════════ MAIN ══════════ -->
+<div id="main">
+  <header id="header">
+    <button class="hd-burger" onclick="toggleSb()"><i class="fas fa-bars"></i></button>
+    <nav class="hd-bc">
+      <i class="fas fa-microchip" style="color:var(--blue)"></i>
+      <span class="hd-bc-sep">/</span>
+      <span>คลังสินค้า</span>
+      <span class="hd-bc-sep">/</span>
+      <span class="hd-bc-cur">Lot Stock</span>
+    </nav>
+    <div class="hd-search">
+      <i class="fas fa-search si"></i>
+      <input id="searchInput" type="text" placeholder="ค้นหา Barcode, B/L..." onkeypress="if(event.key==='Enter')searchData()">
+      <button class="sbtn" onclick="searchData()"><i class="fas fa-search"></i> ค้นหา</button>
+      <button class="sc" onclick="clearSearch()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="hd-right">
+      <div class="hd-ico" onclick="toast('ไม่มีการแจ้งเตือน')">
+        <i class="fas fa-bell"></i>
+        <span class="hd-dot"></span>
+      </div>
+      <div class="hd-ico" onclick="toast('รายการโปรด')">
+        <i class="fas fa-heart" style="color:#ef4444"></i>
+        <span class="hd-num">3</span>
+      </div>
+      <div class="hd-sep"></div>
+      <div class="hd-phone" onclick="toast('โทร 02-123-4567')">
+        <i class="fas fa-phone"></i>
+        <span>02-123-4567</span>
+      </div>
+      <div class="hd-userbtn" onclick="toast('โปรไฟล์ผู้ใช้')">
+        <div class="hd-uav"><i class="fas fa-user-tie"></i></div>
+        <div>
+          <div class="hd-un">PATIWAT</div>
+          <div class="hd-ur">Admin</div>
+        </div>
+        <i class="fas fa-chevron-down" style="font-size:.6rem;color:var(--faint);margin-left:4px"></i>
+      </div>
+    </div>
+  </header>
 
-function loadData() {
-  const saved = localStorage.getItem('3rhb_lotstock_std_v1');
-  if(saved) { try { rows = JSON.parse(saved); nextId = Math.max(...rows.map(r=>r.id), 0) + 1; } catch(e) {} } 
-  else { rows = [{id:1,barcode:'NUT-3R001',stock:3200,maxLot:5200,minLot:2800,jan:450,feb:520,mar:480,apr:510,may:490},{id:2,barcode:'NUT-3R002',stock:1800,maxLot:2600,minLot:1200,jan:230,feb:245,mar:260,apr:240,may:255},{id:3,barcode:'NUT-3R003',stock:4500,maxLot:6800,minLot:3800,jan:680,feb:720,mar:690,apr:710,may:735},{id:4,barcode:'NUT-3R004',stock:900,maxLot:1500,minLot:600,jan:120,feb:135,mar:110,apr:125,may:130}]; nextId = 5; }
+  <main class="wrap">
+    <!-- Page header -->
+    <div class="page-head">
+      <div>
+        <div class="page-title"><i class="fas fa-boxes-stacked" style="color:var(--blue);font-size:1.2rem;margin-right:10px"></i>Lot Stock</div>
+        <div class="page-sub">ระบบบริหารสต็อกน็อตล้อมาตรฐาน · 3RHB Import Wheel Nuts</div>
+      </div>
+      <div class="page-date" id="pageDate"><i class="fas fa-calendar-alt"></i> <span>—</span></div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="scard"><div class="scard-icon scard-ico1"><i class="fas fa-microchip"></i></div><div><div class="scard-lbl">สินค้าทั้งหมด</div><div class="scard-val" id="st-count">0</div><div class="scard-badge badge-info"><i class="fas fa-tag"></i> รายการ</div></div></div>
+      <div class="scard"><div class="scard-icon scard-ico2"><i class="fas fa-cubes"></i></div><div><div class="scard-lbl">B/L รวม</div><div class="scard-val" id="st-stock">0</div><div class="scard-badge badge-up"><i class="fas fa-arrow-up"></i> หน่วย</div></div></div>
+      <div class="scard"><div class="scard-icon scard-ico3"><i class="fas fa-chart-line"></i></div><div><div class="scard-lbl">ยอดขาย 5 เดือน</div><div class="scard-val" id="st-total">0</div><div class="scard-badge badge-up"><i class="fas fa-fire"></i> ชุด</div></div></div>
+      <div class="scard"><div class="scard-icon scard-ico4"><i class="fas fa-calendar-week"></i></div><div><div class="scard-lbl">เฉลี่ย / เดือน</div><div class="scard-val" id="st-avg">0</div><div class="scard-badge badge-info"><i class="fas fa-chart-bar"></i> ชุด</div></div></div>
+    </div>
+
+    <!-- Table card -->
+    <div class="tcard">
+      <div class="tcard-head no-print">
+        <div class="tcard-title">
+          <div class="tcard-title-ico"><i class="fas fa-table"></i></div>
+          ข้อมูล Lot Stock
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-slate" onclick="printPDF()"><i class="fas fa-print"></i> พิมพ์</button>
+          <button class="btn btn-green" onclick="exportData()"><i class="fas fa-download"></i> Export</button>
+          <button class="btn btn-orange" id="delSelBtn" onclick="deleteSel()" disabled><i class="fas fa-trash-alt"></i> ลบที่เลือก</button>
+          <button class="btn btn-red" onclick="deleteAll()"><i class="fas fa-trash-alt"></i> ลบทั้งหมด</button>
+          <button class="btn btn-primary" onclick="openAdd()"><i class="fas fa-plus"></i> เพิ่ม</button>
+        </div>
+      </div>
+
+      <!-- Selection bar -->
+      <div id="selBar" class="sel-bar">
+        <div class="sel-info">
+          <i class="fas fa-check-circle"></i>
+          <span><span id="selCount">0</span> รายการที่เลือก</span>
+        </div>
+        <button class="btn btn-red" onclick="deleteSel()" style="padding:7px 16px;font-size:.75rem"><i class="fas fa-trash-alt"></i> ลบที่เลือก</button>
+      </div>
+
+      <div class="tbl-outer">
+        <table id="dataTable">
+          <thead>
+            <tr>
+              <th style="text-align:center"><input type="checkbox" class="cbx" id="chkAll" onclick="toggleAll()"></th>
+              <th class="thl" style="width:36px">#</th>
+              <th class="thl">รหัสสินค้า</th>
+              <th class="thl">B/L</th>
+              <th class="thl">Max</th>
+              <th class="thl">Min</th>
+              <th>ม.ค.</th><th>ก.พ.</th><th>มี.ค.</th><th>เม.ย.</th><th>พ.ค.</th>
+              <th>รวม 5D</th>
+              <th>เฉลี่ย</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+          <tfoot id="tfoot"></tfoot>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const MO=['jan','feb','mar','apr','may'];
+let rows=[],filterText='',nextId=1,pendingDel=null,editIdx=null;
+let sel=new Set();
+
+function loadData(){
+  const s=localStorage.getItem('3rhb_lotstock_v2');
+  if(s){try{rows=JSON.parse(s);nextId=Math.max(...rows.map(r=>r.id),0)+1;}catch(e){}}
+  else{rows=[
+    {id:1,barcode:'NUT-3R001',stock:3200,maxLot:5200,minLot:2800,jan:450,feb:520,mar:480,apr:510,may:490},
+    {id:2,barcode:'NUT-3R002',stock:1800,maxLot:2600,minLot:1200,jan:230,feb:245,mar:260,apr:240,may:255},
+    {id:3,barcode:'NUT-3R003',stock:4500,maxLot:6800,minLot:3800,jan:680,feb:720,mar:690,apr:710,may:735},
+    {id:4,barcode:'NUT-3R004',stock:900,maxLot:1500,minLot:600,jan:120,feb:135,mar:110,apr:125,may:130}
+  ];nextId=5;}
+  document.getElementById('pageDate').innerHTML=`<i class="fas fa-calendar-alt" style="color:var(--blue)"></i> <span>${new Date().toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'})}</span>`;
   render();
 }
-function saveData() { localStorage.setItem('3rhb_lotstock_std_v1', JSON.stringify(rows)); }
-function calcTotal(r){ return months.reduce((s,m)=>s+(+r[m]||0),0); }
+function save(){localStorage.setItem('3rhb_lotstock_v2',JSON.stringify(rows));}
+function sum(r){return MO.reduce((s,m)=>s+(+r[m]||0),0);}
+function esc(s){if(!s)return'';return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+
 function render(){
-  const filtered = filterText ? rows.filter(r => (r.barcode + r.stock.toString()).toLowerCase().includes(filterText)) : rows;
-  const tbody = document.getElementById('tbody'), tfoot = document.getElementById('tfoot');
-  if(!rows.length){ tbody.innerHTML=`<tr><td colspan="14"><div class="empty-state"><i class="fas fa-microchip"></i><p>เริ่มเพิ่มข้อมูลน็อตล้อกันเลย!</p></div></td></tr>`; tfoot.innerHTML=''; updateStats(); updateSelectionBar(); return; }
-  tbody.innerHTML = filtered.map((r,i)=>{
-    const idx = rows.findIndex(row => row.id === r.id);
-    const total = calcTotal(r), avg = total ? Math.round(total/5) : 0;
-    const isChecked = selectedRows.has(r.id);
-    return `<tr><td style="text-align:center"><input type="checkbox" class="row-checkbox" data-id="${r.id}" ${isChecked ? 'checked' : ''} onchange="toggleRowSelect(${r.id}, this.checked)"></td>
-    <td class="td-l"><span style="font-weight:800;color:var(--primary);">${i+1}</span></td>
-    <td class="td-l"><span class="badge badge-code" style="cursor:pointer;" onclick="openEditModal(${idx})"><i class="fas fa-microchip"></i> ${escapeHtml(r.barcode)}</span></td>
-    <td class="td-l"><input class="cell-in" type="number" value="${r.stock||0}" min="0" onchange="updateRow(${idx}, 'stock', +this.value||0)" style="width:100px;"></td>
-    <td class="td-l"><span class="badge badge-max"><i class="fas fa-arrow-up"></i> ${(+r.maxLot||r.stock||0).toLocaleString()}</span><input type="hidden" value="${r.maxLot||r.stock||0}" onchange="updateRow(${idx}, 'maxLot', +this.value||0)"></td>
-    <td class="td-l"><span class="badge badge-min"><i class="fas fa-arrow-down"></i> ${(+r.minLot||r.stock||0).toLocaleString()}</span><input type="hidden" value="${r.minLot||r.stock||0}" onchange="updateRow(${idx}, 'minLot', +this.value||0)"></td>
-    ${months.map(m=>`<td><input class="cell-in" type="number" value="${r[m]||0}" min="0" onchange="updateRow(${idx}, '${m}', +this.value||0)" style="width:65px;text-align:center"></td>`).join('')}
-    <td class="td-total"><strong>${total.toLocaleString()}</strong></td><td class="td-avg"><strong>${avg.toLocaleString()}</strong></td>
-    <td><div class="action-buttons"><button class="btn-action btn-edit" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i> แก้ไข</button><button class="btn-action btn-delete" onclick="openDeleteModal(${idx})"><i class="fas fa-trash-alt"></i> ลบ</button></div></td></tr>`;
+  const vis=filterText?rows.filter(r=>(r.barcode+r.stock).toLowerCase().includes(filterText)):rows;
+  const tb=document.getElementById('tbody'),tf=document.getElementById('tfoot');
+  if(!rows.length){
+    tb.innerHTML=`<tr><td colspan="14"><div class="empty"><i class="fas fa-box-open"></i><p>ยังไม่มีข้อมูล กด "เพิ่ม" เพื่อเริ่มต้น</p></div></td></tr>`;
+    tf.innerHTML='';updateStats();updateSelBar();return;
+  }
+  tb.innerHTML=vis.map((r,i)=>{
+    const idx=rows.findIndex(x=>x.id===r.id);
+    const total=sum(r),avg=total?Math.round(total/5):0;
+    const chk=sel.has(r.id);
+    return`<tr>
+<td><input type="checkbox" class="cbx" ${chk?'checked':''} onchange="toggleRow(${r.id},this.checked)"></td>
+<td class="tdl"><span style="font-size:.72rem;font-weight:700;color:var(--faint)">${i+1}</span></td>
+<td class="tdl"><span class="pill pill-blue" onclick="openEdit(${idx})"><i class="fas fa-microchip"></i> ${esc(r.barcode)}</span></td>
+<td class="tdl"><input class="cin" type="number" value="${r.stock||0}" min="0" onchange="upd(${idx},'stock',+this.value||0)" style="width:90px"></td>
+<td class="tdl"><span class="pill pill-amber"><i class="fas fa-arrow-up"></i> ${(+r.maxLot||r.stock||0).toLocaleString()}</span></td>
+<td class="tdl"><span class="pill pill-green"><i class="fas fa-arrow-down"></i> ${(+r.minLot||r.stock||0).toLocaleString()}</span></td>
+${MO.map(m=>`<td><input class="cin" type="number" value="${r[m]||0}" min="0" onchange="upd(${idx},'${m}',+this.value||0)" style="width:60px;text-align:center"></td>`).join('')}
+<td><span class="td-sum">${total.toLocaleString()}</span></td>
+<td><span class="td-avg">${avg.toLocaleString()}</span></td>
+<td><div class="ra">
+<button class="ra-btn ra-edit" onclick="openEdit(${idx})"><i class="fas fa-pen"></i> แก้ไข</button>
+<button class="ra-btn ra-del" onclick="openDel(${idx})"><i class="fas fa-trash"></i> ลบ</button>
+</div></td></tr>`;
   }).join('');
-  const totals = months.map(m=>filtered.reduce((s,r)=>s+(+r[m]||0),0));
-  const grand = totals.reduce((a,b)=>a+b,0), grandAvg = grand ? Math.round(grand/5) : 0;
-  const grandStock = filtered.reduce((s,r)=>s+(+r.stock||0),0), grandMax = filtered.reduce((s,r)=>s+(+r.maxLot||r.stock||0),0), grandMin = filtered.reduce((s,r)=>s+(+r.minLot||r.stock||0),0);
-  tfoot.innerHTML=`<tr><td colspan="2"><strong><i class="fas fa-sigma"></i> รวม</strong></td><td><strong>${grandStock.toLocaleString()}</strong></td><td><span class="badge badge-max"><i class="fas fa-arrow-up"></i> ${grandMax.toLocaleString()}</span></td><td><span class="badge badge-min"><i class="fas fa-arrow-down"></i> ${grandMin.toLocaleString()}</span></td>${totals.map(t=>`<td><strong>${t.toLocaleString()}</strong></td>`).join('')}<td class="td-total"><strong>${grand.toLocaleString()}</strong></td><td class="td-avg"><strong>${grandAvg.toLocaleString()}</strong></td><td></td></tr>`;
-  updateStats(); updateSelectionBar();
+  const tots=MO.map(m=>vis.reduce((s,r)=>s+(+r[m]||0),0));
+  const grand=tots.reduce((a,b)=>a+b,0),gAvg=grand?Math.round(grand/5):0;
+  const gStock=vis.reduce((s,r)=>s+(+r.stock||0),0);
+  const gMax=vis.reduce((s,r)=>s+(+r.maxLot||r.stock||0),0);
+  const gMin=vis.reduce((s,r)=>s+(+r.minLot||r.stock||0),0);
+  tf.innerHTML=`<tr>
+<td colspan="2" style="font-weight:700;color:var(--navy)"><i class="fas fa-sigma" style="margin-right:5px;color:var(--blue)"></i>รวม</td>
+<td style="text-align:left;font-weight:700;color:var(--navy)">${gStock.toLocaleString()}</td>
+<td style="text-align:left"><span class="pill pill-amber"><i class="fas fa-arrow-up"></i> ${gMax.toLocaleString()}</span></td>
+<td style="text-align:left"><span class="pill pill-green"><i class="fas fa-arrow-down"></i> ${gMin.toLocaleString()}</span></td>
+${tots.map(t=>`<td><strong>${t.toLocaleString()}</strong></td>`).join('')}
+<td><span class="td-sum" style="font-size:.9rem">${grand.toLocaleString()}</span></td>
+<td><span class="td-avg">${gAvg.toLocaleString()}</span></td>
+<td></td></tr>`;
+  updateStats();updateSelBar();
 }
-function updateRow(index, field, value) { if(rows[index]){ rows[index][field] = value; if(rows[index].minLot > rows[index].maxLot) rows[index].minLot = rows[index].maxLot; if(rows[index].maxLot < rows[index].minLot) rows[index].maxLot = rows[index].minLot; saveData(); render(); toast(`อัปเดต ${field} สำเร็จ`,'ok'); } }
-function updateStats(){ const grand = rows.reduce((s,r)=>s+calcTotal(r),0); const totalStock = rows.reduce((s,r)=>s+(+r.stock||0),0); document.getElementById('stat-count').innerHTML = rows.length; document.getElementById('stat-stock').innerHTML = totalStock.toLocaleString(); document.getElementById('stat-total').innerHTML = grand.toLocaleString(); document.getElementById('stat-avg').innerHTML = grand ? Math.round(grand/5).toLocaleString() : 0; }
-function searchData() { filterText = document.getElementById('searchInput').value.toLowerCase(); selectedRows.clear(); render(); toast(`พบ ${rows.filter(r => (r.barcode + r.stock.toString()).toLowerCase().includes(filterText)).length} รายการ`,'ok'); }
-function clearSearch(){ document.getElementById('searchInput').value=''; filterText=''; selectedRows.clear(); render(); toast('ล้างการค้นหาแล้ว','ok'); }
-function toggleRowSelect(id,checked){ if(checked) selectedRows.add(id); else selectedRows.delete(id); render(); }
-function toggleSelectAll(){ const visible = rows.filter(r=>!filterText || (r.barcode+r.stock.toString()).toLowerCase().includes(filterText)); const allChecked = document.getElementById('selectAllCheckbox').checked; visible.forEach(r=>{ if(allChecked) selectedRows.add(r.id); else selectedRows.delete(r.id); }); render(); }
-function deleteSelected(){ if(selectedRows.size===0){ toast('ไม่มีรายการที่เลือก','warning'); return; } if(confirm(`ต้องการลบ ${selectedRows.size} รายการ ใช่ไหม?`)){ rows = rows.filter(r=>!selectedRows.has(r.id)); selectedRows.clear(); saveData(); render(); toast('ลบรายการที่เลือกสำเร็จ','ok'); } }
-function deleteAll(){ if(rows.length===0){ toast('ไม่มีข้อมูล','warning'); return; } if(confirm(`ลบทั้งหมด ${rows.length} รายการ?`)){ rows=[]; selectedRows.clear(); saveData(); render(); toast('ลบข้อมูลทั้งหมด','ok'); } }
-function updateSelectionBar(){ const bar=document.getElementById('selectionBar'),count=selectedRows.size,delBtn=document.getElementById('deleteSelectedBtn'); if(count>0){ bar.style.display='flex'; document.getElementById('selectedCount').innerText=count; if(delBtn) delBtn.disabled=false; }else{ bar.style.display='none'; if(delBtn) delBtn.disabled=true; } const selectAll=document.getElementById('selectAllCheckbox'); if(selectAll){ const visible=rows.filter(r=>!filterText||(r.barcode+r.stock.toString()).toLowerCase().includes(filterText)); const selectedVisible=visible.filter(r=>selectedRows.has(r.id)).length; selectAll.checked=visible.length>0 && selectedVisible===visible.length; selectAll.indeterminate=selectedVisible>0 && selectedVisible<visible.length; } }
-function openAddModal(){ editModeIndex=null; document.getElementById('modalTitle').innerHTML='<i class="fas fa-plus-circle"></i> เพิ่มข้อมูลน็อตล้อมาตรฐาน'; document.getElementById('editBarcode').value=`NUT-3R${String(nextId).padStart(3,'0')}`; document.getElementById('editStock').value=0; document.getElementById('editMaxLot').value=0; document.getElementById('editMinLot').value=0; ['editJan','editFeb','editMar','editApr','editMay'].forEach(id=>document.getElementById(id).value=0); document.getElementById('editModal').classList.add('show'); }
-function openEditModal(index){ editModeIndex=index; const row=rows[index]; document.getElementById('modalTitle').innerHTML='<i class="fas fa-pen"></i> แก้ไขข้อมูลสินค้า'; document.getElementById('editBarcode').value=row.barcode; document.getElementById('editStock').value=row.stock; document.getElementById('editMaxLot').value=row.maxLot||row.stock||0; document.getElementById('editMinLot').value=row.minLot||row.stock||0; document.getElementById('editJan').value=row.jan||0; document.getElementById('editFeb').value=row.feb||0; document.getElementById('editMar').value=row.mar||0; document.getElementById('editApr').value=row.apr||0; document.getElementById('editMay').value=row.may||0; document.getElementById('editModal').classList.add('show'); }
-function closeEditModal(){ document.getElementById('editModal').classList.remove('show'); }
-function confirmEditRow(){
-  const barcode = document.getElementById('editBarcode').value.trim(); if(!barcode){ toast('กรุณากรอกรหัสสินค้า','warning'); return; }
-  const maxLotVal = +document.getElementById('editMaxLot').value||0, minLotVal = +document.getElementById('editMinLot').value||0;
-  if(minLotVal > maxLotVal){ toast('Min ต้องไม่เกิน Max','warning'); return; }
-  if(editModeIndex===null){
-    if(rows.some(r=>r.barcode===barcode)){ toast('รหัสสินค้านี้มีอยู่แล้ว','warning'); return; }
-    rows.push({ id: nextId++, barcode, stock: +document.getElementById('editStock').value||0, maxLot: maxLotVal, minLot: minLotVal, jan: +document.getElementById('editJan').value||0, feb: +document.getElementById('editFeb').value||0, mar: +document.getElementById('editMar').value||0, apr: +document.getElementById('editApr').value||0, may: +document.getElementById('editMay').value||0 });
-    toast('เพิ่มข้อมูลสำเร็จ','ok');
-  } else {
-    const existing = rows.find((r,i)=>i!==editModeIndex && r.barcode===barcode);
-    if(existing){ toast('รหัสสินค้าซ้ำกับรายการอื่น','warning'); return; }
-    const row = rows[editModeIndex]; row.barcode=barcode; row.stock=+document.getElementById('editStock').value||0; row.maxLot=maxLotVal; row.minLot=minLotVal; row.jan=+document.getElementById('editJan').value||0; row.feb=+document.getElementById('editFeb').value||0; row.mar=+document.getElementById('editMar').value||0; row.apr=+document.getElementById('editApr').value||0; row.may=+document.getElementById('editMay').value||0;
+
+function upd(i,f,v){if(rows[i]){rows[i][f]=v;save();render();toast(`อัปเดต ${f} สำเร็จ`,'ok');}}
+function updateStats(){
+  const g=rows.reduce((s,r)=>s+sum(r),0);
+  const gs=rows.reduce((s,r)=>s+(+r.stock||0),0);
+  document.getElementById('st-count').textContent=rows.length;
+  document.getElementById('st-stock').textContent=gs.toLocaleString();
+  document.getElementById('st-total').textContent=g.toLocaleString();
+  document.getElementById('st-avg').textContent=g?Math.round(g/5).toLocaleString():0;
+}
+function searchData(){filterText=document.getElementById('searchInput').value.toLowerCase();sel.clear();render();toast(`พบ ${rows.filter(r=>(r.barcode+r.stock).toLowerCase().includes(filterText)).length} รายการ`,'ok');}
+function clearSearch(){document.getElementById('searchInput').value='';filterText='';sel.clear();render();toast('ล้างการค้นหา','ok');}
+function toggleRow(id,chk){if(chk)sel.add(id);else sel.delete(id);render();}
+function toggleAll(){
+  const vis=rows.filter(r=>!filterText||(r.barcode+r.stock).toLowerCase().includes(filterText));
+  const allChk=document.getElementById('chkAll').checked;
+  vis.forEach(r=>allChk?sel.add(r.id):sel.delete(r.id));render();
+}
+function deleteSel(){
+  if(!sel.size){toast('ไม่มีรายการที่เลือก','warning');return;}
+  if(confirm(`ลบ ${sel.size} รายการ?`)){rows=rows.filter(r=>!sel.has(r.id));sel.clear();save();render();toast('ลบรายการที่เลือกสำเร็จ','ok');}
+}
+function deleteAll(){
+  if(!rows.length){toast('ไม่มีข้อมูล','warning');return;}
+  if(confirm(`ลบทั้งหมด ${rows.length} รายการ?`)){rows=[];sel.clear();save();render();toast('ลบข้อมูลทั้งหมด','ok');}
+}
+function updateSelBar(){
+  const bar=document.getElementById('selBar'),n=sel.size,btn=document.getElementById('delSelBtn');
+  bar.classList.toggle('show',n>0);
+  document.getElementById('selCount').textContent=n;
+  if(btn)btn.disabled=!n;
+  const ca=document.getElementById('chkAll');
+  if(ca){const vis=rows.filter(r=>!filterText||(r.barcode+r.stock).toLowerCase().includes(filterText));const sv=vis.filter(r=>sel.has(r.id)).length;ca.checked=vis.length>0&&sv===vis.length;ca.indeterminate=sv>0&&sv<vis.length;}
+}
+function openAdd(){
+  editIdx=null;
+  document.getElementById('modalTitle').innerHTML='<i class="fas fa-plus-circle"></i> เพิ่มสินค้าใหม่';
+  document.getElementById('editBarcode').value=`NUT-3R${String(nextId).padStart(3,'0')}`;
+  ['editStock','editMaxLot','editMinLot','editJan','editFeb','editMar','editApr','editMay'].forEach(id=>document.getElementById(id).value=0);
+  document.getElementById('editModal').classList.add('show');
+}
+function openEdit(i){
+  editIdx=i;const r=rows[i];
+  document.getElementById('modalTitle').innerHTML='<i class="fas fa-pen"></i> แก้ไขสินค้า';
+  document.getElementById('editBarcode').value=r.barcode;
+  document.getElementById('editStock').value=r.stock;
+  document.getElementById('editMaxLot').value=r.maxLot||r.stock||0;
+  document.getElementById('editMinLot').value=r.minLot||r.stock||0;
+  document.getElementById('editJan').value=r.jan||0;
+  document.getElementById('editFeb').value=r.feb||0;
+  document.getElementById('editMar').value=r.mar||0;
+  document.getElementById('editApr').value=r.apr||0;
+  document.getElementById('editMay').value=r.may||0;
+  document.getElementById('editModal').classList.add('show');
+}
+function closeEditModal(){document.getElementById('editModal').classList.remove('show');}
+function confirmEdit(){
+  const bc=document.getElementById('editBarcode').value.trim();
+  if(!bc){toast('กรุณากรอกรหัสสินค้า','warning');return;}
+  const mx=+document.getElementById('editMaxLot').value||0,mn=+document.getElementById('editMinLot').value||0;
+  if(mn>mx){toast('Min ต้องไม่เกิน Max','warning');return;}
+  if(editIdx===null){
+    if(rows.some(r=>r.barcode===bc)){toast('รหัสสินค้าซ้ำ','warning');return;}
+    rows.push({id:nextId++,barcode:bc,stock:+document.getElementById('editStock').value||0,maxLot:mx,minLot:mn,jan:+document.getElementById('editJan').value||0,feb:+document.getElementById('editFeb').value||0,mar:+document.getElementById('editMar').value||0,apr:+document.getElementById('editApr').value||0,may:+document.getElementById('editMay').value||0});
+    toast('เพิ่มสินค้าสำเร็จ','ok');
+  }else{
+    if(rows.find((r,i)=>i!==editIdx&&r.barcode===bc)){toast('รหัสซ้ำกับรายการอื่น','warning');return;}
+    const r=rows[editIdx];r.barcode=bc;r.stock=+document.getElementById('editStock').value||0;r.maxLot=mx;r.minLot=mn;r.jan=+document.getElementById('editJan').value||0;r.feb=+document.getElementById('editFeb').value||0;r.mar=+document.getElementById('editMar').value||0;r.apr=+document.getElementById('editApr').value||0;r.may=+document.getElementById('editMay').value||0;
     toast('แก้ไขสำเร็จ','ok');
   }
-  saveData(); render(); closeEditModal();
+  save();render();closeEditModal();
 }
-function openDeleteModal(index){ pendingDeleteIndex=index; document.getElementById('deleteBarcode').innerText=rows[index].barcode; document.getElementById('deleteModal').classList.add('show'); }
-function closeDeleteModal(){ pendingDeleteIndex=null; document.getElementById('deleteModal').classList.remove('show'); }
-function confirmDeleteRow(){ if(pendingDeleteIndex!==null && rows[pendingDeleteIndex]){ const deleted=rows[pendingDeleteIndex].barcode; rows.splice(pendingDeleteIndex,1); if(rows.length===0) selectedRows.clear(); saveData(); render(); toast(`ลบ ${deleted} สำเร็จ`,'ok'); } closeDeleteModal(); }
-function exportData(){ let csv="Barcode,B/L,Max,Min,ม.ค.,ก.พ.,มี.ค.,เม.ย.,พ.ค.,รวม 5 เดือน,เฉลี่ย\n"; rows.forEach(r=>{ const total=calcTotal(r), avg=total?Math.round(total/5):0; csv+=`"${r.barcode}",${r.stock},${r.maxLot||r.stock},${r.minLot||r.stock},${r.jan||0},${r.feb||0},${r.mar||0},${r.apr||0},${r.may||0},${total},${avg}\n`; }); const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"}); const link=document.createElement("a"); link.href=URL.createObjectURL(blob); link.download=`3RHB_export_${new Date().toISOString().slice(0,19)}.csv`; document.body.appendChild(link); link.click(); document.body.removeChild(link); toast("ส่งออก CSV สำเร็จ","ok"); }
-function printPDF(){ toast("เปิดหน้าต่างพิมพ์", "ok"); setTimeout(()=>window.print(),150); }
-function handleSearchKeypress(e){ if(e.key==='Enter') searchData(); }
-function escapeHtml(str){ if(!str) return ''; return str.replace(/[&<>]/g, m=> m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
-let sbOpen=window.innerWidth>=1024, sbCollapsed=false;
-function toggleSidebar(){ const sb=document.getElementById('sidebar'),main=document.getElementById('main'),ov=document.getElementById('overlay'); if(window.innerWidth<1024){ sbOpen=!sbOpen; sb.classList.toggle('open',sbOpen); ov.classList.toggle('show',sbOpen); } else { sbCollapsed=!sbCollapsed; sb.classList.toggle('collapsed',sbCollapsed); main.classList.toggle('sb-col',sbCollapsed); } }
-function closeSidebar(){ if(window.innerWidth<1024){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); } }
-function toast(msg,type=''){ const c=document.getElementById('toasts'),t=document.createElement('div'); const icon=type==='ok'?'<i class="fas fa-check-circle"></i>':(type==='warning'?'<i class="fas fa-exclamation-triangle"></i>':'<i class="fas fa-info-circle"></i>'); t.className='toast '+(type==='ok'?'ok':(type==='warning'?'warning':'')); t.innerHTML=`${icon}<span>${msg}</span>`; c.appendChild(t); setTimeout(()=>t.classList.add('show'),10); setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),400); },2800); }
-function logout(){ toast('ออกจากระบบ demo'); } function showNotifications(){ toast('ไม่มีการแจ้งเตือน'); } function showFavorites(){ toast('รายการโปรด'); } function callPhone(){ toast('โทร 02-123-4567'); } function showProfile(){ toast('โปรไฟล์ผู้ใช้'); }
-window.addEventListener('resize',()=>{ if(window.innerWidth>=1024){ document.getElementById('overlay').classList.remove('show'); document.getElementById('sidebar').classList.remove('open'); } });
+function openDel(i){pendingDel=i;document.getElementById('delName').textContent=rows[i].barcode;document.getElementById('delModal').classList.add('show');}
+function closeDelModal(){pendingDel=null;document.getElementById('delModal').classList.remove('show');}
+function confirmDel(){if(pendingDel!==null){const n=rows[pendingDel].barcode;rows.splice(pendingDel,1);if(!rows.length)sel.clear();save();render();toast(`ลบ ${n} เรียบร้อย`,'ok');}closeDelModal();}
+function exportData(){
+  let csv="Barcode,B/L,Max,Min,ม.ค.,ก.พ.,มี.ค.,เม.ย.,พ.ค.,รวม,เฉลี่ย\n";
+  rows.forEach(r=>{const t=sum(r),a=t?Math.round(t/5):0;csv+=`"${r.barcode}",${r.stock},${r.maxLot||r.stock},${r.minLot||r.stock},${r.jan||0},${r.feb||0},${r.mar||0},${r.apr||0},${r.may||0},${t},${a}\n`;});
+  const b=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});
+  const l=document.createElement("a");l.href=URL.createObjectURL(b);l.download=`3RHB_lotstock_${new Date().toISOString().slice(0,10)}.csv`;document.body.appendChild(l);l.click();document.body.removeChild(l);
+  toast('ส่งออก CSV สำเร็จ','ok');
+}
+function printPDF(){toast('เปิดหน้าต่างพิมพ์','ok');setTimeout(()=>window.print(),150);}
+
+let sbOpen=window.innerWidth>=1024,sbCol=false;
+function toggleSb(){
+  const s=document.getElementById('sidebar'),m=document.getElementById('main'),o=document.getElementById('overlay');
+  if(window.innerWidth<1024){sbOpen=!sbOpen;s.classList.toggle('open',sbOpen);o.classList.toggle('show',sbOpen);}
+  else{sbCol=!sbCol;s.classList.toggle('collapsed',sbCol);m.classList.toggle('col',sbCol);}
+}
+function closeSb(){if(window.innerWidth<1024){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}}
+function toast(msg,type=''){
+  const c=document.getElementById('toasts'),t=document.createElement('div');
+  const ico=type==='ok'?'<i class="fas fa-check-circle toast-ico" style="color:#34d399"></i>':type==='warning'?'<i class="fas fa-exclamation-triangle toast-ico" style="color:#fbbf24"></i>':'<i class="fas fa-info-circle toast-ico" style="color:#60a5fa"></i>';
+  t.className='toast '+(type||'');
+  t.innerHTML=`${ico}<span>${msg}</span>`;
+  c.appendChild(t);setTimeout(()=>t.classList.add('show'),10);
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),400);},2800);
+}
+window.addEventListener('resize',()=>{if(window.innerWidth>=1024){document.getElementById('overlay').classList.remove('show');document.getElementById('sidebar').classList.remove('open');}});
 loadData();
 </script>
 </body>
