@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NUT SYSTEM v2 — ข้อมูลทั้งหมด</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #f0f6ff;
+  --surface: #ffffff;
+  --surface2: #f5f9ff;
+  --blue-50: #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-200: #bfdbfe;
+  --blue-400: #60a5fa;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+  --blue-800: #1e40af;
+  --blue-900: #1e3a8a;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #94a3b8;
+  --border: rgba(37,99,235,0.1);
+  --border-mid: rgba(37,99,235,0.18);
+  --red: #ef4444;
+  --red-light: #fee2e2;
+  --green: #10b981;
+  --green-light: #d1fae5;
+  --amber: #f59e0b;
+  --amber-light: #fef3c7;
+  --sans: 'Outfit', sans-serif;
+  --thai: 'IBM Plex Sans Thai', sans-serif;
+  --mono: 'Space Mono', monospace;
+  --radius: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 4px rgba(37,99,235,0.07);
+  --shadow-md: 0 4px 20px rgba(37,99,235,0.11);
+  --shadow-lg: 0 12px 40px rgba(37,99,235,0.16);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--thai);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(37,99,235,0.08) 1px, transparent 0);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Header */
+.header {
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(148,197,255,0.3);
+  padding: 20px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.35);
+}
+
+.logo-text h1 {
+  font-family: var(--sans);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.logo-text h1 span {
+  color: var(--blue-600);
+}
+
+.logo-text p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.header-stats {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.stat-badge {
+  background: var(--blue-50);
+  border: 1.5px solid var(--blue-100);
+  border-radius: var(--radius-pill);
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--sans);
+}
+
+.stat-badge .ti {
+  font-size: 18px;
+  color: var(--blue-600);
+}
+
+.stat-badge .label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+.stat-badge .value {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--blue-700);
+  margin-left: 4px;
+}
+
+.btn-group {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
+  color: white;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(37,99,235,0.4);
+}
+
+.btn-secondary {
+  background: white;
+  border: 1.5px solid var(--blue-200);
+  color: var(--blue-700);
+}
+
+.btn-secondary:hover {
+  background: var(--blue-50);
+  border-color: var(--blue-400);
+}
+
+.btn-danger {
+  background: white;
+  border: 1.5px solid #fecaca;
+  color: var(--red);
+}
+
+.btn-danger:hover {
+  background: var(--red-light);
+  border-color: var(--red);
+}
+
+/* Main Container */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Category Tabs */
+.category-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  padding: 12px 28px;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+  border: 1.5px solid var(--blue-100);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
+  border-color: var(--blue-600);
+  color: white;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+}
+
+.tab-btn .count {
+  background: rgba(0,0,0,0.1);
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tab-btn.active .count {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Search & Filter */
+.search-bar {
+  background: white;
+  border: 1.5px solid var(--blue-100);
+  border-radius: var(--radius-pill);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  transition: all 0.2s;
+}
+
+.search-bar:focus-within {
+  border-color: var(--blue-500);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+
+.search-bar .ti {
+  font-size: 20px;
+  color: var(--blue-400);
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: var(--thai);
+  font-size: 14px;
+  background: transparent;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: white;
+  border: 1.5px solid var(--blue-100);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--blue-50), var(--blue-100));
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.stat-info h4 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.stat-info .number {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--blue-700);
+  font-family: var(--sans);
+  letter-spacing: -0.02em;
+}
+
+/* Table */
+.table-wrapper {
+  background: white;
+  border: 1.5px solid var(--blue-100);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.table-header {
+  padding: 18px 24px;
+  background: linear-gradient(180deg, var(--blue-50), rgba(255,255,255,0));
+  border-bottom: 1.5px solid var(--blue-100);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.table-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.table-badge {
+  background: var(--blue-600);
+  color: white;
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: linear-gradient(180deg, #f0f6ff, #f5f9ff);
+}
+
+th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--blue-800);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-bottom: 1.5px solid var(--blue-100);
+  white-space: nowrap;
+}
+
+td {
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--text);
+  border-bottom: 1px solid rgba(37,99,235,0.07);
+}
+
+tr:hover {
+  background: var(--blue-50);
+}
+
+.code-cell {
+  font-family: var(--sans);
+  font-weight: 800;
+  color: var(--blue-800);
+}
+
+.barcode-cell {
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--blue-50);
+  padding: 4px 10px;
+  border-radius: 8px;
+  display: inline-block;
+  border: 1px solid var(--blue-100);
+}
+
+.price-cell {
+  font-weight: 800;
+  color: var(--green);
+  font-family: var(--sans);
+}
+
+.owner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--blue-50);
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px;
+  color: var(--text-dim);
+}
+
+.empty-state .ti {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,23,42,0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  background: white;
+  border-radius: 24px;
+  padding: 32px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  transform: scale(0.95);
+  transition: all 0.25s;
+}
+
+.modal-overlay.active .modal {
+  transform: scale(1);
+}
+
+.modal-title {
+  font-family: var(--sans);
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-sub {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-bottom: 24px;
+}
+
+.modal-field {
+  margin-bottom: 16px;
+}
+
+.modal-field label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.modal-field .value {
+  background: var(--blue-50);
+  padding: 12px;
+  border-radius: 12px;
+  font-family: var(--thai);
+  border: 1px solid var(--blue-100);
+  word-break: break-word;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--blue-900);
+  color: white;
+  padding: 12px 24px;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 1100;
+  transition: all 0.3s;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast.success {
+  background: #059669;
+}
+
+.toast.error {
+  background: var(--red-dark);
+}
+
+/* Footer */
+.footer {
+  background: white;
+  border-top: 1px solid var(--blue-100);
+  padding: 16px 32px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 32px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+  .header {
+    padding: 16px;
+  }
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  th, td {
+    padding: 10px 12px;
+  }
+  .toast {
+    white-space: normal;
+    text-align: center;
+    max-width: 90%;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-content">
+    <div class="logo">
+      <div class="logo-icon">⚙️</div>
+      <div class="logo-text">
+        <h1>NUT <span>SYSTEM</span> v2</h1>
+        <p>📦 ระบบจัดการน็อตล้อ — ข้อมูลจาก LocalStorage</p>
+      </div>
+    </div>
+    <div class="header-stats">
+      <div class="stat-badge">
+        <i class="ti ti-database"></i>
+        <span class="label">Storage Key</span>
+        <span class="value" id="storageKey">nutSystem_v2</span>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-secondary" onclick="exportData()">
+          <i class="ti ti-download"></i> Export JSON
+        </button>
+        <button class="btn btn-primary" onclick="refreshData()">
+          <i class="ti ti-refresh"></i> โหลดข้อมูล
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Category Tabs -->
+  <div class="category-tabs" id="categoryTabs"></div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid" id="statsGrid"></div>
+
+  <!-- Search -->
+  <div class="search-bar">
+    <i class="ti ti-search"></i>
+    <input type="text" id="searchInput" placeholder="ค้นหาด้วย รหัสสินค้า / บาร์โค้ด / รายละเอียด / ซัพพลายเออร์..." oninput="renderTable()">
+    <i class="ti ti-filter" style="color: var(--blue-400); cursor: pointer;" onclick="clearSearch()"></i>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <div class="table-header">
+      <div class="table-title">
+        <span id="currentCatIcon">🔩</span>
+        <span id="currentCatName">3RHB</span>
+        <span class="table-badge" id="itemCount">0 รายการ</span>
+      </div>
+      <div>
+        <span id="filteredInfo" style="font-size: 12px; color: var(--text-muted);"></span>
+      </div>
+    </div>
+    <div class="table-container">
+      <table id="dataTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>รหัสสินค้า</th>
+            <th>บาร์โค้ด</th>
+            <th>รายละเอียด</th>
+            <th style="text-align: center">จำนวน/กล่อง</th>
+            <th style="text-align: right">ราคา (บาท)</th>
+            <th>ซัพพลายเออร์</th>
+            <th>ผู้ดูแล</th>
+            <th>วันที่เพิ่ม</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr>
+            <td colspan="10" class="empty-state">
+              <i class="ti ti-database-off"></i><br>
+              ไม่พบข้อมูล
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>🔧 NUT SYSTEM v2.0 | ข้อมูลถูกเก็บใน LocalStorage (key: nutSystem_v2)</span>
+  <span style="margin-left: 16px;" id="lastUpdate"></span>
+</div>
+
+<!-- Modal for View Details -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-title">
+      <i class="ti ti-info-circle"></i>
+      <span>รายละเอียดสินค้า</span>
+    </div>
+    <div class="modal-sub" id="modalCode"></div>
+    <div id="modalContent"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">ปิด</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'nutSystem_v2';
+const CATEGORIES = ['3RHB', '3FHB', '3FHN', '3RHN'];
+const CAT_ICONS = {
+  '3RHB': '🔩',
+  '3FHB': '🔧', 
+  '3FHN': '⚙️',
+  '3RHN': '🔑'
+};
+
+let fullData = {};
+let currentCat = '3RHB';
+let searchTimeout = null;
+
+// Load data from localStorage
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      fullData = JSON.parse(raw);
+      // Ensure all categories exist
+      CATEGORIES.forEach(cat => {
+        if (!fullData[cat]) fullData[cat] = [];
+      });
+    } else {
+      fullData = {};
+      CATEGORIES.forEach(cat => { fullData[cat] = []; });
+    }
+  } catch (e) {
+    console.error('Error loading data:', e);
+    fullData = {};
+    CATEGORIES.forEach(cat => { fullData[cat] = []; });
+  }
+  
+  // Update last update time
+  const now = new Date();
+  document.getElementById('lastUpdate').innerHTML = `🕐 อัปเดตล่าสุด: ${now.toLocaleString('th-TH')}`;
+  
+  renderAll();
+}
+
+// Get total items across all categories
+function getTotalItems() {
+  return CATEGORIES.reduce((sum, cat) => sum + (fullData[cat]?.length || 0), 0);
+}
+
+// Get category count
+function getCategoryCount(cat) {
+  return fullData[cat]?.length || 0;
+}
+
+// Format date
+function formatDate(isoString) {
+  if (!isoString) return '—';
+  try {
+    const d = new Date(isoString);
+    return d.toLocaleDateString('th-TH') + ' ' + d.toLocaleTimeString('th-TH');
+  } catch {
+    return '—';
+  }
+}
+
+// Format price
+function formatPrice(price) {
+  if (price === null || price === undefined || price === '') return '—';
+  return Number(price).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ฿';
+}
+
+// Escape HTML
+function escapeHtml(str) {
+  if (!str) return '—';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Get initials
+function getInitials(name) {
+  if (!name) return '?';
+  return name.trim().split(' ').map(w => w[0] || '').join('').toUpperCase().slice(0, 2);
+}
+
+// Render category tabs
+function renderTabs() {
+  const container = document.getElementById('categoryTabs');
+  container.innerHTML = CATEGORIES.map(cat => `
+    <button class="tab-btn ${currentCat === cat ? 'active' : ''}" onclick="switchCategory('${cat}')">
+      ${CAT_ICONS[cat]} ${cat}
+      <span class="count">${getCategoryCount(cat)}</span>
+    </button>
+  `).join('');
+}
+
+// Render stats grid
+function renderStats() {
+  const container = document.getElementById('statsGrid');
+  container.innerHTML = CATEGORIES.map(cat => `
+    <div class="stat-card" onclick="switchCategory('${cat}')" style="cursor: pointer;">
+      <div class="stat-icon">${CAT_ICONS[cat]}</div>
+      <div class="stat-info">
+        <h4>${cat}</h4>
+        <div class="number">${getCategoryCount(cat)}</div>
+        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">รายการ</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Render table
+function renderTable() {
+  const items = fullData[currentCat] || [];
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+  
+  let filtered = items;
+  if (searchTerm) {
+    filtered = items.filter(item => 
+      (item.code || '').toLowerCase().includes(searchTerm) ||
+      (item.barcode || '').toLowerCase().includes(searchTerm) ||
+      (item.desc || '').toLowerCase().includes(searchTerm) ||
+      (item.sup || '').toLowerCase().includes(searchTerm) ||
+      (item.owner || '').toLowerCase().includes(searchTerm)
+    );
+  }
+  
+  // Update header info
+  document.getElementById('currentCatIcon').innerHTML = CAT_ICONS[currentCat];
+  document.getElementById('currentCatName').innerHTML = currentCat;
+  document.getElementById('itemCount').innerHTML = `${items.length} รายการ`;
+  
+  const filteredInfo = document.getElementById('filteredInfo');
+  if (searchTerm && filtered.length !== items.length) {
+    filteredInfo.innerHTML = `🔍 พบ ${filtered.length} รายการ จากทั้งหมด ${items.length} รายการ`;
+  } else {
+    filteredInfo.innerHTML = '';
+  }
+  
+  const tbody = document.getElementById('tableBody');
+  
+  if (filtered.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="10" class="empty-state">
+          <i class="ti ti-package-off"></i><br>
+          ${searchTerm ? 'ไม่พบข้อมูลที่ค้นหา' : 'ไม่มีข้อมูลในหมวดนี้'}
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  tbody.innerHTML = filtered.map((item, idx) => {
+    const originalIdx = items.findIndex(i => i === item);
+    return `
+      <tr>
+        <td style="color: var(--text-dim); font-size: 12px;">${idx + 1}</td>
+        <td class="code-cell">${escapeHtml(item.code)}</td>
+        <td><span class="barcode-cell">${escapeHtml(item.barcode) || '—'}</span></td>
+        <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${escapeHtml(item.desc)}">${escapeHtml(item.desc)}</td>
+        <td style="text-align: center; font-weight: 600;">${item.qty || '—'}</td>
+        <td class="price-cell" style="text-align: right;">${formatPrice(item.price)}</td>
+        <td>${escapeHtml(item.sup) || '—'}</td>
+        <td><div class="owner-badge"><span style="background: var(--blue-600); color: white; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800;">${getInitials(item.owner)}</span> ${escapeHtml(item.owner) || '—'}</div></td>
+        <td style="font-size: 11px; color: var(--text-muted);">${formatDate(item.addedAt)}</td>
+        <td>
+          <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="viewDetails('${currentCat}', ${originalIdx})">
+            <i class="ti ti-eye"></i> ดู
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// View item details
+function viewDetails(cat, idx) {
+  const item = fullData[cat][idx];
+  if (!item) return;
+  
+  document.getElementById('modalCode').innerHTML = `รหัส: ${escapeHtml(item.code)}`;
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-field">
+      <label>🔖 บาร์โค้ด</label>
+      <div class="value">${escapeHtml(item.barcode) || '—'}</div>
+    </div>
+    <div class="modal-field">
+      <label>📝 รายละเอียด</label>
+      <div class="value">${escapeHtml(item.desc) || '—'}</div>
+    </div>
+    <div class="modal-field">
+      <label>📦 จำนวน/กล่อง</label>
+      <div class="value">${item.qty || '—'} ชิ้น</div>
+    </div>
+    <div class="modal-field">
+      <label>💰 ราคา</label>
+      <div class="value">${formatPrice(item.price)}</div>
+    </div>
+    <div class="modal-field">
+      <label>🏭 ซัพพลายเออร์</label>
+      <div class="value">${escapeHtml(item.sup) || '—'}</div>
+    </div>
+    <div class="modal-field">
+      <label>👤 ผู้ดูแล</label>
+      <div class="value">${escapeHtml(item.owner) || '—'}</div>
+    </div>
+    <div class="modal-field">
+      <label>📅 วันที่เพิ่ม</label>
+      <div class="value">${formatDate(item.addedAt)}</div>
+    </div>
+  `;
+  
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+// Close modal
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+
+// Switch category
+function switchCategory(cat) {
+  currentCat = cat;
+  document.getElementById('searchInput').value = '';
+  renderTabs();
+  renderStats();
+  renderTable();
+}
+
+// Export data to JSON
+function exportData() {
+  const dataStr = JSON.stringify(fullData, null, 2);
+  const blob = new Blob([dataStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `nut_system_data_${new Date().toISOString().slice(0,19)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('ส่งออกข้อมูลสำเร็จ', 'success');
+}
+
+// Refresh data
+function refreshData() {
+  loadData();
+  showToast('โหลดข้อมูลล่าสุดจาก LocalStorage สำเร็จ', 'success');
+}
+
+// Clear search
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  renderTable();
+}
+
+// Show toast
+let toastTimer;
+function showToast(msg, type = '') {
+  const toast = document.getElementById('toast');
+  toast.innerHTML = `<i class="ti ${type === 'success' ? 'ti-check' : 'ti-info-circle'}"></i> ${msg}`;
+  toast.className = `toast ${type} show`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.className = 'toast', 2500);
+}
+
+// Render all
+function renderAll() {
+  renderTabs();
+  renderStats();
+  renderTable();
+}
+
+// Handle search debounce
+document.getElementById('searchInput').addEventListener('input', () => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => renderTable(), 300);
+});
+
+// Close modal on backdrop click
+document.getElementById('modalOverlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('modalOverlay')) {
+    closeModal();
+  }
+});
+
+// Keyboard shortcut
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+  if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+    e.preventDefault();
+    refreshData();
+  }
+});
+
+// Initialize
+loadData();
+</script>
+</body>
+</html>
