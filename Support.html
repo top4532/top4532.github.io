@@ -3,18 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>ติดต่อผู้ดูแลระบบ | LINE Messaging API</title>
-    <!-- TailwindCSS + Font Awesome 6 -->
+    <title>ติดต่อผู้ดูแลระบบ | RMUTSB Support Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- LIFF SDK -->
-    <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
     <style>
-        * {
-            font-family: 'Inter', 'Prompt', system-ui, sans-serif;
-        }
+        * { font-family: 'Inter', 'Prompt', system-ui, sans-serif; }
         body {
             background: radial-gradient(circle at 10% 30%, #0f172a, #0f172a 40%, #1e1b4b);
             background-attachment: fixed;
@@ -41,30 +35,9 @@
             pointer-events: none;
             animation: float 20s infinite alternate ease-in-out;
         }
-        .orb-1 {
-            width: 500px;
-            height: 500px;
-            background: #3b82f6;
-            top: -150px;
-            left: -150px;
-        }
-        .orb-2 {
-            width: 600px;
-            height: 600px;
-            background: #a855f7;
-            bottom: -200px;
-            right: -150px;
-            animation-duration: 25s;
-        }
-        .orb-3 {
-            width: 400px;
-            height: 400px;
-            background: #06b6d4;
-            top: 40%;
-            right: 20%;
-            animation-duration: 18s;
-            opacity: 0.3;
-        }
+        .orb-1 { width: 500px; height: 500px; background: #3b82f6; top: -150px; left: -150px; }
+        .orb-2 { width: 600px; height: 600px; background: #a855f7; bottom: -200px; right: -150px; animation-duration: 25s; }
+        .orb-3 { width: 400px; height: 400px; background: #06b6d4; top: 40%; right: 20%; animation-duration: 18s; opacity: 0.3; }
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
             100% { transform: translate(30px, -30px) scale(1.1); }
@@ -73,16 +46,13 @@
             background: rgba(15, 23, 42, 0.5);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.4);
         }
-        .card-white {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(2px);
-        }
+        .card-white { background: rgba(255, 255, 255, 0.98); }
         .input-modern {
             background: rgba(255,255,255,0.9);
             border: 1px solid #e2e8f0;
-            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.4, 1);
+            transition: all 0.25s ease;
         }
         .input-modern:focus {
             border-color: #10b981;
@@ -98,12 +68,18 @@
         .btn-gradient:hover {
             transform: translateY(-3px);
             box-shadow: 0 20px 30px -12px rgba(16, 185, 129, 0.5);
-            filter: brightness(1.05);
         }
-        .ripple-btn {
-            position: relative;
-            overflow: hidden;
+        .btn-back {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
         }
+        .btn-back:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        .ripple-btn { position: relative; overflow: hidden; }
         .ripple-btn:after {
             content: '';
             position: absolute;
@@ -116,41 +92,11 @@
             transform: translate(-50%, -50%);
             transition: width 0.4s, height 0.4s;
         }
-        .ripple-btn:active:after {
-            width: 300px;
-            height: 300px;
-            opacity: 0;
-        }
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        .btn-loading {
-            opacity: 0.7;
-            pointer-events: none;
-        }
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1e293b;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #10b981;
-            border-radius: 20px;
-        }
-        .shine {
-            position: relative;
-            overflow: hidden;
-        }
+        .ripple-btn:active:after { width: 300px; height: 300px; opacity: 0; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 20px; }
+        .shine { position: relative; overflow: hidden; }
         .shine::after {
             content: '';
             position: absolute;
@@ -164,8 +110,18 @@
             transition: opacity 0.6s;
             pointer-events: none;
         }
-        .shine:hover::after {
-            opacity: 0.6;
+        .shine:hover::after { opacity: 0.6; }
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -177,33 +133,43 @@
 
     <div class="relative z-10 min-h-screen flex items-center justify-center p-5 md:p-8">
         <div class="w-full max-w-6xl mx-auto">
+            
+            <!-- ปุ่มย้อนกลับไปหน้า bestseller.html -->
+            <div class="mb-6">
+                <a href="bestseller.html" 
+                   class="btn-back inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-white font-medium transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>ย้อนกลับหน้าแรก</span>
+                </a>
+            </div>
+            
             <div class="text-center mb-8">
                 <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-5 py-2 border border-white/20 shadow-lg">
                     <i class="fa-regular fa-headset text-emerald-300"></i>
-                    <span class="text-white/90 text-sm font-medium">LINE OFFICIAL ACCOUNT · SUPPORT CENTER 24/7</span>
+                    <span class="text-white/90 text-sm font-medium">RMUTSB SUPPORT CENTER · พร้อมช่วยเหลือคุณ</span>
                 </div>
             </div>
 
             <div class="grid lg:grid-cols-2 gap-8">
                 
                 <!-- LEFT SIDE -->
-                <div class="card-white rounded-3xl shadow-2xl overflow-hidden transition-all duration-500 hover:shadow-emerald-100/20 hover:shadow-xl shine">
+                <div class="card-white rounded-3xl shadow-2xl overflow-hidden shine">
                     <div class="relative p-8 md:p-10">
                         <div class="absolute top-0 left-8 w-24 h-1 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full"></div>
                         
                         <div class="flex items-center gap-4 mb-8">
-                            <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center text-white text-4xl shadow-xl rotate-3 hover:rotate-0 transition-transform duration-300">
-                                <i class="fa-brands fa-line"></i>
+                            <div class="w-20 h-20 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center text-white text-4xl shadow-xl">
+                                <i class="fa-regular fa-envelope"></i>
                             </div>
                             <div>
-                                <span class="text-emerald-600 text-sm font-semibold tracking-wide">LINE OA OFFICIAL</span>
+                                <span class="text-emerald-600 text-sm font-semibold tracking-wide">RMUTSB SUPPORT</span>
                                 <h1 class="text-3xl md:text-4xl font-extrabold text-slate-800 leading-tight">ติดต่อผู้ดูแล<br>ระบบโดยตรง</h1>
                             </div>
                         </div>
                         
                         <p class="text-slate-600 leading-relaxed mb-8 border-l-4 border-emerald-400 pl-5 text-base">
-                            ทีมงานมืออาชีพพร้อมรับฟังและแก้ไขปัญหาของคุณอย่างรวดเร็ว <br>
-                            ข้อมูลของคุณจะถูกส่งตรงถึงแอดมินผ่าน LINE Messaging API
+                            มหาวิทยาลัยเทคโนโลยีราชมงคลศรีวิชัย<br>
+                            ทีมงานพร้อมรับฟังและแก้ไขปัญหาของคุณ
                         </p>
                         
                         <div class="space-y-6">
@@ -213,20 +179,11 @@
                                 </div>
                                 <div>
                                     <p class="font-bold text-slate-800">อีเมลฝ่ายสนับสนุน</p>
-                                    <p class="text-slate-500 text-sm">support@linemanager.com</p>
+                                    <p class="text-slate-500 text-sm">366409221006-st@rmutsb.ac.th</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-5 p-3 rounded-xl bg-slate-50/80 hover:bg-white transition shadow-sm">
                                 <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white text-xl shadow-md">
-                                    <i class="fa-brands fa-line"></i>
-                                </div>
-                                <div>
-                                    <p class="font-bold text-slate-800">LINE Official Account</p>
-                                    <p class="text-slate-500 text-sm">@helpsupport (เพิ่มเพื่อนด้านล่าง)</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-5 p-3 rounded-xl bg-slate-50/80 hover:bg-white transition shadow-sm">
-                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white text-xl shadow-md">
                                     <i class="fa-regular fa-clock"></i>
                                 </div>
                                 <div>
@@ -234,17 +191,26 @@
                                     <p class="text-slate-500 text-sm">ภายใน 1-2 ชั่วโมง (จันทร์-ศุกร์)</p>
                                 </div>
                             </div>
+                            <div class="flex items-center gap-5 p-3 rounded-xl bg-slate-50/80 hover:bg-white transition shadow-sm">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white text-xl shadow-md">
+                                    <i class="fa-regular fa-building"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800">มหาวิทยาลัย</p>
+                                    <p class="text-slate-500 text-sm">เทคโนโลยีราชมงคลศรีวิชัย</p>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="mt-10 flex items-center gap-3 text-sm text-slate-500 bg-slate-100 rounded-full w-fit px-4 py-2">
                             <i class="fa-regular fa-face-smile-wink text-emerald-500"></i>
-                            <span>ทีมงานที่ปรึกษาพร้อมช่วยเหลือคุณแล้วกว่า 10,000+ เคส</span>
+                            <span>ทีมงานพร้อมช่วยเหลือคุณเสมอ</span>
                         </div>
                     </div>
                 </div>
                 
-                <!-- RIGHT SIDE :: ฟอร์มส่งข้อความผ่าน LIFF + Messaging API -->
-                <div class="glass-premium rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-500/10 backdrop-blur-xl">
+                <!-- RIGHT SIDE :: ฟอร์มส่งอีเมล (ใช้ Formspree) -->
+                <div class="glass-premium rounded-3xl overflow-hidden">
                     <div class="p-8 md:p-10 text-white">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
@@ -252,276 +218,116 @@
                             </div>
                             <h2 class="text-3xl md:text-4xl font-bold tracking-tight">ส่งข้อความ</h2>
                         </div>
-                        <p class="text-white/70 mb-8 pl-1 border-l-2 border-emerald-400 pl-3">กรอกรายละเอียดให้ครบถ้วน เพื่อการช่วยเหลือที่รวดเร็ว</p>
+                        <p class="text-white/70 mb-8 pl-1 border-l-2 border-emerald-400 pl-3">กรอกรายละเอียดให้ครบถ้วน กดส่งได้เลย!</p>
                         
-                        <!-- สถานะ LIFF -->
-                        <div id="liffStatus" class="mb-4 text-xs text-center py-2 rounded-lg bg-white/10 hidden">
-                            <i class="fa-regular fa-circle-check"></i> <span id="liffStatusText">กำลังเชื่อมต่อ...</span>
-                        </div>
-                        
-                        <div class="space-y-5">
-                            <div class="relative group">
-                                <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-base z-10 group-focus-within:text-emerald-500 transition"></i>
-                                <input type="text" id="name" placeholder="ชื่อ-นามสกุล / ชื่อผู้ใช้" 
-                                       class="w-full h-14 pl-11 pr-5 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern font-medium">
+                        <!-- ✅ ฟอร์ม Formspree - ใส่ endpoint เรียบร้อยแล้ว -->
+                        <form id="supportForm" action="https://formspree.io/f/mlgkjoqy" method="POST">
+                            <div class="space-y-5">
+                                <div class="relative group">
+                                    <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-base z-10 group-focus-within:text-emerald-500 transition"></i>
+                                    <input type="text" name="name" id="name" placeholder="ชื่อ-นามสกุล / รหัสนักศึกษา" 
+                                           class="w-full h-14 pl-11 pr-5 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern font-medium" required>
+                                </div>
+                                
+                                <div class="relative group">
+                                    <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-emerald-500 transition"></i>
+                                    <input type="email" name="email" id="email" placeholder="อีเมลติดต่อกลับ (example@rmutsb.ac.th)" 
+                                           class="w-full h-14 pl-11 pr-5 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern" required>
+                                </div>
+                                
+                                <div class="relative group">
+                                    <i class="fa-regular fa-message absolute left-4 top-5 text-slate-500 group-focus-within:text-emerald-500"></i>
+                                    <textarea name="message" id="message" rows="5" placeholder="รายละเอียดปัญหา ข้อเสนอแนะ หรือสิ่งที่ต้องการแจ้ง..." 
+                                           class="w-full p-5 pl-11 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern resize-none" required></textarea>
+                                </div>
+                                
+                                <button type="submit" id="sendBtn"
+                                        class="ripple-btn btn-gradient w-full h-14 rounded-2xl font-bold text-lg text-white flex items-center justify-center gap-3 shadow-xl transition-all duration-300">
+                                    <i class="fa-regular fa-paper-plane text-xl"></i> 
+                                    <span>ส่งข้อความ</span>
+                                    <i class="fa-regular fa-envelope text-sm opacity-80"></i>
+                                </button>
+                                
+                                <div id="formStatus" class="text-center text-sm hidden"></div>
+                                
+                                <div class="flex items-center justify-between text-xs text-white/50 pt-2">
+                                    <span><i class="fa-regular fa-shield-check"></i> ข้อมูลปลอดภัย 100%</span>
+                                    <span><i class="fa-regular fa-clock"></i> ส่งถึงอีเมลทันที</span>
+                                </div>
                             </div>
-                            
-                            <div class="relative group">
-                                <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-emerald-500 transition"></i>
-                                <input type="email" id="email" placeholder="อีเมลติดต่อกลับ (example@domain.com)" 
-                                       class="w-full h-14 pl-11 pr-5 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern">
-                            </div>
-                            
-                            <div class="relative group">
-                                <i class="fa-regular fa-message absolute left-4 top-5 text-slate-500 group-focus-within:text-emerald-500"></i>
-                                <textarea id="message" rows="5" placeholder="รายละเอียดปัญหา ข้อเสนอแนะ หรือสิ่งที่ต้องการแจ้ง..." 
-                                       class="w-full p-5 pl-11 rounded-2xl bg-white/95 text-slate-800 outline-none input-modern resize-none"></textarea>
-                            </div>
-                            
-                            <button onclick="sendViaMessagingAPI()" id="sendBtn"
-                                    class="ripple-btn btn-gradient w-full h-14 rounded-2xl font-bold text-lg text-white flex items-center justify-center gap-3 shadow-xl transition-all duration-300">
-                                <i class="fa-brands fa-line text-xl"></i> 
-                                <span>ส่งข้อความถึงแอดมิน</span>
-                                <i class="fa-regular fa-paper-plane text-sm opacity-80"></i>
-                            </button>
-                            
-                            <div class="flex items-center justify-between text-xs text-white/50 pt-2">
-                                <span><i class="fa-regular fa-shield-check"></i> ข้อมูลปลอดภัย 100%</span>
-                                <span><i class="fa-regular fa-clock"></i> ตอบกลับไวภายใน 1-2 ชม.</span>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
             
             <div class="flex flex-wrap justify-center gap-6 mt-12 text-white/80 text-sm">
                 <div class="flex items-center gap-2 bg-white/5 backdrop-blur-sm px-5 py-2 rounded-full border border-white/10">
-                    <i class="fa-solid fa-face-smile text-emerald-300"></i>
-                    <span>ความพึงพอใจ 98%</span>
+                    <i class="fa-solid fa-graduation-cap text-emerald-300"></i>
+                    <span>มหาวิทยาลัยเทคโนโลยีราชมงคลศรีวิชัย</span>
                 </div>
                 <div class="flex items-center gap-2 bg-white/5 backdrop-blur-sm px-5 py-2 rounded-full border border-white/10">
                     <i class="fa-regular fa-clock text-emerald-300"></i>
-                    <span>ตอบกลับเฉลี่ย 1.5 ชม.</span>
+                    <span>ตอบกลับเร็วที่สุด</span>
                 </div>
                 <div class="flex items-center gap-2 bg-white/5 backdrop-blur-sm px-5 py-2 rounded-full border border-white/10">
                     <i class="fa-regular fa-message text-emerald-300"></i>
-                    <span>แอดมินออนไลน์ 24 ชม.</span>
+                    <span>ทีมงานพร้อมให้คำปรึกษา</span>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- Floating Button LINE Add Friend -->
-    <a href="https://line.me/R/ti/p/@helpsupport" target="_blank" rel="noopener noreferrer"
-       class="fixed bottom-6 right-6 z-50 group">
-        <div class="relative">
-            <div class="absolute inset-0 bg-green-500 rounded-full blur-xl opacity-60 group-hover:opacity-100 transition duration-500 animate-pulse"></div>
-            <div class="relative w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center text-white text-3xl shadow-2xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 cursor-pointer border border-white/30">
-                <i class="fa-brands fa-line"></i>
-            </div>
-        </div>
-        <span class="absolute bottom-20 right-2 text-xs bg-slate-900/80 backdrop-blur px-3 py-1 rounded-full text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">เพิ่มเพื่อน @helpsupport</span>
-    </a>
-    
-    <!-- Toast Notify -->
-    <div id="toastMsg" class="fixed bottom-28 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 pointer-events-none"></div>
 
     <script>
-        // ============================================
-        // การตั้งค่า LIFF (LINE Front-end Framework)
-        // ============================================
-        // 🔴 IMPORTANT: กรุณาแทนที่ LIFF_ID ด้วย LIFF ID ของคุณ
-        // วิธีสร้าง LIFF App: https://developers.line.biz/console/
-        const LIFF_ID = "2006827658-4xkrnP5a";  // 👈 เปลี่ยนเป็น LIFF ID ของคุณ
+        const form = document.getElementById('supportForm');
+        const submitBtn = document.getElementById('sendBtn');
+        const formStatus = document.getElementById('formStatus');
         
-        // LINE Official Account ID (สำหรับส่งข้อความ)
-        const LINE_OA_ID = "@helpsupport";  // 👈 เปลี่ยนเป็น LINE OA ID ของคุณ
-        
-        let liffObject = null;
-        let isLoggedIn = false;
-        let userProfile = null;
-        
-        // Initialize LIFF
-        async function initializeLIFF() {
-            try {
-                await liff.init({ liffId: LIFF_ID });
-                liffObject = liff;
-                
-                // ตรวจสอบการ login
-                if (!liff.isLoggedIn()) {
-                    // ถ้ายังไม่ login ให้ login อัตโนมัติ
-                    await liff.login();
-                }
-                isLoggedIn = liff.isLoggedIn();
-                
-                if (isLoggedIn) {
-                    userProfile = await liff.getProfile();
-                    document.getElementById("liffStatus").classList.remove("hidden");
-                    document.getElementById("liffStatusText").innerHTML = `✅ เชื่อมต่อแล้ว: ${userProfile.displayName}`;
-                    
-                    // auto fill ชื่อจาก LINE profile
-                    const nameInput = document.getElementById("name");
-                    if (nameInput && nameInput.value === "") {
-                        nameInput.value = userProfile.displayName;
-                    }
-                } else {
-                    document.getElementById("liffStatus").classList.remove("hidden");
-                    document.getElementById("liffStatusText").innerHTML = `⚠️ กรุณาเข้าสู่ระบบ LINE`;
-                }
-            } catch (err) {
-                console.error("LIFF initialization failed", err);
-                document.getElementById("liffStatus").classList.remove("hidden");
-                document.getElementById("liffStatusText").innerHTML = `⚠️ ไม่สามารถเชื่อมต่อ LINE ได้`;
-                document.getElementById("liffStatus").classList.add("bg-red-500/20");
-            }
-        }
-        
-        function showToast(message, type = "info") {
-            let toastDiv = document.getElementById("toastMsg");
-            if (!toastDiv) return;
-            let icon = "";
-            let bgStyle = "";
-            if (type === "success") {
-                icon = "<i class='fa-regular fa-circle-check mr-2 text-xl'></i>";
-                bgStyle = "bg-gradient-to-r from-emerald-600 to-teal-600 shadow-emerald-500/30";
-            } else if (type === "warning") {
-                icon = "<i class='fa-solid fa-triangle-exclamation mr-2 text-xl'></i>";
-                bgStyle = "bg-gradient-to-r from-amber-500 to-orange-500 shadow-orange-500/30";
-            } else if (type === "error") {
-                icon = "<i class='fa-regular fa-bell mr-2 text-xl'></i>";
-                bgStyle = "bg-gradient-to-r from-rose-500 to-red-600 shadow-red-500/30";
-            } else {
-                icon = "<i class='fa-regular fa-comment-dots mr-2'></i>";
-                bgStyle = "bg-slate-800";
-            }
-            toastDiv.innerHTML = `
-                <div class="transform transition-all duration-300 ${bgStyle} backdrop-blur-md text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-2 text-sm md:text-base font-medium border border-white/20" style="animation: bounce-slight 0.35s ease-out forwards;">
-                    ${icon} ${message}
-                </div>
-            `;
-            setTimeout(() => {
-                toastDiv.innerHTML = "";
-            }, 3500);
-        }
-        
-        function validateForm() {
-            let name = document.getElementById("name").value.trim();
-            let email = document.getElementById("email").value.trim();
-            let message = document.getElementById("message").value.trim();
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
             
-            if (name === "") {
-                showToast("กรุณากรอกชื่อหรือชื่อเล่นของคุณ", "warning");
-                document.getElementById("name").focus();
-                return false;
-            }
-            if (email === "") {
-                showToast("กรุณากรอกอีเมลเพื่อให้ทีมงานติดต่อกลับ", "warning");
-                document.getElementById("email").focus();
-                return false;
-            }
-            const emailRegex = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
-            if (!emailRegex.test(email)) {
-                showToast("รูปแบบอีเมลไม่ถูกต้อง (example@domain.com)", "error");
-                document.getElementById("email").focus();
-                return false;
-            }
-            if (message === "") {
-                showToast("กรุณาใส่รายละเอียดปัญหา หรือข้อความที่ต้องการแจ้ง", "warning");
-                document.getElementById("message").focus();
-                return false;
-            }
-            return { name, email, message };
-        }
-        
-        function getFormattedMessage(name, email, message, userId = null) {
-            let currentDate = new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' });
-            let userInfo = userId ? `🆔 User ID: ${userId}\n` : "";
-            return `📞 แจ้งจากระบบสนับสนุน\n\n${userInfo}👤 ชื่อ: ${name}\n📧 อีเมล: ${email}\n📝 รายละเอียด:\n${message}\n\n⏱️ เวลาที่ส่ง: ${currentDate}\n💡 ทีมงานจะติดต่อกลับโดยเร็วที่สุด`;
-        }
-        
-        // ส่งข้อความผ่าน Messaging API (ใช้ LIFF sendMessages)
-        async function sendViaMessagingAPI() {
-            const validation = validateForm();
-            if (!validation) return;
+            // แสดง loading
+            const originalHTML = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="loading-spinner"></span><span class="ml-2">กำลังส่ง...</span>';
+            submitBtn.disabled = true;
+            formStatus.classList.add('hidden');
             
-            const { name, email, message } = validation;
-            
-            // ตรวจสอบ LIFF
-            if (!liffObject) {
-                showToast("กำลังเชื่อมต่อ LINE กรุณารอสักครู่", "warning");
-                await initializeLIFF();
-                if (!liffObject) {
-                    showToast("ไม่สามารถเชื่อมต่อ LINE ได้ กรุณาเปิดใน LINE App", "error");
-                    return;
-                }
-            }
-            
-            // ตรวจสอบ login status
-            if (!liffObject.isLoggedIn()) {
-                showToast("กรุณาเข้าสู่ระบบ LINE ก่อนส่งข้อความ", "warning");
-                try {
-                    await liffObject.login();
-                    userProfile = await liffObject.getProfile();
-                    document.getElementById("name").value = userProfile.displayName;
-                } catch (err) {
-                    showToast("เข้าสู่ระบบไม่สำเร็จ", "error");
-                    return;
-                }
-            }
-            
-            const btn = document.getElementById("sendBtn");
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<span class="loading-spinner"></span><span class="ml-2">กำลังส่ง...</span>';
-            btn.classList.add("btn-loading");
+            const formData = new FormData(form);
             
             try {
-                // ดึง user profile อีกครั้ง
-                userProfile = await liffObject.getProfile();
-                const userId = userProfile.userId;
-                const fullMessage = getFormattedMessage(name, email, message, userId);
-                
-                // ใช้ LIFF sendMessages เพื่อส่งข้อความไปยัง Official Account
-                // หมายเหตุ: ต้องตั้งค่า LIFF App ให้มี permission "chat_message.write"
-                await liffObject.sendMessages([
-                    {
-                        type: "text",
-                        text: fullMessage
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
                     }
-                ]);
+                });
                 
-                showToast("✅ ส่งข้อความถึงทีมงานเรียบร้อยแล้ว! ทีมงานจะติดต่อกลับทาง LINE", "success");
-                
-                // เคลียร์ฟอร์ม
-                document.getElementById("email").value = "";
-                document.getElementById("message").value = "";
-                // ไม่เคลียร์ชื่อเพราะอาจใช้ซ้ำ
-                
-                // ปิด LIFF window (ถ้าต้องการ)
-                // liffObject.closeWindow();
-                
-            } catch (err) {
-                console.error("Send message error:", err);
-                
-                // ถ้า error เพราะไม่มี permission ให้เปิดแชทแทน
-                if (err.code === "PERMISSION_DENIED") {
-                    showToast("กรุณาอนุญาตการส่งข้อความใน LINE App", "warning");
-                    // ใช้ fallback เปิดแชท
-                    const fallbackMsg = getFormattedMessage(name, email, message);
-                    const lineUrl = `https://line.me/R/oaMessage/${LINE_OA_ID}/?${encodeURIComponent(fallbackMsg)}`;
-                    window.open(lineUrl, "_blank");
+                if (response.ok) {
+                    formStatus.innerHTML = '✅ ส่งข้อความเรียบร้อย! ทีมงานจะติดต่อกลับโดยเร็วที่สุด';
+                    formStatus.className = 'text-center text-sm mt-3 text-emerald-300 bg-emerald-900/30 py-2 rounded-lg';
+                    formStatus.classList.remove('hidden');
+                    form.reset();
                 } else {
-                    showToast("❌ ส่งข้อความไม่สำเร็จ: " + (err.message || "กรุณาลองใหม่อีกครั้ง"), "error");
+                    const data = await response.json();
+                    if (data.errors) {
+                        formStatus.innerHTML = '❌ ' + data.errors.map(error => error.message).join(', ');
+                    } else {
+                        formStatus.innerHTML = '❌ ส่งไม่สำเร็จ กรุณาลองใหม่อีกครั้ง';
+                    }
+                    formStatus.className = 'text-center text-sm mt-3 text-red-300 bg-red-900/30 py-2 rounded-lg';
+                    formStatus.classList.remove('hidden');
                 }
+            } catch (error) {
+                formStatus.innerHTML = '❌ เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาตรวจสอบอินเทอร์เน็ต';
+                formStatus.className = 'text-center text-sm mt-3 text-red-300 bg-red-900/30 py-2 rounded-lg';
+                formStatus.classList.remove('hidden');
             } finally {
-                btn.innerHTML = originalHTML;
-                btn.classList.remove("btn-loading");
+                submitBtn.innerHTML = originalHTML;
+                submitBtn.disabled = false;
             }
-        }
+        });
         
-        // เริ่มต้น LIFF เมื่อโหลดหน้าเว็บ
-        initializeLIFF();
-        
-        // เพิ่ม keypress effect
+        // กด Enter แล้วไปช่องถัดไป
         document.querySelectorAll('.input-modern').forEach(input => {
             input.addEventListener('keypress', (e) => {
                 if(e.key === 'Enter' && (e.target.id === 'email' || e.target.id === 'name')) {
@@ -532,7 +338,6 @@
             });
         });
         
-        // custom animations
         const styleSheet = document.createElement("style");
         styleSheet.textContent = `
             @keyframes bounce-slight {
