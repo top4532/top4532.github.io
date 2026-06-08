@@ -223,7 +223,33 @@ td .cell-in[type=number]{text-align:right}
 </div>
 
 <aside id="sidebar"><div class="sb-logo"><div class="sb-logo-icon"><i class="fas fa-microchip"></i></div><div class="sb-logo-text">3RHB<br><span>IMPORT NUTS</span></div></div>
-  <nav class="sb-nav"><div class="sb-label">การจัดการสินค้า</div><a class="sb-item active" href="#"><i class="fas fa-boxes-stacked sb-icon"></i><span class="sb-text">Lot Stock</span><span class="sb-badge blue">New</span></a><a class="sb-item" href="#"><i class="fas fa-circle-dot sb-icon"></i><span class="sb-text">น็อตล้อทั้งหมด</span><span class="sb-badge gray">456</span></a><div class="sb-label">บริการ</div><a class="sb-item" href="Support.html"><i class="fas fa-headset sb-icon"></i><span class="sb-text">ติดต่อเรา</span></a><a class="sb-item" href="#"><i class="fas fa-newspaper sb-icon"></i><span class="sb-text">บทความ</span></a></nav>
+  <nav class="sb-nav">
+    <div class="sb-label">การจัดการสินค้า</div>
+    <!-- เพิ่มปุ่มย้อนกลับไปยัง inventory.html -->
+    <a class="sb-item" href="inventory.html" data-tip="ย้อนกลับ">
+      <i class="fas fa-arrow-left sb-icon"></i>
+      <span class="sb-text">ย้อนกลับ</span>
+    </a>
+    <a class="sb-item active" href="#" data-tip="Lot Stock">
+      <i class="fas fa-boxes-stacked sb-icon"></i>
+      <span class="sb-text">Lot Stock</span>
+      <span class="sb-badge blue">New</span>
+    </a>
+    <a class="sb-item" href="#" data-tip="น็อตล้อทั้งหมด">
+      <i class="fas fa-circle-dot sb-icon"></i>
+      <span class="sb-text">น็อตล้อทั้งหมด</span>
+      <span class="sb-badge gray">456</span>
+    </a>
+    <div class="sb-label">บริการ</div>
+    <a class="sb-item" href="Support.html" data-tip="ติดต่อเรา">
+      <i class="fas fa-headset sb-icon"></i>
+      <span class="sb-text">ติดต่อเรา</span>
+    </a>
+    <a class="sb-item" href="#" data-tip="บทความ">
+      <i class="fas fa-newspaper sb-icon"></i>
+      <span class="sb-text">บทความ</span>
+    </a>
+  </nav>
   <div class="sb-profile"><div class="sb-profile-inner"><div class="sb-avatar"><i class="fas fa-user-tie"></i></div><div class="sb-pinfo"><div class="sb-pname">PATIWAT</div><div class="sb-prole">Admin</div></div><button class="sb-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button></div></div>
 </aside>
 
